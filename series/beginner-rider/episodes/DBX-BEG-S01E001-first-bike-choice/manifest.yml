@@ -31,7 +31,7 @@ variants:
 
 # Added at the scripting stage. Beat IDs are stable slugs; every script line
 # belongs to one beat. `overlay` names a composition in packages/remotion-graphics
-# (hook-title | checklist-card | cta-card | lower-third | subtitle-track) or null.
+# (hook-title | checklist-card | cta-card | lower-third | subtitle-track | stage-cards) or null.
 beats:
   - id: hook
     purpose: pain point — the 450 trap the viewer is about to fall into

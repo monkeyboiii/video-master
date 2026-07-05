@@ -7,8 +7,9 @@ is not a full editor (Kdenlive is the assembly layer). See
 
 ## Compositions
 
-All overlays are 1080x1920 @ 30fps with a **transparent** background. Overlay
-durations derive from `durationSec` in props (via `calculateMetadata`).
+Overlays are 1080x1920 @ 30fps with a **transparent** background unless noted
+(`stage-cards` is dual-mode — see the note under the table). Overlay durations
+derive from `durationSec` in props (via `calculateMetadata`).
 
 | ID | Kind | Size | Props (defaults) |
 |----|------|------|-------------------|
@@ -17,6 +18,8 @@ durations derive from `durationSec` in props (via `calculateMetadata`).
 | `cta-card` | overlay | 1080x1920 | `locale`, `action: 'save'\|'comment'\|'follow'`, `line`, `handle` (`@dirtbikex`), `durationSec` (4) |
 | `lower-third` | overlay | 1080x1920 | `locale`, `name`, `label`, `durationSec` (4) |
 | `subtitle-track` | overlay | 1080x1920 | `locale`, `srt` (raw SRT text), `emphasis: string[]` ([]), `durationSec` (30) |
+| `stage-cards` | overlay* | 1080x1920 | `locale`, `items: string[]` (2–6 labels), `colors: string[]` (defaults to the six stage colors), `scatterDelaySec` (1.6), `background` (true), `durationSec` (6) |
+| `stage-cards-wide` | overlay* | 1920x1080 | same as `stage-cards` (3x2 grid instead of 2x3) |
 | `cover-9x16` | still | 1080x1920 | `locale`, `title`, `subtitle?`, `backgroundSrc?` (null → dark brand background; else a path under `public/`) |
 | `cover-3x4` | still | 1080x1440 | same as `cover-9x16` (RedNote-style text-forward cover) |
 | `safe-zone-guide` | debug | 1080x1920 | none — Studio preview only, never a deliverable |
@@ -25,6 +28,13 @@ durations derive from `durationSec` in props (via `calculateMetadata`).
 switches to Noto Sans SC and slightly smaller type. Text content comes from
 per-episode props files (`templates/remotion-props/locale-props.template.json`),
 never hardcoded in components.
+
+\* `stage-cards` is the one dual-mode overlay: capsules pop in along a line and
+scatter into a card grid on a dotted background. By default it renders **opaque**
+(`background: true`) because it carries the whole frame as a segment card, like a
+title slate. Set `background: false` to get a transparent version for layering
+over footage. Default items are the six production stages
+(选题/封面/脚本/拍摄/剪辑/复盘 · Topic/Cover/Script/Shoot/Edit/Review).
 
 ## Commands
 

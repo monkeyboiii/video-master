@@ -1,5 +1,5 @@
 {
-  "_readme": "Copy to <episode>/remotion-props/<locale>.json. Keys are composition IDs in packages/remotion-graphics (see its README for prop schemas). Text comes verbatim from script.<locale>.md — never retype from memory. durationSec is filled by tools/render-overlays.mjs from the beat's target_duration_sec, but can be preset here. For subtitle-track, leave srt empty — the render tool loads subtitles/<locale>.srt automatically; delete keys for compositions this locale never renders.",
+  "_readme": "Copy to <episode>/remotion-props/<locale>.json. Keys are composition IDs in packages/remotion-graphics (see its README for prop schemas). Text comes verbatim from script.<locale>.md — never retype from memory. durationSec is filled by tools/render-overlays.mjs from the beat's target_duration_sec, but can be preset here. For subtitle-track, leave srt empty — the render tool loads subtitles/<locale>.srt automatically. For stage-cards, delete unused item slots (2–6 allowed; empty strings fail validation); stage-cards-wide shares the same shape — duplicate the object under a 'stage-cards-wide' key if a 16x9 episode uses it. Delete keys for compositions this locale never renders.",
   "locale": "en-US",
   "hook-title": {
     "kicker": "",
@@ -26,6 +26,12 @@
     "srt": "",
     "emphasis": [],
     "durationSec": null
+  },
+  "stage-cards": {
+    "items": ["", "", "", "", "", ""],
+    "scatterDelaySec": 1.6,
+    "background": true,
+    "durationSec": 6
   },
   "cover-9x16": {
     "title": "",

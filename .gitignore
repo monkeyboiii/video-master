@@ -35,6 +35,10 @@ packages/remotion-graphics/out/
 .cache/
 *.tsbuildinfo
 
+# ── Reference screenshots dropped at repo root (third-party material, not assets) ──
+/IMG_*.PNG
+/IMG_*.png
+
 # ── OS / editor ──
 .DS_Store
 Thumbs.db

@@ -11,9 +11,21 @@ import type {HookTitleProps} from './components/HookTitle';
 import {LowerThird, lowerThirdSchema} from './components/LowerThird';
 import type {LowerThirdProps} from './components/LowerThird';
 import {SafeZoneGuide} from './components/SafeZoneGuide';
+import {StageCards, stageCardsSchema} from './components/StageCards';
+import type {StageCardsProps} from './components/StageCards';
 import {SubtitleTrack, subtitleTrackSchema} from './components/SubtitleTrack';
 import type {SubtitleTrackProps} from './components/SubtitleTrack';
 import {FPS, overlayMetadata} from './shared';
+import {stageColors} from './theme/tokens';
+
+const STAGE_CARDS_DEFAULTS = {
+  locale: 'zh-CN' as const,
+  items: ['选题', '封面', '脚本', '拍摄', '剪辑', '复盘'],
+  colors: [...stageColors],
+  scatterDelaySec: 1.6,
+  background: true,
+  durationSec: 6,
+};
 
 const SAMPLE_SRT = `1
 00:00:00,000 --> 00:00:02,400
@@ -108,6 +120,29 @@ export const RemotionRoot: React.FC = () => {
           emphasis: ['clutch'],
           durationSec: 30,
         }}
+      />
+
+      <Composition
+        id="stage-cards"
+        component={StageCards}
+        schema={stageCardsSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={6 * FPS}
+        calculateMetadata={overlayMetadata<StageCardsProps>(6)}
+        defaultProps={STAGE_CARDS_DEFAULTS}
+      />
+      <Composition
+        id="stage-cards-wide"
+        component={StageCards}
+        schema={stageCardsSchema}
+        width={1920}
+        height={1080}
+        fps={FPS}
+        durationInFrames={6 * FPS}
+        calculateMetadata={overlayMetadata<StageCardsProps>(6)}
+        defaultProps={STAGE_CARDS_DEFAULTS}
       />
 
       {/* ── Cover stills (opaque background allowed) ── */}

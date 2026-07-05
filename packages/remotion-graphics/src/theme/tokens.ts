@@ -33,7 +33,22 @@ export const moto = {
   green: '#2FA84F',
   red: '#D23A2D',
   yellow: '#FACC15',
+  purple: '#7C6CFF',
+  pink: '#EF5DA8',
 } as const;
+
+/**
+ * Canonical accent colors for the six production stages
+ * (选题 topic · 封面 cover · 脚本 script · 拍摄 shoot · 剪辑 edit · 复盘 review).
+ */
+export const stageColors = [
+  moto.blue,
+  dirt[500],
+  moto.green,
+  moto.red,
+  moto.purple,
+  moto.pink,
+] as const;
 
 /** The logo X gradient — reserve for the sharpest accents. */
 export const xGradient = ['#DF2100', '#FF3A08', '#FF4A16'] as const;
