@@ -60,6 +60,10 @@ npx remotion still cover-3x4 out/cover.png --props=/tmp/cover-props.json
 npx remotion ffprobe out/hook-title.mov
 # expect codec "prores (ap4h)" with pix_fmt yuva444p12le — we request 10-bit,
 # but ffmpeg's ProRes 4444 encoder always stores 12-bit; alpha is intact.
+
+# MP4 preview: don't pass --codec=h264 to render (the baked ProRes profile
+# rejects it). Render the ProRes master, then transcode with bundled ffmpeg:
+npx remotion ffmpeg -y -i out/hook-title.mov -c:v libx264 -pix_fmt yuv420p -crf 18 -movflags +faststart out/hook-title_preview.mp4
 ```
 
 Per-episode renders normally go through `node tools/render-overlays.mjs`
