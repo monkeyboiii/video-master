@@ -1,0 +1,14 @@
+# Normalize line endings for all text files
+* text=auto eol=lf
+
+# Subtitles and manifests are text — diffable
+*.srt text
+*.yml text
+*.md text
+
+# Binaries
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.woff2 binary

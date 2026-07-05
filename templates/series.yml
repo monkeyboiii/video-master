@@ -1,0 +1,17 @@
+# Series manifest — positioning that every episode inherits.
+series: "{{SERIES_SLUG}}" # kebab-case, matches directory name
+code: "{{CODE}}" # 3–4 uppercase letters, registered in docs/naming-conventions.md
+season: 1
+
+# Who this series serves — one concrete person, not a demographic.
+audience: ""
+
+# The promise every episode repeats (why someone follows the series).
+promise: ""
+
+# How this series positions DirtBikeX (personal positioning dimension).
+positioning: ""
+
+default_platforms:
+  en-US: [tiktok, ytshorts, reels]
+  zh-CN: [rednote, douyin, bilibili]

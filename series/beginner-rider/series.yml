@@ -1,0 +1,17 @@
+# Series manifest — positioning that every episode inherits.
+series: "beginner-rider" # kebab-case, matches directory name
+code: "BEG" # 3–4 uppercase letters, registered in docs/naming-conventions.md
+season: 1
+
+# Who this series serves — one concrete person, not a demographic.
+audience: "Adult beginner (25–45) buying or just starting to ride their first dirt bike — no moto background, real budget on the line, afraid of wasting money or getting hurt."
+
+# The promise every episode repeats (why someone follows the series).
+promise: "Every episode saves a first-year rider one expensive or scary mistake, in under a minute, with advice they can act on this weekend."
+
+# How this series positions DirtBikeX (personal positioning dimension).
+positioning: "DirtBikeX is a global dirt bike community app — feed, events, tracks. This series is advice from a community of real riders who made these mistakes, not a dealership trying to sell you a bike."
+
+default_platforms:
+  en-US: [tiktok, ytshorts, reels]
+  zh-CN: [rednote, douyin, bilibili]

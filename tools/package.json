@@ -1,0 +1,9 @@
+{
+  "name": "dirtbikex-video-tools",
+  "private": true,
+  "type": "module",
+  "description": "Pipeline tools: scaffold episodes, validate manifests, probe media, render overlays",
+  "dependencies": {
+    "yaml": "^2.7.0"
+  }
+}

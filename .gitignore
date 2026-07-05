@@ -1,0 +1,43 @@
+# ── Heavy media: names/locations are tracked in manifests, bytes live outside git ──
+media/**
+!media/README.md
+!media/*/
+!media/*/.gitkeep
+
+# ── Media file types anywhere (belt-and-suspenders against accidental commits) ──
+*.mp4
+*.MP4
+*.mov
+*.MOV
+*.mkv
+*.webm
+*.avi
+*.mts
+*.MTS
+*.wav
+*.aiff
+*.flac
+*.m4a
+*.mp3
+
+# Exception: nothing yet. If a tiny canonical media asset must be versioned,
+# whitelist it here explicitly and consider Git LFS.
+
+# ── Kdenlive / MLT cache & backups ──
+*.kdenlive~
+*.mlt.cache
+*.backup
+*.autosave
+
+# ── Node / Remotion ──
+node_modules/
+packages/remotion-graphics/out/
+.cache/
+*.tsbuildinfo
+
+# ── OS / editor ──
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/

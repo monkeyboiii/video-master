@@ -1,0 +1,40 @@
+{
+  "_readme": "Copy to <episode>/remotion-props/<locale>.json. Keys are composition IDs in packages/remotion-graphics (see its README for prop schemas). Text comes verbatim from script.<locale>.md — never retype from memory. durationSec is filled by tools/render-overlays.mjs from the beat's target_duration_sec, but can be preset here. For subtitle-track, leave srt empty — the render tool loads subtitles/<locale>.srt automatically; delete keys for compositions this locale never renders.",
+  "locale": "en-US",
+  "hook-title": {
+    "kicker": "",
+    "title": "",
+    "durationSec": 3.5
+  },
+  "checklist-card": {
+    "title": "",
+    "items": ["", "", ""],
+    "durationSec": 8
+  },
+  "cta-card": {
+    "action": "save",
+    "line": "",
+    "handle": "@dirtbikex",
+    "durationSec": 4
+  },
+  "lower-third": {
+    "name": "",
+    "label": "",
+    "durationSec": 4
+  },
+  "subtitle-track": {
+    "srt": "",
+    "emphasis": [],
+    "durationSec": null
+  },
+  "cover-9x16": {
+    "title": "",
+    "subtitle": "",
+    "backgroundSrc": null
+  },
+  "cover-3x4": {
+    "title": "",
+    "subtitle": "",
+    "backgroundSrc": null
+  }
+}
