@@ -10,6 +10,8 @@ Target total duration: ___s (sum of this locale's beat targets; platform sweet s
 
 ## hook (≤2s to land)
 
+**Opening formula used:** <!-- A pain point / B identity contrast / C benefit promise / D counterintuitive -->
+
 **Spoken:**
 
 **On-screen / subtitle emphasis:**
@@ -84,8 +86,10 @@ Target total duration: ___s (sum of this locale's beat targets; platform sweet s
 
 ## Self-check before done (skills/03-script-writing.md)
 
-- [ ] Hook lands in ≤2s; no self-introduction
+- [ ] Hook lands in ≤2s via one of the four opening formulas; no self-introduction
 - [ ] Core conclusion inside the first third
-- [ ] Delete-test passed: no removable sentence survives
+- [ ] Delete-test passed: every sentence is one of the six functional types
+      (pain point / conclusion / reversal / value / case / action); zero filler-blacklist phrases
+- [ ] Positioning embedded, not introduced; framed as viewer benefit, not autobiography
 - [ ] Written natively for {{LOCALE}}, not translated
 - [ ] Every section's beat ID exists in manifest.yml

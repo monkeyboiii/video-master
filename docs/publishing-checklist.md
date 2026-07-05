@@ -6,6 +6,19 @@ its platform's section is complete. Specs referenced here live in
 [platforms.md](platforms.md) — if the two ever disagree, platforms.md wins and this doc
 gets fixed.
 
+## 0. Content gate — the ten questions
+
+Answer the ten-question content gate from `docs/golden-rules.md` for this video (once
+per variant, not per platform) and record the answers in `edit-notes.md` under
+`## Content gate <locale>`. A "no" on any of the ten sends the video back to the owning
+stage — golden rule 8 blocks upload until this is done:
+
+1. First two seconds hit a user pain point? 2. "This is about me" felt immediately?
+3. Clear benefit promise? 4. Contrast / counterintuitive insight / emotional movement?
+5. Every sentence moves information forward? 6. Something save-worthy?
+7. A reason to comment? 8. Our experience embedded as credibility?
+9. Ending creates future expectation? 10. Primary goal reaction named — and designed for?
+
 ## 1. Pre-publish gates (all platforms)
 
 Do not proceed to upload until every box is checked:

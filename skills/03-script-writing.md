@@ -3,7 +3,10 @@
 ## Purpose
 
 Create high-retention DirtBikeX scripts. Beats are defined once (locale-neutral);
-each locale's script is then written natively against those beats.
+each locale's script is then written natively against those beats. The full doctrine —
+opening formulas, sentence types, positioning, benefit framing — lives in
+`docs/golden-rules.md` (Hook and Body sections); the required sections below are its
+script structure made mandatory.
 
 ## Inputs
 
@@ -46,8 +49,17 @@ each locale's script is then written natively against those beats.
 
 ## Rules
 
-- First 2 seconds hit pain point, contrast, benefit, or counterintuitive claim. Never a
-  self-introduction.
+- The hook uses one of the four opening formulas: A pain point, B identity contrast,
+  C benefit promise, D counterintuitive claim. Never a self-introduction.
+- Every sentence is one of the six functional types — pain point, conclusion, reversal,
+  value, case, action. A sentence that is none of them gets cut. The filler blacklist
+  in `docs/golden-rules.md` ("Today let's talk about…", "Many people may not know…",
+  "Next I'll share…", "This is actually very important…", "Personally, I think…" and
+  their zh-CN equivalents) never survives a draft.
+- Positioning is embedded, never introduced: compress experience into a signal
+  ("I bought the wrong first bike myself, so this only covers the regrets"), not a bio.
+- Everything frames as viewer benefit: "what my experience helps you avoid",
+  never "what happened to me".
 - The core conclusion appears in the first third of the video.
 - Each locale is written natively — see `docs/localization.md` for what may differ and
   what must stay shared. Writing one locale by translating the other is a review failure.

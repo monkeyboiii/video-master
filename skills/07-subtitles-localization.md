@@ -49,8 +49,10 @@ merely transcribe it), and audit variant pairs for localization quality.
 
 ## Rules
 
-- Subtitles emphasize; they never just repeat. If a line adds nothing over the audio,
-  compress or drop it.
+- The division of labor is fixed (`docs/golden-rules.md`, Subtitles 字幕 section):
+  **voiceover explains, subtitles highlight, visuals reinforce.** Subtitles compress
+  each passage into its keywords — if a line adds nothing over the audio, compress or
+  drop it.
 - Never generate one locale's SRT by translating the other's — work from that locale's
   script.
 - Subtitle position must respect vertical-video safe zones (`docs/platforms.md`):

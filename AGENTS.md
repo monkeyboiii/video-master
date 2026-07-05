@@ -7,7 +7,8 @@ structured production work.
 ## Start here
 
 1. Read `docs/production-model.md` — how videos flow through the six stages.
-2. Read `docs/golden-rules.md` — the quality bar every video is judged against.
+2. Read `docs/golden-rules.md` — the content framework and quality bar; the single
+   source of truth every video is judged against.
 3. For the current task, read the matching skill file below. Follow it exactly.
 
 ## Task routing

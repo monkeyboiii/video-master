@@ -3,7 +3,12 @@
 ## Purpose
 
 Turn an idea, pain point, or metric insight into an approved episode brief that scores
-strongly on all five design dimensions (`docs/golden-rules.md`).
+strongly on all five design dimensions (`docs/golden-rules.md` — see its Topic 选题
+section for the full doctrine).
+
+Topic formula: **user pain point + our solution + concrete benefit.** Never start
+from "what we want to say" or our knowledge inventory — start from the viewer's stuck
+point and reverse-engineer.
 
 ## Inputs
 
@@ -28,7 +33,11 @@ strongly on all five design dimensions (`docs/golden-rules.md`).
    trigger, information density potential, personal positioning, interaction conversion.
    Record scores in `brief.md`. Two or more weak scores (≤2) → rework the angle or
    recommend dropping it, with reasons.
-5. Decide the designed reactions: what should the viewer save? comment? follow for?
+5. Design all four interaction triggers deliberately ("this is about me", emotional
+   reaction, save-worthy value, comment motivation — table in `docs/golden-rules.md`
+   Topic section) and pass the judgment test: why would the viewer **like** this?
+   **save** it? **comment**? **follow**? Record the answers in `brief.md` — if any
+   answer is missing, the topic isn't mature.
 6. Scaffold the episode and fill `brief.md` (template sections are mandatory).
 7. Set manifest `status: topic` and run `node tools/validate.mjs`.
 

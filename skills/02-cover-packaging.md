@@ -29,8 +29,10 @@ for each locale. Packaging is drafted **early** (it sharpens the script) and loc
 
 1. Re-read the brief's pain point and benefit sentence. The packaging must promise
    exactly that benefit — nothing broader.
-2. Draft ≥3 title variants per locale. Each variant leads with pain, contrast, benefit,
-   or a counterintuitive claim. Titles are written natively per locale, not translated.
+2. Draft ≥3 title variants per locale, each built on one of the four opening formulas
+   from `docs/golden-rules.md` (Hook section) — **A pain point first, B identity
+   contrast, C benefit promise, D counterintuitive claim** — and label which formula
+   each uses. Titles are written natively per locale, not translated.
 3. Describe the cover: background image intent, on-cover text, where text sits relative
    to platform safe zones and cover crops (`docs/platforms.md`).
 4. Define the first frame so the shooter can capture it deliberately.

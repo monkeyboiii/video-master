@@ -124,8 +124,23 @@ assets:
   #   license: <license allowing social commercial use>
 
 outputs:
-  overlays: {} # locale -> [filenames in media/overlays/]
-  covers: {} # locale -> [filenames in media/exports/]
+  overlays:
+    en-US:
+      - DBX-BEG-S01E001_en-US_9x16_hook-title_v001.mov
+      - DBX-BEG-S01E001_en-US_9x16_lower-third_v001.mov
+      - DBX-BEG-S01E001_en-US_9x16_checklist-card_v001.mov
+      - DBX-BEG-S01E001_en-US_9x16_cta-card_v001.mov
+    zh-CN:
+      - DBX-BEG-S01E001_zh-CN_9x16_hook-title_v001.mov
+      - DBX-BEG-S01E001_zh-CN_9x16_lower-third_v001.mov
+      - DBX-BEG-S01E001_zh-CN_9x16_checklist-card_v001.mov
+      - DBX-BEG-S01E001_zh-CN_9x16_cta-card_v001.mov
+  covers:
+    # v001 = dark-brand placeholder backgrounds; replaced after the post-edit cover lock
+    en-US:
+      - DBX-BEG-S01E001_en-US_tiktok_9x16_cover_v001.png
+    zh-CN:
+      - DBX-BEG-S01E001_zh-CN_rednote_3x4_cover_v001.png
   kdenlive: {} # locale -> path in media/timelines/
   exports: {} # locale -> [filenames in media/exports/]
   published: {} # locale -> [{platform, export, url, date: YYYY-MM-DD}]

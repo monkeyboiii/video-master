@@ -32,8 +32,15 @@ and you'll actually keep riding.
 
 <!-- Two or more scores ≤2 → rework the angle or drop the topic. -->
 
-## Designed reactions
+## Topic formula (one line)
 
+Beginners overspend on too much bike and get scared off riding + a 3-rule buying method
+with a saveable checklist = a first bike you can actually control and won't regret.
+
+## Designed reactions (the judgment test — all four must have real answers)
+
+- Like because: the counterintuitive claim ("displacement is the wrong metric") lands as
+  a shareable judgment — agreeing with it is a one-tap identity statement.
 - Save because: the 5-item first-bike checklist is what they'll want open on their phone
   at the seller's garage / 二手交易现场 when the money changes hands.
 - Comment because: we ask directly — "What's the first bike you're looking at? Drop the

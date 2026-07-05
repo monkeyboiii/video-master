@@ -23,11 +23,19 @@
 
 <!-- Two or more scores ≤2 → rework the angle or drop the topic. -->
 
-## Designed reactions
+## Topic formula (one line)
 
+<!-- user pain point + our solution + concrete benefit -->
+
+## Designed reactions (the judgment test — all four must have real answers)
+
+- Like because: 
 - Save because: 
 - Comment because: 
 - Follow because: 
+
+<!-- Design the four interaction triggers deliberately: "this is about me", emotional
+     reaction, save-worthy value, comment motivation — see docs/golden-rules.md Topic. -->
 
 ## Related episodes / duplicates checked
 

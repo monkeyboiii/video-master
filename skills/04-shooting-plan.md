@@ -21,7 +21,11 @@ ID instead of by guessing filenames.
 ## Steps
 
 1. For every beat, derive the minimum shots that deliver its `visual_intent`. Reuse one
-   shot across beats where possible — fewer setups, faster shoots.
+   shot across beats where possible — fewer setups, faster shoots. Every shot carries
+   an information function — use the per-section shot-design table in
+   `docs/golden-rules.md` (Shots 镜头 section) as the default: hook = close-up direct
+   address, problem = fast cuts, points = medium shot + keyword subs, proof = real
+   footage, checklist = card layout, cta = return to camera.
 2. Add mandatory coverage: the first-frame/cover shot (from `cover.*.md`), one safety
    wide per location, and B-roll for the checklist beat.
 3. Number shots `SH010, SH020…` (pickups slot in between). Assign camera and framing per

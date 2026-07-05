@@ -3,11 +3,13 @@
 <!-- Copy to cover.<locale>.md. Drafted at packaging stage, LOCKED only after the edit.
      Rules: skills/02-cover-packaging.md · specs: docs/platforms.md -->
 
-## Title variants (ranked; each leads with pain / contrast / benefit / counterintuitive)
+## Title variants (ranked; label each with its opening formula A/B/C/D)
 
-1. "" — why: 
-2. "" — why: 
-3. "" — why: 
+<!-- A pain point first · B identity contrast · C benefit promise · D counterintuitive -->
+
+1. "" — formula: — why: 
+2. "" — formula: — why: 
+3. "" — formula: — why: 
 
 ## Cover concept
 
