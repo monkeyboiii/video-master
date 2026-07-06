@@ -37,6 +37,10 @@
 <!-- Design the four interaction triggers deliberately: "this is about me", emotional
      reaction, save-worthy value, comment motivation — see docs/golden-rules.md Topic. -->
 
+## References (optional — external videos / links / competitor examples)
+
+<!-- What to study or beat; one line each on why it's referenced. -->
+
 ## Related episodes / duplicates checked
 
 ## Go / no-go question for the human

@@ -1,6 +1,10 @@
-# Script — {{VIDEO_ID}} · {{LOCALE}}
+# Reading Script (口播稿) — {{VIDEO_ID}} · {{LOCALE}}
 
-<!-- Copy to script.<locale>.md. Write natively for this locale — see docs/localization.md.
+<!-- Copy to script.<locale>.md. This is the CONTENT layer: what is spoken and what
+     appears on screen, written natively for this locale (docs/localization.md).
+     Visual execution (framing, transitions, SFX) does NOT live here — the
+     locale-neutral seed is manifest beats' visual_intent; the full plan is
+     storyboard.md (skills/04-storyboard.md).
      Every section maps to a beat ID that exists in manifest.yml.
      Mark subtitle **emphasis words** in bold; the subtitle pass builds on them. -->
 
@@ -15,73 +19,46 @@ Target total duration: ___s (sum of this locale's beat targets; platform sweet s
 **Spoken:**
 
 **On-screen / subtitle emphasis:**
-
-**Visual:**
-
 ## problem
 
 **Spoken:**
 
 **On-screen / subtitle emphasis:**
-
-**Visual:**
-
 ## conclusion
 
 **Spoken:**
 
 **On-screen / subtitle emphasis:**
-
-**Visual:**
-
 ## point-1
 
 **Spoken:**
 
 **On-screen / subtitle emphasis:**
-
-**Visual:**
-
 ## point-2
 
 **Spoken:**
 
 **On-screen / subtitle emphasis:**
-
-**Visual:**
-
 ## point-3
 
 **Spoken:**
 
 **On-screen / subtitle emphasis:**
-
-**Visual:**
-
 ## experience
 
 **Spoken:**
 
 **On-screen / subtitle emphasis:**
-
-**Visual:**
-
 ## checklist
 
 **Spoken:**
 
 **On-screen (checklist card items, ≤6, each ≤5 words):**
-
-**Visual:**
-
 ## cta
 
 **Spoken:**
 
 **On-screen / subtitle emphasis:**
-
-**Visual:**
-
 ---
 
 ## Self-check before done (skills/03-script-writing.md)

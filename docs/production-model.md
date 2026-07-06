@@ -22,6 +22,28 @@ series → episodes → language variants → platform exports
 Git tracks production logic (rules, scripts, manifests, subtitles, design-system code,
 review notes). External storage holds heavy media. `manifest.yml` connects the two.
 
+## The three layers (direction → content → execution)
+
+Every episode's documents separate three concerns (adapted from
+`docs/archive/MODEL.md`), plus one record:
+
+| Layer | Artifact | Answers |
+|-------|----------|---------|
+| **Direction** 方向 | `brief.md` | Why make it, for whom, to what effect |
+| **Content** 内容 | `script.<locale>.md` — the **reading script** 口播稿, per locale | What is spoken, what appears on screen |
+| **Execution** 执行 | `storyboard.md` — storyboard & shot plan 分镜执行稿, locale-shared | How each shot is framed, captured, cut into, captioned, scored |
+| Plan → Record | `edit-notes.md` | The assembly plan derived from the storyboard against real takes, then the record of what landed: selects, retention/SFX, QC |
+
+Keep the layers clean: direction never gets shot details, the reading script never gets
+framing/transitions (its visual seed lives in manifest beats' `visual_intent`), and the
+storyboard is a plan — deviations during shoot/edit are recorded in `edit-notes.md`,
+never back-edited into the plan silently.
+
+Two deliberate deviations from the source guideline: the tone & style register lives at
+the **series** level (`series.yml tone:`, inherited by episodes; deviations noted in
+`brief.md`), and alternative *hooks* are staged (ranked cover title variants) while the
+*ending* is designed once against golden-rules hard rule 6, not staged as alternatives.
+
 ## The six stages
 
 ```text
@@ -35,8 +57,8 @@ Each stage has required artifacts. A stage is "done" when its artifacts exist an
 |---|-------|-----------|--------------------|
 | 1 | 选题 Topic | `skills/01-topic-selection.md` | `brief.md`, `manifest.yml` initialized |
 | 2 | 封面 Packaging | `skills/02-cover-packaging.md` | `cover.en-US.md`, `cover.zh-CN.md` (title/hook/cover hypotheses) |
-| 3 | 脚本 Script | `skills/03-script-writing.md` | `script.en-US.md`, `script.zh-CN.md`, beats in `manifest.yml` |
-| 4 | 拍摄 Shoot | `skills/04-shooting-plan.md` | `shotlist.md`, raw asset IDs recorded in `manifest.yml` |
+| 3 | 脚本 Script | `skills/03-script-writing.md` | Reading scripts `script.en-US.md`, `script.zh-CN.md`, beats in `manifest.yml` |
+| 4 | 拍摄 Shoot | `skills/04-storyboard.md` | `storyboard.md` (shot plan), raw asset IDs recorded in `manifest.yml` |
 | 5 | 剪辑 Edit | `skills/05-remotion-graphics.md`, `skills/06-kdenlive-editing.md`, `skills/07-subtitles-localization.md`, `skills/08-audio-render-qc.md` | Remotion props, overlays rendered, `subtitles/*.srt`, Kdenlive timeline, review export |
 | 6 | 复盘 Review | `skills/09-review-retrospective.md` | `review.md` with metrics and next-episode decisions |
 
@@ -69,7 +91,7 @@ produced ahead of its stage is flagged as provisional in `edit-notes.md`.
 
 - **Human** — project manager, creative reviewer, final decision-maker. Owns: topic
   approval, shoot, **voiceover recording** (per locale, after the script locks — specs in
-  `skills/04-shooting-plan.md`), Kdenlive polish, publish, metric collection.
+  `skills/04-storyboard.md`), Kdenlive polish, publish, metric collection.
 - **Agent** (Claude Code / Codex) — structured production work. Owns: briefs, scripts,
   localization, subtitle prep, Remotion props and renders, manifest bookkeeping, QA
   reports, retrospective drafting.

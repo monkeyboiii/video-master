@@ -17,8 +17,8 @@ structured production work.
 |------|-----------|
 | Topic selection / brief | `skills/01-topic-selection.md` |
 | Cover / title packaging | `skills/02-cover-packaging.md` |
-| Script writing (either locale) | `skills/03-script-writing.md` |
-| Shooting plan / shotlist | `skills/04-shooting-plan.md` |
+| Reading script (either locale) | `skills/03-script-writing.md` |
+| Storyboard / shooting plan | `skills/04-storyboard.md` |
 | Remotion motion graphics | `skills/05-remotion-graphics.md` |
 | Kdenlive timeline / edit prep | `skills/06-kdenlive-editing.md` |
 | Subtitles / localization | `skills/07-subtitles-localization.md` |

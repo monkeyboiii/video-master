@@ -13,8 +13,11 @@ point and reverse-engineer.
 ## Inputs
 
 - The idea/request from the human, or `next episode` decisions in prior `review.md` files
-- `series/<series>/series.yml` — series positioning and audience
+- `series/<series>/series.yml` — series positioning, audience, and **tone register**
+  (the episode inherits it; note any deliberate deviation in `brief.md`)
 - Recent `review.md` metrics from the same series, if any
+- Optional: external reference videos/links from the human (recorded under
+  `## References` in `brief.md`)
 
 ## Outputs
 

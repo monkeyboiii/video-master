@@ -14,6 +14,8 @@ subtitles as navigation, engineered reasons to keep watching — and never over-
 ## Inputs
 
 - `manifest.yml` — beats (purpose per beat), `assets.raw`, `assets.selected`, variant timing
+- `storyboard.md` — the shot plan: framing, transitions, caption/overlay and SFX intents
+  per shot (the retention plan's first commitment)
 - `script.<locale>.md` — spoken lines **and emphasis words** (they anchor the retention plan)
 - `brief.md` — the designed reactions the edit must serve
 - Rendered overlays in `media/overlays/`, `subtitles/<locale>.srt`
@@ -51,10 +53,12 @@ same).
 
 Every clip is referenced by asset ID + timecode, never by "the good take".
 
-The `Retention:` and `SFX:` lines are **derived, not invented**: pattern interrupts land
-on the script's emphasis words, punch-ins on key sentences and reversals, SFX on the
-moments the beat's `purpose` says matter, and the whole plan serves the brief's designed
-reactions. If a flourish can't be traced to script/beat/brief, it doesn't go in.
+The `Retention:` and `SFX:` lines are **derived, not invented**: they start from the
+storyboard's per-shot Transition/SFX intents, adjusted against the real takes. Pattern
+interrupts land on the script's emphasis words, punch-ins on key sentences and
+reversals, SFX on the moments the beat's `purpose` says matter, and the whole plan
+serves the brief's designed reactions. If a flourish can't be traced to
+storyboard/script/beat/brief, it doesn't go in.
 
 ## The editor's toolbox
 
@@ -93,7 +97,7 @@ stack can't deliver):
 
 ## Steps
 
-1. From script + shotlist + probe data, choose selects per beat: `assets.selected`
+1. From the storyboard + reading script + probe data, choose selects per beat: `assets.selected`
    entries with `source_asset_id`, `in`, `out`, `beat`. Respect per-locale
    `target_duration_sec` (selects may differ slightly per locale).
 2. Verify every overlay the beats need exists in `media/overlays/` at the right

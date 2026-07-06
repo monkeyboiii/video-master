@@ -27,7 +27,7 @@ for (const s of allSeries) {
   if (seenCodes.has(m.code)) report.error(ctx, `code ${m.code} already used by ${seenCodes.get(m.code)}`);
   seenCodes.set(m.code, s.slug);
   if (!Number.isInteger(m.season)) report.error(ctx, 'season must be an integer');
-  for (const field of ['audience', 'promise', 'positioning']) {
+  for (const field of ['audience', 'promise', 'positioning', 'tone']) {
     if (!m[field]) report.warn(ctx, `series.yml "${field}" is empty`);
   }
   for (const [loc, plats] of Object.entries(m.default_platforms ?? {})) {
@@ -121,7 +121,7 @@ function validateEpisode(ep, seriesManifest) {
     }
   }
   if (stageAtLeast(m.status, 'shooting')) {
-    if (!exists('shotlist.md')) report.error(ctx, 'status>=shooting requires shotlist.md');
+    if (!exists('storyboard.md')) report.error(ctx, 'status>=shooting requires storyboard.md');
     const raw = m.assets?.raw ?? [];
     if (raw.length === 0) report.error(ctx, 'status>=shooting requires assets.raw entries');
     for (const a of raw) {

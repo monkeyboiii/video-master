@@ -35,21 +35,21 @@ variants:
 beats:
   - id: hook
     purpose: pain point — the 450 trap the viewer is about to fall into
-    visual_intent: ankle-height shot, rider on tiptoes wobbling on a tall MX bike at a stop
+    visual_intent: ankle-height shot, rider on tiptoes wobbling on a tall MX bike at a stop — same setup as the cover first frame; hook-title punches in on the key word (en "450", zh "买大了")
     overlay: hook-title
     target_duration_sec:
       en-US: 3.0
       zh-CN: 2.5
   - id: problem
     purpose: viewer recognizes themselves — too much bike ends in a garage ornament
-    visual_intent: quick cuts of tiptoe near-tip-over, then dusty bike under a tarp
+    visual_intent: quick cuts of tiptoe stall and near-tip-over save, then dusty bike under a tarp
     overlay: null
     target_duration_sec:
       en-US: 6.0
       zh-CN: 5.0
   - id: conclusion
     purpose: core conclusion stated early — fit and control beat power / 座高＞排量
-    visual_intent: rider plants both feet flat on a mid-size trail bike, relaxed
+    visual_intent: rider plants both feet flat on a mid-size trail bike, relaxed; text card mirrors the spoken line (zh — 座高＞排量)
     overlay: null
     target_duration_sec:
       en-US: 5.0
@@ -63,14 +63,14 @@ beats:
       zh-CN: 6.0
   - id: point-2
     purpose: decision rule 2 — used 4-stroke 230–250 trail class, not an MX bike
-    visual_intent: mellow-trail b-roll of a 250-class trail bike, model labeled on screen
+    visual_intent: mellow-trail b-roll (slow follow) of a 250-class trail bike (en — CRF250F), lower-third labels model and class
     overlay: lower-third
     target_duration_sec:
       en-US: 7.0
       zh-CN: 6.0
   - id: point-3
     purpose: decision rule 3 — budget split so gear is never sacrificed for the bike
-    visual_intent: split-bar budget graphic over gear laid out on a table
+    visual_intent: split-bar budget graphic over gear laid out on a table — helmet, boots, gloves, knee guards (en adds goggles, zh adds 护甲)
     overlay: null
     target_duration_sec:
       en-US: 7.0
@@ -84,14 +84,14 @@ beats:
       zh-CN: 6.0
   - id: checklist
     purpose: the saveable artifact — 5-item buying checklist
-    visual_intent: checklist card carries the beat, items tick in one by one
+    visual_intent: checklist card carries the beat, items tick in one by one, voiceover pauses under the card
     overlay: checklist-card
     target_duration_sec:
       en-US: 8.0
       zh-CN: 7.0
   - id: cta
     purpose: one action (save) plus follow expectation — next episode on beginner gear
-    visual_intent: CTA card over freeze-frame of relaxed flat-foot thumbs-up
+    visual_intent: CTA card with @dirtbikex handle over freeze-frame of relaxed flat-foot thumbs-up
     overlay: cta-card
     target_duration_sec:
       en-US: 4.0

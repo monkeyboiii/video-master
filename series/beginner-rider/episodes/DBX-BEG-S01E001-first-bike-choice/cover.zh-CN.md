@@ -3,13 +3,13 @@
 <!-- Copy to cover.<locale>.md. Drafted at packaging stage, LOCKED only after the edit.
      Rules: skills/02-cover-packaging.md · specs: docs/platforms.md -->
 
-## Title variants (ranked; each leads with pain / contrast / benefit / counterintuitive)
+## Title variants (ranked; label each with its opening formula A/B/C/D)
 
-1. "新手第一台越野车 别上来就大排量" — why: 18 字，压在小红书 20 字硬限内；"新手第一台越野车"
+1. "新手第一台越野车 别上来就大排量" — formula: D counterintuitive claim — why: 18 字，压在小红书 20 字硬限内；"新手第一台越野车"
    是骑友真实的搜索词（车型+问题），后半句反直觉、直接点破本片的核心主张，搜索和点击两头都占。
-2. "第一台越野摩托 双脚踩实了再谈排量" — why: 把"双脚踩实"这个可执行判断放进标题，利益点具体；
+2. "第一台越野摩托 双脚踩实了再谈排量" — formula: C benefit promise — why: 把"双脚踩实"这个可执行判断放进标题，利益点具体；
    但少了"新手"这个搜索大词，排序第二。
-3. "预算2万 第一台越野摩托这么买不后悔" — why: 预算数字够抓人、够本土（落地价思维），
+3. "预算2万 第一台越野摩托这么买不后悔" — formula: C benefit promise — why: 预算数字够抓人、够本土（落地价思维），
    但把重点引向价格而非选车逻辑，容易招"晒预算"歪楼评论，排第三。
 
 ## Cover concept

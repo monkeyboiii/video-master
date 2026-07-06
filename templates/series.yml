@@ -12,6 +12,10 @@ promise: ""
 # How this series positions DirtBikeX (personal positioning dimension).
 positioning: ""
 
+# Tone & style register every episode inherits (e.g. "direct, earnest,
+# workshop-plain — never meme-cut"). Episode-level deviations go in brief.md.
+tone: ""
+
 default_platforms:
   en-US: [tiktok, ytshorts, reels]
   zh-CN: [rednote, douyin, bilibili]

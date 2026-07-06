@@ -3,15 +3,15 @@
 <!-- Copy to cover.<locale>.md. Drafted at packaging stage, LOCKED only after the edit.
      Rules: skills/02-cover-packaging.md · specs: docs/platforms.md -->
 
-## Title variants (ranked; each leads with pain / contrast / benefit / counterintuitive)
+## Title variants (ranked; label each with its opening formula A/B/C/D)
 
-1. "Don't buy the 450. Your first dirt bike is smaller than you think" — why: leads with
+1. "Don't buy the 450. Your first dirt bike is smaller than you think" — formula: D counterintuitive claim — why: leads with
    the exact purchase the viewer is eyeing tonight (pain + counterintuitive), and names
    the video's on-record claim, so the promise is paid off in full.
-2. "The first-bike mistake that makes new riders quit" — why: pain/fear framing with a
+2. "The first-bike mistake that makes new riders quit" — formula: A pain point first — why: pain/fear framing with a
    curiosity gap; strong CTR but weaker than #1 because it hides the concrete answer, and
    the golden rules favor promises we cash immediately.
-3. "Fit beats power: how to pick a first dirt bike you'll actually ride" — why: pure
+3. "Fit beats power: how to pick a first dirt bike you'll actually ride" — formula: C benefit promise — why: pure
    benefit statement, honest and searchable, but no tension — best as YouTube Shorts
    title where search intent matters more than scroll-stopping.
 

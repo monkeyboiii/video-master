@@ -214,8 +214,9 @@ second — accents at key moments, breathing room elsewhere. "This feels over-ed
 is a review verdict, not a compliment.
 
 The retention plan is **not improvised in the NLE**: it is derived per beat from the
-script's emphasis words, each beat's purpose, and the brief's designed reactions, and
-written into `edit-notes.md` before assembly (`skills/06-kdenlive-editing.md`).
+script's emphasis words, each beat's purpose, and the brief's designed reactions,
+first committed to shots in `storyboard.md` (`skills/04-storyboard.md`), then confirmed
+against real takes in `edit-notes.md` before assembly (`skills/06-kdenlive-editing.md`).
 
 ### Post-edit retention checklist
 

@@ -2,11 +2,15 @@
 
 ## Purpose
 
-Create high-retention DirtBikeX scripts. Beats are defined once (locale-neutral);
-each locale's script is then written natively against those beats. The full doctrine —
-opening formulas, sentence types, positioning, benefit framing — lives in
-`docs/golden-rules.md` (Hook and Body sections); the required sections below are its
-script structure made mandatory.
+Create high-retention DirtBikeX **reading scripts** (口播稿) — the CONTENT layer: what
+is spoken and what appears on screen, per locale. Beats are defined once
+(locale-neutral); each locale's script is then written natively against those beats.
+Visual execution is deliberately out of scope here: the locale-neutral visual seed
+lives in each manifest beat's `visual_intent`, and the full shot plan is
+`storyboard.md` (`skills/04-storyboard.md`). The full doctrine — opening formulas,
+sentence types, positioning, benefit framing — lives in `docs/golden-rules.md` (Hook
+and Body sections); the required sections below are its script structure made
+mandatory.
 
 ## Inputs
 
@@ -39,8 +43,9 @@ script structure made mandatory.
    `conclusion`, `point-1`…, `experience`, `checklist`, `cta`). Every script line will
    belong to a beat.
 2. Write the script per locale: copy `templates/episode/script.template.md` to
-   `script.<locale>.md`, fill the `{{...}}` tokens, then write each beat's spoken lines,
-   on-screen subtitle emphasis words, and visual notes.
+   `script.<locale>.md`, fill the `{{...}}` tokens, then write each beat's spoken lines
+   and on-screen subtitle emphasis words. Visual ideas that surface while writing go
+   into the beat's `visual_intent` in the manifest, not the script.
 3. Set per-locale `target_duration_sec` per beat; zh-CN typically runs 10–20% shorter.
 4. Read the script aloud mentally at speaking pace; verify total duration against the
    platform sweet spot (`docs/platforms.md`).
