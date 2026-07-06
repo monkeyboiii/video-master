@@ -6,7 +6,8 @@ operationalize it stage by stage. It applies to both language variants and every
 platform. When a rule here conflicts with convenience, the rule wins; when it genuinely
 conflicts with a platform norm, record the exception in the episode's `edit-notes.md`.
 
-(The original source document is preserved verbatim at `docs/archive/FRAMEWORK.md`.)
+(Original source documents are preserved verbatim in `docs/archive/`: `FRAMEWORK.md`
+— the content framework — and `RETENTION.md` — the 网感 retention-editing doctrine.)
 
 ## The core principle
 
@@ -164,6 +165,74 @@ candidates. Default design per script section:
 | Checklist | Card layout, list-style subtitles, numbered steps |
 | Follow reason | Return to face camera; reinforce what we keep solving |
 
+## Edit (剪辑) — retention editing 网感剪辑
+
+The edit is **attention design**, not decoration: platform-native retention editing
+keeps a short-form viewer from swiping away through tight pacing, kinetic captions,
+sound punctuation, visual callouts, micro-animations, and pattern interrupts. The
+evaluation standard is never "does it look cinematic" — it is: did they finish,
+rewatch, stay. Motion effects exist to tell the viewer **where to look**, never to
+add more.
+
+Five goals, in order:
+
+1. **The first second grabs.** No empty establishing shots, logos, or warm-up. The
+   first frame carries conflict, a conclusion, a strong face/action, or big hook text.
+2. **A change every 1–3 seconds** — a cut, punch-in, caption pop, SFX point, reaction,
+   B-roll insert, zoom, or angle change. Each is a *pattern interrupt* that resets
+   attention.
+3. **Sound is punctuation, not wallpaper.** SFX mark key words, reversals, and list
+   items so the ear confirms what the eye should catch.
+4. **Subtitles navigate** — they lead the eye (rules in Subtitles below).
+5. **Manufacture reasons to keep watching**: open with a question, keep information
+   gaps running mid-video, end with a loop or a next-episode hook.
+
+**Every change must have a function** — emphasis, turn, explanation, humor, or an
+information gap. Never fast for its own sake:
+
+| Move | Use for |
+|------|---------|
+| Hard cut / jump cut | The default. Delete dead air, breaths, repeated words |
+| Punch-in / pull-out | Key sentence, expression, reversal; a beat of contrast after a conclusion |
+| Beat points | Sync cuts and caption pops to VO stress or music hits |
+| Whip pan / match cut | Scene or subject changes the footage actually supports |
+| Speed ramp | Riding/action footage — our bread and butter |
+| Flash / glitch | Sparingly: trend or malfunction feel only |
+
+| SFX | Scene |
+|-----|-------|
+| click / pop | A caption or key word appears |
+| whoosh | Transition, punch-in, slide |
+| hit / impact | Reversal, conclusion, strong claim |
+| ding | Checklist ticks, success feedback |
+| riser | Suspense building into a reveal |
+| record scratch / glitch | Sudden interruption, awkward turn |
+| bass drop | Shock moment, visual peak |
+
+**Over-editing is a failure mode.** A 15-second video does not need an effect every
+second — accents at key moments, breathing room elsewhere. "This feels over-edited"
+is a review verdict, not a compliment.
+
+The retention plan is **not improvised in the NLE**: it is derived per beat from the
+script's emphasis words, each beat's purpose, and the brief's designed reactions, and
+written into `edit-notes.md` before assembly (`skills/06-kdenlive-editing.md`).
+
+### Post-edit retention checklist
+
+Run on every review export; record the result in `edit-notes.md`:
+
+1. First frame: clear conflict, conclusion, suspense, or strong image?
+2. First 3 seconds: zero filler, warm-up, or self-intro?
+3. Muted test: understandable with the sound off?
+4. Emphasis words visually distinct and readable on every background?
+5. Key moments get light SFX feedback; quiet stretches are intentional?
+6. A visual or audio change every 1–3 seconds?
+7. Transitions serve the content, never showing off?
+8. Subject, captions, and overlays never fight for attention?
+9. After the cut, every remaining sentence still moves information forward?
+10. Ending: follow expectation designed (hard rule 6 — on screen, or via caption if a
+    loop ending is used), plus deliberate CTA, reversal, or loop?
+
 ## Subtitles (字幕)
 
 The division of labor is fixed:
@@ -182,6 +251,11 @@ The division of labor is fixed:
   line, one to two lines max on 9:16.
 - Subtitles must survive platform UI: keep them inside the safe zone
   (see [platforms.md](platforms.md)).
+- Kinetic caption toolkit (subtitles are the second lead of a retention edit): big
+  hook text, word-by-word reveal, keyword highlight, stroke/shadow for readability,
+  a caption box on busy footage, bounce/shake only for genuine emotion, arrows and
+  callouts to steer the eye. The bar: **readable in one glance, understood in half a
+  second, never covering the subject.**
 
 ## Ending (结尾)
 
@@ -197,6 +271,11 @@ solving problems I care about."* End by creating that future expectation:
 
 - The CTA asks for **one** action, matched to the content: save for checklists, comment
   for opinions/questions, follow for series continuity.
+- A **loop ending** (last frame cuts cleanly back into the first) is a legitimate
+  technique for very short cuts — rewatches count as retention. It complements, never
+  replaces, the designed follow expectation (hard rule 6): when the loop leaves no room
+  on screen, the expectation moves to the platform caption / pinned comment, recorded
+  in `edit-notes.md`.
 
 ## Localization bar
 

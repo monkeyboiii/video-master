@@ -51,13 +51,23 @@ Probe with `node tools/probe-media.mjs <file>` (uses Remotion's bundled ffprobe)
    emphasis words present, no truncated lines.
 10. **Variant integrity** — locale of VO, subtitles, and overlays all match the
     filename's locale token; no sibling-variant text left in.
-11. **Ending** — CTA present, follow expectation stated, no dead air after the last
-    beat.
+11. **Ending** — follow expectation designed (golden rule 6), no dead air after the
+    last beat. A deliberate loop back to the first frame passes only when the follow
+    expectation is delivered via the platform caption and `edit-notes.md` records that
+    choice.
+12. **Retention cadence** — no static stretch over ~3 seconds without a visual or
+    audio change, unless `edit-notes.md` marks it intentional; and not over-edited
+    (accents at key moments, breathing room elsewhere).
+13. **Muted test + SFX punctuation** — video understandable with sound off; key
+    subtitle/reversal/checklist moments have light SFX feedback, not wall-to-wall
+    noise. Cross-check the retention checklist answers recorded in `edit-notes.md`
+    (`skills/06`, `docs/golden-rules.md` Edit section).
 
 ## Steps
 
 1. Run the technical checks; record measured values (not just pass/fail).
-2. Watch the export start-to-finish once at normal speed, then re-check items 7–11.
+2. Watch the export start-to-finish once at normal speed, then re-check items 7–13
+   (watch once muted for check 13).
 3. Write the QC block in `edit-notes.md`. Verdict: `PASS`, `PASS-WITH-NOTES`, or
    `FAIL → <owner stage>: <fix>`.
 4. On PASS: update `manifest.yml outputs.exports`, set `status: qc`, run
@@ -75,6 +85,6 @@ Probe with `node tools/probe-media.mjs <file>` (uses Remotion's bundled ffprobe)
 
 ## Done criteria
 
-- QC block exists in `edit-notes.md` with all 11 checks and measured values.
+- QC block exists in `edit-notes.md` with all 13 checks and measured values.
 - Verdict recorded; on PASS the manifest and status are updated and
   `node tools/validate.mjs` passes.

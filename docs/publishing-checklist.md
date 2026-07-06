@@ -24,7 +24,7 @@ stage — golden rule 8 blocks upload until this is done:
 Do not proceed to upload until every box is checked:
 
 - [ ] **QC PASS recorded.** `edit-notes.md` has a `## QC <filename>` block for this exact
-      file with all 11 checks, measured values, and verdict `PASS` or `PASS-WITH-NOTES`
+      file with all 13 checks, measured values, and verdict `PASS` or `PASS-WITH-NOTES`
       (`skills/08-audio-render-qc.md`). A FAIL on any technical check blocks `final`
       renaming, no exceptions.
 - [ ] **File named as a final export** per

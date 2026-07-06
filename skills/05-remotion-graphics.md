@@ -7,6 +7,23 @@ thirds, subtitle burns) and cover stills for an episode, from per-locale prop fi
 `packages/remotion-graphics/`. Remotion is the reusable visual language — not a full
 editor.
 
+In retention terms (`docs/golden-rules.md`, Edit 剪辑 section), each composition is an
+attention device the edit deploys:
+
+| Composition | Retention role |
+|-------------|----------------|
+| `hook-title` | First-frame grab — big hook text at 0.0s |
+| `subtitle-track` | Kinetic captions: word pacing + keyword highlight guide the eye |
+| `checklist-card` | Save-worthy value; each tick is a pattern-interrupt beat (pair with dings) |
+| `stage-cards` | Segment reset / pattern interrupt between chapters |
+| `lower-third` | Context without stopping the flow |
+| `cta-card` | Ending expectation (save/comment/follow) |
+
+A retention device we don't have yet (callout arrow, circle highlight, zoom box, animated
+sticker, motion tracking — text/arrow following the subject, mask reveal) is a **new
+component through the design-system PR path** — themed, locale-aware, registered,
+documented — never a one-off hack inside an episode.
+
 ## Inputs
 
 - `manifest.yml` — beats with `overlay` fields, formats (resolution/fps)

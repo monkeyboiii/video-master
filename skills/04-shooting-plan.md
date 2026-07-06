@@ -27,7 +27,9 @@ ID instead of by guessing filenames.
    address, problem = fast cuts, points = medium shot + keyword subs, proof = real
    footage, checklist = card layout, cta = return to camera.
 2. Add mandatory coverage: the first-frame/cover shot (from `cover.*.md`), one safety
-   wide per location, and B-roll for the checklist beat.
+   wide per location, and B-roll for the checklist beat. Shoot for the retention edit
+   (`docs/golden-rules.md`, Edit 剪辑): a second angle or detail insert per beat, so
+   the editor can land a pattern interrupt every 1–3 seconds without reusing footage.
 3. Number shots `SH010, SH020…` (pickups slot in between). Assign camera and framing per
    shot (`gopro-front`, `facecam`, `clutch-closeup`…) — these become the filename tokens
    from `docs/naming-conventions.md`.

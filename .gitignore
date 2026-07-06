@@ -45,3 +45,6 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 .idea/
+
+# Zipped render bundles next to out/
+packages/remotion-graphics/out*.zip
