@@ -1,9 +1,13 @@
 # Brief — DBX-APP-S01E002 founder-story
 
 Longer, story-driven cut of the **same topic as E001** (why DirtBikeX exists / the
-launch), in a **different presentation form** — not a re-edit. en-US first · target
-~45–60s (a decision) · TikTok / Reels / Shorts (+ maybe YouTube for the longer form).
-**The script is NOT locked — this brief sets direction; we iterate narration + storyboard next.**
+launch), in a **different presentation form** — not a re-edit. en-US first ·
+TikTok / Reels / Shorts.
+
+**Direction locked:** ~45s · **hybrid** (on-camera hook + why, then VO over B-roll
+montage) · anchored on **one specific real moment** (the founder's turning point).
+**Still open:** the actual moment (from the founder), the hook that opens from it, and
+the CTA. The script is NOT locked — we iterate narration + storyboard next.
 
 ## Viewer (one concrete person)
 
@@ -69,13 +73,12 @@ ending). The user's shape: **hook → my why-story → light features → CTA.**
 Sibling of **DBX-APP-S01E001** (same launch topic, different presentation): E001 = ~20s
 teaser, E002 = ~45–60s founder story. Intentional pair, not a duplicate.
 
-## Go / no-go question for the human
+## Decided / still needed
 
-Script is open by design. To move to beats + narration we need to decide, roughly in order:
-1. **The hook** — how do we open? (a confession, a provocative line, a visual?)
-2. **Length** — ~45–60s, or push shorter/longer?
-3. **Presentation form** — talking-head + B-roll + light UI? voice-over-montage? something else?
-4. **How personal** the founder story goes (what real detail are you willing to share?).
-5. **The CTA** — reuse comment-for-invite, or a cleaner download push?
-
-Which do you want to lock first?
+- ✔ **Presentation:** hybrid (on-camera hook + why → VO over B-roll montage).
+- ✔ **Length:** ~45s.
+- ✔ **Angle:** one specific real moment (the founder's turning point).
+- ☐ **The moment itself** — the true scene: what happened, where, the feeling, the turn.
+  Only the founder can supply this; it's the spine of the whole cut.
+- ☐ **Hook** — derived from the moment once we have it.
+- ☐ **CTA** — reuse E001's comment-for-invite, or a cleaner download push (decide near the end).
