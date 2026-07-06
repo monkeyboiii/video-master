@@ -19,6 +19,15 @@ Patterns: `docs/naming-conventions.md`. Music/SFX in `audio/` must be recorded i
 manifest's `assets.audio` with `source` and `license` — only tracks licensed for
 commercial social-media use.
 
+## Per-project handoff bundle
+
+The type-first layout above is the default. For a video that's ready to hand to an editor
+on another machine, an alternative is a **self-contained bundle** `media/<VIDEO_ID>/` with
+everything for that one cut in one folder (`footage/`, `overlays/`, `voiceover/`, `music/`,
+subtitles, plus `_source/` backups) and its own `README.txt`. Copy that single folder to
+the editing machine. Example: `media/DBX-APP-S01E001/` (see its README.txt and the
+episode's `edit-notes.md`).
+
 ## External storage
 
 Every raw/VO/export file gets an `external_uri` in the manifest so it can be found after

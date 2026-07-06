@@ -64,29 +64,32 @@ beats:
       en-US: 3.0
 
 assets:
+  # All media is in the self-contained bundle media/DBX-APP-S01E001/ (see its README.txt
+  # + edit-notes.md). Camera originals live in _source/raw-originals/; the hook photo,
+  # used directly in the edit, is in footage/.
   raw:
-    - asset_id: RAW_010
-      filename: DBX-APP-S01E001_SH010_TK01_nobody-photo.jpeg
+    - asset_id: RAW_01
+      filename: DBX-APP-S01E001_01_hook-photo.jpeg
       external_uri: null
-      notes: hook photo — founder at the paddock
-    - asset_id: RAW_020
-      filename: DBX-APP-S01E001_SH020_TK01_founder-idobuilt.MOV
+      notes: hook photo — founder at the paddock (bundle footage/)
+    - asset_id: RAW_02
+      filename: DBX-APP-S01E001_02_founder-main.MOV
       external_uri: null
       notes: founder to camera (helmet/porch) — covers i-do, pivot, features bg
-    - asset_id: RAW_040
-      filename: DBX-APP-S01E001_SH040_TK01_screen-language.MP4
+    - asset_id: RAW_03
+      filename: DBX-APP-S01E001_03_screen-language.MP4
       external_uri: null
       notes: screen rec — language picker → localized → pull-to-refresh
-    - asset_id: RAW_050
-      filename: DBX-APP-S01E001_SH050_TK01_screen-embed.mov
+    - asset_id: RAW_04
+      filename: DBX-APP-S01E001_04_screen-embed.mov
       external_uri: null
       notes: screen rec — Instagram post embedded in a DBX post
-    - asset_id: RAW_060
-      filename: DBX-APP-S01E001_SH060_TK01_screen-sponsor.mov
+    - asset_id: RAW_05
+      filename: DBX-APP-S01E001_05_screen-sponsor.mov
       external_uri: null
       notes: screen rec — sponsorships / "put your brand on the mountain" / airtime
-    - asset_id: RAW_080
-      filename: DBX-APP-S01E001_SH080_TK01_founder-comment.MOV
+    - asset_id: RAW_06
+      filename: DBX-APP-S01E001_06_founder-cta.MOV
       external_uri: null
       notes: founder pointing finger down — the CTA clip
   selected: []
