@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   AbsoluteFill,
+  Img,
   interpolate,
   OffthreadVideo,
   Sequence,
@@ -14,10 +15,17 @@ import {localeSchema} from '../shared';
 import {displayFont} from '../theme/fonts';
 import {bone, dirt} from '../theme/tokens';
 
+// One thing shown inside the phone: a video segment (src, optional in-source trim,
+// how long to show) or a still image (held for `seconds` — e.g. a freeze frame).
+const segmentSchema = z.object({
+  src: z.string(), // file in public/_feat/
+  trimSec: z.number().default(0), // start offset within the source (video only)
+  seconds: z.number(), // how long to show it inside the phone
+});
+
 export const phoneFeatureSchema = z.object({
   locale: localeSchema,
-  // filenames living in public/_feat/, shown in sequence inside the phone
-  segments: z.array(z.string()),
+  segments: z.array(segmentSchema),
   stampTop: z.string(),
   stampBottom: z.string(),
   durationSec: z.number(),
@@ -46,8 +54,6 @@ export const PhoneFeature: React.FC<PhoneFeatureProps> = ({
     [1, 0],
     {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'},
   );
-
-  const per = Math.max(1, Math.floor(durationInFrames / Math.max(1, segments.length)));
 
   // stamp animates in just after the phone lands
   const stampIn = spring({
@@ -85,15 +91,30 @@ export const PhoneFeature: React.FC<PhoneFeatureProps> = ({
             backgroundColor: '#000',
           }}
         >
-          {segments.map((s, i) => (
-            <Sequence key={i} from={i * per} durationInFrames={per}>
-              <OffthreadVideo
-                src={staticFile(`_feat/${s}`)}
-                style={{width: '100%', height: '100%', objectFit: 'cover'}}
-                muted
-              />
-            </Sequence>
-          ))}
+          {(() => {
+            const cover = {width: '100%', height: '100%', objectFit: 'cover'} as const;
+            let acc = 0;
+            return segments.map((s, i) => {
+              const from = Math.round(acc * fps);
+              const dur = Math.round(s.seconds * fps);
+              acc += s.seconds;
+              const isImg = /\.(png|jpe?g)$/i.test(s.src);
+              return (
+                <Sequence key={i} from={from} durationInFrames={dur}>
+                  {isImg ? (
+                    <Img src={staticFile(`_feat/${s.src}`)} style={cover} />
+                  ) : (
+                    <OffthreadVideo
+                      src={staticFile(`_feat/${s.src}`)}
+                      trimBefore={Math.round((s.trimSec ?? 0) * fps)}
+                      style={cover}
+                      muted
+                    />
+                  )}
+                </Sequence>
+              );
+            });
+          })()}
         </div>
       </div>
 

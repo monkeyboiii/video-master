@@ -89,11 +89,23 @@ stack can't deliver):
 - **Template seeds:** small `.kdenlive` templates with this track layout may live in
   `templates/kdenlive/` (relative paths, saved by the pinned Kdenlive version). They are
   generate-once seeds — never hand-merge or diff Kdenlive-saved XML; regenerate instead.
-- **Later (deliberate deferral):** programmatic rough cuts should target **OpenTimelineIO
-  import** (native in Kdenlive ≥ 25.04; carries tracks/clips/markers, not effects) rather
-  than emitting `.kdenlive` XML, whose document version churns. Do not build `.kdenlive`
-  generators from scratch; if rough-cut generation gets built, it goes in
-  `tools/` with its own skill update.
+- **Programmatic rough cut (`cli-anything-kdenlive`):** an agent can pre-assemble the
+  timeline via the `cli-anything-kdenlive` CLI (installed; see
+  `.claude/skills/cli-anything-kdenlive/SKILL.md`). It's REPL-stateful — pipe a command
+  script into `uvx cli-anything-kdenlive` (project new → bin import → add-track →
+  add-clip → `export xml`), and it emits an MLT/`.kdenlive` with **relative** media
+  paths, so the project is portable across machines. Run it from **inside the episode
+  media bundle** so paths stay relative; keep the command script tracked as
+  `kdenlive-build.repl` in the episode dir (production logic — regenerate the `.kdenlive`
+  from it). Known gotchas: pass `--width/--height/--fps-num/--fps-den` for a vertical
+  profile, then post-fix the profile's `sample_aspect`→1:1 and `display_aspect`→9:16
+  (the CLI defaults them to 16:9); it has no subtitle or alpha-composite transition
+  support, so import the SRT and confirm overlay compositing in Kdenlive on open.
+  Worked example: `series/app-community/episodes/DBX-APP-S01E001-made-for-riders/kdenlive-build.repl`.
+- **Template seeds / OTIO** remain fallbacks: small `.kdenlive` seeds in
+  `templates/kdenlive/`, or OpenTimelineIO import (Kdenlive ≥ 25.04; carries
+  tracks/clips/markers, not effects). Never hand-merge or diff Kdenlive-saved XML —
+  regenerate instead.
 
 ## Steps
 

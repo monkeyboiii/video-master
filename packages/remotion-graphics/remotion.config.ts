@@ -6,4 +6,4 @@ Config.setEntryPoint('src/index.ts');
 Config.setOverwriteOutput(true);
 // Font loads via @remotion/fonts delayRender can exceed the ~30s default when a
 // render page starts under load — give them headroom instead of failing the render.
-Config.setDelayRenderTimeoutInMilliseconds(120000);
+Config.setDelayRenderTimeoutInMilliseconds(300000);

@@ -32,6 +32,7 @@ media/**
 # ── Node / Remotion ──
 node_modules/
 packages/remotion-graphics/out/
+packages/remotion-graphics/public/_feat/
 .cache/
 *.tsbuildinfo
 

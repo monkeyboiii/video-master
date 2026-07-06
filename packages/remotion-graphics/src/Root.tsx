@@ -155,14 +155,18 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
         fps={FPS}
-        durationInFrames={Math.round(3.8 * FPS)}
-        calculateMetadata={overlayMetadata<PhoneFeatureProps>(3.8)}
+        durationInFrames={Math.round(6.5 * FPS)}
+        calculateMetadata={overlayMetadata<PhoneFeatureProps>(6.5)}
         defaultProps={{
           locale: 'en-US' as const,
-          segments: ['lang-pick.mp4', 'lang-refresh.mp4'],
+          segments: [
+            {src: 'lang-full.mp4', trimSec: 4.0, seconds: 2.6}, // language picker (20+ langs)
+            {src: 'lang-full.mp4', trimSec: 17.0, seconds: 2.4}, // localized feed + pull-to-refresh
+            {src: 'lang-refresh-freeze.png', trimSec: 0, seconds: 1.5}, // freeze: refreshed, fully localized
+          ],
           stampTop: 'Speaks your',
           stampBottom: 'Language',
-          durationSec: 3.8,
+          durationSec: 6.5,
         }}
       />
       <Composition
@@ -176,7 +180,7 @@ export const RemotionRoot: React.FC = () => {
         calculateMetadata={overlayMetadata<PhoneFeatureProps>(3.0)}
         defaultProps={{
           locale: 'en-US' as const,
-          segments: ['embed.mp4'],
+          segments: [{src: 'embed.mp4', trimSec: 0, seconds: 3.0}],
           stampTop: 'Drop',
           stampBottom: 'One link',
           durationSec: 3.0,
@@ -193,7 +197,7 @@ export const RemotionRoot: React.FC = () => {
         calculateMetadata={overlayMetadata<PhoneFeatureProps>(3.7)}
         defaultProps={{
           locale: 'en-US' as const,
-          segments: ['sponsor.mp4'],
+          segments: [{src: 'sponsor.mp4', trimSec: 0, seconds: 3.7}],
           stampTop: 'Get',
           stampBottom: 'Sponsored',
           durationSec: 3.7,
