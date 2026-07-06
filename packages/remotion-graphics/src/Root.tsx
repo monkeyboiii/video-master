@@ -10,6 +10,8 @@ import {HookTitle, hookTitleSchema} from './components/HookTitle';
 import type {HookTitleProps} from './components/HookTitle';
 import {LowerThird, lowerThirdSchema} from './components/LowerThird';
 import type {LowerThirdProps} from './components/LowerThird';
+import {PhoneFeature, phoneFeatureSchema} from './components/PhoneFeature';
+import type {PhoneFeatureProps} from './components/PhoneFeature';
 import {SafeZoneGuide} from './components/SafeZoneGuide';
 import {StageCards, stageCardsSchema} from './components/StageCards';
 import type {StageCardsProps} from './components/StageCards';
@@ -143,6 +145,59 @@ export const RemotionRoot: React.FC = () => {
         durationInFrames={6 * FPS}
         calculateMetadata={overlayMetadata<StageCardsProps>(6)}
         defaultProps={STAGE_CARDS_DEFAULTS}
+      />
+
+      {/* ── Phone-overlay feature clips (transparent; composite over founder) ── */}
+      <Composition
+        id="phone-language"
+        component={PhoneFeature}
+        schema={phoneFeatureSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(3.8 * FPS)}
+        calculateMetadata={overlayMetadata<PhoneFeatureProps>(3.8)}
+        defaultProps={{
+          locale: 'en-US' as const,
+          segments: ['lang-pick.mp4', 'lang-refresh.mp4'],
+          stampTop: 'Speaks your',
+          stampBottom: 'Language',
+          durationSec: 3.8,
+        }}
+      />
+      <Composition
+        id="phone-embed"
+        component={PhoneFeature}
+        schema={phoneFeatureSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(3.0 * FPS)}
+        calculateMetadata={overlayMetadata<PhoneFeatureProps>(3.0)}
+        defaultProps={{
+          locale: 'en-US' as const,
+          segments: ['embed.mp4'],
+          stampTop: 'Drop',
+          stampBottom: 'One link',
+          durationSec: 3.0,
+        }}
+      />
+      <Composition
+        id="phone-sponsor"
+        component={PhoneFeature}
+        schema={phoneFeatureSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(3.7 * FPS)}
+        calculateMetadata={overlayMetadata<PhoneFeatureProps>(3.7)}
+        defaultProps={{
+          locale: 'en-US' as const,
+          segments: ['sponsor.mp4'],
+          stampTop: 'Get',
+          stampBottom: 'Sponsored',
+          durationSec: 3.7,
+        }}
       />
 
       {/* ── Cover stills (opaque background allowed) ── */}

@@ -11,7 +11,7 @@ export const LOCALES = ['en-US', 'zh-CN'];
 export const PLATFORMS = ['tiktok', 'ytshorts', 'reels', 'rednote', 'douyin', 'bilibili', 'wechat'];
 // 16x10 exists for covers only (Bilibili requires a 16:10 cover image).
 export const ASPECTS = ['9x16', '16x9', '1x1', '3x4', '16x10'];
-export const OVERLAY_COMPS = ['hook-title', 'checklist-card', 'cta-card', 'lower-third', 'subtitle-track', 'stage-cards', 'stage-cards-wide'];
+export const OVERLAY_COMPS = ['hook-title', 'checklist-card', 'cta-card', 'lower-third', 'subtitle-track', 'stage-cards', 'stage-cards-wide', 'phone-language', 'phone-embed', 'phone-sponsor'];
 export const COVER_COMPS = ['cover-9x16', 'cover-3x4'];
 
 export const RE = {
@@ -20,7 +20,7 @@ export const RE = {
   seriesCode: /^[A-Z]{3,4}$/,
   locale: /^[a-z]{2}-[A-Z]{2}$/,
   shotFile: (videoId) => new RegExp(`^${videoId}_SH\\d{3}_TK\\d{2}_[a-z0-9]+(-[a-z0-9]+)*\\.[A-Za-z0-9]+$`),
-  voFile: (videoId) => new RegExp(`^${videoId}_(${LOCALES.join('|')})_vo_v\\d{3}\\.\\w+$`),
+  voFile: (videoId) => new RegExp(`^${videoId}_(${LOCALES.join('|')})_vo(-[a-z0-9]+)?_v\\d{3}\\.\\w+$`),
   overlayFile: (videoId, locale) =>
     new RegExp(`^${videoId}_${locale}_(${ASPECTS.join('|')})_(${OVERLAY_COMPS.join('|')})_v\\d{3}\\.mov$`),
   coverFile: (videoId, locale) =>

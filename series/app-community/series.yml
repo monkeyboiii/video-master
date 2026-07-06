@@ -1,0 +1,20 @@
+# Series manifest — positioning that every episode inherits.
+series: "app-community" # kebab-case, matches directory name
+code: "APP" # 3–4 uppercase letters, registered in docs/naming-conventions.md
+season: 1
+
+# Who this series serves — one concrete person, not a demographic.
+audience: "Dirt bike riders (and the dirt-curious) who want a place to share rides, find people, and follow the sport — plus anyone deciding whether DirtBikeX is worth the download."
+
+# The promise every episode repeats (why someone follows the series).
+promise: "Every episode shows a rider what the DirtBikeX community gives them — connection, discovery, belonging — never a feature tour for its own sake."
+
+# How this series positions DirtBikeX (personal positioning dimension).
+positioning: "DirtBikeX is a global dirt bike community app (feed, events, tracks, riders). This series speaks AS the community — made for riders, not a company marketing an app."
+
+# Tone & style register every episode inherits. Episode-level deviations go in brief.md.
+tone: "Warm and rider-to-rider, proud not corporate. Visually modern and minimal — clean type, real riding footage, no cheesy stock or hard-sell energy."
+
+default_platforms:
+  en-US: [tiktok, ytshorts, reels]
+  zh-CN: [rednote, douyin, bilibili]

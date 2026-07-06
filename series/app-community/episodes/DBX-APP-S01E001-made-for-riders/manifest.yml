@@ -1,0 +1,146 @@
+# Episode manifest — source of truth for this episode.
+# Schema notes: docs/production-model.md · naming: docs/naming-conventions.md
+# Validate with: node tools/validate.mjs
+
+video_id: "DBX-APP-S01E001" # DBX-{SERIES}-S{ss}E{eee}
+slug: "made-for-riders"
+series: "app-community"
+status: topic # topic|packaging|scripting|shooting|editing|qc|published|retro
+# Mid-production: footage shot, VO recorded (see assets), phone overlays rendered
+# (outputs), assembly plan in edit-notes.md. Status kept at `topic` only because the
+# packaging cover doc isn't written yet; the real work is well past that. Advance +
+# add cover.en-US.md when ready to formalize.
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+# en-US first. The zh-CN launch cut is a separate pass with its own native hook.
+variants:
+  en-US:
+    script: script.en-US.md
+    cover: cover.en-US.md
+    subtitles: subtitles/en-US.srt
+    remotion_props: remotion-props/en-US.json
+    voiceover_asset_id: null # 4 separate takes (see assets.voiceover), not one file
+    platforms: [tiktok, ytshorts, reels]
+
+# ~22s launch teaser (as recorded). Two channels: founder VO carries the EMOTION;
+# phone overlays + stamps carry the FEATURES (shown, not told). `overlay` names a
+# composition (hook-title | phone-language | phone-embed | phone-sponsor | ...) or null;
+# the features beat uses three phone overlays, recorded under outputs.overlays.
+beats:
+  - id: hook
+    purpose: pain / identity contrast — the dismissal that stings every rider
+    visual_intent: nobody-photo (founder at the paddock), slow push-in; SFX "nobody cares" (⚠ says "car")
+    overlay: null
+    target_duration_sec:
+      en-US: 2.0
+  - id: i-do
+    purpose: the turn — deadpan vindication
+    visual_intent: hard cut to founder (helmet, porch), dead calm; bass-drop on the cut
+    overlay: null
+    target_duration_sec:
+      en-US: 1.5
+  - id: pivot
+    purpose: belonging + founder mission, compressed
+    visual_intent: founder continues; MADE FOR RIDERS title card
+    overlay: hook-title
+    target_duration_sec:
+      en-US: 5.5
+  - id: features
+    purpose: information-dense proof — three app features shown on a phone over the founder
+    visual_intent: founder in bg; keyframed phone overlays cycle language → embed → sponsor, synced to the VO words; stamps SPEAKS YOUR LANGUAGE / DROP ONE LINK / GET SPONSORED
+    overlay: null # three phone overlays — see outputs.overlays
+    target_duration_sec:
+      en-US: 10.0
+  - id: cta
+    purpose: comment-for-invite-code — the reach engine
+    visual_intent: recorded founder clip pointing finger down; no graphic card
+    overlay: null
+    target_duration_sec:
+      en-US: 3.0
+
+assets:
+  raw:
+    - asset_id: RAW_010
+      filename: DBX-APP-S01E001_SH010_TK01_nobody-photo.jpeg
+      external_uri: null
+      notes: hook photo — founder at the paddock
+    - asset_id: RAW_020
+      filename: DBX-APP-S01E001_SH020_TK01_founder-idobuilt.MOV
+      external_uri: null
+      notes: founder to camera (helmet/porch) — covers i-do, pivot, features bg
+    - asset_id: RAW_040
+      filename: DBX-APP-S01E001_SH040_TK01_screen-language.MP4
+      external_uri: null
+      notes: screen rec — language picker → localized → pull-to-refresh
+    - asset_id: RAW_050
+      filename: DBX-APP-S01E001_SH050_TK01_screen-embed.mov
+      external_uri: null
+      notes: screen rec — Instagram post embedded in a DBX post
+    - asset_id: RAW_060
+      filename: DBX-APP-S01E001_SH060_TK01_screen-sponsor.mov
+      external_uri: null
+      notes: screen rec — sponsorships / "put your brand on the mountain" / airtime
+    - asset_id: RAW_080
+      filename: DBX-APP-S01E001_SH080_TK01_founder-comment.MOV
+      external_uri: null
+      notes: founder pointing finger down — the CTA clip
+  selected: []
+  voiceover:
+    - asset_id: VO_IDO
+      locale: en-US
+      filename: DBX-APP-S01E001_en-US_vo-ido_v001.wav
+      external_uri: null
+      notes: "\"I do.\" — trim to 0.0–1.7s (drop keyboard clicks)"
+    - asset_id: VO_IBUILT
+      locale: en-US
+      filename: DBX-APP-S01E001_en-US_vo-ibuilt_v001.wav
+      external_uri: null
+      notes: pivot — "So I built the home I always wanted, for every type of rider out there."
+    - asset_id: VO_FEATURES
+      locale: en-US
+      filename: DBX-APP-S01E001_en-US_vo-features_v001.wav
+      external_uri: null
+      notes: features — trim to 0.6–10.5s; language/one-link/sponsorship keywords sync the overlays
+    - asset_id: VO_COMMENT
+      locale: en-US
+      filename: DBX-APP-S01E001_en-US_vo-comment_v001.wav
+      external_uri: null
+      notes: cta — "Comment 'dirt bike' and I'll send you the invite code." (trim 0–3.0s)
+  audio:
+    - asset_id: SFX_HOOK
+      filename: DBX-APP-S01E001_sfx-nobody-cares-CAR-PLACEHOLDER.mp3
+      external_uri: null
+      source: user-supplied
+      license: n/a — placeholder; says "car", re-record to "dirt bike"
+    - asset_id: MUS_INTRO
+      filename: bgm-close-up.mp3
+      external_uri: https://mixkit.co/free-stock-music/corporate-music/
+      source: Mixkit — "Close Up" by Michael Ramir C.
+      license: Mixkit Free Stock Music License — commercial + social OK, no attribution
+    - asset_id: MUS_MONTAGE
+      filename: bgm-motivating-mornings.mp3
+      external_uri: https://mixkit.co/free-stock-music/tag/corporate/
+      source: Mixkit — "Motivating Mornings" by Ahjay Stelino
+      license: Mixkit Free Stock Music License — commercial + social OK, no attribution
+    - asset_id: MUS_CTA
+      filename: bgm-running-out-of-time.mp3
+      external_uri: https://mixkit.co/free-stock-music/corporate-music/
+      source: Mixkit — "Running Out of Time" by Ahjay Stelino
+      license: Mixkit Free Stock Music License — commercial + social OK, no attribution
+
+outputs:
+  overlays:
+    en-US:
+      - DBX-APP-S01E001_en-US_9x16_hook-title_v001.mov
+      - DBX-APP-S01E001_en-US_9x16_phone-language_v001.mov
+      - DBX-APP-S01E001_en-US_9x16_phone-embed_v001.mov
+      - DBX-APP-S01E001_en-US_9x16_phone-sponsor_v001.mov
+  covers: {}
+  kdenlive: {}
+  exports: {}
+  published: {}
