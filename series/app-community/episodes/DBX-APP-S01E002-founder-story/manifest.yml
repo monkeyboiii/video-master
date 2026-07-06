@@ -1,0 +1,71 @@
+# Episode manifest — source of truth for this episode.
+# Schema notes: docs/production-model.md · naming: docs/naming-conventions.md
+# Validate with: node tools/validate.mjs
+
+video_id: "DBX-APP-S01E002" # DBX-{SERIES}-S{ss}E{eee}
+slug: "founder-story"
+series: "app-community"
+status: topic # topic|packaging|scripting|shooting|editing|qc|published|retro
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+# Longer, story-driven cut of the SAME topic as E001 (the DirtBikeX launch / why it
+# exists) — a different presentation form, not a re-edit. en-US first. Script is NOT
+# locked: in discussion (see brief go/no-go). Target ~45–60s (a decision).
+variants:
+  en-US:
+    script: script.en-US.md
+    cover: cover.en-US.md
+    subtitles: subtitles/en-US.srt
+    remotion_props: remotion-props/en-US.json
+    voiceover_asset_id: null # e.g. VO_EN_001 once recorded
+    platforms: [tiktok, ytshorts, reels]
+
+# Added at the scripting stage. Beat IDs are stable slugs; every script line
+# belongs to one beat. `overlay` names a composition in packages/remotion-graphics
+# (hook-title | checklist-card | cta-card | lower-third | subtitle-track | stage-cards) or null.
+beats: []
+# - id: hook
+#   purpose: pain point
+#   visual_intent: rider stalling on a hill start
+#   overlay: hook-title
+#   target_duration_sec:
+#     en-US: 3.5
+#     zh-CN: 3.0
+
+assets:
+  raw: []
+  # - asset_id: RAW_001
+  #   filename: DBX-BEG-S01E003_SH010_TK01_gopro-front.MP4
+  #   external_uri: s3://dirtbikex-video/raw/DBX-BEG-S01E003/...
+  #   sha256: null
+  #   notes: low-speed clutch mistake demo
+  selected: []
+  # - asset_id: SEL_001
+  #   source_asset_id: RAW_001
+  #   in: "00:00:04.200"
+  #   out: "00:00:09.800"
+  #   beat: hook
+  voiceover: []
+  # - asset_id: VO_EN_001
+  #   locale: en-US
+  #   filename: DBX-BEG-S01E003_en-US_vo_v001.wav
+  #   external_uri: null
+  #   notes: null
+  audio: []
+  # - asset_id: MUS_001
+  #   filename: upbeat-intro.mp3            # lives in media/audio/
+  #   external_uri: null
+  #   source: <library/vendor + track page URL>
+  #   license: <license name/terms allowing social commercial use>
+
+outputs:
+  overlays: {} # locale -> [filenames in media/overlays/]
+  covers: {} # locale -> [filenames in media/exports/]
+  kdenlive: {} # locale -> path in media/timelines/
+  exports: {} # locale -> [filenames in media/exports/]
+  published: {} # locale -> [{platform, export, url, date: YYYY-MM-DD}]
