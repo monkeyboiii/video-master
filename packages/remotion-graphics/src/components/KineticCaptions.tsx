@@ -76,7 +76,7 @@ export const KineticCaptions: React.FC<KineticCaptionsProps> = ({
           justifyContent: 'center',
           alignItems: 'baseline',
           gap: '0 16px',
-          maxWidth: 1000,
+          width: 880,
           overflow: 'hidden',
         }}
       >

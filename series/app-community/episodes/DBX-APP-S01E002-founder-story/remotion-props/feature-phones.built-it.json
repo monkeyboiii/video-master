@@ -1,7 +1,20 @@
 {
-  "durationSec": 3.6,
+  "durationSec": 6.0,
   "phones": [
-    {"src": "lang-full.mp4", "trimSec": 4.0, "label": "21 languages"},
-    {"src": "embed.mp4", "trimSec": 0, "label": "Post once"}
+    {
+      "label": "21 languages",
+      "segments": [
+        {"src": "lang-pick.mp4", "seconds": 2.5},
+        {"src": "lang-refresh.mp4", "seconds": 2.5},
+        {"src": "lang-refresh-freeze.png", "seconds": 1.0}
+      ]
+    },
+    {
+      "label": "Post once",
+      "segments": [
+        {"src": "embed.mp4", "seconds": 3.5},
+        {"src": "embed-freeze.png", "seconds": 2.5}
+      ]
+    }
   ]
 }

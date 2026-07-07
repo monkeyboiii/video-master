@@ -26,7 +26,7 @@ export type InviteCardProps = z.infer<typeof inviteCardSchema>;
 /**
  * The original invite card art used directly, patched to cover the
  * "Instagram people welcome!" line (this ships to TikTok / YT / Reels too).
- * Sits at the bottom-leading edge at ~50% opacity so it never covers the face.
+ * Centered in the lower third at full opacity, sized like the other overlay cards.
  */
 export const InviteCard: React.FC<InviteCardProps> = ({src, patchLabel}) => {
   const frame = useCurrentFrame();
@@ -46,17 +46,16 @@ export const InviteCard: React.FC<InviteCardProps> = ({src, patchLabel}) => {
     <AbsoluteFill
       style={{
         justifyContent: 'flex-end',
-        alignItems: 'flex-start',
-        paddingLeft: 40,
-        paddingBottom: 120,
-        opacity: opacity * 0.55,
+        alignItems: 'center',
+        paddingBottom: 130,
+        opacity,
       }}
     >
       <div
         style={{
           position: 'relative',
           width: 470,
-          transform: `translateX(${(1 - cardIn) * -60}px)`,
+          transform: `translateY(${(1 - cardIn) * 70}px)`,
         }}
       >
         <Img src={staticFile(src)} style={{width: '100%', display: 'block'}} />

@@ -1,6 +1,12 @@
 {
-  "durationSec": 3.2,
+  "durationSec": 4.5,
   "phones": [
-    {"src": "sponsor.mp4", "trimSec": 0, "label": "Seen by real riders"}
+    {
+      "label": "Seen by real riders",
+      "segments": [
+        {"src": "sponsor.mp4", "seconds": 2.6},
+        {"src": "sponsor-freeze.png", "seconds": 1.9}
+      ]
+    }
   ]
 }

@@ -183,13 +183,26 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
         fps={FPS}
-        durationInFrames={Math.round(3.5 * FPS)}
-        calculateMetadata={overlayMetadata<FeaturePhonesProps>(3.5)}
+        durationInFrames={Math.round(6 * FPS)}
+        calculateMetadata={overlayMetadata<FeaturePhonesProps>(6)}
         defaultProps={{
-          durationSec: 3.5,
+          durationSec: 6,
           phones: [
-            {src: 'lang-full.mp4', trimSec: 4.0, label: '21 languages'},
-            {src: 'embed.mp4', trimSec: 0, label: 'Post once'},
+            {
+              label: '21 languages',
+              segments: [
+                {src: 'lang-pick.mp4', trimSec: 0, seconds: 2.5},
+                {src: 'lang-refresh.mp4', trimSec: 0, seconds: 2.5},
+                {src: 'lang-refresh-freeze.png', trimSec: 0, seconds: 1.0},
+              ],
+            },
+            {
+              label: 'Post once',
+              segments: [
+                {src: 'embed.mp4', trimSec: 0, seconds: 3.5},
+                {src: 'embed-freeze.png', trimSec: 0, seconds: 2.5},
+              ],
+            },
           ],
         }}
       />

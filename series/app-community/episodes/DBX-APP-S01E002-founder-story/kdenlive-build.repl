@@ -14,14 +14,13 @@ bin import overlays/DBX-APP-S01E002_en-US_9x16_kinetic-captions-cta_v001.mov -n 
 bin import overlays/DBX-APP-S01E002_en-US_9x16_brand-title_v001.mov -n brand --type video -d 2.0
 bin import overlays/DBX-APP-S01E002_en-US_9x16_invite-card_v001.mov -n invite --type video -d 4.0
 bin import overlays/DBX-APP-S01E002_en-US_9x16_profile-card_v001.mov -n profile --type video -d 3.0
-bin import overlays/DBX-APP-S01E002_en-US_9x16_feature-phones-built-it_v001.mov -n feat-built --type video -d 3.6
-bin import overlays/DBX-APP-S01E002_en-US_9x16_feature-phones-cta_v001.mov -n feat-cta --type video -d 3.2
+bin import overlays/DBX-APP-S01E002_en-US_9x16_feature-phones-built-it_v001.mov -n feat-built --type video -d 6.0
+bin import overlays/DBX-APP-S01E002_en-US_9x16_feature-phones-cta_v001.mov -n feat-cta --type video -d 4.5
 bin import music/bgm-vampire-heart.mp3 -n bgm --type audio -d 66
 bin import sfx/hit-1.mp3 -n sfx-hit1 --type audio -d 2.64
-bin import sfx/hit-2.mp3 -n sfx-hit2 --type audio -d 7.54
-bin import sfx/simple-whoosh-1.wav -n sfx-whoosh --type audio -d 0.47
-bin import sfx/glitch-1.mp3 -n sfx-glitch1 --type audio -d 0.55
-bin import sfx/glitch-2.mp3 -n sfx-glitch2 --type audio -d 1.39
+bin import sfx/simple-whoosh-1.wav -n sfx-whoosh1 --type audio -d 0.47
+bin import sfx/simple-whoosh-2.wav -n sfx-whoosh2 --type audio -d 0.31
+bin import sfx/radio-adjustment.mp3 -n sfx-radio --type audio -d 4.82
 bin import sfx/shutter.mp3 -n sfx-shutter --type audio -d 0.65
 timeline add-track -n V1 --type video
 timeline add-track -n V2-Captions --type video
@@ -41,19 +40,18 @@ timeline add-clip 1 clip9 -p 29.8 --in 0 --out 7.05
 timeline add-clip 1 clip10 -p 36.85 --in 0 --out 16.05
 timeline add-clip 1 clip11 -p 52.9 --in 0 --out 10.9
 timeline add-clip 2 clip12 -p 41.5 --in 0 --out 2.0
-timeline add-clip 2 clip15 -p 47.5 --in 0 --out 3.6
-timeline add-clip 2 clip16 -p 54.5 --in 0 --out 3.2
+timeline add-clip 2 clip15 -p 47.5 --in 0 --out 6.0
+timeline add-clip 2 clip16 -p 54.5 --in 0 --out 4.5
 timeline add-clip 2 clip13 -p 59.5 --in 0 --out 3.5
 timeline add-clip 2 clip14 -p 63.8 --in 0 --out 2.0
 timeline add-clip 3 clip17 -p 0 --in 0 --out 65.75
 timeline add-clip 4 clip18 -p 6.9 --in 0 --out 0.8
-timeline add-clip 4 clip19 -p 8.9 --in 0 --out 0.8
-timeline add-clip 4 clip20 -p 25.0 --in 0 --out 0.47
-timeline add-clip 4 clip21 -p 32.6 --in 0 --out 0.55
-timeline add-clip 4 clip22 -p 33.5 --in 0 --out 0.9
-timeline add-clip 4 clip19 -p 41.5 --in 0 --out 0.8
-timeline add-clip 4 clip23 -p 47.5 --in 0 --out 0.6
-timeline add-clip 4 clip23 -p 54.5 --in 0 --out 0.6
+timeline add-clip 4 clip20 -p 8.9 --in 0 --out 0.31
+timeline add-clip 4 clip19 -p 25.0 --in 0 --out 0.47
+timeline add-clip 4 clip21 -p 32.8 --in 0 --out 0.8
+timeline add-clip 4 clip19 -p 41.5 --in 0 --out 0.47
+timeline add-clip 4 clip22 -p 47.5 --in 0 --out 0.6
+timeline add-clip 4 clip22 -p 54.5 --in 0 --out 0.6
 timeline add-clip 4 clip18 -p 59.5 --in 0 --out 0.8
 timeline list
 export xml -o founder-story.kdenlive

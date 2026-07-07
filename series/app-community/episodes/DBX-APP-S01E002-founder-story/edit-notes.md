@@ -8,20 +8,24 @@ Human polishes zoom keyframes + final timing in Kdenlive on Mac, then renders.
 
 - **Trailing pauses cropped**: each clip is cut at its speech end (silencedetect), so the
   click/pause between takes is gone. New contiguous timeline ≈ 65.75s (was 69.7).
-- **Captions**: single bottom line now (rolling 6-word window), not 3 lines. Baseline
-  unchanged (bottom, above safe zone). cta captions **stop at "…description."** — no
-  captions over "My name is Rubio / waiting for you there".
+- **Captions**: single bottom line (rolling 6-word window) in a **fixed-width panel** —
+  the background is bounded, it doesn't stretch/shrink with the text. cta captions **stop
+  at "…description."** — no captions over "My name is Rubio / waiting for you there".
 - **Feature phones (E1 app clips)**: `feature-phones-built-it` (language + post-once, side
-  by side) at 47.5s and `feature-phones-cta` (sponsorship) at 54.5s, in the lower third so
-  they cover the caption line during the demo.
+  by side, 47.5–53.5s) and `feature-phones-cta` (sponsorship, 54.5–59.0s), lower third,
+  covering the caption. Each phone plays then **freezes on its last frame**; the language
+  phone runs picker → **pull-to-refresh** → freeze (E1-style) and holds past "21 languages".
 - **Invite card**: the real invite-card.png used directly, "Instagram people welcome!"
-  patched to "New riders welcome" (platform-agnostic), placed **bottom-leading at ~50%
-  opacity** (no longer over the face). QR kept.
+  patched to "New riders welcome" (platform-agnostic), **centered in the lower third at
+  100% opacity**, sized like the overlay cards. QR kept (fully scannable).
+  Freeze frames for the phones (`embed-freeze.png`, `sponsor-freeze.png`) are last-frame
+  grabs of the E1 clips, extracted into `public/_feat/`.
 - **Profile card**: moved to the **lower third** (where the subtitle sits), on "My name
   is Rubio".
-- **Audio**: music down to ~10% (VO-first); SFX swapped to **short/recognizable** only
-  (hits, glitches, camera shutter on feature pops, one short whoosh) — deep whoosh / deep
-  hits / sub-drop removed.
+- **Audio**: music down to ~10% (VO-first); SFX short/recognizable and **low-impact** —
+  soft whoosh on brutal, radio-static on scattered, soft whoosh on the DirtBikeX reveal,
+  camera shutter on the feature-phone pops, soft hit on hook/invite. Deep whoosh / deep
+  hits / sub-drop / glitches removed.
 - **Kdenlive-native**: after export, `tools/kdenlive-nativize.py --vertical` repoints the
   root producer to `maintractor`, adds numeric `kdenlive:id` to every producer, renames
   `clipN`→`producerN`, and fixes the 9:16 profile. Validated (no unresolved refs).

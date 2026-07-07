@@ -1,7 +1,9 @@
 import React from 'react';
 import {
   AbsoluteFill,
+  Img,
   OffthreadVideo,
+  Sequence,
   interpolate,
   spring,
   staticFile,
@@ -13,23 +15,63 @@ import {exitFade} from '../shared';
 import {bone, dirt} from '../theme/tokens';
 import {monoFont} from '../theme/fonts';
 
-const phoneSchema = z.object({
-  src: z.string(), // file in public/_feat/
+const segmentSchema = z.object({
+  src: z.string(), // file in public/_feat/ (.mp4 plays, .png holds as a freeze)
   trimSec: z.number().default(0),
+  seconds: z.number(),
+});
+
+const phoneSchema = z.object({
   label: z.string().default(''),
+  segments: z.array(segmentSchema),
 });
 
 export const featurePhonesSchema = z.object({
-  durationSec: z.number().default(3),
+  durationSec: z.number().default(4),
   phones: z.array(phoneSchema),
 });
 
 export type FeaturePhonesProps = z.infer<typeof featurePhonesSchema>;
 
+const isStill = (src: string): boolean => /\.(png|jpe?g)$/i.test(src);
+
+const PhoneSegments: React.FC<{
+  segments: z.infer<typeof segmentSchema>[];
+  fps: number;
+}> = ({segments, fps}) => {
+  let acc = 0;
+  return (
+    <>
+      {segments.map((s, i) => {
+        const from = Math.round(acc * fps);
+        const dur = Math.max(1, Math.round(s.seconds * fps));
+        acc += s.seconds;
+        return (
+          <Sequence key={i} from={from} durationInFrames={dur}>
+            {isStill(s.src) ? (
+              <Img
+                src={staticFile(`_feat/${s.src}`)}
+                style={{width: '100%', height: '100%', objectFit: 'cover'}}
+              />
+            ) : (
+              <OffthreadVideo
+                src={staticFile(`_feat/${s.src}`)}
+                trimBefore={Math.round((s.trimSec ?? 0) * fps)}
+                muted
+                style={{width: '100%', height: '100%', objectFit: 'cover'}}
+              />
+            )}
+          </Sequence>
+        );
+      })}
+    </>
+  );
+};
+
 /**
  * E1 app screen-recordings laid out side by side in the lower third — shown while
- * the founder explains features (21 languages, post once, seen by real riders).
- * Sits over the caption line so it covers the subtitles during the demo.
+ * the founder explains features. Each phone plays its clip then freezes on its last
+ * frame (a .png segment) so it can hold past the line. Covers the caption line.
  */
 export const FeaturePhones: React.FC<FeaturePhonesProps> = ({phones}) => {
   const frame = useCurrentFrame();
@@ -72,6 +114,7 @@ export const FeaturePhones: React.FC<FeaturePhonesProps> = ({phones}) => {
             >
               <div
                 style={{
+                  position: 'relative',
                   width: phoneW,
                   height: phoneH,
                   borderRadius: 42,
@@ -81,12 +124,7 @@ export const FeaturePhones: React.FC<FeaturePhonesProps> = ({phones}) => {
                   background: '#000',
                 }}
               >
-                <OffthreadVideo
-                  src={staticFile(`_feat/${p.src}`)}
-                  trimBefore={Math.round((p.trimSec ?? 0) * fps)}
-                  muted
-                  style={{width: '100%', height: '100%', objectFit: 'cover'}}
-                />
+                <PhoneSegments segments={p.segments} fps={fps} />
               </div>
               {p.label ? (
                 <div
