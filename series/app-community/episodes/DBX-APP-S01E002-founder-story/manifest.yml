@@ -5,7 +5,9 @@
 video_id: "DBX-APP-S01E002" # DBX-{SERIES}-S{ss}E{eee}
 slug: "founder-story"
 series: "app-community"
-status: topic # topic|packaging|scripting|shooting|editing|qc|published|retro
+status: editing # topic|packaging|scripting|shooting|editing|qc|published|retro
+# Rough cut assembled (kdenlive-build.repl → founder-story.kdenlive). Human polishes
+# zoom keyframes + final timing on the Mac, then renders. See edit-notes.md.
 
 formats:
   primary: short_vertical
@@ -13,59 +15,133 @@ formats:
   resolution: 1080x1920
   fps: 30
 
-# Longer, story-driven cut of the SAME topic as E001 (the DirtBikeX launch / why it
-# exists) — a different presentation form, not a re-edit. en-US first. Script is NOT
-# locked: in discussion (see brief go/no-go). Target ~45–60s (a decision).
+# Longer, story-driven cut of the SAME topic as E001 (why DirtBikeX exists) — a
+# different presentation form, not a re-edit. en-US first.
+# Script is LOCKED (recorded: 6 talking-head clips, HLG HDR). Raw ~69.7s; edit target ~60s.
+# Edit plan in storyboard.md; awaiting go-ahead before threading/render.
 variants:
   en-US:
     script: script.en-US.md
     cover: cover.en-US.md
     subtitles: subtitles/en-US.srt
     remotion_props: remotion-props/en-US.json
-    voiceover_asset_id: null # e.g. VO_EN_001 once recorded
+    voiceover_asset_id: null # narration is diegetic in the talking-head clips (no separate VO file)
     platforms: [tiktok, ytshorts, reels]
 
-# Added at the scripting stage. Beat IDs are stable slugs; every script line
-# belongs to one beat. `overlay` names a composition in packages/remotion-graphics
-# (hook-title | checklist-card | cta-card | lower-third | subtitle-track | stage-cards) or null.
-beats: []
-# - id: hook
-#   purpose: pain point
-#   visual_intent: rider stalling on a hill start
-#   overlay: hook-title
-#   target_duration_sec:
-#     en-US: 3.5
-#     zh-CN: 3.0
+# Beats are the recorded narration clips, in order. overlay = primary Remotion comp:
+# kinetic-captions = the streaming color-emphasis captions (one per beat). Branded
+# overlays (brand-title, invite-card, profile-card) are secondary — see edit-notes.md.
+beats:
+  - id: hook
+    purpose: first-second grab; name the real problem (belonging, not skill)
+    visual_intent: founder to camera, open mid-punch-in; snap-in on "gets it"
+    overlay: kinetic-captions
+    target_duration_sec:
+      en-US: 7.0
+  - id: first-ride
+    purpose: vivid physical low; earn the story, relatable not heroic
+    visual_intent: escalating small push-ins on each hardship
+    overlay: kinetic-captions
+    target_duration_sec:
+      en-US: 10.0
+  - id: addictive
+    purpose: the turn — hardship to love to the point of sharing
+    visual_intent: pull-out on release, punch-in on "addictive" / "share it with"
+    overlay: kinetic-captions
+    target_duration_sec:
+      en-US: 10.0
+  - id: problem
+    purpose: name the gap the product fills (scattered/outdated), briefly
+    visual_intent: near-static, colder; glitch captions on "scattered"/"outdated"
+    overlay: kinetic-captions
+    target_duration_sec:
+      en-US: 6.5
+  - id: built-it
+    purpose: solution + features in the founder's own hands (seasoning, not montage)
+    visual_intent: punch-in on "DirtBikeX"; 3 light UI flashes (no-bloat/embed/languages)
+    overlay: kinetic-captions
+    target_duration_sec:
+      en-US: 14.0
+  - id: cta
+    purpose: turn the story into one action — grab the invite code
+    visual_intent: warm settle; invite-card on "invite code", profile-card on "My name is Rubio"
+    overlay: kinetic-captions
+    target_duration_sec:
+      en-US: 12.0
 
 assets:
-  raw: []
-  # - asset_id: RAW_001
-  #   filename: DBX-BEG-S01E003_SH010_TK01_gopro-front.MP4
-  #   external_uri: s3://dirtbikex-video/raw/DBX-BEG-S01E003/...
-  #   sha256: null
-  #   notes: low-speed clutch mistake demo
-  selected: []
-  # - asset_id: SEL_001
-  #   source_asset_id: RAW_001
-  #   in: "00:00:04.200"
-  #   out: "00:00:09.800"
-  #   beat: hook
-  voiceover: []
-  # - asset_id: VO_EN_001
-  #   locale: en-US
-  #   filename: DBX-BEG-S01E003_en-US_vo_v001.wav
-  #   external_uri: null
-  #   notes: null
-  audio: []
-  # - asset_id: MUS_001
-  #   filename: upbeat-intro.mp3            # lives in media/audio/
-  #   external_uri: null
-  #   source: <library/vendor + track page URL>
-  #   license: <license name/terms allowing social commercial use>
+  # 6 recorded talking-head clips (HLG HDR) — tone-mapped to SDR before edit (see storyboard HDR pipeline).
+  raw:
+    - asset_id: RAW_001
+      filename: 01_hook.MOV
+      external_uri: null # media/DBX-APP-S01E002/narration/
+      sha256: null
+      notes: HLG HDR; hook — "nobody... finding somebody who gets it" (8.73s)
+    - asset_id: RAW_002
+      filename: 02_first-ride.MOV
+      external_uri: null
+      sha256: null
+      notes: HLG HDR; first ride was brutal, 100 degrees (11.60s)
+    - asset_id: RAW_003
+      filename: 03_addictive.MOV
+      external_uri: null
+      sha256: null
+      notes: HLG HDR; couldn't stop thinking / addictive / share it with (11.50s)
+    - asset_id: RAW_004
+      filename: 04_scattered.MOV
+      external_uri: null
+      sha256: null
+      notes: HLG HDR; scattered, outdated, not built the way I wanted (7.47s)
+    - asset_id: RAW_005
+      filename: 05_built-it.MOV
+      external_uri: null
+      sha256: null
+      notes: HLG HDR; software engineer, built DirtBikeX, no bloat / no double-post / 21 languages (16.80s)
+    - asset_id: RAW_006
+      filename: 06_cta.MOV
+      external_uri: null
+      sha256: null
+      notes: HLG HDR; us to be seen, invite code in description, Rubio (13.57s)
+  # Full-clip selects; in/out tightened during the edit (pauses/breaths trimmed to target).
+  selected:
+    - {asset_id: SEL_001, source_asset_id: RAW_001, in: "00:00:00.000", out: "00:00:08.730", beat: hook}
+    - {asset_id: SEL_002, source_asset_id: RAW_002, in: "00:00:00.000", out: "00:00:11.600", beat: first-ride}
+    - {asset_id: SEL_003, source_asset_id: RAW_003, in: "00:00:00.000", out: "00:00:11.500", beat: addictive}
+    - {asset_id: SEL_004, source_asset_id: RAW_004, in: "00:00:00.000", out: "00:00:07.470", beat: problem}
+    - {asset_id: SEL_005, source_asset_id: RAW_005, in: "00:00:00.000", out: "00:00:16.800", beat: built-it}
+    - {asset_id: SEL_006, source_asset_id: RAW_006, in: "00:00:00.000", out: "00:00:13.570", beat: cta}
+  voiceover: [] # narration embedded in the talking-head clips; no separate VO file
+  audio:
+    - asset_id: MUS_001
+      filename: bgm-vampire-heart.mp3 # media/DBX-APP-S01E002/music/
+      external_uri: null
+      source: "DECIDE: record library/vendor + track URL"
+      license: "DECIDE: confirm cleared for commercial social use before publish"
+    - asset_id: SFX_PACK_001
+      filename: sfx/ # YouTubeSFX StarterPack (40 files) — see storyboard SFX map
+      external_uri: null
+      source: "DECIDE: YouTube SFX Starter Pack — record origin URL"
+      license: "DECIDE: confirm commercial-social license per used file before publish"
 
 outputs:
-  overlays: {} # locale -> [filenames in media/overlays/]
+  # ProRes 4444 alpha overlays in media/DBX-APP-S01E002/overlays/
+  overlays:
+    en-US:
+      - DBX-APP-S01E002_en-US_9x16_brand-title_v001.mov
+      - DBX-APP-S01E002_en-US_9x16_profile-card_v001.mov
+      - DBX-APP-S01E002_en-US_9x16_invite-card_v001.mov
+      - DBX-APP-S01E002_en-US_9x16_kinetic-captions-hook_v001.mov
+      - DBX-APP-S01E002_en-US_9x16_kinetic-captions-first-ride_v001.mov
+      - DBX-APP-S01E002_en-US_9x16_kinetic-captions-addictive_v001.mov
+      - DBX-APP-S01E002_en-US_9x16_kinetic-captions-scattered_v001.mov
+      - DBX-APP-S01E002_en-US_9x16_kinetic-captions-built-it_v001.mov
+      - DBX-APP-S01E002_en-US_9x16_kinetic-captions-cta_v001.mov
   covers: {} # locale -> [filenames in media/exports/]
-  kdenlive: {} # locale -> path in media/timelines/
-  exports: {} # locale -> [filenames in media/exports/]
+  kdenlive:
+    en-US: media/DBX-APP-S01E002/founder-story.kdenlive
+  # Rough-cut preview (ffmpeg flatten of the timeline). Final renders on the Mac from
+  # the .kdenlive after zoom-keyframe polish. Lives in media/DBX-APP-S01E002/exports/.
+  exports:
+    en-US:
+      - DBX-APP-S01E002_en-US_tiktok_9x16_v001_review.mp4
   published: {} # locale -> [{platform, export, url, date: YYYY-MM-DD}]

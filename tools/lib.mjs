@@ -11,7 +11,7 @@ export const LOCALES = ['en-US', 'zh-CN'];
 export const PLATFORMS = ['tiktok', 'ytshorts', 'reels', 'rednote', 'douyin', 'bilibili', 'wechat'];
 // 16x10 exists for covers only (Bilibili requires a 16:10 cover image).
 export const ASPECTS = ['9x16', '16x9', '1x1', '3x4', '16x10'];
-export const OVERLAY_COMPS = ['hook-title', 'checklist-card', 'cta-card', 'lower-third', 'subtitle-track', 'stage-cards', 'stage-cards-wide', 'phone-language', 'phone-embed', 'phone-sponsor'];
+export const OVERLAY_COMPS = ['hook-title', 'checklist-card', 'cta-card', 'lower-third', 'subtitle-track', 'stage-cards', 'stage-cards-wide', 'phone-language', 'phone-embed', 'phone-sponsor', 'brand-title', 'profile-card', 'invite-card', 'kinetic-captions'];
 export const COVER_COMPS = ['cover-9x16', 'cover-3x4'];
 
 export const RE = {
@@ -19,15 +19,29 @@ export const RE = {
   slug: /^[a-z0-9]+(-[a-z0-9]+)*$/,
   seriesCode: /^[A-Z]{3,4}$/,
   locale: /^[a-z]{2}-[A-Z]{2}$/,
-  shotFile: (videoId) => new RegExp(`^${videoId}_SH\\d{3}_TK\\d{2}_[a-z0-9]+(-[a-z0-9]+)*\\.[A-Za-z0-9]+$`),
+  // Raw source clips. Two accepted forms:
+  //  - multicam shots:      {videoId}_SH###_TK##_{cam}.ext
+  //  - per-beat narration:  NN_{beat}.ext  (optionally {videoId}_NN_{beat}.ext)
+  // The narration form matches how founder talking-head episodes are shot/renamed
+  // for easy pickup (one clip per beat), e.g. 01_hook.MOV.
+  shotFile: (videoId) =>
+    new RegExp(
+      `^(?:${videoId}_SH\\d{3}_TK\\d{2}_[a-z0-9]+(?:-[a-z0-9]+)*` +
+        `|(?:${videoId}_)?\\d{2}_[a-z0-9]+(?:-[a-z0-9]+)*)\\.[A-Za-z0-9]+$`,
+    ),
   voFile: (videoId) => new RegExp(`^${videoId}_(${LOCALES.join('|')})_vo(-[a-z0-9]+)?_v\\d{3}\\.\\w+$`),
+  // Optional `-<variant>` after the comp name for per-beat instances of one
+  // composition, e.g. ..._kinetic-captions-hook_v001.mov
   overlayFile: (videoId, locale) =>
-    new RegExp(`^${videoId}_${locale}_(${ASPECTS.join('|')})_(${OVERLAY_COMPS.join('|')})_v\\d{3}\\.mov$`),
+    new RegExp(`^${videoId}_${locale}_(${ASPECTS.join('|')})_(${OVERLAY_COMPS.join('|')})(-[a-z0-9]+(-[a-z0-9]+)*)?_v\\d{3}\\.mov$`),
   coverFile: (videoId, locale) =>
     new RegExp(`^${videoId}_${locale}_(${PLATFORMS.join('|')})_(${ASPECTS.join('|')})_cover_v\\d{3}\\.(png|jpg)$`),
   exportFile: (videoId, locale) =>
     new RegExp(`^${videoId}_${locale}_(${PLATFORMS.join('|')})_(${ASPECTS.join('|')})_v\\d{3}_(review|final)\\.mp4$`),
-  timelineFile: (videoId, locale) => new RegExp(`^${videoId}_${locale}_v\\d{3}\\.kdenlive$`),
+  // Canonical `{videoId}_{locale}_v###.kdenlive`, or a friendly slug name (e.g.
+  // founder-story.kdenlive) when the project lives inside the episode media bundle.
+  timelineFile: (videoId, locale) =>
+    new RegExp(`^(${videoId}_${locale}_v\\d{3}|[a-z0-9]+(-[a-z0-9]+)*)\\.kdenlive$`),
   timecode: /^\d{2}:\d{2}:\d{2}\.\d{3}$/,
 };
 

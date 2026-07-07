@@ -1,0 +1,63 @@
+project new --width 1080 --height 1920 --fps-num 30 --fps-den 1 -n founder-story
+bin import footage/01_hook_sdr.mp4 -n hook --type video -d 8.73
+bin import footage/02_first-ride_sdr.mp4 -n first-ride --type video -d 11.60
+bin import footage/03_addictive_sdr.mp4 -n addictive --type video -d 11.50
+bin import footage/04_scattered_sdr.mp4 -n scattered --type video -d 7.47
+bin import footage/05_built-it_sdr.mp4 -n built-it --type video -d 16.80
+bin import footage/06_cta_sdr.mp4 -n cta --type video -d 13.57
+bin import overlays/DBX-APP-S01E002_en-US_9x16_kinetic-captions-hook_v001.mov -n cap-hook --type video -d 8.73
+bin import overlays/DBX-APP-S01E002_en-US_9x16_kinetic-captions-first-ride_v001.mov -n cap-first --type video -d 11.60
+bin import overlays/DBX-APP-S01E002_en-US_9x16_kinetic-captions-addictive_v001.mov -n cap-add --type video -d 11.50
+bin import overlays/DBX-APP-S01E002_en-US_9x16_kinetic-captions-scattered_v001.mov -n cap-scat --type video -d 7.47
+bin import overlays/DBX-APP-S01E002_en-US_9x16_kinetic-captions-built-it_v001.mov -n cap-built --type video -d 16.80
+bin import overlays/DBX-APP-S01E002_en-US_9x16_kinetic-captions-cta_v001.mov -n cap-cta --type video -d 13.57
+bin import overlays/DBX-APP-S01E002_en-US_9x16_brand-title_v001.mov -n brand --type video -d 2.0
+bin import overlays/DBX-APP-S01E002_en-US_9x16_invite-card_v001.mov -n invite --type video -d 4.0
+bin import overlays/DBX-APP-S01E002_en-US_9x16_profile-card_v001.mov -n profile --type video -d 3.0
+bin import music/bgm-vampire-heart.mp3 -n bgm --type audio -d 70
+bin import sfx/riser-1.mp3 -n sfx-riser1 --type audio -d 4.0
+bin import sfx/hit-2.mp3 -n sfx-hit2 --type audio -d 7.5
+bin import sfx/deep-hit.wav -n sfx-deephit --type audio -d 3.9
+bin import sfx/sub-drop.mp3 -n sfx-subdrop --type audio -d 5.5
+bin import sfx/riser-2.mp3 -n sfx-riser2 --type audio -d 3.7
+bin import sfx/hit-3.mp3 -n sfx-hit3 --type audio -d 6.2
+bin import sfx/glitch-1.mp3 -n sfx-glitch1 --type audio -d 0.55
+bin import sfx/glitch-2.mp3 -n sfx-glitch2 --type audio -d 1.39
+bin import sfx/mech-keyboard.wav -n sfx-keys --type audio -d 1.5
+bin import sfx/deep-hit-2.wav -n sfx-deephit2 --type audio -d 9.6
+bin import sfx/riser-3.mp3 -n sfx-riser3 --type audio -d 3.25
+timeline add-track -n V1 --type video
+timeline add-track -n V2-Captions --type video
+timeline add-track -n V3-Brand --type video
+timeline add-track -n A1-Music --type audio
+timeline add-track -n A2-SFX --type audio
+timeline add-clip 0 clip0 -p 0 --in 0 --out 8.73
+timeline add-clip 0 clip1 -p 8.73 --in 0 --out 11.60
+timeline add-clip 0 clip2 -p 20.33 --in 0 --out 11.50
+timeline add-clip 0 clip3 -p 31.83 --in 0 --out 7.47
+timeline add-clip 0 clip4 -p 39.30 --in 0 --out 16.80
+timeline add-clip 0 clip5 -p 56.10 --in 0 --out 13.57
+timeline add-clip 1 clip6 -p 0 --in 0 --out 8.73
+timeline add-clip 1 clip7 -p 8.73 --in 0 --out 11.60
+timeline add-clip 1 clip8 -p 20.33 --in 0 --out 11.50
+timeline add-clip 1 clip9 -p 31.83 --in 0 --out 7.47
+timeline add-clip 1 clip10 -p 39.30 --in 0 --out 16.80
+timeline add-clip 1 clip11 -p 56.10 --in 0 --out 13.57
+timeline add-clip 2 clip12 -p 44.0 --in 0 --out 2.0
+timeline add-clip 2 clip13 -p 61.8 --in 0 --out 4.0
+timeline add-clip 2 clip14 -p 66.0 --in 0 --out 3.0
+timeline add-clip 3 clip15 -p 0 --in 0 --out 69.67
+timeline add-clip 4 clip16 -p 5.0 --in 0 --out 1.9
+timeline add-clip 4 clip17 -p 7.0 --in 0 --out 1.5
+timeline add-clip 4 clip18 -p 9.6 --in 0 --out 1.5
+timeline add-clip 4 clip19 -p 11.5 --in 0 --out 2.0
+timeline add-clip 4 clip20 -p 25.0 --in 0 --out 1.8
+timeline add-clip 4 clip21 -p 26.9 --in 0 --out 1.5
+timeline add-clip 4 clip22 -p 34.6 --in 0 --out 0.55
+timeline add-clip 4 clip23 -p 35.6 --in 0 --out 1.0
+timeline add-clip 4 clip24 -p 40.2 --in 0 --out 1.2
+timeline add-clip 4 clip25 -p 44.0 --in 0 --out 1.5
+timeline add-clip 4 clip26 -p 57.0 --in 0 --out 1.9
+timeline add-clip 4 clip17 -p 62.0 --in 0 --out 1.5
+timeline list
+export xml -o founder-story.kdenlive

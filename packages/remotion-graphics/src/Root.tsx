@@ -6,8 +6,16 @@ import type {ChecklistCardProps} from './components/ChecklistCard';
 import {Cover, coverSchema} from './components/Cover';
 import {CtaCard, ctaCardSchema} from './components/CtaCard';
 import type {CtaCardProps} from './components/CtaCard';
+import {BrandTitle, brandTitleSchema} from './components/BrandTitle';
+import type {BrandTitleProps} from './components/BrandTitle';
 import {HookTitle, hookTitleSchema} from './components/HookTitle';
 import type {HookTitleProps} from './components/HookTitle';
+import {InviteCard, inviteCardSchema} from './components/InviteCard';
+import type {InviteCardProps} from './components/InviteCard';
+import {KineticCaptions, kineticCaptionsSchema} from './components/KineticCaptions';
+import type {KineticCaptionsProps} from './components/KineticCaptions';
+import {ProfileCard, profileCardSchema} from './components/ProfileCard';
+import type {ProfileCardProps} from './components/ProfileCard';
 import {LowerThird, lowerThirdSchema} from './components/LowerThird';
 import type {LowerThirdProps} from './components/LowerThird';
 import {PhoneFeature, phoneFeatureSchema} from './components/PhoneFeature';
@@ -121,6 +129,88 @@ export const RemotionRoot: React.FC = () => {
           srt: SAMPLE_SRT,
           emphasis: ['clutch'],
           durationSec: 30,
+        }}
+      />
+
+      {/* ── E002 branded overlays (DirtBikeX logo, founder identity, invite) ── */}
+      <Composition
+        id="brand-title"
+        component={BrandTitle}
+        schema={brandTitleSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(2 * FPS)}
+        calculateMetadata={overlayMetadata<BrandTitleProps>(2)}
+        defaultProps={{durationSec: 2, tagline: 'built by a rider'}}
+      />
+      <Composition
+        id="profile-card"
+        component={ProfileCard}
+        schema={profileCardSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(3 * FPS)}
+        calculateMetadata={overlayMetadata<ProfileCardProps>(3)}
+        defaultProps={{
+          durationSec: 3,
+          src: 'e002/rubio-profile.jpg',
+          handle: '@rubio',
+        }}
+      />
+      <Composition
+        id="invite-card"
+        component={InviteCard}
+        schema={inviteCardSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(4 * FPS)}
+        calculateMetadata={overlayMetadata<InviteCardProps>(4)}
+        defaultProps={{
+          durationSec: 4,
+          name: 'Zenkai Rubio',
+          invited: 'invited you to DirtBikeX',
+          qrSrc: 'e002/invite-qr.png',
+          cta: 'Scan to join — or grab the invite code in the description',
+          footer: "I'll be waiting for you there",
+        }}
+      />
+      <Composition
+        id="kinetic-captions"
+        component={KineticCaptions}
+        schema={kineticCaptionsSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(8 * FPS)}
+        calculateMetadata={overlayMetadata<KineticCaptionsProps>(8)}
+        defaultProps={{
+          durationSec: 8,
+          fontScale: 1,
+          window: 12,
+          words: [
+            {t: 'Nobody', s: 0.0, e: 'harsh'},
+            {t: 'tells', s: 0.4},
+            {t: 'you', s: 0.62},
+            {t: 'this', s: 0.85},
+            {t: 'when', s: 1.15},
+            {t: 'you', s: 1.35},
+            {t: 'first', s: 1.6},
+            {t: 'start', s: 1.9},
+            {t: 'dirt', s: 2.2},
+            {t: 'biking.', s: 2.5},
+            {t: 'The', s: 3.1},
+            {t: 'hard', s: 3.35},
+            {t: 'part', s: 3.6},
+            {t: 'is', s: 3.85},
+            {t: 'finding', s: 4.1},
+            {t: 'somebody', s: 4.45},
+            {t: 'who', s: 4.8},
+            {t: 'gets', s: 5.05, e: 'brand'},
+            {t: 'it.', s: 5.35, e: 'brand'},
+          ],
         }}
       />
 
