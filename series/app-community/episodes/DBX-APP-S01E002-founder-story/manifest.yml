@@ -130,6 +130,8 @@ outputs:
       - DBX-APP-S01E002_en-US_9x16_brand-title_v001.mov
       - DBX-APP-S01E002_en-US_9x16_profile-card_v001.mov
       - DBX-APP-S01E002_en-US_9x16_invite-card_v001.mov
+      - DBX-APP-S01E002_en-US_9x16_feature-phones-built-it_v001.mov
+      - DBX-APP-S01E002_en-US_9x16_feature-phones-cta_v001.mov
       - DBX-APP-S01E002_en-US_9x16_kinetic-captions-hook_v001.mov
       - DBX-APP-S01E002_en-US_9x16_kinetic-captions-first-ride_v001.mov
       - DBX-APP-S01E002_en-US_9x16_kinetic-captions-addictive_v001.mov

@@ -1,0 +1,7 @@
+{
+  "durationSec": 3.6,
+  "phones": [
+    {"src": "lang-full.mp4", "trimSec": 4.0, "label": "21 languages"},
+    {"src": "embed.mp4", "trimSec": 0, "label": "Post once"}
+  ]
+}

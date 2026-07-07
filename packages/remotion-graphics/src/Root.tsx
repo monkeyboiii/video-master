@@ -8,6 +8,8 @@ import {CtaCard, ctaCardSchema} from './components/CtaCard';
 import type {CtaCardProps} from './components/CtaCard';
 import {BrandTitle, brandTitleSchema} from './components/BrandTitle';
 import type {BrandTitleProps} from './components/BrandTitle';
+import {FeaturePhones, featurePhonesSchema} from './components/FeaturePhones';
+import type {FeaturePhonesProps} from './components/FeaturePhones';
 import {HookTitle, hookTitleSchema} from './components/HookTitle';
 import type {HookTitleProps} from './components/HookTitle';
 import {InviteCard, inviteCardSchema} from './components/InviteCard';
@@ -170,11 +172,25 @@ export const RemotionRoot: React.FC = () => {
         calculateMetadata={overlayMetadata<InviteCardProps>(4)}
         defaultProps={{
           durationSec: 4,
-          name: 'Zenkai Rubio',
-          invited: 'invited you to DirtBikeX',
-          qrSrc: 'e002/invite-qr.png',
-          cta: 'Scan to join — or grab the invite code in the description',
-          footer: "I'll be waiting for you there",
+          src: 'e002/invite-card.png',
+          patchLabel: 'New riders welcome',
+        }}
+      />
+      <Composition
+        id="feature-phones"
+        component={FeaturePhones}
+        schema={featurePhonesSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(3.5 * FPS)}
+        calculateMetadata={overlayMetadata<FeaturePhonesProps>(3.5)}
+        defaultProps={{
+          durationSec: 3.5,
+          phones: [
+            {src: 'lang-full.mp4', trimSec: 4.0, label: '21 languages'},
+            {src: 'embed.mp4', trimSec: 0, label: 'Post once'},
+          ],
         }}
       />
       <Composition

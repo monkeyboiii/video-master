@@ -20,8 +20,8 @@ export const kineticCaptionsSchema = z.object({
   durationSec: z.number(),
   words: z.array(captionWordSchema),
   fontScale: z.number().default(1),
-  /** Max words shown at once (older ones scroll off) — streaming feel. */
-  window: z.number().default(12),
+  /** Max words shown at once (older ones scroll off). Kept small = one line. */
+  window: z.number().default(6),
 });
 
 export type KineticCaptionsProps = z.infer<typeof kineticCaptionsSchema>;
@@ -52,7 +52,7 @@ export const KineticCaptions: React.FC<KineticCaptionsProps> = ({
   const opacity =
     interpolate(frame, [0, 3], [0, 1], {extrapolateRight: 'clamp'}) *
     exitFade(frame, durationInFrames);
-  const fontSize = 66 * fontScale;
+  const fontSize = 60 * fontScale;
 
   return (
     <AbsoluteFill
@@ -60,22 +60,24 @@ export const KineticCaptions: React.FC<KineticCaptionsProps> = ({
         justifyContent: 'flex-end',
         alignItems: 'center',
         paddingBottom: SAFE_ZONE.bottom + 24,
-        paddingLeft: 70,
-        paddingRight: 70,
+        paddingLeft: 40,
+        paddingRight: 40,
         opacity,
       }}
     >
       <div
         style={{
           background: scrim(0.6),
-          borderRadius: 26,
-          padding: '22px 30px',
+          borderRadius: 22,
+          padding: '14px 26px',
           display: 'flex',
-          flexWrap: 'wrap',
+          flexWrap: 'nowrap',
+          whiteSpace: 'nowrap',
           justifyContent: 'center',
           alignItems: 'baseline',
-          gap: '2px 18px',
-          maxWidth: 940,
+          gap: '0 16px',
+          maxWidth: 1000,
+          overflow: 'hidden',
         }}
       >
         {shown.map((i, k) => {

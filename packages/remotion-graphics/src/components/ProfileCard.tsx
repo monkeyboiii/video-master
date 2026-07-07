@@ -48,12 +48,17 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({src, handle}) => {
 
   return (
     <AbsoluteFill
-      style={{justifyContent: 'center', alignItems: 'center', opacity}}
+      style={{
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        paddingBottom: 190,
+        opacity,
+      }}
     >
       <div
         style={{
           position: 'relative',
-          width: 900,
+          width: 860,
           transform: `translateY(${(1 - cardIn) * 60}px) scale(${0.9 + cardIn * 0.1})`,
         }}
       >

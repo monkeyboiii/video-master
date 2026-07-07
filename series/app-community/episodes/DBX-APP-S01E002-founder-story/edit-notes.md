@@ -4,6 +4,28 @@ Rough cut assembled programmatically via `kdenlive-build.repl` (cli-anything-kde
 → `media/DBX-APP-S01E002/founder-story.kdenlive` (portable, relative paths).
 Human polishes zoom keyframes + final timing in Kdenlive on Mac, then renders.
 
+## v2 revision (current cut) — what changed from v1
+
+- **Trailing pauses cropped**: each clip is cut at its speech end (silencedetect), so the
+  click/pause between takes is gone. New contiguous timeline ≈ 65.75s (was 69.7).
+- **Captions**: single bottom line now (rolling 6-word window), not 3 lines. Baseline
+  unchanged (bottom, above safe zone). cta captions **stop at "…description."** — no
+  captions over "My name is Rubio / waiting for you there".
+- **Feature phones (E1 app clips)**: `feature-phones-built-it` (language + post-once, side
+  by side) at 47.5s and `feature-phones-cta` (sponsorship) at 54.5s, in the lower third so
+  they cover the caption line during the demo.
+- **Invite card**: the real invite-card.png used directly, "Instagram people welcome!"
+  patched to "New riders welcome" (platform-agnostic), placed **bottom-leading at ~50%
+  opacity** (no longer over the face). QR kept.
+- **Profile card**: moved to the **lower third** (where the subtitle sits), on "My name
+  is Rubio".
+- **Audio**: music down to ~10% (VO-first); SFX swapped to **short/recognizable** only
+  (hits, glitches, camera shutter on feature pops, one short whoosh) — deep whoosh / deep
+  hits / sub-drop removed.
+- **Kdenlive-native**: after export, `tools/kdenlive-nativize.py --vertical` repoints the
+  root producer to `maintractor`, adds numeric `kdenlive:id` to every producer, renames
+  `clipN`→`producerN`, and fixes the 9:16 profile. Validated (no unresolved refs).
+
 ## Track layout
 
 | Track | Content |
