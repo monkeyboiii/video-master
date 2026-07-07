@@ -17,6 +17,13 @@ merely transcribe it), and audit variant pairs for localization quality.
 ## Outputs
 
 - `subtitles/<locale>.srt` — timed, emphasis-aware subtitle text
+- **Word-timed caption map** — per-beat `remotion-props/captions.<beat>.json` derived from
+  the SRT: each word `{t, s, e?}` (text, start-seconds-into-clip, emphasis `brand`|`harsh`),
+  by distributing words across each cue and tagging emphasis from the script (worked-example
+  generator: the episode's `caption-map.mjs`). This is the
+  pre-edit sync artifact the editing agent works off — captions, SFX hits, zoom, and
+  overlay in/out points all key to it (see `skills/06-kdenlive-editing.md`). **Line up the
+  subtitles with the timeline before editing starts; editing before it's locked is guessing.**
 - If burned-in subtitles are wanted (a per-episode creative choice — platform-native
   captions are the default): render the `subtitle-track` composition with
   `node tools/render-overlays.mjs <episode-dir> <locale> --comp=subtitle-track` — it

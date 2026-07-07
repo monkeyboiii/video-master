@@ -13,16 +13,36 @@ attention device the edit deploys:
 | Composition | Retention role |
 |-------------|----------------|
 | `hook-title` | First-frame grab — big hook text at 0.0s |
-| `subtitle-track` | Kinetic captions: word pacing + keyword highlight guide the eye |
+| `subtitle-track` | Kinetic captions from an SRT: word pacing + keyword highlight |
+| `kinetic-captions` | Word-by-word streaming captions in a **fixed bounded panel**, keyword color (`brand`/`harsh`) — driven by the word-timed caption map, one render per beat |
 | `checklist-card` | Save-worthy value; each tick is a pattern-interrupt beat (pair with dings) |
 | `stage-cards` | Segment reset / pattern interrupt between chapters |
 | `lower-third` | Context without stopping the flow |
-| `cta-card` | Ending expectation (save/comment/follow) |
+| `brand-title` | Branded logo stinger (wordmark + orange X) on the product reveal |
+| `profile-card` | Founder identity card — an in-app profile screenshot, framed |
+| `feature-phones` | Side-by-side app screen-recordings; per-phone **segments + freeze-on-last-frame** so a demo holds past its line |
+| `cta-card` / `invite-card` | Ending expectation — CTA card, or real invite art + scannable QR (patch text over platform-specific lines) |
 
 A retention device we don't have yet (callout arrow, circle highlight, zoom box, animated
 sticker, motion tracking — text/arrow following the subject, mask reveal) is a **new
 component through the design-system PR path** — themed, locale-aware, registered,
 documented — never a one-off hack inside an episode.
+
+Patterns learned on S01E002:
+
+- **Per-beat variants of one composition.** For overlays that recur per beat (e.g.
+  `kinetic-captions`, `feature-phones`), keep one composition and render it once per beat
+  with `--props=<episode>/remotion-props/<comp>.<beat>.json`, output named
+  `{VIDEO_ID}_{locale}_{aspect}_{comp}-<beat>_v###.mov`. The overlay naming pattern allows
+  the optional `-<variant>` suffix; keep those props files tracked in the episode dir.
+- **Overlays position themselves.** A card meant for a corner / centered / lower-third
+  bakes that placement (and opacity) into the component, so the same `.mov` is correct in
+  Kdenlive and in any flatten preview. The edit composites it full-frame — no per-clip
+  Transform for placement.
+- **Freeze-on-last-frame for demo clips.** To hold an app screen-recording past its line,
+  give the component per-phone *segments* ending in a still (`.png`) — extract the clip's
+  last frame (`ffmpeg -sseof -0.15 -i clip.mp4 -frames:v 1 clip-freeze.png`) and play
+  `video → freeze` so each phone can hold while the VO continues.
 
 ## Inputs
 

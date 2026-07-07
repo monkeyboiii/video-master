@@ -11,12 +11,24 @@ The edit follows the retention-editing doctrine in `docs/golden-rules.md` (Edit 
 section): first-second grab, a pattern interrupt every 1–3 seconds, SFX as punctuation,
 subtitles as navigation, engineered reasons to keep watching — and never over-edited.
 
+**Lock the subtitle→timeline map before editing (learned on S01E002).** The single most
+useful pre-edit artifact is a **word-timed caption map** synced to the timeline: every
+spoken word with its timecode and its emphasis tag. It is what lets the edit know *where
+to look* — which words to color, where each SFX hit lands, where to punch in/out, and
+when to drop an overlay. Build it first (from the SRT), then everything downstream —
+kinetic captions, SFX placement, zoom cues, overlay in/out points — reads off the same
+timeline. Editing before the caption timing is locked means guessing; don't.
+
 ## Inputs
 
 - `manifest.yml` — beats (purpose per beat), `assets.raw`, `assets.selected`, variant timing
 - `storyboard.md` — the shot plan: framing, transitions, caption/overlay and SFX intents
   per shot (the retention plan's first commitment)
 - `script.<locale>.md` — spoken lines **and emphasis words** (they anchor the retention plan)
+- **Word-timed caption map** — per-beat `remotion-props/captions.<beat>.json`: each word
+  `{t, s, e?}` (text, start-seconds-into-clip, emphasis `brand`|`harsh`). Generated from
+  `subtitles/<locale>.srt` by distributing words across each cue and tagging emphasis from
+  the script. This is the timeline reference for captions, SFX, zoom, and overlay timing.
 - `brief.md` — the designed reactions the edit must serve
 - Rendered overlays in `media/overlays/`, `subtitles/<locale>.srt`
 - `templates/kdenlive/` seed projects (if present)
@@ -80,6 +92,12 @@ stack can't deliver):
 - **SFX palette (A2, licensed per `media/README.md`, recorded in `assets.audio`):**
   click/pop, whoosh, hit/impact, ding, riser, record-scratch/glitch, bass drop — usage
   table in `docs/golden-rules.md`. Accents at key moments; breathing room elsewhere.
+  **Selection (learned on S01E002):** prefer **short, recognizable, low-impact** cues —
+  a soft whoosh, a light click, a camera shutter on a UI pop, a subtle static for
+  "scattered/outdated." **Avoid long/deep/boomy** (deep whoosh, sub-drop, heavy impacts)
+  unless a beat genuinely needs weight — they read as over-produced and muddy the VO.
+  One accent per emphasis word or turn; keep levels low (≈0.4–0.6) and **most seconds
+  carry no SFX**. The voice is the priority: music sits ~10% under the VO, not competing.
 
 ## Timeline generation policy (current decision)
 
@@ -89,19 +107,43 @@ stack can't deliver):
 - **Template seeds:** small `.kdenlive` templates with this track layout may live in
   `templates/kdenlive/` (relative paths, saved by the pinned Kdenlive version). They are
   generate-once seeds — never hand-merge or diff Kdenlive-saved XML; regenerate instead.
-- **Programmatic rough cut (`cli-anything-kdenlive`):** an agent can pre-assemble the
-  timeline via the `cli-anything-kdenlive` CLI (installed; see
-  `.claude/skills/cli-anything-kdenlive/SKILL.md`). It's REPL-stateful — pipe a command
-  script into `uvx cli-anything-kdenlive` (project new → bin import → add-track →
-  add-clip → `export xml`), and it emits an MLT/`.kdenlive` with **relative** media
-  paths, so the project is portable across machines. Run it from **inside the episode
+- **Programmatic rough cut — always via `cli-anything-kdenlive`.** Never hand-write or
+  hand-merge MLT/`.kdenlive` XML; assemble through the CLI (installed; see
+  `.claude/skills/cli-anything-kdenlive/SKILL.md`) and regenerate, never diff-edit. It's
+  REPL-stateful — pipe a command script into `uvx cli-anything-kdenlive` (project new →
+  bin import → add-track → add-clip → `export xml`), emitting an MLT/`.kdenlive` with
+  **relative** media paths (portable across machines). Run it from **inside the episode
   media bundle** so paths stay relative; keep the command script tracked as
-  `kdenlive-build.repl` in the episode dir (production logic — regenerate the `.kdenlive`
-  from it). Known gotchas: pass `--width/--height/--fps-num/--fps-den` for a vertical
-  profile, then post-fix the profile's `sample_aspect`→1:1 and `display_aspect`→9:16
-  (the CLI defaults them to 16:9); it has no subtitle or alpha-composite transition
+  `kdenlive-build.repl` in the episode dir (production logic — regenerate from it).
+- **Make it Kdenlive-native after every export (learned on S01E002).** The CLI emits
+  lightweight MLT that Kdenlive flags as invalid/corrupt: the root `<mlt producer=…>`
+  points at a non-existent producer, bin producers are `clipN` with **no** numeric
+  `kdenlive:id`, and vertical projects get a 16:9 / non-square sample aspect. After
+  `export xml`, run:
+
+  ```bash
+  python3 tools/kdenlive-nativize.py media/<VIDEO_ID>/<name>.kdenlive --vertical
+  ```
+
+  It repoints the root to `maintractor`, adds a unique `kdenlive:id` to every producer,
+  renames `clipN`→`producerN`, fixes the 9:16 profile, and validates that every
+  `producer=` reference resolves (fails on any dangling ref). Only then does the project
+  open cleanly on another machine. The CLI has no subtitle or alpha-composite transition
   support, so import the SRT and confirm overlay compositing in Kdenlive on open.
-  Worked example: `series/app-community/episodes/DBX-APP-S01E001-made-for-riders/kdenlive-build.repl`.
+- **Trim trailing pauses before stitching (learned on S01E002).** Talking-head takes
+  usually end with a pause + the stop-recording tap. Before threading clips back to back,
+  set each clip's out-point at its **speech end** — detect it with
+  `ffmpeg -i clip -af silencedetect=noise=-32dB:d=0.35 -f null -` and use the last
+  `silence_start` (+~0.15s) as the out. This removes the dead gap/click between takes and
+  tightens the cut; captions/SFX/overlay positions are then computed off the trimmed
+  cumulative timeline.
+- **Overlays position themselves; the timeline places them full-frame.** A card that must
+  sit bottom-left, centered, or lower-third bakes that placement into the Remotion
+  component (so the same overlay is correct in Kdenlive *and* any flatten preview) — the
+  timeline just drops the full-frame `.mov` at its in-point on an overlay track. Don't
+  rely on per-clip Transform for placement of agent-rendered overlays.
+  Worked example: `series/app-community/episodes/DBX-APP-S01E002-founder-story/kdenlive-build.repl`
+  + `tools/kdenlive-nativize.py`.
 - **Template seeds / OTIO** remain fallbacks: small `.kdenlive` seeds in
   `templates/kdenlive/`, or OpenTimelineIO import (Kdenlive ≥ 25.04; carries
   tracks/clips/markers, not effects). Never hand-merge or diff Kdenlive-saved XML —
@@ -111,7 +153,10 @@ stack can't deliver):
 
 1. From the storyboard + reading script + probe data, choose selects per beat: `assets.selected`
    entries with `source_asset_id`, `in`, `out`, `beat`. Respect per-locale
-   `target_duration_sec` (selects may differ slightly per locale).
+   `target_duration_sec` (selects may differ slightly per locale). When a clip ends with a
+   pause/stop-tap, set its `out` at the **speech end** (silencedetect — see toolbox). Then
+   build/refresh the **word-timed caption map** (Inputs) so cut, caption, SFX, and zoom
+   positions all reference one locked timeline before anything is assembled.
 2. Verify every overlay the beats need exists in `media/overlays/` at the right
    version (else run `skills/05-remotion-graphics.md` first).
 3. Write `edit-notes.md` in the format above (if it doesn't exist yet, copy
