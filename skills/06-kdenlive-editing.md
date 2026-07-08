@@ -110,11 +110,19 @@ stack can't deliver):
 - **Programmatic rough cut — always via `cli-anything-kdenlive`.** Never hand-write or
   hand-merge MLT/`.kdenlive` XML; assemble through the CLI (installed; see
   `.claude/skills/cli-anything-kdenlive/SKILL.md`) and regenerate, never diff-edit. It's
-  REPL-stateful — pipe a command script into `uvx cli-anything-kdenlive` (project new →
-  bin import → add-track → add-clip → `export xml`), emitting an MLT/`.kdenlive` with
-  **relative** media paths (portable across machines). Run it from **inside the episode
-  media bundle** so paths stay relative; keep the command script tracked as
+  REPL-stateful (project new → bin import → add-track → add-clip → `export xml`), emitting
+  an MLT/`.kdenlive` with **relative** media paths (portable across machines). Run it from
+  **inside the episode media bundle** so paths stay relative; keep the command script tracked as
   `kdenlive-build.repl` in the episode dir (production logic — regenerate from it).
+- **Run the repl with `tools/kdenlive-run.sh <build.repl>`, never with a pipe.** The REPL
+  refuses non-TTY stdin: `cat build.repl | cli-anything-kdenlive` prints
+  `Warning: Input is not a terminal`, executes **nothing**, and **exits 0** — leaving the
+  previous `.kdenlive` in place, so the run looks successful and you ship a stale timeline.
+  Its subcommands aren't a workaround either: each invocation loads the project file and
+  throws its mutations away (`bin import` then `timeline add-clip` → "Track not found: 0").
+  `kdenlive-run.sh` hands it a pty via `script(1)`, then asserts the export was written and
+  warns if the bytes didn't change. After any regeneration, grep the `.kdenlive` for a clip
+  you *removed* — that is the cheapest proof the export really re-ran.
 - **Make it Kdenlive-native after every export (learned on S01E002).** The CLI emits
   lightweight MLT that Kdenlive flags as invalid/corrupt: the root `<mlt producer=…>`
   points at a non-existent producer, bin producers are `clipN` with **no** numeric
@@ -205,8 +213,19 @@ stack can't deliver):
   audio. Cheap to check; a silently drifted lip-sync is not recoverable downstream.
   Note that enhanced renders usually arrive **already tone-mapped to SDR with rotation
   baked** — re-running the HDR chain on them double-maps and washes the image out.
-- **Music serves the voice.** Delay its entry past the hook (`adelay`), keep it ~10% under
-  the VO, and duck it (×0.5) across any sustained SFX bed so the two never stack on a line.
+- **Music serves the voice.** A flat ~10% bed under the VO, running the whole video, is the
+  default and it wins. Pushing its entry back (`adelay`) and ducking it around a cue was tried
+  on S01E002/E003 and rejected — it draws attention to the seam. If a moment needs lift, spend
+  a *short* accent on it, not a sustained bed: a stretched 2.8s whoosh under narration smears
+  the line it was meant to sell.
+- **Freeze the frame the recording rushes past.** Screen recordings spend 0.5s on the thing the
+  viewer needs 1.5s to read. Chop to few, long takes and end each on a **held frame** — grab a
+  still and concat it, rather than making the viewer catch it live. Hold the payoff, cut the
+  waiting (spinners, saves, toasts, transitions): the result is what the narration promised.
+- **`setpts` drops the frame-rate hint.** After `fps=30,select=...,setpts=N/30/TB`, a following
+  `tpad` reads `stop_duration` against a bogus rate (1.11s silently became 2 frames) and libx264
+  quietly encodes 25 fps. Re-assert `fps=30` after `setpts`, and pass `-fps_mode cfr -r 30`.
+  Always `ffprobe nb_frames,r_frame_rate` the chop — a wrong-fps clip still *looks* fine.
 - Timecodes are `HH:MM:SS.mmm`, source-relative (not timeline-relative).
 - Every retention move has a function (emphasis, turn, explanation, humor, information
   gap). If every second screams, nothing lands — over-editing fails review.

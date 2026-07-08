@@ -19,21 +19,23 @@ Skill followed: `skills/06-kdenlive-editing.md` (+ `skills/05-remotion-graphics.
   caption overlays are **deleted** — subtitles no longer fade out between beats.
   Word selection is by **width budget**, not word count, so the just-spoken emphasis word
   can never clip out of the bounded panel.
-- **Photo reveal** (`photo-reveal`, 9.95–14.15s): `first-ride.jpg` fills the frame and
-  **zooms out** (scale 1.32→1.00, ease-out cubic) right after "…first ride was **brutal**".
-  Middle stays sharp under a radial mask; the surround is gently blurred (11px). Top and
-  bottom edges are cropped to **16px chromatic bars** that sweep across the reveal.
+- **Photo reveal** (`photo-reveal`, 9.95–14.15s): `first-ride.jpg` **zooms out** (scale
+  1.32→1.00, ease-out cubic) right after "…first ride was **brutal**". The outer **fifth at each
+  end** is a blurred, dimmed fill of the same photo — the short-form "blurred letterbox" — and
+  the middle three fifths carries it sharp. The sharp band cover-fits, cropping 384 photo rows;
+  `objectPositionY: 92` throws 353 of those off the **top**, because the photo's top 30% is empty
+  underpass deck. The blurred fill uses `object-fit: fill` (not `cover`) so its horizontal mapping
+  matches the sharp band and the subject doesn't slide sideways across the seam.
   It sits on V2 (below the captions) — the captions read **over** the photo.
 - **Logo backdrop** (`brand-title` @41.5s): the frame behind the logo is now blurred like
   an ultra-thin material (8px, −14% brightness). A Remotion overlay renders against
   transparency, so `backdrop-filter` is a no-op — the backdrop is **baked** by feeding a
   footage segment (`public/e002/bg-brand.mp4`) into the comp. That makes the overlay
   **opaque**, so it lives on V2, *under* the caption track.
-- **Suspense whoosh**: `sfx/whoosh-cinematic.wav` pitched down + stretched to 2.78s
-  (`asetrate=44100*0.72,aresample=48000,atempo=0.66`) → `sfx/whoosh-suspense.wav`, laid
-  under the photo reveal at 9.45s. Kept at **0.34** vs music 0.10 so the VO stays clear.
-- **Music pushed back**: `adelay=2500` (starts at 2.5s, after the hook lands) and **ducked
-  ×0.5 across 9.2–12.6s** so the whoosh has room without ever fighting the voice.
+- **No suspense whoosh.** A 2.78s pitched-down whoosh bed under the photo reveal was tried and
+  cut: it smeared the line rather than lifting it. The photo entrance is marked by the existing
+  0.31s `simple-whoosh-2`, moved from 8.90 → **9.95** so it lands on the cut instead of dead air.
+  Music is back at **0.00s, full length, flat 10%** — no `adelay` push-back, no duck.
 
 ## Track layout
 
@@ -43,7 +45,7 @@ Skill followed: `skills/06-kdenlive-editing.md` (+ `skills/05-remotion-graphics.
 | V2 · Backdrop | `photo-reveal` @9.95 (4.2s) · `brand-title` @41.5 (2.0s) — **opaque, must stay below captions** |
 | V3 · Captions | `kinetic-captions` — one clip, 0→63.8s |
 | V4 · Overlays | `feature-phones-built-it` @47.5 · `feature-phones-cta` @54.5 · `invite-card` @59.5 · `profile-card` @63.8 |
-| A1 · Music | `bgm-vampire-heart.mp3` from 2.5s, ~10%, ducked ×0.5 over the whoosh |
+| A1 · Music | `bgm-vampire-heart.mp3` from 0.0s, full length, flat ~10% under the VO |
 | A2 · SFX | see map below |
 
 Cuts are **hard cuts only**. Zoom (punch-in / pull-out) is **not baked** — add it as
@@ -69,9 +71,9 @@ SFX: `hit-1` @6.90. Captions: "Nobody" harsh, "gets it" brand.
 
 ### first-ride · 7.90–18.90
 V1 clip1. V2: **photo-reveal 9.95–14.15**.
-SFX: `simple-whoosh-2` @8.90 · **`whoosh-suspense` @9.45 (2.78s, 0.34)**.
+SFX: `simple-whoosh-2` @9.95 (0.31s, on the cut to the photo).
 Zoom: escalating push-ins per hardship. Captions: "brutal / 100 / degrees" harsh
-("brutal," @9.57 — the photo lands on it).
+("brutal," @9.57 — the photo lands just after it).
 
 ### addictive · 18.90–29.80
 V1 clip2. Zoom: pull-out on "couldn't stop", punch-in on "addictive".
@@ -102,14 +104,17 @@ the emphasis word lists, scales each SRT's word times by `dur / (srtEnd − trim
 ends overshoot real speech), and **throws** if a word would land past the track end. Run it
 before rendering captions; never hand-edit `captions.all.json` or `subtitles/en-US.srt`.
 
-After `export xml`, run `tools/kdenlive-nativize.py <file> --vertical`: it repoints the root
-producer at `maintractor`, adds a numeric `kdenlive:id` to every producer, renames
-`clipN`→`producerN`, fixes the 9:16 profile, and validates every `producer=` ref resolves.
-Kdenlive reports the raw CLI export as corrupt without it.
+Rebuild the timeline with `tools/kdenlive-run.sh <episode>/kdenlive-build.repl`, run from
+inside the media bundle — **never** by piping the repl into `cli-anything-kdenlive`, which
+refuses non-TTY stdin, runs nothing, and exits 0, leaving the old `.kdenlive` untouched.
+Then run `tools/kdenlive-nativize.py <file> --vertical`: it repoints the root producer at
+`maintractor`, adds a numeric `kdenlive:id` to every producer, renames `clipN`→`producerN`,
+fixes the 9:16 profile, and validates every `producer=` ref resolves. Kdenlive reports the
+raw CLI export as corrupt without it.
 
 ## DECIDE (human, on the Mac)
 - Add punch-in/pull-out Transform keyframes per the `Zoom:` lines (not baked).
-- Balance SFX levels against the ducked music; confirm the whoosh doesn't mask "brutal".
+- Balance SFX levels; music is a flat 10% bed with no ducking, so watch the two `hit-1`s.
 - `brief.md` still names E001 as this episode's teaser sibling — E001 was deleted (quality).
   Re-point or drop that line before publish.
 

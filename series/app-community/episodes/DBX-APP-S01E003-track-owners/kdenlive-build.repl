@@ -15,7 +15,6 @@ bin import music/bgm-vampire-heart.mp3 -n bgm --type audio -d 54
 bin import sfx/hit-1.mp3 -n sfx-hit1 --type audio -d 2.64
 bin import sfx/simple-whoosh-1.wav -n sfx-whoosh1 --type audio -d 0.47
 bin import sfx/shutter.mp3 -n sfx-shutter --type audio -d 0.65
-bin import sfx/whoosh-suspense.wav -n sfx-suspense --type audio -d 2.78
 timeline add-track -n V1 --type video
 timeline add-track -n V2-Backdrop --type video
 timeline add-track -n V3-Captions --type video
@@ -34,9 +33,8 @@ timeline add-clip 3 clip8 -p 23.03 --in 0 --out 5.92
 timeline add-clip 3 clip9 -p 28.95 --in 0 --out 7.95
 timeline add-clip 3 clip10 -p 36.90 --in 0 --out 5.06
 timeline add-clip 3 clip11 -p 47.80 --in 0 --out 2.8
-timeline add-clip 4 clip12 -p 2.5 --in 0 --out 51.11
+timeline add-clip 4 clip12 -p 0 --in 0 --out 53.61
 timeline add-clip 5 clip13 -p 2.90 --in 0 --out 0.8
-timeline add-clip 5 clip16 -p 13.80 --in 0 --out 2.78
 timeline add-clip 5 clip14 -p 18.05 --in 0 --out 0.47
 timeline add-clip 5 clip15 -p 23.03 --in 0 --out 0.6
 timeline add-clip 5 clip15 -p 28.95 --in 0 --out 0.6

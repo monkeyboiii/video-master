@@ -1,9 +1,12 @@
 {
   "durationSec": 5.92,
   "src": "e003/flair_cut.mp4",
-  "x": 24,
-  "y": 96,
-  "w": 391,
-  "h": 852,
-  "markers": []
+  "x": 24, "y": 96, "w": 391, "h": 852,
+  "_layout": "clip: A 0-2.60 · menu hold 2.60-3.50 · flair set 3.50-4.50 · worn hold 4.50-5.97",
+  "markers": [
+    {"_": "Track Stewards row in the flair menu (src 884x1920 px 270,858 540x102)",
+     "from": 2.05, "to": 3.48, "x": 0.3054, "y": 0.4469, "w": 0.6109, "h": 0.0531},
+    {"_": "avatar + its new flair badge on the profile tab (px 26,236 232x240)",
+     "from": 4.62, "to": 5.88, "x": 0.0294, "y": 0.1229, "w": 0.2624, "h": 0.1250}
+  ]
 }

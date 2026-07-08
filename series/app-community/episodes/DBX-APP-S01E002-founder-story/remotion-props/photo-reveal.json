@@ -4,6 +4,8 @@
   "startScale": 1.32,
   "endScale": 1.0,
   "objectPositionX": 62,
-  "blurPx": 11,
-  "barPx": 16
+  "objectPositionY": 92,
+  "bandFrac": 0.2,
+  "blurPx": 40,
+  "bandDim": 0.22
 }

@@ -13,8 +13,8 @@ renders on the Mac.
 | V2 · Backdrop | `brand-title` @18.05 (2.0s) — **opaque** (baked blur backdrop), must stay below captions |
 | V3 · Captions | **One continuous** caption overlay (`kinetic-captions`, 0–53.61s) |
 | V4 · Overlays | `side-screen` ×3 (flair / create / rsvp) · `profile-card` @47.80 |
-| A1 · Music | `bgm-vampire-heart.mp3` from 2.5s, ~10%, ducked ×0.5 over the whoosh |
-| A2 · SFX | shutter on each screen entrance, the suspense whoosh, plus soft accents |
+| A1 · Music | `bgm-vampire-heart.mp3` from 0.0s, full length, flat ~10% under the VO |
+| A2 · SFX | shutter on each screen entrance, plus two soft accents |
 
 Hard cuts only, everywhere — including *inside* the screen recordings (pure cutting out).
 Zoom (punch-in/out) is **not baked**; add it as Transform keyframes on V1 on the Mac.
@@ -67,9 +67,29 @@ and every boundary lands on a settled frame.
 
 | Source | Kept | Result | Removed |
 |---|---|---|---|
-| `07_screen-flair.mov` 8.60s | `[0–2.40] [3.85–6.25] [7.45–8.57]` | 5.92s | Edit-Profile dwell/scroll, save-dim |
+| `07_screen-flair.mov` 8.60s | `[2.35–4.95]` + still@4.90 0.90s + `[5.18–6.18]` + still@8.58 1.45s | 5.97s | head dwell, **the whole save** (spinner 6.22–7.45, "Saved" toast 7.5–8.0), the push transition |
 | `08_screen-create.mov` 58.45s | `[1.55–3.00] [21.60–23.02] [36.95–38.70] [40.05–40.80] [42.45–43.35] [50.72–52.40]` | **7.95s** | name typing, location typing, RSVP/max fiddling, reminders detour, compose; **~7.6s of the "Setting up the editor…" wait** |
-| `09_screen-rsvp.mp4` 15.63s | `[0–2.75] [7.85–8.30] [10.45–11.13] [12.30–13.50]` | **5.08s** | **~3.4s map spinner**; trimmed so the overlay ends inside its own beat |
+| `09_screen-rsvp.mp4` 15.63s | `[0.30–1.85] [7.85–9.05] [13.40–14.60]` + 1.11s freeze | **5.10s** | **~2.8s map spinner** (map paints at 7.8); the recurring-event **action sheet** (9.9–11.9) |
+
+### Two of the three screens hold on their payoff
+`flair` and `rsvp` were re-cut after review: the old versions had too many, too-short segments
+and no markers, so nothing registered. Both now use **few, long takes ending on a held frame**.
+
+`flair` (5.92s slot): Edit Profile → scroll → the Flair menu opens (**Track Stewards** boxed) →
+**0.90s still of the open menu**, because the menu is only opaque and stable for 0.60s of real
+footage → flair now reads "Track Stewards", Save lit → hard cut past the entire save → **1.45s
+still of the profile tab**, the **avatar and its new badge** boxed. The save (spinner, dim,
+"Saved: Account" toast) is gone: the flair is chosen, then it is simply worn.
+
+`rsvp` (5.06s slot): Events tab (**event card** boxed — that's the tap) → event detail with the
+**map** boxed (the map only paints at src 7.8; the spinner is dropped) → **Going ✓** boxed →
+1.11s freeze. The recurring-event action sheet is dropped entirely — with 5.06s, showing it
+would starve the payoff.
+
+Both stills are grabbed frames, not `tpad`, because the frame worth holding is not the last
+frame of the preceding segment. **Watch the filter order**: `setpts` drops the frame-rate hint,
+so a following `tpad` reads `stop_duration` against a bogus rate (1.11s became 2 frames) and
+libx264 quietly writes 25 fps. Re-assert `fps=30` after `setpts`.
 
 ### The create sequence tells a whole story
 The narration promises event creation, so the overlay now shows it end to end — set the
@@ -81,9 +101,8 @@ read it**. Overlay-relative: `A 0–1.45` form · `B 1.45–2.87` date + locatio
 
 Because those cuts jump the UI around, `side-screen.create.json` overlays **orange tap
 markers** (breathing outline + glow, snap-in over 5 frames) on the Recurrence row and on the
-Next button, so the viewer can see *what got tapped*. Markers are `%`-relative to the screen
-box, so they survive any re-placement. **Only this overlay uses them** — the other two read
-fine without.
+Next button, so the viewer can see *what got tapped*. All three screens now carry markers;
+they are `%`-relative to the screen box, so they survive any re-placement.
 
 `rsvp` gave its budget to `create`: it now ends at 41.96, inside its own beat. It has to —
 see Screen placement.
@@ -111,8 +130,7 @@ between features.
 ## Assembly plan — en-US
 
 ### hook 0.00–15.48
-V1 clip0 · captions. **SFX** soft hit @2.90 ("discover") ·
-**`whoosh-suspense` @13.80 (2.78s, 0.34)** carrying into the logo. **Zoom** slow punch-in.
+V1 clip0 · captions. **SFX** soft hit @2.90 ("discover"). **Zoom** slow punch-in.
 Captions: `never` / `discover` harsh red.
 
 ### why 15.48–23.03
@@ -120,36 +138,48 @@ V1 clip1 · V2 `brand-title` @18.05 (2.0s) — lands on the word "DirtBikeX" @18
 own blurred backdrop *(comp reused from E002)*. **SFX** soft whoosh @18.05.
 
 ### flair 23.03–28.95
-V1 clip2 · V4 `side-screen-flair` (full beat). **SFX** **shutter @23.03**.
+V1 clip2 · V4 `side-screen-flair` (full beat) — markers on the **Track Stewards** option and
+then on the **avatar** wearing the new flair. **SFX** **shutter @23.03**.
 
 ### create 28.95–36.90
 V1 clip3 · V4 `side-screen-create` **7.95s** — overruns its narration beat by 2.89s and
 finishes over `rsvp`, which is what buys the held final result. **SFX** **shutter @28.95**.
 
 ### rsvp 36.90–41.96
-V1 clip4 · V4 `side-screen-rsvp` **5.08s** — starts at 36.90 so the Events tab appears
-exactly as he says "**Events** tab," (@37.20). **SFX** **shutter @36.90**.
+V1 clip4 · V4 `side-screen-rsvp` **5.06s** — starts at 36.90 so the Events tab appears
+exactly as he says "**Events** tab," (@37.20). Markers on the event card, the **map**, and the
+**Going ✓** pill. **SFX** **shutter @36.90**.
 
 ### cta 41.98–53.61
 V1 clip5 · V4 `profile-card` @47.80 (2.8s) — clears at 50.60 **before** "comment / OWNER"
 so the CTA words stay readable *(reused from E002)*. **SFX** soft hit @47.80.
 
 ## Audio
-VO from the clips. Music enters at **2.5s** (`adelay=2500`) at ~10%, **ducked ×0.5 across
-13.6–16.8s** so the suspense whoosh has room without ever fighting the voice.
-SFX all short/low-impact, no deep hits:
-hit @2.90 · **whoosh-suspense @13.80** · whoosh @18.05 · **shutter @23.03, @28.95, @36.90** ·
-hit @47.80.
+VO from the clips. Music runs the whole video from **0.00s** at a flat ~10% under the VO —
+no `adelay` push-back, no ducking. SFX all short/low-impact, no deep hits:
+hit @2.90 · whoosh @18.05 · **shutter @23.03, @28.95, @36.90** · hit @47.80.
 
-`sfx/whoosh-suspense.wav` is generated from `sfx/whoosh-cinematic.wav` (Mixkit 1492) with
-`asetrate=44100*0.72,aresample=48000,atempo=0.66` → pitched down, stretched to 2.78s, at 0.34.
+**No suspense whoosh.** A 2.78s pitched-down whoosh bed was tried under the hook→logo turn and
+cut: it smeared the line instead of lifting it.
+
+## Regenerating
+
+Rebuild the timeline with `tools/kdenlive-run.sh <episode>/kdenlive-build.repl`, run from
+inside the media bundle — **never** by piping the repl into `cli-anything-kdenlive`, which
+refuses non-TTY stdin, runs nothing, and exits 0, leaving the old `.kdenlive` untouched.
+Then run `tools/kdenlive-nativize.py <file> --vertical`: it repoints the root producer at
+`maintractor`, adds a numeric `kdenlive:id` to every producer, renames `clipN`→`producerN`,
+fixes the 9:16 profile, and validates every `producer=` ref resolves. Kdenlive reports the
+raw CLI export as corrupt without it.
+
+Screen chops come from `screen-chop.sh`; caption timing from `caption-map.mjs`. Never hand-edit
+`captions.all.json`, `subtitles/en-US.srt`, or the chopped `screens/*.mp4`.
 
 ## DECIDE (human, on the Mac)
 - Add punch-in/pull-out Transform keyframes per the `Zoom:` intents (not baked).
 - No `invite-card` this episode — the CTA is "comment OWNER", not a QR.
-- Music/SFX levels: confirm the shutter sits right at each screen entrance.
-- `rsvp`'s map is now a 0.45s glimpse. If it reads as a flicker, drop it entirely and give
-  the "Going ✓" payoff its 1.2s back.
+- Music/SFX levels: confirm the shutter sits right at each screen entrance. Music is a flat
+  10% bed with no ducking.
 
 ## Preview
 Rough-cut flatten (no zooms):

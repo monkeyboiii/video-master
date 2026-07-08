@@ -1,6 +1,14 @@
 {
-  "durationSec": 5.08,
+  "durationSec": 5.06,
   "src": "e003/rsvp_cut.mp4",
   "x": 24, "y": 96, "w": 391, "h": 852,
-  "markers": []
+  "_layout": "clip: Events 0-1.57 · detail+map 1.57-2.77 · Going 2.77-4.00 · freeze 4.00-5.10",
+  "markers": [
+    {"_": "the Track Open Day event card — the tap (src 1170x2532 px 22,572 1130x560)",
+     "from": 0.30, "to": 1.50, "x": 0.0188, "y": 0.2259, "w": 0.9658, "h": 0.2212},
+    {"_": "the map on the event detail (px 62,1438 1046x452)",
+     "from": 1.72, "to": 2.72, "x": 0.0530, "y": 0.5679, "w": 0.8940, "h": 0.1785},
+    {"_": "the Going pill + label, held through the freeze (px 400,2186 208x186)",
+     "from": 2.95, "to": 4.95, "x": 0.3419, "y": 0.8633, "w": 0.1778, "h": 0.0735}
+  ]
 }

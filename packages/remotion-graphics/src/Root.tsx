@@ -148,7 +148,14 @@ export const RemotionRoot: React.FC = () => {
         fps={FPS}
         durationInFrames={Math.round(2 * FPS)}
         calculateMetadata={overlayMetadata<BrandTitleProps>(2)}
-        defaultProps={{durationSec: 2, tagline: 'built by a rider'}}
+        defaultProps={{
+          durationSec: 2,
+          tagline: 'built by a rider',
+          // no bgSrc in Studio: the baked backdrop is opted into per-episode via props
+          bgTrimSec: 0,
+          bgBlurPx: 8,
+          bgDim: 0.14,
+        }}
       />
       <Composition
         id="profile-card"
@@ -213,9 +220,11 @@ export const RemotionRoot: React.FC = () => {
           src: 'e002/first-ride.jpg',
           startScale: 1.32,
           objectPositionX: 62,
+          objectPositionY: 92,
           endScale: 1.0,
-          blurPx: 11,
-          barPx: 16,
+          bandFrac: 0.2,
+          blurPx: 40,
+          bandDim: 0.22,
         }}
       />
       <Composition
