@@ -5,19 +5,21 @@ bin import footage/03_flair_sdr.mp4 -n flair --type video -d 5.93
 bin import footage/04_create_sdr.mp4 -n create --type video -d 5.07
 bin import footage/05_rsvp_sdr.mp4 -n rsvp --type video -d 8.00
 bin import footage/06_cta_sdr.mp4 -n cta --type video -d 11.63
-bin import overlays/DBX-APP-S01E003_en-US_9x16_kinetic-captions_v001.mov -n captions --type video -d 53.61
-bin import overlays/DBX-APP-S01E003_en-US_9x16_side-screen-flair_v001.mov -n scr-flair --type video -d 5.92
-bin import overlays/DBX-APP-S01E003_en-US_9x16_side-screen-create_v001.mov -n scr-create --type video -d 5.06
-bin import overlays/DBX-APP-S01E003_en-US_9x16_side-screen-rsvp_v001.mov -n scr-rsvp --type video -d 7.97
+bin import overlays/DBX-APP-S01E003_en-US_9x16_kinetic-captions_v001.mov -n captions --type video -d 53.60
 bin import overlays/DBX-APP-S01E003_en-US_9x16_brand-title_v001.mov -n brand --type video -d 2.0
+bin import overlays/DBX-APP-S01E003_en-US_9x16_side-screen-flair_v001.mov -n scr-flair --type video -d 5.93
+bin import overlays/DBX-APP-S01E003_en-US_9x16_side-screen-create_v001.mov -n scr-create --type video -d 7.96
+bin import overlays/DBX-APP-S01E003_en-US_9x16_side-screen-rsvp_v001.mov -n scr-rsvp --type video -d 5.06
 bin import overlays/DBX-APP-S01E003_en-US_9x16_profile-card_v001.mov -n profile --type video -d 2.8
 bin import music/bgm-vampire-heart.mp3 -n bgm --type audio -d 54
 bin import sfx/hit-1.mp3 -n sfx-hit1 --type audio -d 2.64
-bin import sfx/simple-whoosh-1.wav -n sfx-whoosh --type audio -d 0.47
+bin import sfx/simple-whoosh-1.wav -n sfx-whoosh1 --type audio -d 0.47
 bin import sfx/shutter.mp3 -n sfx-shutter --type audio -d 0.65
+bin import sfx/whoosh-suspense.wav -n sfx-suspense --type audio -d 2.78
 timeline add-track -n V1 --type video
-timeline add-track -n V2-Captions --type video
-timeline add-track -n V3-Overlays --type video
+timeline add-track -n V2-Backdrop --type video
+timeline add-track -n V3-Captions --type video
+timeline add-track -n V4-Overlays --type video
 timeline add-track -n A1-Music --type audio
 timeline add-track -n A2-SFX --type audio
 timeline add-clip 0 clip0 -p 0 --in 0 --out 15.48
@@ -26,18 +28,19 @@ timeline add-clip 0 clip2 -p 23.03 --in 0 --out 5.92
 timeline add-clip 0 clip3 -p 28.95 --in 0 --out 5.06
 timeline add-clip 0 clip4 -p 34.01 --in 0 --out 7.97
 timeline add-clip 0 clip5 -p 41.98 --in 0 --out 11.63
-timeline add-clip 1 clip6 -p 0 --in 0 --out 53.61
-timeline add-clip 2 clip10 -p 18.05 --in 0 --out 2.0
-timeline add-clip 2 clip7 -p 23.03 --in 0 --out 5.92
-timeline add-clip 2 clip8 -p 28.95 --in 0 --out 5.06
-timeline add-clip 2 clip9 -p 34.01 --in 0 --out 7.97
-timeline add-clip 2 clip11 -p 47.80 --in 0 --out 2.8
-timeline add-clip 3 clip12 -p 0 --in 0 --out 53.61
-timeline add-clip 4 clip13 -p 2.90 --in 0 --out 0.8
-timeline add-clip 4 clip14 -p 18.05 --in 0 --out 0.47
-timeline add-clip 4 clip15 -p 23.03 --in 0 --out 0.6
-timeline add-clip 4 clip15 -p 28.95 --in 0 --out 0.6
-timeline add-clip 4 clip15 -p 34.01 --in 0 --out 0.6
-timeline add-clip 4 clip13 -p 47.80 --in 0 --out 0.8
+timeline add-clip 1 clip7 -p 18.05 --in 0 --out 2.0
+timeline add-clip 2 clip6 -p 0 --in 0 --out 53.60
+timeline add-clip 3 clip8 -p 23.03 --in 0 --out 5.92
+timeline add-clip 3 clip9 -p 28.95 --in 0 --out 7.95
+timeline add-clip 3 clip10 -p 36.90 --in 0 --out 5.06
+timeline add-clip 3 clip11 -p 47.80 --in 0 --out 2.8
+timeline add-clip 4 clip12 -p 2.5 --in 0 --out 51.11
+timeline add-clip 5 clip13 -p 2.90 --in 0 --out 0.8
+timeline add-clip 5 clip16 -p 13.80 --in 0 --out 2.78
+timeline add-clip 5 clip14 -p 18.05 --in 0 --out 0.47
+timeline add-clip 5 clip15 -p 23.03 --in 0 --out 0.6
+timeline add-clip 5 clip15 -p 28.95 --in 0 --out 0.6
+timeline add-clip 5 clip15 -p 36.90 --in 0 --out 0.6
+timeline add-clip 5 clip13 -p 47.80 --in 0 --out 0.8
 timeline list
 export xml -o track-owners.kdenlive

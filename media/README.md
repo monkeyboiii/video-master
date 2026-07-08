@@ -25,7 +25,7 @@ The type-first layout above is the default. For a video that's ready to hand to 
 on another machine, an alternative is a **self-contained bundle** `media/<VIDEO_ID>/` with
 everything for that one cut in one folder (`footage/`, `overlays/`, `voiceover/`, `music/`,
 subtitles, plus `_source/` backups) and its own `README.txt`. Copy that single folder to
-the editing machine. Example: `media/DBX-APP-S01E001/` (see its README.txt and the
+the editing machine. Example: `media/DBX-APP-S01E003/` (see the
 episode's `edit-notes.md`).
 
 ## External storage

@@ -1,30 +1,28 @@
 project new --width 1080 --height 1920 --fps-num 30 --fps-den 1 -n founder-story
-bin import footage/01_hook_sdr.mp4 -n hook --type video -d 8.73
-bin import footage/02_first-ride_sdr.mp4 -n first-ride --type video -d 11.60
-bin import footage/03_addictive_sdr.mp4 -n addictive --type video -d 11.50
-bin import footage/04_scattered_sdr.mp4 -n scattered --type video -d 7.47
-bin import footage/05_built-it_sdr.mp4 -n built-it --type video -d 16.80
-bin import footage/06_cta_sdr.mp4 -n cta --type video -d 13.57
-bin import overlays/DBX-APP-S01E002_en-US_9x16_kinetic-captions-hook_v001.mov -n cap-hook --type video -d 7.9
-bin import overlays/DBX-APP-S01E002_en-US_9x16_kinetic-captions-first-ride_v001.mov -n cap-first --type video -d 11.0
-bin import overlays/DBX-APP-S01E002_en-US_9x16_kinetic-captions-addictive_v001.mov -n cap-add --type video -d 10.9
-bin import overlays/DBX-APP-S01E002_en-US_9x16_kinetic-captions-scattered_v001.mov -n cap-scat --type video -d 7.05
-bin import overlays/DBX-APP-S01E002_en-US_9x16_kinetic-captions-built-it_v001.mov -n cap-built --type video -d 16.05
-bin import overlays/DBX-APP-S01E002_en-US_9x16_kinetic-captions-cta_v001.mov -n cap-cta --type video -d 12.85
+bin import footage/01_hook_sdr.mp4 -n hook --type video -d 7.93
+bin import footage/02_first-ride_sdr.mp4 -n first-ride --type video -d 11.03
+bin import footage/03_addictive_sdr.mp4 -n addictive --type video -d 10.93
+bin import footage/04_scattered_sdr.mp4 -n scattered --type video -d 7.07
+bin import footage/05_built-it_sdr.mp4 -n built-it --type video -d 16.07
+bin import footage/06_cta_sdr.mp4 -n cta --type video -d 12.87
+bin import overlays/DBX-APP-S01E002_en-US_9x16_kinetic-captions_v001.mov -n captions --type video -d 63.8
+bin import overlays/DBX-APP-S01E002_en-US_9x16_photo-reveal_v001.mov -n photo --type video -d 4.2
 bin import overlays/DBX-APP-S01E002_en-US_9x16_brand-title_v001.mov -n brand --type video -d 2.0
-bin import overlays/DBX-APP-S01E002_en-US_9x16_invite-card_v001.mov -n invite --type video -d 4.0
-bin import overlays/DBX-APP-S01E002_en-US_9x16_profile-card_v001.mov -n profile --type video -d 3.0
 bin import overlays/DBX-APP-S01E002_en-US_9x16_feature-phones-built-it_v001.mov -n feat-built --type video -d 6.0
 bin import overlays/DBX-APP-S01E002_en-US_9x16_feature-phones-cta_v001.mov -n feat-cta --type video -d 4.5
+bin import overlays/DBX-APP-S01E002_en-US_9x16_invite-card_v001.mov -n invite --type video -d 4.0
+bin import overlays/DBX-APP-S01E002_en-US_9x16_profile-card_v001.mov -n profile --type video -d 3.0
 bin import music/bgm-vampire-heart.mp3 -n bgm --type audio -d 66
 bin import sfx/hit-1.mp3 -n sfx-hit1 --type audio -d 2.64
 bin import sfx/simple-whoosh-1.wav -n sfx-whoosh1 --type audio -d 0.47
 bin import sfx/simple-whoosh-2.wav -n sfx-whoosh2 --type audio -d 0.31
 bin import sfx/radio-adjustment.mp3 -n sfx-radio --type audio -d 4.82
 bin import sfx/shutter.mp3 -n sfx-shutter --type audio -d 0.65
+bin import sfx/whoosh-suspense.wav -n sfx-suspense --type audio -d 2.78
 timeline add-track -n V1 --type video
-timeline add-track -n V2-Captions --type video
-timeline add-track -n V3-Overlays --type video
+timeline add-track -n V2-Backdrop --type video
+timeline add-track -n V3-Captions --type video
+timeline add-track -n V4-Overlays --type video
 timeline add-track -n A1-Music --type audio
 timeline add-track -n A2-SFX --type audio
 timeline add-clip 0 clip0 -p 0 --in 0 --out 7.9
@@ -33,25 +31,22 @@ timeline add-clip 0 clip2 -p 18.9 --in 0 --out 10.9
 timeline add-clip 0 clip3 -p 29.8 --in 0 --out 7.05
 timeline add-clip 0 clip4 -p 36.85 --in 0 --out 16.05
 timeline add-clip 0 clip5 -p 52.9 --in 0 --out 12.85
-timeline add-clip 1 clip6 -p 0 --in 0 --out 7.9
-timeline add-clip 1 clip7 -p 7.9 --in 0 --out 11.0
-timeline add-clip 1 clip8 -p 18.9 --in 0 --out 10.9
-timeline add-clip 1 clip9 -p 29.8 --in 0 --out 7.05
-timeline add-clip 1 clip10 -p 36.85 --in 0 --out 16.05
-timeline add-clip 1 clip11 -p 52.9 --in 0 --out 10.9
-timeline add-clip 2 clip12 -p 41.5 --in 0 --out 2.0
-timeline add-clip 2 clip15 -p 47.5 --in 0 --out 6.0
-timeline add-clip 2 clip16 -p 54.5 --in 0 --out 4.5
-timeline add-clip 2 clip13 -p 59.5 --in 0 --out 3.5
-timeline add-clip 2 clip14 -p 63.8 --in 0 --out 2.0
-timeline add-clip 3 clip17 -p 0 --in 0 --out 65.75
-timeline add-clip 4 clip18 -p 6.9 --in 0 --out 0.8
-timeline add-clip 4 clip20 -p 8.9 --in 0 --out 0.31
-timeline add-clip 4 clip19 -p 25.0 --in 0 --out 0.47
-timeline add-clip 4 clip21 -p 32.8 --in 0 --out 0.8
-timeline add-clip 4 clip19 -p 41.5 --in 0 --out 0.47
-timeline add-clip 4 clip22 -p 47.5 --in 0 --out 0.6
-timeline add-clip 4 clip22 -p 54.5 --in 0 --out 0.6
-timeline add-clip 4 clip18 -p 59.5 --in 0 --out 0.8
+timeline add-clip 1 clip7 -p 9.95 --in 0 --out 4.2
+timeline add-clip 1 clip8 -p 41.5 --in 0 --out 2.0
+timeline add-clip 2 clip6 -p 0 --in 0 --out 63.8
+timeline add-clip 3 clip9 -p 47.5 --in 0 --out 6.0
+timeline add-clip 3 clip10 -p 54.5 --in 0 --out 4.5
+timeline add-clip 3 clip11 -p 59.5 --in 0 --out 3.5
+timeline add-clip 3 clip12 -p 63.8 --in 0 --out 2.0
+timeline add-clip 4 clip13 -p 2.5 --in 0 --out 63.25
+timeline add-clip 5 clip14 -p 6.9 --in 0 --out 0.8
+timeline add-clip 5 clip16 -p 8.9 --in 0 --out 0.31
+timeline add-clip 5 clip19 -p 9.45 --in 0 --out 2.78
+timeline add-clip 5 clip15 -p 25.0 --in 0 --out 0.47
+timeline add-clip 5 clip17 -p 32.8 --in 0 --out 0.8
+timeline add-clip 5 clip15 -p 41.5 --in 0 --out 0.47
+timeline add-clip 5 clip18 -p 47.5 --in 0 --out 0.6
+timeline add-clip 5 clip18 -p 54.5 --in 0 --out 0.6
+timeline add-clip 5 clip14 -p 59.5 --in 0 --out 0.8
 timeline list
 export xml -o founder-story.kdenlive

@@ -1,67 +1,55 @@
 1
-00:00:00,000 --> 00:00:03,000
+00:00:00,000 --> 00:00:02,963
 Nobody tells you this when you first start dirt biking.
 
 2
-00:00:03,000 --> 00:00:05,500
+00:00:02,963 --> 00:00:05,431
 The hard part is not about learning how to ride,
 
 3
-00:00:05,500 --> 00:00:08,000
+00:00:05,431 --> 00:00:07,900
 it's actually finding somebody who gets it.
 
 4
-00:00:08,730 --> 00:00:12,730
-My first real ride was brutal.
+00:00:07,900 --> 00:00:18,900
+My first real ride was brutal, it was 100 degrees outside, I was sweating through everything, my legs were shaking, my hands were tired, and honestly I could barely stay on the bike.
 
 5
-00:00:12,730 --> 00:00:16,730
-100 degrees out, sweating through everything,
+00:00:18,900 --> 00:00:22,533
+But you know what the crazy thing is, I couldn't stop thinking about it.
 
 6
-00:00:16,730 --> 00:00:20,330
-legs shaking, hands tired — I could barely stay on the bike.
-
-7
-00:00:20,330 --> 00:00:24,330
-But you know what the crazy thing is? I couldn't stop thinking about it.
-
-8
-00:00:24,330 --> 00:00:28,330
+00:00:22,533 --> 00:00:26,167
 That's when I realized dirt biking is addictive.
 
+7
+00:00:26,167 --> 00:00:29,800
+And it gets even better when you have somebody to share it to.
+
+8
+00:00:29,800 --> 00:00:36,800
+However, most of what I found online felt scattered, outdated, or just not the way I wanted to be built.
+
 9
-00:00:28,330 --> 00:00:31,830
-And it gets even better when you have somebody to share it with.
+00:00:36,850 --> 00:00:42,130
+So as a software engineer, I set out to do the one thing I know how. To build DirtBikeX
 
 10
-00:00:31,830 --> 00:00:35,630
-But most of what I found online felt scattered, outdated,
+00:00:42,130 --> 00:00:48,289
+myself. The kind of place I wish existed. It's got no bloat. You don't have to post
 
 11
-00:00:35,630 --> 00:00:39,300
-or just not the way I wanted it to be built.
-
-12
-00:00:39,300 --> 00:00:44,580
-So as a software engineer, I set out to do the one thing I know how — build DirtBikeX
-
-13
-00:00:44,580 --> 00:00:50,740
-myself. The kind of place I wish existed. No bloat. You don't have to post
-
-14
-00:00:50,740 --> 00:00:56,100
+00:00:48,289 --> 00:00:52,769
 the same thing twice. 21 languages. All the good stuff.
 
-15
-00:00:56,100 --> 00:01:01,300
-Most importantly, a real chance for us to be seen by fellow riders. So if you've been looking
+12
+00:00:52,900 --> 00:00:57,872
+Most importantly, a real chance for us to be seen by fellow riders, so if you've been looking
 
-16
-00:01:01,300 --> 00:01:07,540
-for dirt bike people like me, go check out the invite code in the description. My name is Rubio,
+13
+00:00:57,872 --> 00:01:03,838
+for dirt bike people like me, go and check out the invite code in the description. My name is Rubio
 
-17
-00:01:07,540 --> 00:01:09,670
+14
+00:01:03,838 --> 00:01:05,750
 and I'll be waiting for you there!

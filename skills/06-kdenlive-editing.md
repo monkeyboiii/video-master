@@ -192,6 +192,21 @@ stack can't deliver):
   `edit-notes.md` to match reality afterwards (that record feeds the retro).
 - Overlays must be ProRes 4444 `.mov` (see `skills/05-remotion-graphics.md`). Never ask
   the editor to key or matte an opaque render.
+- **Track order is load-bearing.** Any overlay that bakes its own backdrop is *opaque*, so it
+  belongs on a `V2-Backdrop` track **below** the caption track. Layout that works:
+  `V1 footage · V2 backdrop · V3 captions · V4 overlays · A1 music · A2 SFX`.
+- **iPhone `.MOV` has two audio streams.** `0:1` is the 48 kHz stereo AAC narration; `0:2` is
+  a 4.0 `apac` Apple spatial track with **no decoder** (plus six `mebx` data tracks).
+  ffmpeg's auto-select and `-map 0:a` can grab the spatial one and fail. In
+  `filter_complex`, `[1:a]` picks the first audio stream — correct. Always `ffprobe` before
+  muxing.
+- **Verify sync before swapping in re-encoded footage** (face enhancement, upscales,
+  regrades). Compare frame counts, then cross-correlate RMS envelopes against the original
+  audio. Cheap to check; a silently drifted lip-sync is not recoverable downstream.
+  Note that enhanced renders usually arrive **already tone-mapped to SDR with rotation
+  baked** — re-running the HDR chain on them double-maps and washes the image out.
+- **Music serves the voice.** Delay its entry past the hook (`adelay`), keep it ~10% under
+  the VO, and duck it (×0.5) across any sustained SFX bed so the two never stack on a line.
 - Timecodes are `HH:MM:SS.mmm`, source-relative (not timeline-relative).
 - Every retention move has a function (emphasis, turn, explanation, humor, information
   gap). If every second screams, nothing lands — over-editing fails review.

@@ -117,6 +117,30 @@ web preview artifact. Compositions in this package set these render defaults via
 - Never set a background color on a transparent overlay composition (unset background =
   transparent). If an overlay renders opaque, that is a bug — fix the component, don't
   key it out downstream.
+- **`backdrop-filter` does nothing in an overlay.** An overlay renders in isolation against
+  transparency, so there is no footage behind it to blur or tint. To put a frosted /
+  ultra-thin material behind an element, **bake the backdrop**: pass the footage segment in
+  as a prop (`bgSrc`, in `public/`) and render it, blurred, inside the comp — `BrandTitle`
+  does exactly this. That makes the overlay **opaque for its duration**, so it must then sit
+  on a *lower* track than the captions or it hides them. (Alternative: blur V1 in the
+  compositor.) Never ship a `backdrop-filter` and assume it worked.
+- **Bounded text panels need a width budget, not a word count.** A fixed N-word rolling
+  window clips the just-spoken emphasis word at the panel edge — the exact word the caption
+  exists to land. Select words newest-first while
+  `chars × fontSize × AVG_CHAR_EM + gap ≤ panel − padding`, and treat the word count as an
+  upper bound only. Verify against the *longest* word in the script, not a random frame.
+- **A safe box is only valid on the clips it was measured against.** Overlay placement (the
+  left-hand screen inset, say) is measured against the tightest framing in the set. Reusing
+  it on a clip outside that set — or extending an overlay into the next beat "for
+  continuity" — can land it on the subject's face. Draw the box on the target frame and look
+  before extending.
+- **When cuts make an overlay hard to read, annotate rather than slow down.** A chopped
+  screen recording loses the causal thread (what got tapped?). A breathing orange marker at
+  the tap point, positioned in `%` of the screen box so it survives re-placement, restores
+  it without spending seconds.
+- **QC a value change on the frame that would break, before re-rendering the episode.**
+  Render `--frames=<a>-<b>` at the two or three worst timecodes; an hstack of variants
+  answers "how strong should this be" in seconds instead of a full render round.
 - Text content comes from tracked props files, not hardcoded into components. Components
   are reusable across episodes; props are per-episode.
 - Respect platform safe zones (`docs/platforms.md`): overlay text stays inside the

@@ -69,7 +69,16 @@ beats:
 
 assets:
   # 6 talking-head clips (HLG HDR, -90 rotation -> portrait) + 3 app screen recordings (SDR).
+  # The EDIT uses the enhanced (face-retouched) renders for VIDEO and the original .MOV for
+  # AUDIO — verified frame-synced, zero offset. Each .MOV also carries a 4.0 'apac' spatial
+  # audio track; map the 48k AAC stream (0:1), not ffmpeg's auto-selected "best".
   raw:
+    - {asset_id: RAW_010, filename: 01_1-you-cant.MP4, external_uri: null, sha256: null, notes: "enhanced — VIDEO source for hook"}
+    - {asset_id: RAW_011, filename: 02_2-and-thats.MP4, external_uri: null, sha256: null, notes: "enhanced — VIDEO source for why"}
+    - {asset_id: RAW_012, filename: 03_3-here.MP4, external_uri: null, sha256: null, notes: "enhanced — VIDEO source for flair"}
+    - {asset_id: RAW_013, filename: 04_4-you-can-create.MP4, external_uri: null, sha256: null, notes: "enhanced — VIDEO source for create"}
+    - {asset_id: RAW_014, filename: 05_5-then-fellow-riders.MP4, external_uri: null, sha256: null, notes: "enhanced — VIDEO source for rsvp"}
+    - {asset_id: RAW_015, filename: 06_6-the-idea.MP4, external_uri: null, sha256: null, notes: "enhanced — VIDEO source for cta"}
     - {asset_id: RAW_001, filename: 01_hook.MOV, external_uri: null, sha256: null, notes: "HLG HDR; hook — never discover (16.57s)"}
     - {asset_id: RAW_002, filename: 02_why.MOV, external_uri: null, sha256: null, notes: "HLG HDR; why DirtBikeX (8.63s)"}
     - {asset_id: RAW_003, filename: 03_flair.MOV, external_uri: null, sha256: null, notes: "HLG HDR; feature 1 verified track owner (7.03s)"}
@@ -100,6 +109,11 @@ assets:
       external_uri: null
       source: "DECIDE: YouTube SFX Starter Pack — record origin URL"
       license: "DECIDE: confirm commercial-social license per used file before publish"
+    - asset_id: SFX_002
+      filename: sfx/whoosh-cinematic.wav # stretched+pitched to whoosh-suspense.wav for the mix
+      external_uri: null
+      source: "Mixkit — cinematic whoosh fast transition 1492"
+      license: "DECIDE: confirm Mixkit licence terms for commercial social use"
 
 outputs:
   # ProRes 4444 alpha overlays in media/DBX-APP-S01E003/overlays/

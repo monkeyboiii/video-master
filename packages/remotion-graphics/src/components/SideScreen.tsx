@@ -10,6 +10,18 @@ import {
 } from 'remotion';
 import {z} from 'zod';
 import {exitFade} from '../shared';
+import {dirt} from '../theme/tokens';
+
+/** An orange box drawn over the recording to show what was selected / tapped. Coordinates
+ *  are normalized 0..1 within the screen area; from/to are seconds into this overlay. */
+const markerSchema = z.object({
+  from: z.number(),
+  to: z.number(),
+  x: z.number(),
+  y: z.number(),
+  w: z.number(),
+  h: z.number(),
+});
 
 export const sideScreenSchema = z.object({
   durationSec: z.number().default(6),
@@ -21,6 +33,8 @@ export const sideScreenSchema = z.object({
   y: z.number().default(96),
   w: z.number().default(391),
   h: z.number().default(852),
+  /** Tap/selection highlights — only needed where the chop makes the screen hard to read. */
+  markers: z.array(markerSchema).default([]),
 });
 
 export type SideScreenProps = z.infer<typeof sideScreenSchema>;
@@ -30,9 +44,10 @@ export type SideScreenProps = z.infer<typeof sideScreenSchema>;
  * founder speaks from the right. Stretched to fill the box (objectFit: fill) — the box
  * aspect matches the recordings, so there's no visible distortion. Never covers his face.
  */
-export const SideScreen: React.FC<SideScreenProps> = ({src, x, y, w, h}) => {
+export const SideScreen: React.FC<SideScreenProps> = ({src, x, y, w, h, markers}) => {
   const frame = useCurrentFrame();
   const {fps, durationInFrames} = useVideoConfig();
+  const t = frame / fps;
 
   const inn = spring({
     frame,
@@ -67,6 +82,37 @@ export const SideScreen: React.FC<SideScreenProps> = ({src, x, y, w, h}) => {
           muted
           style={{width: '100%', height: '100%', objectFit: 'fill'}}
         />
+        {markers.map((m, i) => {
+          if (t < m.from || t > m.to) return null;
+          const age = (t - m.from) * fps;
+          // quick snap in, then a slow breathe so it reads without pulling focus
+          const pop = interpolate(age, [0, 5], [0.86, 1], {
+            extrapolateLeft: 'clamp',
+            extrapolateRight: 'clamp',
+          });
+          const breathe = 0.72 + 0.28 * (0.5 + 0.5 * Math.sin(age / 6));
+          return (
+            <div
+              key={i}
+              style={{
+                position: 'absolute',
+                left: `${m.x * 100}%`,
+                top: `${m.y * 100}%`,
+                width: `${m.w * 100}%`,
+                height: `${m.h * 100}%`,
+                border: `3px solid ${dirt[500]}`,
+                borderRadius: 8,
+                boxShadow: `0 0 14px 2px rgba(237,107,0,${0.42 * breathe})`,
+                background: `rgba(237,107,0,${0.1 * breathe})`,
+                transform: `scale(${pop})`,
+                opacity: interpolate(age, [0, 4], [0, 1], {
+                  extrapolateLeft: 'clamp',
+                  extrapolateRight: 'clamp',
+                }),
+              }}
+            />
+          );
+        })}
       </div>
     </AbsoluteFill>
   );

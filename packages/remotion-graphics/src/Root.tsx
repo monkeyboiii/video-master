@@ -16,6 +16,8 @@ import {InviteCard, inviteCardSchema} from './components/InviteCard';
 import type {InviteCardProps} from './components/InviteCard';
 import {KineticCaptions, kineticCaptionsSchema} from './components/KineticCaptions';
 import type {KineticCaptionsProps} from './components/KineticCaptions';
+import {PhotoReveal, photoRevealSchema} from './components/PhotoReveal';
+import type {PhotoRevealProps} from './components/PhotoReveal';
 import {ProfileCard, profileCardSchema} from './components/ProfileCard';
 import type {ProfileCardProps} from './components/ProfileCard';
 import {SideScreen, sideScreenSchema} from './components/SideScreen';
@@ -194,6 +196,26 @@ export const RemotionRoot: React.FC = () => {
           y: 96,
           w: 391,
           h: 852,
+          markers: [],
+        }}
+      />
+      <Composition
+        id="photo-reveal"
+        component={PhotoReveal}
+        schema={photoRevealSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(4.2 * FPS)}
+        calculateMetadata={overlayMetadata<PhotoRevealProps>(4.2)}
+        defaultProps={{
+          durationSec: 4.2,
+          src: 'e002/first-ride.jpg',
+          startScale: 1.32,
+          objectPositionX: 62,
+          endScale: 1.0,
+          blurPx: 11,
+          barPx: 16,
         }}
       />
       <Composition
