@@ -44,6 +44,23 @@ Patterns learned on S01E002:
   last frame (`ffmpeg -sseof -0.15 -i clip.mp4 -frames:v 1 clip-freeze.png`) and play
   `video → freeze` so each phone can hold while the VO continues.
 
+Patterns learned on S01E003:
+
+- **A bounded caption panel must fit words by width, not by count.** With a fixed-width
+  background, a fixed *word* window clips long words at the edges — and the clipped word is
+  always the one just spoken (we lost `DirtBikeX.` and `reminded`). Select the newest words
+  by a **width budget** (`chars × fontSize × ~0.55em + gap ≤ panel − padding`), keeping
+  `window` only as an upper bound. `kinetic-captions` does this.
+- **Continuous whole-video caption track.** Rendering one `kinetic-captions` overlay across
+  the whole timeline (words timed *globally*) makes the rolling window carry across every
+  cut, so subtitles never fade out mid-video. Costs one big ProRes render instead of several
+  small ones; per-beat overlays remain the fallback.
+- **`side-screen`: measure the safe box against the tightest clip.** When footage reserves
+  blank space beside the speaker, the framing usually is **not** identical across takes.
+  Measure the face edge and any prop on the *tightest* clip, then use that one box for every
+  feature so placement stays consistent — and verify by compositing the overlay over the real
+  footage before rendering the rest.
+
 ## Inputs
 
 - `manifest.yml` — beats with `overlay` fields, formats (resolution/fps)

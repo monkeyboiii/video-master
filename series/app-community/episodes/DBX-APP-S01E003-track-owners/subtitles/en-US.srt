@@ -1,0 +1,39 @@
+1
+00:00:00,000 --> 00:00:05,805
+You can't show up to a dirt bike event you never discover, and honestly, that's what I felt as a new rider.
+
+2
+00:00:05,805 --> 00:00:11,610
+If you don't already know the track name, follow the right Instagram page, or know somebody who's plugged in,
+
+3
+00:00:11,610 --> 00:00:15,480
+you might just never find out there's a ride day happening right next to you.
+
+4
+00:00:15,508 --> 00:00:18,329
+And that's one of the reasons why I'm building DirtBikeX.
+
+5
+00:00:18,329 --> 00:00:23,030
+I want tracks to be easier to find, and exactly where riders are looking.
+
+6
+00:00:23,030 --> 00:00:28,670
+Here, if you run a dirt bike track, you can get verified as a track owner so riders know your updates are real.
+
+7
+00:00:28,950 --> 00:00:34,010
+You can create ride days, races, open practices, and even reoccurring events.
+
+8
+00:00:34,010 --> 00:00:41,980
+Then, fellow riders can find them in the Events tab, filter what's nearby, RSVP, and get reminded before it starts.
+
+9
+00:00:41,980 --> 00:00:47,795
+The idea is simple, help riders find places to ride, and help tracks to get more people to show up.
+
+10
+00:00:47,795 --> 00:00:53,610
+My name is Rubio, and if you're a track owner, comment "OWNER" and I'll send you the link!

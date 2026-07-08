@@ -1,0 +1,121 @@
+# Episode manifest — source of truth for this episode.
+# Schema notes: docs/production-model.md · naming: docs/naming-conventions.md
+# Validate with: node tools/validate.mjs
+
+video_id: "DBX-APP-S01E003" # DBX-{SERIES}-S{ss}E{eee}
+slug: "track-owners"
+series: "app-community"
+status: editing # topic|packaging|scripting|shooting|editing|qc|published|retro
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+# Track-owner promotion. Narration was recorded first — there is NO authored reading script;
+# script.en-US.md is the transcript of record and the .srt files are the subtitles.
+# Raw ~58.7s; pause-cropped timeline = 53.61s. Edit plan in storyboard.md.
+variants:
+  en-US:
+    script: script.en-US.md
+    cover: cover.en-US.md
+    subtitles: subtitles/en-US.srt
+    # No single locale props file: this episode renders per-comp / per-beat props
+    # (remotion-props/captions.all.json, side-screen.{flair,create,rsvp}.json, ...).
+    remotion_props: null
+    voiceover_asset_id: null # narration is diegetic in the talking-head clips
+    platforms: [tiktok, ytshorts, reels]
+
+# One continuous caption overlay spans the whole video, so each beat's `overlay` below
+# names that beat's *distinctive* overlay. See storyboard.md.
+beats:
+  - id: hook
+    purpose: name the discovery gap — you can't attend what you never find out about
+    visual_intent: founder to camera; slow punch-in; "never/discover" in harsh red
+    overlay: kinetic-captions
+    target_duration_sec:
+      en-US: 15.48
+  - id: why
+    purpose: why DirtBikeX exists — put tracks where riders already look
+    visual_intent: brand-title logo lands on the word "DirtBikeX"
+    overlay: brand-title
+    target_duration_sec:
+      en-US: 7.55
+  - id: flair
+    purpose: feature 1 — track owners get verified so their updates read as real
+    visual_intent: side screen (left blank space) — Edit Profile → flair → Track Stewards
+    overlay: side-screen
+    target_duration_sec:
+      en-US: 5.92
+  - id: create
+    purpose: feature 2 — create ride days, races, open practices, recurring events
+    visual_intent: side screen — New Event form → filled → Recurrence "Every other Wednesday"
+    overlay: side-screen
+    target_duration_sec:
+      en-US: 5.06
+  - id: rsvp
+    purpose: feature 3 — riders discover in the Events tab, RSVP, get reminded
+    visual_intent: side screen — Events tab → detail → (map loading cut) → RSVP → Going
+    overlay: side-screen
+    target_duration_sec:
+      en-US: 7.97
+  - id: cta
+    purpose: turn it into one action — track owners comment "OWNER" for the link
+    visual_intent: profile-card on "My name is Rubio", clears before the CTA words
+    overlay: profile-card
+    target_duration_sec:
+      en-US: 11.63
+
+assets:
+  # 6 talking-head clips (HLG HDR, -90 rotation -> portrait) + 3 app screen recordings (SDR).
+  raw:
+    - {asset_id: RAW_001, filename: 01_hook.MOV, external_uri: null, sha256: null, notes: "HLG HDR; hook — never discover (16.57s)"}
+    - {asset_id: RAW_002, filename: 02_why.MOV, external_uri: null, sha256: null, notes: "HLG HDR; why DirtBikeX (8.63s)"}
+    - {asset_id: RAW_003, filename: 03_flair.MOV, external_uri: null, sha256: null, notes: "HLG HDR; feature 1 verified track owner (7.03s)"}
+    - {asset_id: RAW_004, filename: 04_create.MOV, external_uri: null, sha256: null, notes: "HLG HDR; feature 2 create events (5.60s)"}
+    - {asset_id: RAW_005, filename: 05_rsvp.MOV, external_uri: null, sha256: null, notes: "HLG HDR; feature 3 events tab / RSVP (8.57s)"}
+    - {asset_id: RAW_006, filename: 06_cta.MOV, external_uri: null, sha256: null, notes: "HLG HDR; close + comment OWNER (12.33s)"}
+    - {asset_id: RAW_007, filename: 07_screen-flair.mov, external_uri: null, sha256: null, notes: "screen rec 884x1920; profile → flair → Track Stewards (8.60s)"}
+    - {asset_id: RAW_008, filename: 08_screen-create.mov, external_uri: null, sha256: null, notes: "screen rec 1170x2532; New Event, incl. ~9s editor loading (58.45s)"}
+    - {asset_id: RAW_009, filename: 09_screen-rsvp.mp4, external_uri: null, sha256: null, notes: "screen rec 1170x2532; Events tab → RSVP, incl. map loading (15.63s)"}
+  # Narration selects = speech-end trims (silencedetect). Screen-recording chops are
+  # multi-segment pure cuts — spec + reproduction in screen-chop.sh.
+  selected:
+    - {asset_id: SEL_001, source_asset_id: RAW_001, in: "00:00:00.000", out: "00:00:15.480", beat: hook}
+    - {asset_id: SEL_002, source_asset_id: RAW_002, in: "00:00:00.210", out: "00:00:07.760", beat: why}
+    - {asset_id: SEL_003, source_asset_id: RAW_003, in: "00:00:00.350", out: "00:00:06.270", beat: flair}
+    - {asset_id: SEL_004, source_asset_id: RAW_004, in: "00:00:00.000", out: "00:00:05.060", beat: create}
+    - {asset_id: SEL_005, source_asset_id: RAW_005, in: "00:00:00.000", out: "00:00:07.970", beat: rsvp}
+    - {asset_id: SEL_006, source_asset_id: RAW_006, in: "00:00:00.000", out: "00:00:11.630", beat: cta}
+  voiceover: [] # narration embedded in the talking-head clips
+  audio:
+    - asset_id: MUS_001
+      filename: bgm-vampire-heart.mp3
+      external_uri: null
+      source: "DECIDE: record library/vendor + track URL"
+      license: "DECIDE: confirm cleared for commercial social use before publish"
+    - asset_id: SFX_PACK_001
+      filename: sfx/ # hit-1, simple-whoosh-1, shutter (shutter = screen-overlay entrance)
+      external_uri: null
+      source: "DECIDE: YouTube SFX Starter Pack — record origin URL"
+      license: "DECIDE: confirm commercial-social license per used file before publish"
+
+outputs:
+  # ProRes 4444 alpha overlays in media/DBX-APP-S01E003/overlays/
+  overlays:
+    en-US:
+      - DBX-APP-S01E003_en-US_9x16_kinetic-captions_v001.mov
+      - DBX-APP-S01E003_en-US_9x16_side-screen-flair_v001.mov
+      - DBX-APP-S01E003_en-US_9x16_side-screen-create_v001.mov
+      - DBX-APP-S01E003_en-US_9x16_side-screen-rsvp_v001.mov
+      - DBX-APP-S01E003_en-US_9x16_brand-title_v001.mov
+      - DBX-APP-S01E003_en-US_9x16_profile-card_v001.mov
+  covers: {}
+  kdenlive:
+    en-US: media/DBX-APP-S01E003/track-owners.kdenlive
+  # Rough-cut flatten for review; final renders on the Mac from the .kdenlive.
+  exports:
+    en-US:
+      - DBX-APP-S01E003_en-US_tiktok_9x16_v001_review.mp4
+  published: {}

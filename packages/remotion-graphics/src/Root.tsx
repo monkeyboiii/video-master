@@ -18,6 +18,8 @@ import {KineticCaptions, kineticCaptionsSchema} from './components/KineticCaptio
 import type {KineticCaptionsProps} from './components/KineticCaptions';
 import {ProfileCard, profileCardSchema} from './components/ProfileCard';
 import type {ProfileCardProps} from './components/ProfileCard';
+import {SideScreen, sideScreenSchema} from './components/SideScreen';
+import type {SideScreenProps} from './components/SideScreen';
 import {LowerThird, lowerThirdSchema} from './components/LowerThird';
 import type {LowerThirdProps} from './components/LowerThird';
 import {PhoneFeature, phoneFeatureSchema} from './components/PhoneFeature';
@@ -174,6 +176,24 @@ export const RemotionRoot: React.FC = () => {
           durationSec: 4,
           src: 'e002/invite-card.png',
           patchLabel: 'New riders welcome',
+        }}
+      />
+      <Composition
+        id="side-screen"
+        component={SideScreen}
+        schema={sideScreenSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(6 * FPS)}
+        calculateMetadata={overlayMetadata<SideScreenProps>(6)}
+        defaultProps={{
+          durationSec: 6,
+          src: 'e003/flair_cut.mp4',
+          x: 24,
+          y: 96,
+          w: 391,
+          h: 852,
         }}
       />
       <Composition

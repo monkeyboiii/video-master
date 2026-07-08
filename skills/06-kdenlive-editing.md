@@ -130,6 +130,16 @@ stack can't deliver):
   `producer=` reference resolves (fails on any dangling ref). Only then does the project
   open cleanly on another machine. The CLI has no subtitle or alpha-composite transition
   support, so import the SRT and confirm overlay compositing in Kdenlive on open.
+- **Chopping screen recordings (learned on S01E003).** App demos are mostly dead time. Cut
+  each recording down to **exactly the length of the line it plays under**, with *pure cuts*
+  — `-vf "fps=30,select='between(t,a1,b1)+between(t,a2,b2)+…',setpts=N/30/TB"`, muted, no
+  transitions. Rules that earned their keep: (a) verify **every boundary lands on a settled
+  frame** (contact-sheet the recording, then frame-check each cut) — never mid-animation or
+  mid-keystroke; (b) cut typing, spinners and long waits, but **keep a ~0.5s glimpse** of a
+  loading step rather than erasing it, or the action looks like it never happened; (c) check
+  the **payoff holds** — our RSVP "Going ✓" confirmation was only 0.27s until we rebalanced
+  it; (d) align the segment that answers the line's key word (e.g. "reoccurring") to that
+  word's timecode from the caption map. Keep the spec in a tracked `screen-chop.sh`.
 - **Trim trailing pauses before stitching (learned on S01E002).** Talking-head takes
   usually end with a pause + the stop-recording tap. Before threading clips back to back,
   set each clip's out-point at its **speech end** — detect it with

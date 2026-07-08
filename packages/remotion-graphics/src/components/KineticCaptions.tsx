@@ -29,6 +29,13 @@ export type KineticCaptionsProps = z.infer<typeof kineticCaptionsSchema>;
 const colorFor = (e?: 'brand' | 'harsh'): string =>
   e === 'brand' ? dirt[400] : e === 'harsh' ? moto.red : bone[50];
 
+/** The caption background is a fixed-width box, so the line must be fitted to it. */
+const PANEL_WIDTH = 880;
+const PANEL_PAD_X = 26;
+const WORD_GAP = 16;
+/** Approx advance width of Bricolage Grotesque ExtraBold, in em per character. */
+const AVG_CHAR_EM = 0.55;
+
 /**
  * Streaming captions: words appear one-by-one as spoken (like a message typing
  * out), accumulate in a rolling window, keyword-colored. Bottom-anchored above
@@ -43,16 +50,31 @@ export const KineticCaptions: React.FC<KineticCaptionsProps> = ({
   const {fps, durationInFrames} = useVideoConfig();
   const t = frame / fps;
 
-  const revealedIdx: number[] = [];
-  words.forEach((w, i) => {
-    if (t >= w.s) revealedIdx.push(i);
-  });
-  const shown = revealedIdx.slice(-win);
-
   const opacity =
     interpolate(frame, [0, 3], [0, 1], {extrapolateRight: 'clamp'}) *
     exitFade(frame, durationInFrames);
   const fontSize = 60 * fontScale;
+
+  const revealedIdx: number[] = [];
+  words.forEach((w, i) => {
+    if (t >= w.s) revealedIdx.push(i);
+  });
+
+  // The panel is a fixed-width box, so pick the newest words by a WIDTH budget rather than
+  // a fixed count — otherwise long words (e.g. "DirtBikeX.", "reminded") get clipped at the
+  // edges, and the clipped one is always the word just spoken. `window` is an upper bound.
+  const usable = PANEL_WIDTH - PANEL_PAD_X * 2;
+  const shown: number[] = [];
+  let used = 0;
+  for (let k = revealedIdx.length - 1; k >= 0 && shown.length < win; k--) {
+    const idx = revealedIdx[k];
+    const wPx =
+      words[idx].t.length * fontSize * AVG_CHAR_EM + (shown.length ? WORD_GAP : 0);
+    if (shown.length > 0 && used + wPx > usable) break;
+    used += wPx;
+    shown.unshift(idx);
+  }
+  const scrolledOff = shown.length < revealedIdx.length;
 
   return (
     <AbsoluteFill
@@ -75,8 +97,8 @@ export const KineticCaptions: React.FC<KineticCaptionsProps> = ({
           whiteSpace: 'nowrap',
           justifyContent: 'center',
           alignItems: 'baseline',
-          gap: '0 16px',
-          width: 880,
+          gap: `0 ${WORD_GAP}px`,
+          width: PANEL_WIDTH,
           overflow: 'hidden',
         }}
       >
@@ -92,7 +114,7 @@ export const KineticCaptions: React.FC<KineticCaptionsProps> = ({
             extrapolateRight: 'clamp',
           });
           const isLatest = i === shown[shown.length - 1];
-          const ageFade = k === 0 && shown.length >= win ? 0.4 : 1;
+          const ageFade = k === 0 && scrolledOff ? 0.4 : 1;
           return (
             <span
               key={i}
