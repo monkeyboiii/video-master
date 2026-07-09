@@ -222,6 +222,33 @@ stack can't deliver):
   viewer needs 1.5s to read. Chop to few, long takes and end each on a **held frame** — grab a
   still and concat it, rather than making the viewer catch it live. Hold the payoff, cut the
   waiting (spinners, saves, toasts, transitions): the result is what the narration promised.
+- **A multi-scene overlay clip needs per-scene dwell, not whatever the recording gave it.**
+  When one clip walks through several screens, budget each scene by how long it takes to *read*,
+  and **freeze-extend the ones the recording short-changed** — especially the last, which is
+  usually the payoff and usually the shortest. On S01E002 the third app (the rival forum with
+  its logo blurred) had 0.94s of real footage and was extended to 1.54s with a cloned tail;
+  before that it flashed past. Budget the beat first, then decide what to extend or cut.
+  (`fps=30` must be re-asserted before `tpad` — see the `setpts` note below.)
+- **Overlays enter, they don't appear.** A card, phone cutout, or logo that hard-cuts in reads
+  as a glitch; the same overlay that **rises ~70px from below with an ease-out over ~0.45s while
+  its alpha fades in over ~0.35s** reads as intentional. And the **blur behind it must fade with
+  it** (~0.35–0.40s in *and* out) — an `enable`-gated blur snaps the whole background in one
+  frame, which is exactly the hardness you feel. Match the entrance to whatever the episode's
+  logo/invite card already does; one motion language per video.
+    ```
+    # rise: offset = 70*(1-p)^2, p = clamp((t-START)/0.45, 0, 1)
+    overlay=x=(W-w)/2:y='TOP+70*pow(1-min(1,max(0,(t-START)/0.45)),2)'
+    # and the blur, faded rather than enable-gated:
+    [copy]boxblur=20:2,format=yuva420p,fade=t=in:st=..:d=0.40:alpha=1,fade=t=out:st=..:d=0.40:alpha=1
+    ```
+  **Each blur window needs its own copy of the base.** `fade=t=in` forces alpha to 0 for every
+  frame *before* its `st`, so chaining a second `fade=in` onto the same stream silently erases
+  the first window. `split` the base once per window (S01E002 splits four ways: sharp + three
+  blurred copies) — or write a single alpha envelope with `geq`, which is slower.
+  Note this is not a *shot* transition: cuts between clips stay hard. Only overlays ease in.
+- **Check the overlay's bottom edge against the caption panel.** The caption band is a fixed
+  box (S01E002: y1372–1466). A centred card whose bottom lands on it looks like a collision even
+  though captions composite on top. Leave ~80–90px of air; move the card up rather than shrink it.
 - **Redact real PII in b-roll, and cover the motion with the geometry.** Real usernames /
   faces / third-party logos in screen recordings get blurred (`boxblur` over a crop, overlaid
   back). To follow content that only moves along one axis (a list that slides in horizontally),

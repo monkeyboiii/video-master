@@ -55,7 +55,7 @@ beats:
     purpose: name the gap the product fills (scattered/outdated), briefly
     visual_intent: a real "scattered/outdated apps" phone card (07_scattered-apps) centred over
       the founder on blurred footage — dead search, member list with names redacted, rival forum
-      with its logo blurred; snaps in on a shutter SFX
+      with its logo blurred; rises in from below, last scene freeze-extended
     overlay: kinetic-captions
     target_duration_sec:
       en-US: 7.05
@@ -126,7 +126,7 @@ assets:
     # scattered-apps phone cutout (baked redaction): usernames per-row blurred, ThumperTalk logo
     # blurred; native 884x1920, scaled+centred over blurred V1 in the edit. reproduced by
     # broll-process.sh -> footage/07_scattered-apps.mov
-    - {asset_id: SEL_007, source_asset_id: RAW_013, in: "00:00:00.000", out: "00:00:04.400", beat: problem}
+    - {asset_id: SEL_007, source_asset_id: RAW_013, in: "00:00:00.000", out: "00:00:05.000", beat: problem}
   voiceover: [] # narration embedded in the talking-head clips; no separate VO file
   audio:
     - asset_id: MUS_001

@@ -15,10 +15,16 @@
 #   * The scene-3 ThumperTalk red logo is a third-party mark. Blur it with a full-width band
 #     at its y-row, active across the slide-in so it is covered while it moves into place.
 #
+# The three scenes do NOT get equal dwell — the last one is the payoff and the recording gives
+# it the least. ThumperTalk (0.94s of real footage) is freeze-extended by +0.60s to 1.54s, so
+# the blurred rival logo actually registers. `fps=30` is re-asserted before tpad: setpts drops
+# the frame-rate hint, and tpad would otherwise read stop_duration against a bogus rate.
+# Clip: 4.40s + 0.60s = 5.00s exactly (150 frames), which matches the alpha mask's d=5.0.
+#
 # Output: footage/07_scattered-apps.mov — a 884x1920 phone card with ROUNDED CORNERS + alpha
-# (ProRes 4444), so it reads as a card like the invite card. The compositor scales it down and
-# centres it upper-frame over the founder, whose footage is blurred (not dimmed) behind it,
-# snapping in on a shutter SFX. See rebuild-e2.sh / edit-notes for placement + the blur-V1 window.
+# (ProRes 4444), so it reads as a card like the invite card. The compositor scales it down,
+# centres it upper-frame, and RISES it in from below over blurred (not dimmed) footage.
+# See rebuild-e2.sh / edit-notes for placement, the rise, and the blur-V1 fade.
 set -e
 : "${FF:=ffmpeg}"
 # Run from inside the media bundle (media/DBX-APP-S01E002), where _source/ and footage/ live.
@@ -48,8 +54,8 @@ OUT=${OUT:-footage/07_scattered-apps.mov}
 [o3][b4]overlay=0:1086:enable='between(t,1.85,3.46)'[o4];\
 [o4][b5]overlay=0:1298:enable='between(t,1.85,3.46)'[o5];\
 [o5][b6]overlay=0:1516:enable='between(t,1.85,3.46)'[o6];\
-[o6][bl]overlay=0:260:enable='between(t,3.46,4.60)',format=yuva420p[phone];\
-color=black:s=884x1920:d=4.4:r=30,format=gray,geq=lum='255*lte(sqrt(pow(max(max(0\,72-X)\,X-811)\,2)+pow(max(max(0\,72-Y)\,Y-1847)\,2))\,72)'[mask];\
+[o6][bl]overlay=0:260:enable='between(t,3.46,4.60)',fps=30,tpad=stop_mode=clone:stop_duration=0.6,format=yuva420p[phone];\
+color=black:s=884x1920:d=5.0:r=30,format=gray,geq=lum='255*lte(sqrt(pow(max(max(0\,72-X)\,X-811)\,2)+pow(max(max(0\,72-Y)\,Y-1847)\,2))\,72)'[mask];\
 [phone][mask]alphamerge[rc]" \
  -map "[rc]" -an -c:v prores_ks -profile:v 4444 -pix_fmt yuva444p10le -fps_mode cfr -r 30 "$OUT"
 echo "wrote $OUT"

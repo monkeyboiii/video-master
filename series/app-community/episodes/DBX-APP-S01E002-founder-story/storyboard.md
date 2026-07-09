@@ -14,7 +14,7 @@
 | Source | 6 talking-head clips, **HLG HDR** (iPhone), founder to camera |
 | Raw length | ~69.7s → **target ~60s** after tightening pauses |
 | **HDR** | Every clip **tone-mapped HLG→SDR Rec.709** before it hits the timeline (fixes E001's pale look — validated). Nothing enters Kdenlive as raw HDR. |
-| **Transitions** | **Hard cuts only.** No dissolves, wipes, or effect transitions — anywhere. |
+| **Transitions** | **Hard cuts only** between shots. No dissolves, wipes, or effect transitions. (Overlays are the exception: cards/logos *ease* in — rise + alpha fade — and the blur behind them fades with them.) |
 | **Motion** | The *only* dynamic move is **punch-in / pull-out** (scale keyframes): zoom in to press on emphasis, pull out to open up on reveals. |
 | **SFX** | Accent the emphasis words / turns only — punctuation, not carpet. Palette below. |
 | **Captions** | **Streaming kinetic captions** — words appear incrementally, like a message typing out — with **color emphasis** on keywords. Rendered as a Remotion overlay, not a flat SRT burn. |
@@ -74,13 +74,15 @@ color · **[CUT]** where to tighten · **[UI]** feature cutaway.
 > I wanted it to be built."
 
 - **[ZOOM]** Nearly static, faint push — a colder, flatter feel than the beats around it.
-- **[SFX]** **`shutter` @31.55** (phone card snaps in) · `radio-static` on "scattered/outdated".
+- **[SFX]** **`shutter` @31.45** (phone card rises in) · `radio-static` on "scattered/outdated".
 - **[CAP]** "**scattered**" + "**outdated**" in coral, over the b-roll.
-- **[UI]** **BUILT:** `07_scattered-apps` phone card (31.55–35.95) — real app b-roll that
+- **[UI]** **BUILT:** `07_scattered-apps` phone card (31.45–36.45) — real app b-roll that
   literalizes "scattered/outdated": a dead search ("No sites found") under "scattered," a
   member list with names/faces **redacted** under "outdated," then a rival forum with its
   **logo blurred**. Presented like the invite card — the phone scaled + centred over the
-  **blurred** (not dimmed) founder, **snapping in on a shutter**. Baked via `broll-process.sh`.
+  **blurred** (not dimmed) founder, **rising in from below** (70px ease-out + alpha fade) while
+  the blur fades in; the final ThumperTalk scene is freeze-extended so it registers. Baked via
+  `broll-process.sh`.
 - *Purpose:* name the gap the product fills — briefly, then move.
 
 ### 5 · BUILT IT + FEATURES — `05_built-it.MOV` (16.8s → ~14s, longest)
