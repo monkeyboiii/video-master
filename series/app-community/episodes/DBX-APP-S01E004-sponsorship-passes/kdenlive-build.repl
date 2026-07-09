@@ -12,9 +12,9 @@ bin import footage/10_cta_sdr.mp4 -n cta --type video -d 9.47
 bin import overlays/DBX-APP-S01E004_en-US_9x16_kinetic-captions_v001.mov -n captions --type video -d 66.25
 bin import overlays/DBX-APP-S01E004_en-US_9x16_brand-drop_v001.mov -n brand --type video -d 5.0
 bin import overlays/DBX-APP-S01E004_en-US_9x16_side-screen-sponsorship_v001.mov -n scr-sponsor --type video -d 7.60
-bin import overlays/DBX-APP-S01E004_en-US_9x16_side-screen-search_v001.mov -n scr-search --type video -d 4.95
-bin import overlays/DBX-APP-S01E004_en-US_9x16_side-screen-chat_v001.mov -n scr-chat --type video -d 4.36
-bin import overlays/DBX-APP-S01E004_en-US_9x16_side-screen-filter_v001.mov -n scr-filter --type video -d 3.83
+bin import overlays/DBX-APP-S01E004_en-US_9x16_side-screen-search_v001.mov -n scr-search --type video -d 5.15
+bin import overlays/DBX-APP-S01E004_en-US_9x16_side-screen-filter_v001.mov -n scr-filter --type video -d 4.60
+bin import overlays/DBX-APP-S01E004_en-US_9x16_side-screen-chat_v001.mov -n scr-chat --type video -d 4.05
 bin import overlays/DBX-APP-S01E004_en-US_9x16_side-screen-splash_v001.mov -n scr-splash --type video -d 5.95
 bin import overlays/DBX-APP-S01E004_en-US_9x16_side-screen-capped_v001.mov -n scr-capped --type video -d 4.90
 bin import overlays/DBX-APP-S01E004_en-US_9x16_side-screen-stats_v001.mov -n scr-stats --type video -d 5.90
@@ -28,6 +28,7 @@ bin import sfx/shutter.mp3 -n sfx-shutter --type audio -d 0.65
 timeline add-track -n V1 --type video
 timeline add-track -n V2-Overlays --type video
 timeline add-track -n V3-Captions --type video
+timeline add-track -n V4-CardOnTop --type video
 timeline add-track -n A1-Music --type audio
 timeline add-track -n A2-SFX --type audio
 timeline add-clip 0 clip0 -p 0 --in 0 --out 9.79
@@ -42,27 +43,27 @@ timeline add-clip 0 clip8 -p 50.61 --in 0 --out 6.20
 timeline add-clip 0 clip9 -p 56.81 --in 0 --out 9.44
 timeline add-clip 1 clip11 -p 6.80 --in 0 --out 5.0
 timeline add-clip 1 clip12 -p 25.45 --in 0 --out 7.60
-timeline add-clip 1 clip13 -p 33.15 --in 0 --out 4.95
-timeline add-clip 1 clip14 -p 33.70 --in 0 --out 4.36
-timeline add-clip 1 clip15 -p 34.25 --in 0 --out 3.83
+timeline add-clip 1 clip13 -p 33.15 --in 0 --out 5.15
+timeline add-clip 1 clip14 -p 33.70 --in 0 --out 4.60
+timeline add-clip 1 clip15 -p 34.25 --in 0 --out 4.05
 timeline add-clip 1 clip16 -p 38.50 --in 0 --out 5.95
 timeline add-clip 1 clip17 -p 44.70 --in 0 --out 4.90
 timeline add-clip 1 clip18 -p 50.80 --in 0 --out 5.90
-timeline add-clip 1 clip19 -p 61.20 --in 0 --out 2.80
 timeline add-clip 2 clip10 -p 0 --in 0 --out 66.25
-timeline add-clip 3 clip20 -p 0 --in 0 --out 66.25
-timeline add-clip 4 clip21 -p 2.25 --in 0 --out 0.8
-timeline add-clip 4 clip23 -p 6.80 --in 0 --out 0.31
-timeline add-clip 4 clip24 -p 19.19 --in 0 --out 0.8
-timeline add-clip 4 clip25 -p 25.45 --in 0 --out 0.6
-timeline add-clip 4 clip25 -p 33.15 --in 0 --out 0.6
-timeline add-clip 4 clip25 -p 33.70 --in 0 --out 0.6
-timeline add-clip 4 clip25 -p 34.25 --in 0 --out 0.6
-timeline add-clip 4 clip25 -p 38.50 --in 0 --out 0.6
-timeline add-clip 4 clip21 -p 44.15 --in 0 --out 0.8
-timeline add-clip 4 clip25 -p 44.70 --in 0 --out 0.6
-timeline add-clip 4 clip25 -p 50.80 --in 0 --out 0.6
-timeline add-clip 4 clip21 -p 61.20 --in 0 --out 0.8
-timeline add-clip 4 clip22 -p 64.22 --in 0 --out 0.47
+timeline add-clip 3 clip19 -p 60.40 --in 0 --out 2.80
+timeline add-clip 4 clip20 -p 0 --in 0 --out 66.25
+timeline add-clip 5 clip21 -p 2.25 --in 0 --out 0.8
+timeline add-clip 5 clip23 -p 6.80 --in 0 --out 0.31
+timeline add-clip 5 clip24 -p 19.19 --in 0 --out 0.8
+timeline add-clip 5 clip25 -p 25.45 --in 0 --out 0.6
+timeline add-clip 5 clip25 -p 33.15 --in 0 --out 0.6
+timeline add-clip 5 clip25 -p 33.70 --in 0 --out 0.6
+timeline add-clip 5 clip25 -p 34.25 --in 0 --out 0.6
+timeline add-clip 5 clip25 -p 38.50 --in 0 --out 0.6
+timeline add-clip 5 clip21 -p 44.15 --in 0 --out 0.8
+timeline add-clip 5 clip25 -p 44.70 --in 0 --out 0.6
+timeline add-clip 5 clip25 -p 50.80 --in 0 --out 0.6
+timeline add-clip 5 clip21 -p 60.40 --in 0 --out 0.8
+timeline add-clip 5 clip22 -p 64.22 --in 0 --out 0.47
 timeline list
 export xml -o sponsorship-passes.kdenlive

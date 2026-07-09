@@ -13,8 +13,8 @@
 | Canvas | 1080×1920, 30 fps, vertical |
 | Source | 10 talking-head clips, **HLG HDR** (iPhone, 1920×1080 coded + `-90` rotation → portrait) |
 | Raw length | 75.2s → **66.25s** after both-edge pause crops |
-| **HDR** | Every clip tone-mapped **HLG→SDR Rec.709** before it hits the timeline. Never import the raw `.MOV`. |
-| **Audio** | Original `.MOV`, stream `0:1` (the 4.0 `apac` spatial track has no decoder). **This cut uses the original MOV for video AND audio** — enhanced visuals land later. |
+| **Video** | The director's **enhanced renders** (`enhanced/`), already SDR bt709 / upright / 30fps. Do NOT tone-map or transpose them. |
+| **Audio** | Original `.MOV`, stream `0:1` (the 4.0 `apac` spatial track has no decoder). Frame-synced to the renders at 0 ms. |
 | **Transitions** | **Hard cuts only** between shots. Overlays are the exception: they *ease* in. |
 | **Motion** | Punch-in / pull-out only (Transform keyframes, not baked). |
 | **Captions** | One continuous `kinetic-captions` track, 0→66.25s, word-anchored to **real speech runs** (see `caption-map.mjs`). |
@@ -23,10 +23,11 @@
 ## The two overlay conventions this episode establishes
 
 **1 · The screen recordings live in the TOP-LEFT corner, and they are big.** The founder holds
-frame-**right** in every feature clip, reserving the upper-left. A single card is 470×1017
-(~23% of frame) — big enough that the app UI reads, which means it bleeds over his hair and brow.
-They **play through**: cutting and freezing are a last resort, and each shows the **entry** into
-its surface. Never on the caption band.
+frame-**right** in every feature clip, reserving the upper-left. A single card is 496 wide at
+x16 y110 — the furthest right it can reach without covering his left eye. Nothing is cropped
+horizontally; only the iOS status bar (which carries a red recording pill) comes off the top, and
+the card carries the resulting aspect so nothing stretches. They **play through**: cutting and
+freezing are a last resort, and each shows the **entry** into its surface. Never on the caption band.
 
 **2 · The logo never takes the screen.** On the word "DirtBikeX" it **surfaces through the top
 edge**, holds long enough to read, then **flies to the top-trailing (right) corner**, shrinking
@@ -104,9 +105,10 @@ Legend — **[ZOOM]** camera move · **[SFX]** sound accent · **[CAP]** caption
 > "Then, your profile will show up in **multiple places** across the app where people are
 > actively **looking**."
 
-- **[UI]** Three cards **fan out in sequence** at a fixed 0.55s delay — 1 `search` (right),
-  2 `chat` (middle, riding high), 3 `filter` (left) — each playing its own recording in full,
-  entry included, over a **blurred** V1 (Route B, 0.35s fade in/out). They fade out together.
+- **[UI]** Three labelled cards **fan out in sequence** at a fixed 0.55s delay — 1 **Search users**
+  (right), 2 **Filter authors** (middle, riding high), 3 **Create chat** (left) — each playing its
+  own recording in full, entry included, over a **blurred** V1 (Route B, 0.35s fade in/out). They
+  fade out together. Label chips reuse E002's feature-phone treatment.
 - **[SFX]** `shutter` on each of the three card entrances.
 - **[CAP]** "multiple" / "places" / "looking" brand.
 - *Purpose:* placement breadth, shown not claimed.
@@ -116,9 +118,9 @@ Legend — **[ZOOM]** camera move · **[SFX]** sound accent · **[CAP]** caption
 > "And the **biggest** one is the **splash screen**, where users can **pause** it, **tap** your
 > face, and go straight into your **profile**."
 
-- **[UI]** `side-screen` — `15_screen-splash`, played through: **pause → tap → profile**. Only the
-  1.85s loading spinner is cut. The marker is a **circle around the play/pause control** (the
-  "pause" action), not the tap.
+- **[UI]** `side-screen` — the re-shoot `15_screen-enter-splash`: **open the app from Spotlight →
+  splash → pause → tap @rubio → profile**. Only frozen/dead stretches are cut. A **shrinking
+  circle** contracts onto the play/pause control (the "pause" action), not the tap.
 - **[SFX]** `shutter` on the card · `hit-1` on "profile." (@44.15).
 - **[CAP]** "biggest" / "splash" / "pause" / "tap" / "profile." brand.
 - *Purpose:* the marquee placement. The most valuable 6 seconds in the video.
@@ -140,6 +142,8 @@ Legend — **[ZOOM]** camera move · **[SFX]** sound accent · **[CAP]** caption
 > trends**, you name it."
 
 - **[UI]** `side-screen` — `17_screen-stats`, played straight through, entry included; no cuts.
+  A **shrinking circle** narrows onto the round **star button in the top-right corner** — the
+  portal to the stats view — just before he taps it.
 - **[CAP]** "stats" / "Regional" / "exposure," / "daily" / "trends," brand.
 - *Purpose:* proof you can measure it. Closes the buyer's loop.
 
@@ -149,9 +153,10 @@ Legend — **[ZOOM]** camera move · **[SFX]** sound accent · **[CAP]** caption
 > **Rubio**, and I'm giving out day **passes** for **free**. / Comment **"PASS"**, and I'll see
 > you in the app."
 
-- **[UI]** `profile-card` @61.20–64.00, on "My name is Rubio" — clears **before** "PASS" (@64.22)
-  so the CTA word stays readable *(comp reused from E002/E003)*.
-- **[SFX]** `hit-1` @61.20 (card) · soft `simple-whoosh-1` on "PASS".
+- **[UI]** `profile-card` @60.40–63.20 on track **V4, above the captions** (E003's z-order), on the
+  **subtitle side** rather than over his face. Enters 0.29s *before* "My" and clears 0.78s before
+  "Comment" so the CTA stays readable *(comp reused from E002/E003)*.
+- **[SFX]** `hit-1` @60.40 (card) · soft `simple-whoosh-1` on "PASS".
 - **[CAP]** "fair" / "seen" / "Rubio," / "passes" / "free." / ""PASS"," brand.
 - *Purpose:* one action, one word, a real incentive.
 
@@ -167,8 +172,8 @@ spinner, a nav load), and a frame is held only where the source is shorter than 
 | `rough.md` directive | Recording | Beat |
 |---|---|---|
 | `[SCREEN: Sponsorship / Pass entry]` + `[SCREEN: fast montage — start date, duration, active pass]` | `11_screen-sponsorship` | 5 |
-| `[SCREEN: fast montage as my finger points, fan out in sequence individually — user search, chat suggestion, filter suggestion]` | `12_screen-search`, `13_screen-chat`, `14_screen-filter` | 6 |
-| `[SCREEN: sponsor card on splash screen, pause → tap → profile]` | `15_screen-splash` | 7 |
+| `[SCREEN: fast montage as my finger points, fan out in sequence individually — user search, chat suggestion, filter suggestion]` | `12_screen-search`, `14_screen-filter`, `13_screen-chat` (that order) | 6 |
+| `[SCREEN: sponsor card on splash screen, pause → tap → profile]` | `15_screen-enter-splash` (re-shoot, with the app entry) | 7 |
 | `[SCREEN: active pass / availability capped rotated]` | `16_screen-capped` | 8 |
 | `[SCREEN: fast stats montage]` | `17_screen-stats` | 9 |
 
@@ -183,7 +188,7 @@ Short, recognizable, low-impact — punctuation, not carpet. No deep whooshes, n
 | "billboard." (@19.19) | `radio-adjustment.mp3` |
 | Each screen card enters | `shutter.mp3` |
 | "profile." (@44.15) | `hit-1.mp3` |
-| profile-card (@61.20) | `hit-1.mp3` |
+| profile-card (@60.40) | `hit-1.mp3` |
 | "PASS" (@64.22) | `simple-whoosh-1.wav` |
 
 ## DECIDE (human)
@@ -192,5 +197,5 @@ Short, recognizable, low-impact — punctuation, not carpet. No deep whooshes, n
   them with jump cuts would sharpen the hook but re-times every caption downstream — do it on
   the Mac after the caption track is final, or accept the pacing.
 - Zoom keyframes are **not baked** (see `[ZOOM]` lines).
-- **Enhanced visuals are pending.** When they land, swap the VIDEO only and keep this audio —
-  verify frame-sync first (frame counts + RMS-envelope cross-correlation).
+- **Enhanced visuals are IN** (`enhanced/`), video only; the audio is still the `.MOV`. Frame-sync
+  was verified (0 ms lag, proven 1:1 pairing). Re-verify if they are ever re-exported.

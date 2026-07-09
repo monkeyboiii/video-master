@@ -1,20 +1,22 @@
 {
   "durationSec": 5.95,
   "src": "e004/15_splash_cut.mp4",
-  "x": 18,
-  "y": 140,
-  "w": 470,
-  "h": 1017,
+  "x": 16,
+  "y": 110,
+  "w": 496,
+  "h": 1023,
   "markers": [
     {
-      "_": "CIRCLE the play/pause control \u2014 'pause it' is the action, not the tap",
+      "_": "SHRINKING CIRCLE onto the play/pause control \u2014 'pause it' is the action, not the tap",
       "shape": "circle",
-      "from": 2.6,
-      "to": 3.6,
-      "x": 0.8623,
-      "y": 0.8897,
-      "w": 0.0832,
-      "h": 0.0385
+      "enter": "shrink",
+      "shrinkFrom": 3.2,
+      "from": 2.15,
+      "to": 3.3,
+      "x": 0.832479,
+      "y": 0.860697,
+      "w": 0.088889,
+      "h": 0.043118
     }
   ]
 }

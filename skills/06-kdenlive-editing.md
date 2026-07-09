@@ -237,6 +237,17 @@ stack can't deliver):
   frozen; put it on the frame the viewer needs time to *read*, and on the payoff — never on the
   emptiest screen just because it happens to be last. Holding the head of a static screen costs
   nothing and is invisible.
+- **Swapping in enhanced/regraded renders: prove the sync, don't assume the order.** Cross-correlate
+  every render's RMS envelope against *every* original (N x N, not pairwise) — the winner must beat
+  the runner-up by a wide margin, or the filenames lied. Then check the lag is 0 and the decoded
+  frame counts agree. Then check what the render already is: E004's arrived SDR bt709, upright, and
+  30fps, so the tone-map and transpose the .MOV needs would have *corrupted* them. Finally, after
+  cutting, confirm `-ss` landed on the same frame in both streams (SAD of frame 0 against the
+  source at trimIn +/- 2 frames must bottom out at 0).
+- **A card that covers an eye covers the face.** "It can seep onto my face" is not "cover it".
+  Sweep the whole beat, not one frame: draw the candidate box on 8 frames and look. On E004 the
+  binding constraint was one beat's *last* second, and three candidate widths differed by whether
+  they clipped an eyelid.
 - **Measure before you rearrange.** Reordering a recording to chase the narration makes the app's
   state regress on screen (a price, a date, a counter jumping backwards). Twice on S01E004 the
   reorder was both wrong *and* unnecessary: played straight, the surface the narration names was

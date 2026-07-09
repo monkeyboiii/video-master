@@ -87,15 +87,20 @@ beats:
       en-US: 6.20
   - id: cta
     purpose: one action — comment "PASS" for a free day pass
-    visual_intent: profile-card on "My name is Rubio", clears before the word "PASS"
+    visual_intent: profile-card enters 0.29s BEFORE "My name is Rubio", on the subtitle side (E003 convention), gone 0.78s before "Comment"
     overlay: profile-card
     target_duration_sec:
       en-US: 9.44
 
 assets:
   # 10 talking-head clips (HLG HDR, 1920x1080 coded + -90 rotation -> 1080x1920 portrait) and
-  # 7 app screen recordings (SDR). THIS CUT USES THE ORIGINAL .MOV FOR BOTH VIDEO AND AUDIO;
-  # face-enhanced renders are expected later and will replace the VIDEO only.
+  # 7 app screen recordings (SDR).
+  #
+  # THIS CUT TAKES ITS VIDEO FROM enhanced/ AND ITS AUDIO FROM THE .MOV. The enhanced renders
+  # (ENH_001..010, media/DBX-APP-S01E004/enhanced/) are already SDR bt709, upright 1080x1920,
+  # 30fps, no rotation matrix: do NOT tone-map or transpose them. They are frame-synced to their
+  # .MOV (10x10 RMS-envelope cross-correlation: corr 0.996-0.999, next-best 0.23-0.40, 0ms lag;
+  # decoded frame counts agree on 9 of 10, 01_hook being one frame short at a tail we never use).
   # Each .MOV carries a second, undecodable 4.0 'apac' spatial audio track — map 0:a:0, never 0:a.
   raw:
     - {asset_id: RAW_001, filename: 01_hook.mov, external_uri: null, sha256: null, notes: "HLG HDR; ad slots / hate ads / DirtBikeX full of flyers (12.11s)"}
@@ -112,9 +117,22 @@ assets:
     - {asset_id: RAW_012, filename: 12_screen-search.MP4, external_uri: null, sha256: null, notes: "screen rec 1170x2532; sponsored profile in user search (3.56s)"}
     - {asset_id: RAW_013, filename: 13_screen-chat.MP4, external_uri: null, sha256: null, notes: "screen rec 1170x2532; sponsored profile in chat suggestion (4.32s)"}
     - {asset_id: RAW_014, filename: 14_screen-filter.mov, external_uri: null, sha256: null, notes: "screen rec 1170x2532; sponsored profile in filter suggestion (4.03s)"}
-    - {asset_id: RAW_015, filename: 15_screen-splash.mov, external_uri: null, sha256: null, notes: "screen rec 1170x2532; splash sponsor card -> pause -> tap -> profile (8.86s)"}
+    - {asset_id: RAW_015, filename: 15_screen-splash.mov, external_uri: null, sha256: null, notes: "screen rec 1170x2532; splash sponsor card -> pause -> tap -> profile (8.86s). SUPERSEDED by RAW_018"}
+    - {asset_id: RAW_018, filename: 15_screen-enter-splash.mov, external_uri: null, sha256: null, notes: "screen rec 1170x2532 @60fps VFR; re-shoot: Spotlight -> open app -> splash -> pause -> tap @rubio -> profile (9.85s). Replaces RAW_015 so the ENTRY into the app is on screen"}
     - {asset_id: RAW_016, filename: 16_screen-capped.mov, external_uri: null, sha256: null, notes: "screen rec 1170x2532; active pass / availability capped + rotated (3.33s)"}
-    - {asset_id: RAW_017, filename: 17_screen-stats.MP4, external_uri: null, sha256: null, notes: "screen rec 884x1920; sponsorship stats montage (6.56s); the only recording with a non-silent audio track"}
+    - {asset_id: RAW_017, filename: 17_screen-stats.MP4, external_uri: null, sha256: null, notes: "screen rec 884x1920; sponsorship stats montage (6.56s); the only recording with a non-silent audio track. Entry = the round STAR button top-right, tapped at src 2.62s"}
+  # Face-enhanced renders. VIDEO ONLY — the audio on these is a 44.1kHz re-encode and is unused.
+  enhanced:
+    - {asset_id: ENH_001, filename: enhanced/01_hook.mp4, of_asset_id: RAW_001, external_uri: null, notes: "SDR bt709, 1080x1920, 30fps (12.13s)"}
+    - {asset_id: ENH_002, filename: enhanced/02_hate-ads.mp4, of_asset_id: RAW_002, external_uri: null, notes: "SDR bt709 (5.48s)"}
+    - {asset_id: ENH_003, filename: enhanced/03_billboard.mp4, of_asset_id: RAW_003, external_uri: null, notes: "SDR bt709 (5.34s)"}
+    - {asset_id: ENH_004, filename: enhanced/04_passes.mp4, of_asset_id: RAW_004, external_uri: null, notes: "SDR bt709 (6.25s)"}
+    - {asset_id: ENH_005, filename: enhanced/05_sponsorship.mp4, of_asset_id: RAW_005, external_uri: null, notes: "SDR bt709 (9.22s)"}
+    - {asset_id: ENH_006, filename: enhanced/06_discovery.mp4, of_asset_id: RAW_006, external_uri: null, notes: "SDR bt709 (6.41s)"}
+    - {asset_id: ENH_007, filename: enhanced/07_splash.mp4, of_asset_id: RAW_007, external_uri: null, notes: "SDR bt709 (6.69s)"}
+    - {asset_id: ENH_008, filename: enhanced/08_capped.mp4, of_asset_id: RAW_008, external_uri: null, notes: "SDR bt709 (6.85s)"}
+    - {asset_id: ENH_009, filename: enhanced/09_stats.mp4, of_asset_id: RAW_009, external_uri: null, notes: "SDR bt709 (7.08s)"}
+    - {asset_id: ENH_010, filename: enhanced/10_cta.mp4, of_asset_id: RAW_010, external_uri: null, notes: "SDR bt709 (9.91s)"}
   # Narration selects = both-edge pause crops (silencedetect -32dB, d=0.30), reproduced by
   # footage-process.sh. Screen chops are pure cuts + freeze-extends — see screen-chop.sh.
   # Keep these in lockstep with caption-map.mjs BEATS or the captions drift.

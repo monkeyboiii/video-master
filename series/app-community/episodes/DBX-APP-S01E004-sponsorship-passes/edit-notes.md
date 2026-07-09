@@ -11,27 +11,35 @@ Skills followed: `skills/04-storyboard.md`, `skills/05-remotion-graphics.md`,
 
 | Track | Content |
 |-------|---------|
-| V1 | Tone-mapped footage `footage/NN_*_sdr.mp4` — carries the narration |
-| V2 · Overlays | `brand-drop` @6.80 · seven top-left `side-screen` cards · `profile-card` @61.20 |
+| V1 | `footage/NN_*_sdr.mp4` — the ENHANCED video + the original `.MOV` narration |
+| V2 · Overlays | `brand-drop` @6.80 · seven top-left `side-screen` cards |
 | V3 · Captions | `kinetic-captions` — one clip, 0→66.25s |
+| V4 · CardOnTop | `profile-card` @60.40 — **above** the captions, as in E003 |
 | A1 · Music | `bgm-vampire-heart.mp3` from 0.00s, full length, flat ~10% under the VO |
 | A2 · SFX | see map below |
 
 Hard cuts only between shots. Overlays *ease* in (SideScreen slides from the left; BrandDrop
 surfaces from the top). Zoom is **not baked** — Transform keyframes on the Mac.
 
-## Footage
+## Footage — enhanced video, original audio
 
-All 10 clips are **HLG HDR** (`arib-std-b67` / `bt2020`), coded 1920×1080 with a `-90` rotation
-matrix — ffmpeg autorotates them to 1080×1920 on decode. Each is tone-mapped to SDR Rec.709
-before edit (`footage-process.sh`); importing the raw `.MOV` reproduces E001's pale look.
+V1 is `enhanced/NN_beat.mp4` (the director's face-enhanced renders) carrying `narration/NN_beat.MOV`
+stream `0:1`. `footage-process.sh` cuts both with one pair of `-ss`/`-t` values.
 
-Each `.MOV` carries a second, undecodable 4.0 `apac` spatial audio track. `-map 0:a:0` takes the
-48 kHz stereo AAC narration. Never `-map 0:a`.
+The enhanced renders are **already SDR bt709, already upright 1080×1920, already 30fps, and carry
+no rotation matrix**. The HLG→SDR tone-map and the transpose that the `.MOV` path needs would both
+*corrupt* them; the chain is kept in `footage-process.sh`, commented, for the day someone goes back
+to the `.MOV`. (The originals are HLG HDR `arib-std-b67`/`bt2020`, 10-bit, coded 1920×1080 with a
+`-90` rotation matrix.)
 
-**This cut uses the original `.MOV` for both video and audio.** Face-enhanced renders are
-expected later; when they land, swap the **video only** and keep this audio — verify frame-sync
-first (frame counts + RMS-envelope cross-correlation), as on E002/E003.
+**They are frame-synced.** A 10×10 cross-correlation of RMS envelopes matches each render to its
+original at corr 0.996–0.999 with the next-best original at 0.23–0.40 — so the 1:1 pairing is
+proven, not assumed — and every pair has **0 ms lag** at 1 ms resolution. Decoded frame counts
+agree exactly on 9 of 10; `01_hook`'s render is one frame short at a tail we cut away anyway.
+Re-run that check if the renders are ever re-exported.
+
+Each `.MOV` carries a second, undecodable 4.0 `apac` spatial audio track. `-map 1:a:0` takes the
+48 kHz stereo AAC narration. Never `-map 1:a`.
 
 ## Pause cropping — both edges
 
@@ -82,25 +90,51 @@ fades out over 0.65s — ~2s into the next beat. The corner rest honours the pla
 
 ### 2 · Screen recordings live in the TOP-LEFT corner — and they are BIG
 
-A single card is **470×1017** at **x18 y140** — about **23% of the frame**. It bleeds over the
-founder's hair and a little of his brow; that is deliberate. An earlier pass used a 268×580 card
-that cleared him entirely, and the app UI was illegible. The box aspect (0.462) matches the
-recordings, so `objectFit: fill` introduces no distortion.
+**Nothing is trimmed horizontally.** An earlier pass cropped 44px off each side of every phone
+capture to force the native aspect into the card; the app UI lost its edges. The only crop now is
+a vertical one, because **every one of these recordings has a red screen-recording pill in the iOS
+status bar** and that cannot be on screen:
+
+| family | sources | crop | resulting aspect |
+|---|---|---|---|
+| A | the six 1170×2532 iPhone captures | `crop=1170:2412:0:120` | 0.4851 |
+| B | `17_screen-stats` (884×1920 mirror) | `crop=884:1800:0:120` | 0.4911 |
+
+So the aspect *does* change, and the cards are sized to the new aspect — `objectFit: fill` plus a
+mismatched box silently distorts the UI.
+
+A single card is **496 wide at x16 y110** (h 1023 family A, 1010 family B). x=512 is the furthest
+right the edge can go **without covering his left eye**, measured across the whole of every carded
+beat on the enhanced footage — the tightest is `09_stats`, where his eye's outer corner reaches
+x≈520. He allows the card to seep onto his face; he does not allow it to cover it. Card bottom
+1133, well clear of the caption band.
 
 **Cuts and freezes are a last resort, not a default.** Each recording plays through, showing the
 **entry** into its surface (a buyer has to see where the portal is). Segments are dropped only for
 a genuine wait (a spinner, a nav load) and a frame is held only when the source is shorter than
-its beat. The status bar (with the red recording pill) is cropped off.
+its beat.
 
-Markers are `rect` by default; `shape: "circle"` rings a round control.
+Markers are `rect` by default. `shape: "circle"` rings a round control; `enter: "shrink"` starts
+the ring wide and contracts it onto a small control, which *finds* it for the viewer.
 
-### 2b · The discovery beat FANS OUT — three cards, in sequence
+### 2b · The discovery beat FANS OUT — three cards, in sequence, each named
 
-Per the director's sketch, the three placements appear **one, two, three at a fixed 0.55s delay**
-— `search` @33.15 (right), `chat` @33.70 (middle, riding high), `filter` @34.25 (left) — and each
-**plays its own recording in full**, entry included. They all fade out together around 38.08.
+Per the director's sketch the three placements appear **one, two, three at a fixed 0.55s delay**,
+each 306×631, each carrying an E002-style label chip:
+
+| # | box | recording | enters | label |
+|---|---|---|---|---|
+| 1 | right, x740 y645 | `12_screen-search` | 33.15 | **Search users** |
+| 2 | middle, riding high, x416 y221 | `14_screen-filter` | 33.70 | **Filter authors** |
+| 3 | left, x66 y645 | `13_screen-chat` | 34.25 | **Create chat** |
+
+Each **plays its own recording in full**, entry included (tap search → Users tab; open Advanced
+Filters → Author Username; tap `+` → New Chat). They fade out together at 38.30. Only `chat` is
+trimmed, by 0.27s of keyboard-idle tail after its payoff is already up; `search` and `filter` hold
+their payoff to reach the group fade.
+
 V1 is **blurred** behind them (Route B, blur only, 0.35s fade in and out), returning to normal as
-they clear. The fan is the *sequence*, not the blur.
+they clear. The fan is the *sequence of entrances*, not the blur.
 
 `rough.md` is the instruction sheet — its `[SCREEN: …]` directives map 1:1 onto the seven
 recordings. No privacy blurs: every account on screen (`@rubio` / Zenkai Rubio, `@dbx`) is the
@@ -142,12 +176,15 @@ into Author Username — so the entry is visible. Only `search` (the shortest) h
 reach the group fade. A marker points at the sponsored row in each. SFX `shutter` per entrance.
 
 ### splash · 38.34–44.53
-V1 clip6 · **`side-screen-splash` 38.50–44.45**. Plays through: the paused splash (the ▶ control
-is showing) → the tap on the @rubio avatar → the profile. The **1.85s "Loading @rubio…" spinner is
-the only thing cut**; what remains is 0.75s short of the beat, so the finished profile is held —
-it has to still be on screen when he says "profile." @44.15. The marker is a **circle around the
-play/pause control** — "pause it" is the action, not the tap.
-SFX `shutter` @38.50 · `hit-1` @44.15 ("profile.").
+V1 clip6 · **`side-screen-splash` 38.50–44.45**, from the director's **re-shoot**
+(`15_screen-enter-splash.mov`), which opens on him **entering the app from Spotlight** — the entry
+is the point. Then the splash plays, he taps pause, he taps the @rubio avatar, the app pushes in,
+and the profile lands. Three cuts, all inside frozen or dead frames (the static paused splash, the
+"Opening profile…" wait, the "Loading @rubio…" spinner); the loaded profile is held so it is still
+up on "profile." @44.15.
+The marker is a **shrinking circle** that starts wide and contracts onto the round play/pause
+control — "pause it" is the action, not the tap, and on a busy splash a static ring would not find
+it. SFX `shutter` @38.50 · `hit-1` @44.15 ("profile.").
 
 ### capped · 44.53–50.61
 V1 clip7 · **`side-screen-capped` 44.70–49.60**. **Nothing is cut** — the whole 3.23s recording
@@ -160,12 +197,17 @@ Marker on the **Pass 1/40** caps row. SFX `shutter` @44.70.
 
 ### stats · 50.61–56.81
 V1 clip8 · **`side-screen-stats` 50.80–56.70**. Plays straight through, entry included. No cuts,
-no freezes. SFX `shutter` @50.80.
+no freezes. A **shrinking circle narrows onto the round star button in the page's top-right
+corner** (card 1.65→2.45, i.e. 52.45–53.25, exactly under "check your **sponsorship stats**") —
+that button is the portal to the stats view, and he taps it at card 2.32. SFX `shutter` @50.80.
 
 ### cta · 56.81–66.25
-V1 clip9 · **`profile-card` 61.20–64.00** on "My name is Rubio" — clears **before** "PASS"
-(@64.22) so the CTA word stays readable *(comp reused from E002/E003)*.
-SFX `hit-1` @61.20 · `simple-whoosh-1` @64.22.
+V1 clip9 · **`profile-card` 60.40–63.20**, on track **V4, above the captions** — E003's z-order,
+which is what lets the card live on the subtitle side (`bottomInset` back to the default 190)
+instead of floating up over his chin. It enters **0.29s before "My"** (@60.69) and is gone
+**0.78s before "Comment"** (@63.98) and 1.02s before "PASS" (@64.22). E003's card entered on the
+word and cleared 0.43s before its CTA verb; this is the same move with a little more lead.
+SFX `hit-1` @60.40 · `simple-whoosh-1` @64.22.
 
 ## Regenerating
 
@@ -182,6 +224,9 @@ python3 tools/kdenlive-nativize.py sponsorship-passes.kdenlive --vertical
 
 `footage-process.sh` accepts `ONLY="05_sponsorship 06_discovery"` to rebuild a subset.
 Rendering is single-threaded by design (`THREADS=1`) — this box has two cores.
+`screen-chop.sh` publishes its cuts into `packages/remotion-graphics/public/e004/` itself:
+`SideScreen` resolves `src` against `public/`, not `media/`, and a stale asset makes a re-render a
+silent no-op rather than a failure.
 
 ## DECIDE (human, on the Mac)
 
@@ -192,8 +237,11 @@ Rendering is single-threaded by design (`THREADS=1`) — this box has two cores.
 - **The right-hand fan card** (`search`, x740 w306 → right edge 1046) sits inside the platform's
   right safe-zone inset (145px), where TikTok's action rail lives. It is placed where the director
   sketched it; check it against a real TikTok preview before publish.
-- **Enhanced visuals are pending.** Swap the video only; keep this audio.
-- `cover.en-US.md` is not written yet (`skills/02`).
+- **The profile-card is 860px wide and centred, and the CTA shot is a centred face-fill.** At
+  `bottomInset: 190` its top edge (y≈1118) clears his mouth (y≈1094) by ~24px. It reads as E003
+  does, but there is no `bottomInset` that both clears this face and keeps the "Founder · DirtBikeX"
+  chip on screen — the only real fix is a narrower card, which is a component change.
+- `cover.en-US.md` names the corner mark's inset; it now rides higher (`cornerTop: 84`).
 
 ## Preview
 Rough-cut flatten (no zooms):

@@ -147,7 +147,16 @@ web preview artifact. Compositions in this package set these render defaults via
   it does not fail. When a re-render "changes nothing", diff the mtimes in `public/` first.
 - **A marker's coordinates are a measurement, not a guess.** Overlay a labelled grid on the
   actual clip frame (`drawbox` every 5% + `drawtext`), read the element off it, and convert.
-  An eyeballed fraction lands the ring on the wrong row and looks deliberate.
+  An eyeballed fraction lands the ring on the wrong row and looks deliberate. Better still, find
+  the element by colour: a threshold on the raw `rgb24` pixels gives a bbox to the pixel, and it
+  caught a 21px error a grid read had missed.
+- **A ring that shrinks onto a control finds it; a ring that pops on top of it does not.** For a
+  small round button on a busy screen, start the circle ~3x oversize and ease it down (0.55s,
+  `Easing.out(cubic)`), and hold its fill alpha at 0 until it is nearly landed — otherwise the
+  entrance paints a huge orange wash. `SideScreen`'s `enter: "shrink"` does this.
+- **When a card stretches a video to fill it (`objectFit: fill`), the card's aspect IS the
+  contract.** Change the crop, recompute every height. And a crop that trims the sides to force a
+  target aspect is a crop the director will notice: trim vertically, then resize the card.
 - Text content comes from tracked props files, not hardcoded into components. Components
   are reusable across episodes; props are per-episode.
 - Respect platform safe zones (`docs/platforms.md`): overlay text stays inside the

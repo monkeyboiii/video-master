@@ -1,6 +1,22 @@
-{ "durationSec": 3.83, "src": "e004/14_filter_cut.mp4",
-  "_pos": "fan card 3 — left", "x": 60, "y": 655, "w": 306, "h": 662,
+{
+  "durationSec": 4.6,
+  "src": "e004/14_filter_cut.mp4",
+  "x": 416,
+  "y": 221,
+  "w": 306,
+  "h": 631,
+  "label": "Filter authors",
+  "labelSize": 22,
   "markers": [
-    {"_": "the sponsored author in the Author Username picker", "shape": "rect",
-     "from": 3.00, "to": 3.83, "x": 0.0242, "y": 0.3707, "w": 0.6488, "h": 0.0812}
-  ] }
+    {
+      "_": "the sponsored @rubio row under Author Username",
+      "shape": "rect",
+      "from": 2.8,
+      "to": 4.6,
+      "x": 0.05,
+      "y": 0.354403,
+      "w": 0.88,
+      "h": 0.08398
+    }
+  ]
+}

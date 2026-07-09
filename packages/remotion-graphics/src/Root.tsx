@@ -234,6 +234,8 @@ export const RemotionRoot: React.FC = () => {
           w: 391,
           h: 852,
           markers: [],
+          label: '',
+          labelSize: 27,
         }}
       />
       <Composition

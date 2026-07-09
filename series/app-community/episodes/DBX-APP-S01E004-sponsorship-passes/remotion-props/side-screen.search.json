@@ -1,6 +1,22 @@
-{ "durationSec": 4.95, "src": "e004/12_search_cut.mp4",
-  "_pos": "fan card 1 — right", "x": 740, "y": 655, "w": 306, "h": 662,
+{
+  "durationSec": 5.15,
+  "src": "e004/12_search_cut.mp4",
+  "x": 740,
+  "y": 645,
+  "w": 306,
+  "h": 631,
+  "label": "Search users",
+  "labelSize": 22,
   "markers": [
-    {"_": "the sponsored rider in Users search", "shape": "rect",
-     "from": 3.00, "to": 4.95, "x": 0.0037, "y": 0.3123, "w": 0.6098, "h": 0.0595}
-  ] }
+    {
+      "_": "the sponsored @rubio row in the Users tab",
+      "shape": "rect",
+      "from": 2.4,
+      "to": 5.15,
+      "x": 0.04,
+      "y": 0.275672,
+      "w": 0.92,
+      "h": 0.094478
+    }
+  ]
+}

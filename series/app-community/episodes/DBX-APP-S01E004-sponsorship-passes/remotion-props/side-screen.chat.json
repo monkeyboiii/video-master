@@ -1,6 +1,22 @@
-{ "durationSec": 4.36, "src": "e004/13_chat_cut.mp4",
-  "_pos": "fan card 2 — middle, riding high", "x": 410, "y": 210, "w": 306, "h": 662,
+{
+  "durationSec": 4.05,
+  "src": "e004/13_chat_cut.mp4",
+  "x": 66,
+  "y": 645,
+  "w": 306,
+  "h": 631,
+  "label": "Create chat",
+  "labelSize": 22,
   "markers": [
-    {"_": "'Get Featured' in New Chat suggestions", "shape": "rect",
-     "from": 2.00, "to": 4.36, "x": 0.0, "y": 0.2598, "w": 0.6238, "h": 0.0577}
-  ] }
+    {
+      "_": "the sponsored @rubio row in New Chat > Suggested",
+      "shape": "rect",
+      "from": 1.6,
+      "to": 4.05,
+      "x": 0.04,
+      "y": 0.233682,
+      "w": 0.88,
+      "h": 0.089229
+    }
+  ]
+}

@@ -1,1 +1,22 @@
-{ "durationSec": 5.90, "src": "e004/17_stats_cut.mp4", "x": 18, "y": 140, "w": 470, "h": 1017, "markers": [] }
+{
+  "durationSec": 5.9,
+  "src": "e004/17_stats_cut.mp4",
+  "x": 16,
+  "y": 110,
+  "w": 496,
+  "h": 1010,
+  "markers": [
+    {
+      "_": "the round STAR button in the page's top-right corner \u2014 the portal to the stats view",
+      "shape": "circle",
+      "enter": "shrink",
+      "shrinkFrom": 2.6,
+      "from": 1.65,
+      "to": 2.45,
+      "x": 0.895928,
+      "y": 0.013333,
+      "w": 0.063348,
+      "h": 0.031111
+    }
+  ]
+}
