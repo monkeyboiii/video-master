@@ -1,4 +1,6 @@
-{ "durationSec": 1.70, "src": "e004/13_chat_cut.mp4", "x": 24, "y": 150, "w": 268, "h": 580,
+{ "durationSec": 4.36, "src": "e004/13_chat_cut.mp4",
+  "_pos": "fan card 2 — middle, riding high", "x": 410, "y": 210, "w": 306, "h": 662,
   "markers": [
-    {"_": "'Get Featured' suggested row in New Chat", "from": 0.10, "to": 1.70, "x": 0.0, "y": 0.2598, "w": 0.6238, "h": 0.0577}
+    {"_": "'Get Featured' in New Chat suggestions", "shape": "rect",
+     "from": 2.00, "to": 4.36, "x": 0.0, "y": 0.2598, "w": 0.6238, "h": 0.0577}
   ] }

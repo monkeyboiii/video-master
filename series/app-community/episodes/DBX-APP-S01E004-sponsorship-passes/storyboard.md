@@ -22,16 +22,18 @@
 
 ## The two overlay conventions this episode establishes
 
-**1 · The screen recordings live in the TOP-LEFT corner.** The founder deliberately holds
-frame-**right** in every feature clip, reserving the upper-left. The recordings are chopped,
-freeze-extended, and pinned there as a rounded card (`side-screen` with a top-left box) — never
-over his face, never on the caption band.
+**1 · The screen recordings live in the TOP-LEFT corner, and they are big.** The founder holds
+frame-**right** in every feature clip, reserving the upper-left. A single card is 470×1017
+(~23% of frame) — big enough that the app UI reads, which means it bleeds over his hair and brow.
+They **play through**: cutting and freezing are a last resort, and each shows the **entry** into
+its surface. Never on the caption band.
 
 **2 · The logo never takes the screen.** On the word "DirtBikeX" it **surfaces through the top
 edge**, holds long enough to read, then **flies to the top-trailing (right) corner**, shrinking
 and cross-fading from the wordmark into the bare mark, where it sits as an icon and fades out.
 No full-screen brand card, no Route-B blur behind it — `brand-drop` is a transparent overlay.
-It rests inside the platform safe zone (top 150, right 145).
+It rides high into the corner (`cornerTop: 84`) and still respects the right safe-zone inset (145),
+which is where the platform's action rail lives.
 
 ---
 
@@ -87,8 +89,12 @@ Legend — **[ZOOM]** camera move · **[SFX]** sound accent · **[CAP]** caption
 > "Here, you can go to the **Sponsorship** page and pick your **spots**. / Choose when it
 > **starts**, choose how long it **runs**, and DirtBikeX got you covered."
 
-- **[UI]** `side-screen` (top-left) — `11_screen-sponsorship`. `rough.md`:
-  `[SCREEN: Sponsorship / Pass entry]` → `[SCREEN: fast montage — start date, duration, active pass]`
+- **[UI]** `side-screen` (top-left) — `11_screen-sponsorship`, played start to finish with one
+  cut. The **entry** is in full so a buyer sees where the portal is: profile → nav menu (**orange
+  border on "Sponsorships"**) → the page (circle on "Your spot +") → the calendar on "when it
+  starts" → the duration picker, animation intact, on "how long it runs" → the pass.
+  `rough.md`: `[SCREEN: Sponsorship / Pass entry]` + `[SCREEN: fast montage — start date,
+  duration, active pass]`
 - **[SFX]** `shutter` as the card lands.
 - **[CAP]** "Sponsorship" / "spots." / "starts," / "runs," brand.
 - *Purpose:* the how. First time the product appears.
@@ -98,10 +104,9 @@ Legend — **[ZOOM]** camera move · **[SFX]** sound accent · **[CAP]** caption
 > "Then, your profile will show up in **multiple places** across the app where people are
 > actively **looking**."
 
-- **[UI]** Three cards **fan out in sequence, individually** (`rough.md`: *"fast montage as my
-  finger points, fan out in sequence individually — user search, chat suggestion, filter
-  suggestion"*): `12_screen-search` → `13_screen-chat` → `14_screen-filter`, each in the
-  top-left slot, each cut to its own third of the beat.
+- **[UI]** Three cards **fan out in sequence** at a fixed 0.55s delay — 1 `search` (right),
+  2 `chat` (middle, riding high), 3 `filter` (left) — each playing its own recording in full,
+  entry included, over a **blurred** V1 (Route B, 0.35s fade in/out). They fade out together.
 - **[SFX]** `shutter` on each of the three card entrances.
 - **[CAP]** "multiple" / "places" / "looking" brand.
 - *Purpose:* placement breadth, shown not claimed.
@@ -111,9 +116,9 @@ Legend — **[ZOOM]** camera move · **[SFX]** sound accent · **[CAP]** caption
 > "And the **biggest** one is the **splash screen**, where users can **pause** it, **tap** your
 > face, and go straight into your **profile**."
 
-- **[UI]** `side-screen` — `15_screen-splash`. Three legible beats: **pause → tap → profile**,
-  each freeze-extended if the recording rushes it. Orange tap-markers where the cut hides the
-  gesture.
+- **[UI]** `side-screen` — `15_screen-splash`, played through: **pause → tap → profile**. Only the
+  1.85s loading spinner is cut. The marker is a **circle around the play/pause control** (the
+  "pause" action), not the tap.
 - **[SFX]** `shutter` on the card · `hit-1` on "profile." (@44.15).
 - **[CAP]** "biggest" / "splash" / "pause" / "tap" / "profile." brand.
 - *Purpose:* the marquee placement. The most valuable 6 seconds in the video.
@@ -123,7 +128,9 @@ Legend — **[ZOOM]** camera move · **[SFX]** sound accent · **[CAP]** caption
 > "And don't worry, to keep it **fair**, passes are **capped** and **rotated**, so nobody gets
 > to **flood** the scene."
 
-- **[UI]** `side-screen` — `16_screen-capped` (active pass / availability).
+- **[UI]** `side-screen` — `16_screen-capped` (availability caps → "Currently rotating"), played in
+  full, nothing cut. Marker on the **Pass 1/40** row; caps hold through "capped", the rotating
+  list lands on "rotated,".
 - **[CAP]** "fair," / "capped" / "rotated," brand · "flood" harsh.
 - *Purpose:* the objection-handler. Scarcity is a feature, not a paywall.
 
@@ -132,7 +139,7 @@ Legend — **[ZOOM]** camera move · **[SFX]** sound accent · **[CAP]** caption
 > "And you even get to check your **sponsorship stats** too. / **Regional exposure**, **daily
 > trends**, you name it."
 
-- **[UI]** `side-screen` — `17_screen-stats`, a fast montage; hold the final chart.
+- **[UI]** `side-screen` — `17_screen-stats`, played straight through, entry included; no cuts.
 - **[CAP]** "stats" / "Regional" / "exposure," / "daily" / "trends," brand.
 - *Purpose:* proof you can measure it. Closes the buyer's loop.
 
@@ -154,8 +161,8 @@ Legend — **[ZOOM]** camera move · **[SFX]** sound accent · **[CAP]** caption
 
 `rough.md` is the instruction sheet for the overlays — its bracketed lines map 1:1 onto the
 seven recordings. Reproduce the chops with `screen-chop.sh`. Every boundary lands on a settled
-frame; spinners, typing and waits are cut; the **final payoff frame of each clip is
-freeze-extended** so it registers (the recordings always short-change it).
+frame. **Cutting and freezing are a last resort:** a segment is dropped only for a genuine wait (a
+spinner, a nav load), and a frame is held only where the source is shorter than its beat.
 
 | `rough.md` directive | Recording | Beat |
 |---|---|---|

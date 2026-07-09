@@ -1,4 +1,30 @@
-{ "durationSec": 7.60, "src": "e004/11_sponsorship_cut.mp4", "x": 24, "y": 150, "w": 268, "h": 580,
+{
+  "durationSec": 7.6,
+  "src": "e004/11_sponsorship_cut.mp4",
+  "x": 18,
+  "y": 140,
+  "w": 470,
+  "h": 1017,
   "markers": [
-    {"_": "'Your spot +' — the pass-purchase entry", "from": 0.20, "to": 2.50, "x": 0.0415, "y": 0.8273, "w": 0.1406, "h": 0.1039}
-  ] }
+    {
+      "_": "the ENTRY: the Sponsorships item in the profile nav menu",
+      "shape": "rect",
+      "from": 0.95,
+      "to": 1.88,
+      "x": 0.329,
+      "y": 0.4316,
+      "w": 0.638,
+      "h": 0.0449
+    },
+    {
+      "_": "'Your spot +' \u2014 a round tile, so a circle",
+      "shape": "circle",
+      "from": 2.2,
+      "to": 3.2,
+      "x": 0.017,
+      "y": 0.7984,
+      "w": 0.2,
+      "h": 0.0924
+    }
+  ]
+}

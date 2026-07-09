@@ -1,4 +1,20 @@
-{ "durationSec": 5.95, "src": "e004/15_splash_cut.mp4", "x": 24, "y": 150, "w": 268, "h": 580,
+{
+  "durationSec": 5.95,
+  "src": "e004/15_splash_cut.mp4",
+  "x": 18,
+  "y": 140,
+  "w": 470,
+  "h": 1017,
   "markers": [
-    {"_": "the @rubio face avatar being tapped on the paused splash", "from": 2.25, "to": 3.45, "x": 0.3951, "y": 0.6651, "w": 0.2163, "h": 0.1006}
-  ] }
+    {
+      "_": "CIRCLE the play/pause control \u2014 'pause it' is the action, not the tap",
+      "shape": "circle",
+      "from": 2.6,
+      "to": 3.6,
+      "x": 0.8623,
+      "y": 0.8897,
+      "w": 0.0832,
+      "h": 0.0385
+    }
+  ]
+}

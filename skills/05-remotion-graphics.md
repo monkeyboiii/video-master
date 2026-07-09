@@ -141,6 +141,13 @@ web preview artifact. Compositions in this package set these render defaults via
 - **QC a value change on the frame that would break, before re-rendering the episode.**
   Render `--frames=<a>-<b>` at the two or three worst timecodes; an hstack of variants
   answers "how strong should this be" in seconds instead of a full render round.
+- **An asset `src` resolves against `public/`, never against `media/`.** If a script generates
+  a clip that a component consumes, that script must also copy it into `public/`. A manual
+  copy is a step you will forget, and the next render silently reuses the previous asset —
+  it does not fail. When a re-render "changes nothing", diff the mtimes in `public/` first.
+- **A marker's coordinates are a measurement, not a guess.** Overlay a labelled grid on the
+  actual clip frame (`drawbox` every 5% + `drawtext`), read the element off it, and convert.
+  An eyeballed fraction lands the ring on the wrong row and looks deliberate.
 - Text content comes from tracked props files, not hardcoded into components. Components
   are reusable across episodes; props are per-episode.
 - Respect platform safe zones (`docs/platforms.md`): overlay text stays inside the

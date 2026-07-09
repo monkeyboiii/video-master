@@ -80,19 +80,27 @@ and cross-fading from the wordmark into the bare mark. It sits there as an icon 
 fades out over 0.65s — ~2s into the next beat. The corner rest honours the platform safe zone
 (top 150, right 145).
 
-### 2 · Screen recordings live in the TOP-LEFT corner (`side-screen`, box **x24 y150 w268 h580**)
+### 2 · Screen recordings live in the TOP-LEFT corner — and they are BIG
 
-The founder deliberately holds frame-right, reserving the upper-left. **The box was measured
-against the five feature clips only** (05, 06, 07, 08, 09) — not the CTA clip, which has no
-overlay and would have shrunk it needlessly. `06_discovery` is the tightest: his fringe reaches
-**x≈312** at t≈4.74, so the card's right edge stops at **292** (~20px margin). Bottom edge 730 is
-well above the helmet. The box aspect (0.462) matches the recordings, so `objectFit: fill`
-introduces no distortion.
+A single card is **470×1017** at **x18 y140** — about **23% of the frame**. It bleeds over the
+founder's hair and a little of his brow; that is deliberate. An earlier pass used a 268×580 card
+that cleared him entirely, and the app UI was illegible. The box aspect (0.462) matches the
+recordings, so `objectFit: fill` introduces no distortion.
 
-**It is a small card**, so every chop (`screen-chop.sh`) keeps few, long, settled segments,
-**freeze-extends its payoff**, and carries an orange marker on the element the narration names.
-The status bar (with the red recording pill) is cropped off; width is trimmed symmetrically to
-preserve the aspect.
+**Cuts and freezes are a last resort, not a default.** Each recording plays through, showing the
+**entry** into its surface (a buyer has to see where the portal is). Segments are dropped only for
+a genuine wait (a spinner, a nav load) and a frame is held only when the source is shorter than
+its beat. The status bar (with the red recording pill) is cropped off.
+
+Markers are `rect` by default; `shape: "circle"` rings a round control.
+
+### 2b · The discovery beat FANS OUT — three cards, in sequence
+
+Per the director's sketch, the three placements appear **one, two, three at a fixed 0.55s delay**
+— `search` @33.15 (right), `chat` @33.70 (middle, riding high), `filter` @34.25 (left) — and each
+**plays its own recording in full**, entry included. They all fade out together around 38.08.
+V1 is **blurred** behind them (Route B, blur only, 0.35s fade in and out), returning to normal as
+they clear. The fan is the *sequence*, not the blur.
 
 `rough.md` is the instruction sheet — its `[SCREEN: …]` directives map 1:1 onto the seven
 recordings. No privacy blurs: every account on screen (`@rubio` / Zenkai Rubio, `@dbx`) is the
@@ -114,29 +122,45 @@ V1 clip2. SFX `radio-adjustment` @19.19 ("billboard."). Near-static, colder.
 V1 clip3. The pivot — deliberately **no UI**, so the idea lands before the product appears.
 
 ### sponsorship · 25.45–33.09
-V1 clip4 · **`side-screen-sponsorship` 25.45–33.05** (7.60s). Four states: the Sponsorships page
-(marker on "Your spot +") → the calendar with the start day → the duration menu → the final pass.
-SFX `shutter` @25.45.
-*Known cosmetic artifact:* the segments are ordered to match the **narration**, not the source
-clock, so the price reads $14.99 → $39.99 → $14.99. Illegible at card scale; word-sync wins.
+V1 clip4 · **`side-screen-sponsorship` 25.45–33.05** (7.60s). Plays start to finish with **one
+cut**. Card time == source time, so the words land themselves: the entry (profile → nav menu,
+**orange border on "Sponsorships"** → the page, **circle on the round "Your spot +" tile**) ends
+on "Choose" @28.73; the calendar sheet carries "Choose when it starts," (28.73–29.74); the
+duration dropdown opens and resolves 30d→7d across "choose how long it runs," (29.74–31.68) with
+the picker animation intact; the start day moves 9→22 and the pass is bought on "and DirtBikeX
+got you covered." The single cut removes 0.25s (source 6.23–6.48) in which literally nothing
+changes. SFX `shutter` @25.45.
+*Two earlier passes reordered this clip to chase the narration, and both made the app's state
+regress on screen ($14.99 → $39.99 → $14.99). Neither was needed — the calendar sheet is already
+up while he says "when it starts", because it IS the start picker. Measure before you rearrange.*
 
 ### discovery · 33.09–38.34
-V1 clip5 · **three cards fan out in sequence**, one per placement:
-`search` 33.15–34.85 · `chat` 34.90–36.60 · `filter` 36.65–38.31. Each shows only its *payoff*
-(the sponsored profile in that surface) and holds; the taps that lead there are cut, and a marker
-points at the result. SFX `shutter` on each entrance.
+V1 clip5, **blurred 33.00–38.30** (0.35s fade in/out) · **three cards fan out in sequence at a
+fixed 0.55s delay**: `search` @33.15 (right), `chat` @33.70 (middle-high), `filter` @34.25 (left).
+Each plays its **own recording in full** — the tap into search, the `+` into New Chat, the filter
+into Author Username — so the entry is visible. Only `search` (the shortest) holds its payoff to
+reach the group fade. A marker points at the sponsored row in each. SFX `shutter` per entrance.
 
 ### splash · 38.34–44.53
-V1 clip6 · **`side-screen-splash` 38.50–44.45**. pause → tap (marker on the avatar) → profile,
-with the profile held 1.15s. SFX `shutter` @38.50 · `hit-1` @44.15 ("profile.").
+V1 clip6 · **`side-screen-splash` 38.50–44.45**. Plays through: the paused splash (the ▶ control
+is showing) → the tap on the @rubio avatar → the profile. The **1.85s "Loading @rubio…" spinner is
+the only thing cut**; what remains is 0.75s short of the beat, so the finished profile is held —
+it has to still be on screen when he says "profile." @44.15. The marker is a **circle around the
+play/pause control** — "pause it" is the action, not the tap.
+SFX `shutter` @38.50 · `hit-1` @44.15 ("profile.").
 
 ### capped · 44.53–50.61
-V1 clip7 · **`side-screen-capped` 44.70–50.50**. Availability caps (marker on Pass 1/40) →
-"Currently rotating", held 2.12s. SFX `shutter` @44.70.
+V1 clip7 · **`side-screen-capped` 44.70–49.60**. **Nothing is cut** — the whole 3.23s recording
+plays. It is 1.67s shorter than the beat, so that time has to be held somewhere: 1.00s on the head
+(the screen is static there anyway, and the caps table + budget donut is the densest frame in the
+episode) and 0.67s on the tail payoff. That also keeps the caps on screen through "capped" @47.16,
+with "rotated," @47.75 landing on the rotating list. An earlier pass dumped all 1.65s on the
+near-empty "Currently rotating" list, which then sat dead for three seconds.
+Marker on the **Pass 1/40** caps row. SFX `shutter` @44.70.
 
 ### stats · 50.61–56.81
-V1 clip8 · **`side-screen-stats` 50.80–56.70**. VIEWS dashboard → By-region bars, held 2.38s.
-SFX `shutter` @50.80.
+V1 clip8 · **`side-screen-stats` 50.80–56.70**. Plays straight through, entry included. No cuts,
+no freezes. SFX `shutter` @50.80.
 
 ### cta · 56.81–66.25
 V1 clip9 · **`profile-card` 61.20–64.00** on "My name is Rubio" — clears **before** "PASS"
@@ -165,9 +189,9 @@ Rendering is single-threaded by design (`THREADS=1`) — this box has two cores.
 - **Interior breaths are left in.** Beat 1 carries two long ones (0.68s @2.75 and 0.98s @5.85).
   Tightening them with jump cuts sharpens the hook but re-times every caption downstream — do it
   after the caption track is final, or accept the pacing.
-- **The card is small** (268px wide). If the app UI still doesn't read on a phone, the next lever
-  is cropping each recording to its region of interest rather than enlarging the card — the box
-  cannot grow without touching his hair.
+- **The right-hand fan card** (`search`, x740 w306 → right edge 1046) sits inside the platform's
+  right safe-zone inset (145px), where TikTok's action rail lives. It is placed where the director
+  sketched it; check it against a real TikTok preview before publish.
 - **Enhanced visuals are pending.** Swap the video only; keep this audio.
 - `cover.en-US.md` is not written yet (`skills/02`).
 

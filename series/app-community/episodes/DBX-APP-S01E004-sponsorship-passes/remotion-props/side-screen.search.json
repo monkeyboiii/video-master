@@ -1,4 +1,6 @@
-{ "durationSec": 1.70, "src": "e004/12_search_cut.mp4", "x": 24, "y": 150, "w": 268, "h": 580,
+{ "durationSec": 4.95, "src": "e004/12_search_cut.mp4",
+  "_pos": "fan card 1 — right", "x": 740, "y": 655, "w": 306, "h": 662,
   "markers": [
-    {"_": "the sponsored rider row in Users search", "from": 0.10, "to": 1.70, "x": 0.0037, "y": 0.3123, "w": 0.6098, "h": 0.0595}
+    {"_": "the sponsored rider in Users search", "shape": "rect",
+     "from": 3.00, "to": 4.95, "x": 0.0037, "y": 0.3123, "w": 0.6098, "h": 0.0595}
   ] }

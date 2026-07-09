@@ -21,6 +21,8 @@ const markerSchema = z.object({
   y: z.number(),
   w: z.number(),
   h: z.number(),
+  /** `circle` rings a round control (a play/pause button); `rect` boxes a row or button. */
+  shape: z.enum(['rect', 'circle']).default('rect'),
 });
 
 export const sideScreenSchema = z.object({
@@ -101,7 +103,7 @@ export const SideScreen: React.FC<SideScreenProps> = ({src, x, y, w, h, markers}
                 width: `${m.w * 100}%`,
                 height: `${m.h * 100}%`,
                 border: `3px solid ${dirt[500]}`,
-                borderRadius: 8,
+                borderRadius: m.shape === 'circle' ? '50%' : 8,
                 boxShadow: `0 0 14px 2px rgba(237,107,0,${0.42 * breathe})`,
                 background: `rgba(237,107,0,${0.1 * breathe})`,
                 transform: `scale(${pop})`,

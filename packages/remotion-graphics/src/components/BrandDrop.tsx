@@ -27,6 +27,11 @@ export const brandDropSchema = z.object({
   /** Where the wordmark settles after dropping in (frame coords, centre of the lockup). */
   restX: z.number().default(540),
   restY: z.number().default(330),
+  /**
+   * Top inset of the corner icon's bounding box. The platform safe-zone top is 150, but the mark
+   * is decorative (not text), so it can ride higher into the corner — 84 reads as "tucked away".
+   */
+  cornerTop: z.number().default(84),
 
   // Phase lengths, in seconds. drop -> hold -> fly -> iconHold -> fade.
   dropSec: z.number().default(0.55),
@@ -55,6 +60,7 @@ export const BrandDrop: React.FC<BrandDropProps> = ({
   iconSize,
   restX,
   restY,
+  cornerTop,
   dropSec,
   holdSec,
   flySec,
@@ -70,9 +76,10 @@ export const BrandDrop: React.FC<BrandDropProps> = ({
   const iconEndF = flyEndF + iconHoldSec * fps;
   const fadeEndF = iconEndF + fadeSec * fps;
 
-  // Corner target: centre of the icon, inset by the safe zone.
+  // Corner target: centre of the icon. Horizontally it respects the safe zone (that column is
+  // where the platform's action rail lives); vertically it rides higher — see `cornerTop`.
   const cornerX = width - SAFE_ZONE.right - iconSize / 2;
-  const cornerY = SAFE_ZONE.top + iconSize / 2;
+  const cornerY = cornerTop + iconSize / 2;
 
   // ── drop: surface through the top edge, overshooting slightly, then settle
   const drop = spring({

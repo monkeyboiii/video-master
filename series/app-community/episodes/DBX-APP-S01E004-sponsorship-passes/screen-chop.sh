@@ -5,20 +5,23 @@
 # THE INSTRUCTIONS ARE `rough.md`'s [SCREEN: ...] directives — they map 1:1 onto these seven
 # recordings. Each output is cut to EXACTLY the length of its overlay slot in the timeline.
 #
-# THE CARD IS SMALL. It sits in the reserved top-left corner (268x580 in the 1080x1920 frame —
-# the founder's fringe reaches x~312 on 06_discovery, so the card's right edge must stop at 292).
-# At that scale fine UI text does not read, so every clip:
-#   * keeps FEW, LONG, SETTLED segments (spinners, typing, nav animations are cut),
-#   * FREEZE-EXTENDS its payoff (recordings always short-change the last state), and
-#   * gets an orange marker on the element the narration is talking about.
+# THE CARDS ARE BIG. A single card is 470x1017 — ~23% of the 1080x1920 frame — anchored top-left.
+# It bleeds over the founder's hair and a little of his brow; that is deliberate and approved.
+# The three fan-out cards are 306x662 each. So that the UI actually reads, every clip:
+#   * PLAYS THROUGH. Cutting and freezing are a LAST RESORT, not a default: they are used only
+#     to drop a genuine wait (a spinner, a nav load) or when the source is shorter than its beat.
+#   * shows the ENTRY into each surface — a buyer has to see where the portal is.
+#   * gets an orange marker (rect, or a circle for a round control) on the element the
+#     narration is talking about.
 #
 # The status bar (with the red recording pill) is cropped off; width is trimmed symmetrically to
 # keep the 0.4623 phone aspect so `objectFit: fill` in SideScreen introduces no distortion.
-# Output is 540 wide = 2x the card, plenty for the render.
+# Output is 700 wide (~1.5x the single card, ~2.3x a fan card) so the render has headroom.
 #
-# NOTE ON ORDER: segments are ordered to match the NARRATION, not the source clock. In
-# 11_screen-sponsorship the duration dropdown (src 4.60) is played AFTER the start-date calendar
-# (src 5.55), because he says "choose when it starts" before "choose how long it runs".
+# ORDER: chronological, always. Two earlier passes reordered 11_screen-sponsorship to chase the
+# narration and both made the app's state regress on screen. Neither was needed: played straight,
+# the recording already lands the calendar on "choose when it starts" and the duration dropdown on
+# "choose how long it runs". Measure before you rearrange.
 #
 # No privacy blurs: every account on screen (@rubio / Zenkai Rubio, @dbx) is the founder's own.
 set -e
@@ -29,7 +32,7 @@ mkdir -p screens .chop-tmp
 
 CROP_PHONE="crop=1082:2340:44:120"   # 1170x2532 -> drop status bar, keep aspect
 CROP_MIRROR="crop=818:1770:33:90"    # 884x1920  -> same treatment
-POST="scale=540:-2,setsar=1,fps=30,format=yuv420p"
+POST="scale=700:-2,setsar=1,fps=30,format=yuv420p"
 
 # chop <src> <out> <crop> <spec...>
 #   spec item = "seg:FROM:TO"  (play source FROM..TO)
@@ -66,57 +69,75 @@ chop() {
 
 # ── beat 5 · sponsorship · slot 7.60s ────────────────────────────────────────────────
 # [SCREEN: Sponsorship / Pass entry] + [SCREEN: fast montage - start date, duration, active pass]
-#   A  0.00-0.88  the Sponsorships page (pass entry)          -> "go to the Sponsorship page"
-#   .  0.88-2.75  held                                         -> "...and pick your spots."
-#   B  2.75-3.65  calendar, start day 9 selected               -> "choose when it starts"
-#   .  3.65-4.60  held
-#   C  4.60-5.28  duration dropdown 1d/7d/14d/30d              -> "choose how long it runs"
-#   .  5.28-6.20  held
-#   D  6.20-7.10  final pass Jul 22-28, Confirm - $14.99       -> "DirtBikeX got you covered"
-#   .  7.10-7.60  held
-# Skipped: 3.35-4.35 sheet slide + "Checking availability..." spinner; 5.35-5.55 and 6.50-6.70
-# value-change animations. The only no-dropdown "confirmed" frame is a 0.15s sliver at 4.35.
+# The ENTRY matters: a buyer has to see WHERE the portal is. The nav plays in full
+# (profile -> menu -> Sponsorships -> the page), with an orange border on the menu item.
+#
+# It plays start to finish with ONE cut. Card time == source time, so the words land themselves:
+#
+#   0.00-3.28  profile -> nav menu (marker: "Sponsorships") -> the page (marker: "Your spot +")
+#              ends exactly on "Choose"          (28.73)
+#   3.28-4.29  the calendar / start-date sheet   -> "Choose when it starts,"  (28.73-29.74)
+#   4.29-6.23  the duration dropdown opens, 30d -> 7d, price resolves to $14.99. The picker
+#              CHANGE animation is kept in full  -> "choose how long it runs," (29.74-31.68)
+#   [cut 6.23-6.48: 0.25s in which literally nothing changes -- Jul 9-15 / 7d / $14.99]
+#   6.48-7.85  the start day moves 9 -> 22, Jul 22-28, the pass is bought
+#                                             -> "and DirtBikeX got you covered." (31.68-33.05)
+#
+# The app's own order (duration, then start date) reads as the narration's order because the
+# calendar sheet is ALREADY on screen while he says "when it starts" -- it is the start picker.
+# Nothing rewinds, nothing repeats.
 chop 11_screen-sponsorship.MP4 11_sponsorship_cut.mp4 "$CROP_PHONE" \
-  seg:2.40:3.28 hold:3.28:1.87 seg:5.55:6.45 hold:6.45:0.95 \
-  seg:4.60:5.28 hold:5.28:0.92 seg:6.90:7.80 hold:7.80:0.50
+  seg:0.00:6.23 seg:6.48:7.85                                    # 7.60s (one cut, no freeze)
 
-# ── beat 6 · discovery · three cards fanning out, one per placement ──────────────────
+# ── beat 6 · discovery · three cards fanning out, each playing its OWN video ─────────
 # [SCREEN: fast montage as my finger points, fan out in sequence individually]
-# Only 5.25s for three surfaces, so each card shows its PAYOFF (the sponsored profile in that
-# surface) and holds. The taps that lead there are cut — the marker points at the result.
+# No aggressive chopping: each recording plays from frame 0 so the ENTRY into each surface is
+# visible (tap search -> Users tab; tap + -> New Chat; tap filter -> Author Username).
+# The three appear staggered (1 right, 2 middle-high, 3 left, per the director's sketch) and all
+# fade together at 38.10. Only the shortest, `search`, holds its payoff so it survives to the fade.
 chop 12_screen-search.MP4 12_search_cut.mp4 "$CROP_PHONE" \
-  seg:2.92:3.50 hold:3.50:1.09                       # Users tab, sponsored rider   -> 1.67s
+  seg:0.00:3.50 hold:3.50:1.45                                   # 4.95s (1.45 hold to the group fade)
 chop 13_screen-chat.MP4 13_chat_cut.mp4 "$CROP_PHONE" \
-  seg:2.30:2.86 hold:2.86:1.10                       # New Chat, "Get Featured"     -> 1.66s
+  seg:0.00:4.30 hold:4.30:0.08                                   # 4.38s (plays out in full)
 chop 14_screen-filter.mov 14_filter_cut.mp4 "$CROP_PHONE" \
-  seg:3.00:3.60 hold:3.60:1.05                       # Author Username picker       -> 1.65s
+  seg:0.00:3.81                                                  # 3.81s (plays out in full)
 
 # ── beat 7 · splash · slot 5.95s ─────────────────────────────────────────────────────
 # [SCREEN: sponsor card on splash screen, pause -> tap -> profile]
-#   A 0.00-2.15  paused splash with the @rubio sponsor card   -> "pause it"
-#   B 2.15-3.55  the avatar is tapped (marker)                -> "tap your face"
-#   C 3.55-4.80  @rubio's profile                             -> "straight into your profile"
-#   . 4.80-5.95  held (the activity list only finishes loading at the very end)
+# Plays through: the paused splash (the play control is showing, so it IS paused), the tap on the
+# @rubio avatar, then the profile. The 1.85s of "Loading @rubio..." spinner is cut -- a genuine
+# wait, and the only thing removed. What is left is 0.75s shorter than the beat, so the finished
+# profile is held: the payoff must still be on screen when he says "profile." at 44.15.
+# The marker CIRCLES the play/pause control (bottom-right of the splash), which is what
+# "pause it" means — not the tap.
 chop 15_screen-splash.mov 15_splash_cut.mp4 "$CROP_PHONE" \
-  seg:1.15:3.30 seg:3.90:5.30 seg:7.55:8.80 hold:8.80:1.15
+  seg:2.10:6.20 seg:8.15:8.80 hold:8.78:1.20                     # 5.95s
 
-# ── beat 8 · capped · slot 5.80s ─────────────────────────────────────────────────────
+# ── beat 8 · capped · slot 4.90s ─────────────────────────────────────────────────────
 # [SCREEN: active pass / availability capped rotated]
-#   A 0.00-1.35 Availability caps (Pass 1/40, Airtime 0/20)   -> "capped"
-#   . 1.35-2.35 held
-#   B 2.35-3.70 "Currently rotating" with the active sponsor  -> "and rotated"
-#   . 3.70-5.80 held (this settled state only lasts 1.4s in the source)
+# Nothing is cut: the whole 3.23s recording plays, including the tap to "Currently rotating".
+# It is 1.67s shorter than the beat, so 1.67s has to be held SOMEWHERE. An earlier pass dumped all
+# of it on the near-empty "Currently rotating" list, which sat dead for three seconds. Instead:
+#   * 1.00s on the head, where the screen is static anyway (the caps table + budget donut is the
+#     densest frame in the episode and the viewer needs the time to read it). It also keeps the
+#     caps on screen through "capped" (47.16); "rotated," (47.75) lands on the rotating list.
+#   * 0.67s on the tail payoff.
 chop 16_screen-capped.mov 16_capped_cut.mp4 "$CROP_PHONE" \
-  seg:0.10:1.45 hold:1.45:1.00 seg:1.95:3.28 hold:3.28:2.12
+  hold:0.10:1.00 seg:0.05:3.28 hold:3.24:0.67                    # 4.90s (no cuts)
 
 # ── beat 9 · stats · slot 5.90s ──────────────────────────────────────────────────────
 # [SCREEN: fast stats montage]   (884x1920 source — mirrored recording, not a device capture)
-#   A 0.00-1.27 VIEWS dashboard: metric tiles + daily trend   -> "check your sponsorship stats"
-#   . 1.27-2.57 held
-#   B 2.57-3.57 scrolled to the By-region bars                -> "Regional exposure, daily trends"
-#   . 3.57-5.90 held
+# Plays straight through, entry included. No cuts, no freezes.
 chop 17_screen-stats.MP4 17_stats_cut.mp4 "$CROP_MIRROR" \
-  seg:2.78:4.05 hold:4.05:1.30 seg:5.55:6.50 hold:6.50:2.38
+  seg:0.30:6.20                                                  # 5.90s
 
 rmdir .chop-tmp 2>/dev/null || true
+
+# SideScreen resolves `src` against Remotion's public/ — NOT against media/. Publishing the chops
+# is part of chopping them: a manual copy is a step you will forget, and the render will silently
+# use the previous cut. (It did. Twice.)
+PUB="../../packages/remotion-graphics/public/e004"
+mkdir -p "$PUB"
+cp -f screens/*.mp4 "$PUB/"
+echo ">>> published $(ls screens/*.mp4 | wc -l) clips to $PUB"
 echo ">>> CHOPS DONE"

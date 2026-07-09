@@ -176,6 +176,7 @@ export const RemotionRoot: React.FC = () => {
           iconSize: 128,
           restX: 540,
           restY: 330,
+          cornerTop: 84,
           dropSec: 0.55,
           holdSec: 1.2,
           flySec: 0.8,

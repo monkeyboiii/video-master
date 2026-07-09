@@ -229,6 +229,20 @@ stack can't deliver):
   its logo blurred) had 0.94s of real footage and was extended to 1.54s with a cloned tail;
   before that it flashed past. Budget the beat first, then decide what to extend or cut.
   (`fps=30` must be re-asserted before `tpad` — see the `setpts` note below.)
+- **Cuts and freezes are a last resort, not a default.** A screen recording is evidence: play it
+  through, entry included — the viewer has to see *where the portal is* before they believe the
+  product. Cut only a genuine wait (a spinner, a nav load). Freeze only when the source is
+  shorter than its beat. "Chop every clip into payoff frames" reads as a slideshow of screenshots.
+- **When a clip is shorter than its beat, choose where the held time goes.** Something must be
+  frozen; put it on the frame the viewer needs time to *read*, and on the payoff — never on the
+  emptiest screen just because it happens to be last. Holding the head of a static screen costs
+  nothing and is invisible.
+- **Measure before you rearrange.** Reordering a recording to chase the narration makes the app's
+  state regress on screen (a price, a date, a counter jumping backwards). Twice on S01E004 the
+  reorder was both wrong *and* unnecessary: played straight, the surface the narration names was
+  already on screen, because the UI that lets you pick a start date is *visible while you talk
+  about picking a start date*. Sample the source at 0.3s intervals and read the words'
+  timestamps out of the caption map before touching the order.
 - **Overlays enter, they don't appear.** A card, phone cutout, or logo that hard-cuts in reads
   as a glitch; the same overlay that **rises ~70px from below with an ease-out over ~0.45s while
   its alpha fades in over ~0.35s** reads as intentional. And the **blur behind it must fade with

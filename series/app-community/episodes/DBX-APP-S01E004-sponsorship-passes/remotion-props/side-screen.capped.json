@@ -1,4 +1,20 @@
-{ "durationSec": 5.80, "src": "e004/16_capped_cut.mp4", "x": 24, "y": 150, "w": 268, "h": 580,
+{
+  "durationSec": 4.9,
+  "src": "e004/16_capped_cut.mp4",
+  "x": 18,
+  "y": 140,
+  "w": 470,
+  "h": 1017,
   "markers": [
-    {"_": "the availability caps row (Pass 1/40)", "from": 0.90, "to": 2.35, "x": 0.0145, "y": 0.3458, "w": 0.5450, "h": 0.0509}
-  ] }
+    {
+      "_": "the Pass 1/40 caps row (label + bar). NB: y .105 is the 'Availability' HEADER",
+      "shape": "rect",
+      "from": 1.2,
+      "to": 2.55,
+      "x": 0.028,
+      "y": 0.17,
+      "w": 0.93,
+      "h": 0.072
+    }
+  ]
+}

@@ -10,5 +10,6 @@
   "holdSec": 1.2,
   "flySec": 0.8,
   "iconHoldSec": 1.8,
-  "fadeSec": 0.65
+  "fadeSec": 0.65,
+  "cornerTop": 84
 }
