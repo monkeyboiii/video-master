@@ -74,9 +74,12 @@ color · **[CUT]** where to tighten · **[UI]** feature cutaway.
 > I wanted it to be built."
 
 - **[ZOOM]** Nearly static, faint push — a colder, flatter feel than the beats around it.
-- **[SFX]** `Glitch 1` on "scattered," `Glitch 2` on "outdated" (sell broken/messy).
-- **[CAP]** "**scattered**" + "**outdated**" in coral with a 1-frame horizontal jitter (glitch feel, matched to the SFX).
-- **[UI]** `DECIDE:` optional 0.5s flash of a cluttered generic feed to literalize "scattered." Default **off** (stay on face) unless you want to shoot/screacap one.
+- **[SFX]** `radio-static` on "scattered/outdated" (sell broken/messy).
+- **[CAP]** "**scattered**" + "**outdated**" in coral, over the b-roll.
+- **[UI]** **BUILT:** cutaway to `07_scattered-apps` (31.55–35.95) — real app b-roll that
+  literalizes "scattered/outdated": a dead search ("No sites found") under "scattered," a
+  member list with names/faces **redacted** under "outdated," then a rival forum with its
+  **logo blurred**. Baked via `broll-process.sh`. Opaque, on V2 under the captions.
 - *Purpose:* name the gap the product fills — briefly, then move.
 
 ### 5 · BUILT IT + FEATURES — `05_built-it.MOV` (16.8s → ~14s, longest)
@@ -103,7 +106,9 @@ color · **[CUT]** where to tighten · **[UI]** feature cutaway.
 - **[ZOOM]** Warm settle — slight pull-out to a stable medium; one punch-in on "invite code."
 - **[SFX]** `Riser 3` under "us to be seen"; bright `Hit 2` + a soft ding on "invite code in the description" (points down); gentle resolve on "waiting for you there."
 - **[CAP]** "**us to be seen**" (chartreuse) · "**invite code**" (coral) with a down-arrow to the description · "**Rubio**" name pop.
-- **[UI]** End card: DBX logo + invite CTA (reuse E001 `cta-card` concept), holds ~1.5s over the last line.
+- **[UI]** **BUILT:** `invite-card` (the real QR card) over the **face** on "invite code in
+  the description" (59.5–63.0), with V1 **blurred + dimmed** behind it (Route B, 0.35s fade) so
+  the QR is off the subtitle line. `profile-card` on "My name is Rubio" holds to the end.
 - *Purpose:* turn the story into one action — grab the invite code.
 
 ---

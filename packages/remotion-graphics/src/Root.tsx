@@ -185,6 +185,8 @@ export const RemotionRoot: React.FC = () => {
           durationSec: 4,
           src: 'e002/invite-card.png',
           patchLabel: 'New riders welcome',
+          width: 470,
+          yPct: 42,
         }}
       />
       <Composition

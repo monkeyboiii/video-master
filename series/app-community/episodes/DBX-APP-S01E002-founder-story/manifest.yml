@@ -53,7 +53,8 @@ beats:
       en-US: 10.90
   - id: problem
     purpose: name the gap the product fills (scattered/outdated), briefly
-    visual_intent: near-static, colder; glitch captions on "scattered"/"outdated"
+    visual_intent: cutaway to real "scattered/outdated apps" b-roll (07_scattered-apps) — a
+      dead search, a member list with names redacted, a rival forum with its logo blurred
     overlay: kinetic-captions
     target_duration_sec:
       en-US: 7.05
@@ -65,7 +66,7 @@ beats:
       en-US: 16.05
   - id: cta
     purpose: turn the story into one action — grab the invite code
-    visual_intent: warm settle; invite-card on "invite code", profile-card on "My name is Rubio"
+    visual_intent: warm settle; invite-card (QR) over the face on blurred footage, profile-card on "My name is Rubio"
     overlay: invite-card
     target_duration_sec:
       en-US: 12.85
@@ -105,6 +106,7 @@ assets:
       external_uri: null
       sha256: null
       notes: HLG HDR; us to be seen, invite code in description, Rubio (13.57s)
+    - {asset_id: RAW_013, filename: 07_scatter-outdated.mov, external_uri: null, sha256: null, notes: "884x1920 SDR screen recording (in _source/); 3 apps searching for a dirt-bike community; source for the scattered-apps cutaway"}
     - {asset_id: RAW_007, filename: 01_1-nobody.MP4, external_uri: null, sha256: null, notes: "enhanced (face retouch); SDR 1080x1920 — VIDEO source for hook"}
     - {asset_id: RAW_008, filename: 02_2-my-first-real-ride.MP4, external_uri: null, sha256: null, notes: "enhanced — VIDEO source for first-ride"}
     - {asset_id: RAW_009, filename: 03_3-but-you-know.MP4, external_uri: null, sha256: null, notes: "enhanced — VIDEO source for addictive"}
@@ -120,6 +122,9 @@ assets:
     - {asset_id: SEL_004, source_asset_id: RAW_004, in: "00:00:00.000", out: "00:00:07.470", beat: problem}
     - {asset_id: SEL_005, source_asset_id: RAW_005, in: "00:00:00.000", out: "00:00:16.800", beat: built-it}
     - {asset_id: SEL_006, source_asset_id: RAW_006, in: "00:00:00.000", out: "00:00:13.570", beat: cta}
+    # scattered-apps cutaway (baked): usernames per-row blurred, ThumperTalk logo blurred,
+    # blurred side-fill to 1080w; reproduced by broll-process.sh. -> footage/07_scattered-apps_sdr.mp4
+    - {asset_id: SEL_007, source_asset_id: RAW_013, in: "00:00:00.000", out: "00:00:04.400", beat: problem}
   voiceover: [] # narration embedded in the talking-head clips; no separate VO file
   audio:
     - asset_id: MUS_001
@@ -145,6 +150,7 @@ outputs:
       # One continuous whole-video caption track (replaced the six per-beat overlays).
       - DBX-APP-S01E002_en-US_9x16_kinetic-captions_v001.mov
       - DBX-APP-S01E002_en-US_9x16_photo-reveal_v001.mov
+  # Processed b-roll cutaway (not a Remotion overlay): footage/07_scattered-apps_sdr.mp4
   covers: {} # locale -> [filenames in media/exports/]
   kdenlive:
     en-US: media/DBX-APP-S01E002/founder-story.kdenlive

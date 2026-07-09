@@ -18,6 +18,7 @@ bin import sfx/simple-whoosh-1.wav -n sfx-whoosh1 --type audio -d 0.47
 bin import sfx/simple-whoosh-2.wav -n sfx-whoosh2 --type audio -d 0.31
 bin import sfx/radio-adjustment.mp3 -n sfx-radio --type audio -d 4.82
 bin import sfx/shutter.mp3 -n sfx-shutter --type audio -d 0.65
+bin import footage/07_scattered-apps_sdr.mp4 -n scattered-broll --type video -d 4.4
 timeline add-track -n V1 --type video
 timeline add-track -n V2-Backdrop --type video
 timeline add-track -n V3-Captions --type video
@@ -31,6 +32,7 @@ timeline add-clip 0 clip3 -p 29.8 --in 0 --out 7.05
 timeline add-clip 0 clip4 -p 36.85 --in 0 --out 16.05
 timeline add-clip 0 clip5 -p 52.9 --in 0 --out 12.85
 timeline add-clip 1 clip7 -p 9.95 --in 0 --out 4.2
+timeline add-clip 1 clip19 -p 31.55 --in 0 --out 4.4
 timeline add-clip 1 clip8 -p 41.5 --in 0 --out 2.0
 timeline add-clip 2 clip6 -p 0 --in 0 --out 63.8
 timeline add-clip 3 clip9 -p 47.5 --in 0 --out 6.0

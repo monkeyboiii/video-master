@@ -222,6 +222,21 @@ stack can't deliver):
   viewer needs 1.5s to read. Chop to few, long takes and end each on a **held frame** — grab a
   still and concat it, rather than making the viewer catch it live. Hold the payoff, cut the
   waiting (spinners, saves, toasts, transitions): the result is what the narration promised.
+- **Redact real PII in b-roll, and cover the motion with the geometry.** Real usernames /
+  faces / third-party logos in screen recordings get blurred (`boxblur` over a crop, overlaid
+  back). To follow content that only moves along one axis (a list that slides in horizontally),
+  use a **full-width band at the row's fixed y** — the content stays in its band, so no
+  per-frame tracking is needed. Gate each band with `enable='between(t,a,b)'`, and where a
+  band would smear an unrelated incoming scene (a nav slide bringing in a bright screen), just
+  **hard-cut the transition out** (`select`) rather than blurring through it. Check the exact
+  boundary frame: an off-by-one in the enable window leaks one PII frame onto the next scene.
+- **Blur behind an overlay = blur V1 in the compositor, not a baked backdrop (Route B).** When
+  a logo / QR / card needs a soft, dimmed background, the honest way is to blur + dim the *actual
+  footage* underneath it, ramped with a ~0.35s fade — the background is then exactly the frame,
+  which a separately-extracted backdrop clip never quite matches. The overlay stays transparent;
+  the blur is an effect on the V1 clip (keyframed Blur + brightness on the Mac; baked in the
+  ffmpeg preview via a faded, blurred copy overlaid on the sharp base). Put cards that must clear
+  the subtitles on the subject's face, not the lower third.
 - **`setpts` drops the frame-rate hint.** After `fps=30,select=...,setpts=N/30/TB`, a following
   `tpad` reads `stop_duration` against a bogus rate (1.11s silently became 2 frames) and libx264
   quietly encodes 25 fps. Re-assert `fps=30` after `setpts`, and pass `-fps_mode cfr -r 30`.
