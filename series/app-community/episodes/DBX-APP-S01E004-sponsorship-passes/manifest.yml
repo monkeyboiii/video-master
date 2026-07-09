@@ -1,0 +1,166 @@
+# Episode manifest — source of truth for this episode.
+# Schema notes: docs/production-model.md · naming: docs/naming-conventions.md
+# Validate with: node tools/validate.mjs
+
+video_id: "DBX-APP-S01E004" # DBX-{SERIES}-S{ss}E{eee}
+slug: "sponsorship-passes"
+series: "app-community"
+status: editing # topic|packaging|scripting|shooting|editing|qc|published|retro
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+# How DirtBikeX's sponsorship "passes" work. Narration was recorded first — there is NO authored
+# reading script; script.en-US.md is the transcript of record and the .srt files are the
+# subtitles. Director's outline (incl. the [SCREEN: ...] overlay directives): rough.md.
+# Raw ~75.2s; both-edge pause-cropped timeline = 66.25s. Edit plan in storyboard.md.
+variants:
+  en-US:
+    script: script.en-US.md
+    cover: cover.en-US.md
+    subtitles: subtitles/en-US.srt
+    # No single locale props file: this episode renders per-comp props
+    # (remotion-props/captions.all.json, brand-drop.json, side-screen.*.json, ...).
+    remotion_props: null
+    voiceover_asset_id: null # narration is diegetic in the talking-head clips
+    platforms: [tiktok, ytshorts, reels]
+
+# One continuous caption overlay spans the whole video, so each beat's `overlay` below names
+# that beat's *distinctive* overlay. Durations are the pause-cropped cut lengths.
+beats:
+  - id: hook
+    purpose: state the contradiction — ad slots built by someone who hates ads
+    visual_intent: founder to camera; brand-drop surfaces on "DirtBikeX" (@7.33) then retires to the top-right corner as an icon
+    overlay: brand-drop
+    target_duration_sec:
+      en-US: 9.79
+  - id: hate-ads
+    purpose: earn the hook with a real confession (looking away from ads)
+    visual_intent: small push-in; no overlay — the face carries it
+    overlay: kinetic-captions
+    target_duration_sec:
+      en-US: 4.88
+  - id: billboard
+    purpose: name the thing he refuses to build
+    visual_intent: near-static, colder; radio-static on "billboard"
+    overlay: kinetic-captions
+    target_duration_sec:
+      en-US: 4.94
+  - id: passes
+    purpose: the pivot — limited passes for riders who belong
+    visual_intent: slight pull-out; still no UI, let the idea land
+    overlay: kinetic-captions
+    target_duration_sec:
+      en-US: 5.84
+  - id: sponsorship
+    purpose: the how — Sponsorship page, pick a spot, set start + duration
+    visual_intent: top-left screen card (11_screen-sponsorship)
+    overlay: side-screen
+    target_duration_sec:
+      en-US: 7.64
+  - id: discovery
+    purpose: placement breadth — search, chat, filter
+    visual_intent: three top-left cards fanning out in sequence, one per placement
+    overlay: side-screen
+    target_duration_sec:
+      en-US: 5.25
+  - id: splash
+    purpose: the marquee placement — splash card, pause, tap, profile
+    visual_intent: top-left screen card; pause -> tap -> profile each legible
+    overlay: side-screen
+    target_duration_sec:
+      en-US: 6.19
+  - id: capped
+    purpose: objection-handler — capped and rotated, nobody floods the app
+    visual_intent: top-left screen card (16_screen-capped)
+    overlay: side-screen
+    target_duration_sec:
+      en-US: 6.08
+  - id: stats
+    purpose: proof it is measurable — regional exposure, daily trends
+    visual_intent: top-left screen card, hold the final chart
+    overlay: side-screen
+    target_duration_sec:
+      en-US: 6.20
+  - id: cta
+    purpose: one action — comment "PASS" for a free day pass
+    visual_intent: profile-card on "My name is Rubio", clears before the word "PASS"
+    overlay: profile-card
+    target_duration_sec:
+      en-US: 9.44
+
+assets:
+  # 10 talking-head clips (HLG HDR, 1920x1080 coded + -90 rotation -> 1080x1920 portrait) and
+  # 7 app screen recordings (SDR). THIS CUT USES THE ORIGINAL .MOV FOR BOTH VIDEO AND AUDIO;
+  # face-enhanced renders are expected later and will replace the VIDEO only.
+  # Each .MOV carries a second, undecodable 4.0 'apac' spatial audio track — map 0:a:0, never 0:a.
+  raw:
+    - {asset_id: RAW_001, filename: 01_hook.mov, external_uri: null, sha256: null, notes: "HLG HDR; ad slots / hate ads / DirtBikeX full of flyers (12.11s)"}
+    - {asset_id: RAW_002, filename: 02_hate-ads.MOV, external_uri: null, sha256: null, notes: "HLG HDR; look away, close my eyes (5.47s)"}
+    - {asset_id: RAW_003, filename: 03_billboard.MOV, external_uri: null, sha256: null, notes: "HLG HDR; damn billboard (5.33s)"}
+    - {asset_id: RAW_004, filename: 04_passes.MOV, external_uri: null, sha256: null, notes: "HLG HDR; limited passes for real riders (6.23s)"}
+    - {asset_id: RAW_005, filename: 05_sponsorship.MOV, external_uri: null, sha256: null, notes: "HLG HDR; Sponsorship page, pick spots, start, duration (9.20s); opens with a lip-smack blip"}
+    - {asset_id: RAW_006, filename: 06_discovery.MOV, external_uri: null, sha256: null, notes: "HLG HDR; show up in multiple places (6.40s)"}
+    - {asset_id: RAW_007, filename: 07_splash.MOV, external_uri: null, sha256: null, notes: "HLG HDR; splash screen, pause, tap, profile (6.67s)"}
+    - {asset_id: RAW_008, filename: 08_capped.MOV, external_uri: null, sha256: null, notes: "HLG HDR; capped and rotated (6.83s)"}
+    - {asset_id: RAW_009, filename: 09_stats.MOV, external_uri: null, sha256: null, notes: "HLG HDR; sponsorship stats, regional exposure, daily trends (7.07s)"}
+    - {asset_id: RAW_010, filename: 10_cta.MOV, external_uri: null, sha256: null, notes: "HLG HDR; fair way to get seen, Rubio, comment PASS (9.90s)"}
+    - {asset_id: RAW_011, filename: 11_screen-sponsorship.MP4, external_uri: null, sha256: null, notes: "screen rec 1170x2532; Sponsorship page -> pick spot -> start date -> duration -> active pass (7.94s)"}
+    - {asset_id: RAW_012, filename: 12_screen-search.MP4, external_uri: null, sha256: null, notes: "screen rec 1170x2532; sponsored profile in user search (3.56s)"}
+    - {asset_id: RAW_013, filename: 13_screen-chat.MP4, external_uri: null, sha256: null, notes: "screen rec 1170x2532; sponsored profile in chat suggestion (4.32s)"}
+    - {asset_id: RAW_014, filename: 14_screen-filter.mov, external_uri: null, sha256: null, notes: "screen rec 1170x2532; sponsored profile in filter suggestion (4.03s)"}
+    - {asset_id: RAW_015, filename: 15_screen-splash.mov, external_uri: null, sha256: null, notes: "screen rec 1170x2532; splash sponsor card -> pause -> tap -> profile (8.86s)"}
+    - {asset_id: RAW_016, filename: 16_screen-capped.mov, external_uri: null, sha256: null, notes: "screen rec 1170x2532; active pass / availability capped + rotated (3.33s)"}
+    - {asset_id: RAW_017, filename: 17_screen-stats.MP4, external_uri: null, sha256: null, notes: "screen rec 884x1920; sponsorship stats montage (6.56s); the only recording with a non-silent audio track"}
+  # Narration selects = both-edge pause crops (silencedetect -32dB, d=0.30), reproduced by
+  # footage-process.sh. Screen chops are pure cuts + freeze-extends — see screen-chop.sh.
+  # Keep these in lockstep with caption-map.mjs BEATS or the captions drift.
+  selected:
+    - {asset_id: SEL_001, source_asset_id: RAW_001, in: "00:00:00.000", out: "00:00:09.790", beat: hook}
+    - {asset_id: SEL_002, source_asset_id: RAW_002, in: "00:00:00.000", out: "00:00:04.880", beat: hate-ads}
+    - {asset_id: SEL_003, source_asset_id: RAW_003, in: "00:00:00.000", out: "00:00:04.940", beat: billboard}
+    - {asset_id: SEL_004, source_asset_id: RAW_004, in: "00:00:00.000", out: "00:00:05.840", beat: passes}
+    - {asset_id: SEL_005, source_asset_id: RAW_005, in: "00:00:00.830", out: "00:00:08.470", beat: sponsorship}
+    - {asset_id: SEL_006, source_asset_id: RAW_006, in: "00:00:00.440", out: "00:00:05.690", beat: discovery}
+    - {asset_id: SEL_007, source_asset_id: RAW_007, in: "00:00:00.000", out: "00:00:06.190", beat: splash}
+    - {asset_id: SEL_008, source_asset_id: RAW_008, in: "00:00:00.000", out: "00:00:06.080", beat: capped}
+    - {asset_id: SEL_009, source_asset_id: RAW_009, in: "00:00:00.290", out: "00:00:06.490", beat: stats}
+    - {asset_id: SEL_010, source_asset_id: RAW_010, in: "00:00:00.000", out: "00:00:09.440", beat: cta}
+  voiceover: [] # narration embedded in the talking-head clips
+  audio:
+    - asset_id: MUS_001
+      filename: bgm-vampire-heart.mp3
+      external_uri: null
+      source: "DECIDE: record library/vendor + track URL"
+      license: "DECIDE: confirm cleared for commercial social use before publish"
+    - asset_id: SFX_PACK_001
+      filename: sfx/ # hit-1, simple-whoosh-1, simple-whoosh-2, shutter, radio-adjustment
+      external_uri: null
+      source: "DECIDE: YouTube SFX Starter Pack — record origin URL"
+      license: "DECIDE: confirm commercial-social license per used file before publish"
+
+outputs:
+  # ProRes 4444 alpha overlays in media/DBX-APP-S01E004/overlays/
+  overlays:
+    en-US:
+      - DBX-APP-S01E004_en-US_9x16_kinetic-captions_v001.mov
+      - DBX-APP-S01E004_en-US_9x16_brand-drop_v001.mov
+      - DBX-APP-S01E004_en-US_9x16_side-screen-sponsorship_v001.mov
+      - DBX-APP-S01E004_en-US_9x16_side-screen-search_v001.mov
+      - DBX-APP-S01E004_en-US_9x16_side-screen-chat_v001.mov
+      - DBX-APP-S01E004_en-US_9x16_side-screen-filter_v001.mov
+      - DBX-APP-S01E004_en-US_9x16_side-screen-splash_v001.mov
+      - DBX-APP-S01E004_en-US_9x16_side-screen-capped_v001.mov
+      - DBX-APP-S01E004_en-US_9x16_side-screen-stats_v001.mov
+      - DBX-APP-S01E004_en-US_9x16_profile-card_v001.mov
+  covers: {}
+  kdenlive:
+    en-US: media/DBX-APP-S01E004/sponsorship-passes.kdenlive
+  # Rough-cut flatten for review; final renders on the Mac from the .kdenlive.
+  exports:
+    en-US:
+      - DBX-APP-S01E004_en-US_tiktok_9x16_v001_review.mp4
+  published: {}

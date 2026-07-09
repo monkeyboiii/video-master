@@ -1,0 +1,14 @@
+{
+  "durationSec": 5.0,
+  "lockupSrc": "brand/logo-lockup.svg",
+  "markSrc": "brand/logo-mark.svg",
+  "lockupWidth": 620,
+  "iconSize": 128,
+  "restX": 540,
+  "restY": 330,
+  "dropSec": 0.55,
+  "holdSec": 1.2,
+  "flySec": 0.8,
+  "iconHoldSec": 1.8,
+  "fadeSec": 0.65
+}

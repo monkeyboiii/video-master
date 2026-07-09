@@ -18,6 +18,13 @@ export const profileCardSchema = z.object({
   /** Profile screenshot in public/, e.g. e002/rubio-profile.jpg */
   src: z.string().default('e002/rubio-profile.jpg'),
   handle: z.string().default('@rubio'),
+  /**
+   * Distance from the bottom of the frame to the bottom of the card. The default (190) puts it
+   * in the lower third, where it OVERLAPS the caption band (y1372-1466) — fine for episodes that
+   * stop their captions there (E002), but not for a continuous caption track. Raise it to lift
+   * the card clear of the band: 630 leaves ~80px of air above it.
+   */
+  bottomInset: z.number().default(190),
 });
 
 export type ProfileCardProps = z.infer<typeof profileCardSchema>;
@@ -26,7 +33,7 @@ export type ProfileCardProps = z.infer<typeof profileCardSchema>;
  * Founder's in-app profile screen as a floating card that snaps in — shown when
  * he says "My name is Rubio." Establishes identity (verified, Founder, @rubio).
  */
-export const ProfileCard: React.FC<ProfileCardProps> = ({src, handle}) => {
+export const ProfileCard: React.FC<ProfileCardProps> = ({src, handle, bottomInset}) => {
   const frame = useCurrentFrame();
   const {fps, durationInFrames} = useVideoConfig();
 
@@ -51,7 +58,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({src, handle}) => {
       style={{
         justifyContent: 'flex-end',
         alignItems: 'center',
-        paddingBottom: 190,
+        paddingBottom: bottomInset,
         opacity,
       }}
     >

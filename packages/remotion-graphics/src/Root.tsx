@@ -6,6 +6,8 @@ import type {ChecklistCardProps} from './components/ChecklistCard';
 import {Cover, coverSchema} from './components/Cover';
 import {CtaCard, ctaCardSchema} from './components/CtaCard';
 import type {CtaCardProps} from './components/CtaCard';
+import {BrandDrop, brandDropSchema} from './components/BrandDrop';
+import type {BrandDropProps} from './components/BrandDrop';
 import {BrandTitle, brandTitleSchema} from './components/BrandTitle';
 import type {BrandTitleProps} from './components/BrandTitle';
 import {FeaturePhones, featurePhonesSchema} from './components/FeaturePhones';
@@ -158,6 +160,30 @@ export const RemotionRoot: React.FC = () => {
         }}
       />
       <Composition
+        id="brand-drop"
+        component={BrandDrop}
+        schema={brandDropSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(5 * FPS)}
+        calculateMetadata={overlayMetadata<BrandDropProps>(5)}
+        defaultProps={{
+          durationSec: 5.0,
+          lockupSrc: 'brand/logo-lockup.svg',
+          markSrc: 'brand/logo-mark.svg',
+          lockupWidth: 620,
+          iconSize: 128,
+          restX: 540,
+          restY: 330,
+          dropSec: 0.55,
+          holdSec: 1.2,
+          flySec: 0.8,
+          iconHoldSec: 1.8,
+          fadeSec: 0.65,
+        }}
+      />
+      <Composition
         id="profile-card"
         component={ProfileCard}
         schema={profileCardSchema}
@@ -170,6 +196,7 @@ export const RemotionRoot: React.FC = () => {
           durationSec: 3,
           src: 'e002/rubio-profile.jpg',
           handle: '@rubio',
+          bottomInset: 190,
         }}
       />
       <Composition

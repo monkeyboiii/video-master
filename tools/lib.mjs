@@ -11,7 +11,7 @@ export const LOCALES = ['en-US', 'zh-CN'];
 export const PLATFORMS = ['tiktok', 'ytshorts', 'reels', 'rednote', 'douyin', 'bilibili', 'wechat'];
 // 16x10 exists for covers only (Bilibili requires a 16:10 cover image).
 export const ASPECTS = ['9x16', '16x9', '1x1', '3x4', '16x10'];
-export const OVERLAY_COMPS = ['hook-title', 'checklist-card', 'cta-card', 'lower-third', 'subtitle-track', 'stage-cards', 'stage-cards-wide', 'phone-language', 'phone-embed', 'phone-sponsor', 'brand-title', 'profile-card', 'invite-card', 'kinetic-captions', 'feature-phones', 'side-screen', 'photo-reveal'];
+export const OVERLAY_COMPS = ['hook-title', 'checklist-card', 'cta-card', 'lower-third', 'subtitle-track', 'stage-cards', 'stage-cards-wide', 'phone-language', 'phone-embed', 'phone-sponsor', 'brand-title', 'brand-drop', 'profile-card', 'invite-card', 'kinetic-captions', 'feature-phones', 'side-screen', 'photo-reveal'];
 export const COVER_COMPS = ['cover-9x16', 'cover-3x4'];
 
 export const RE = {
