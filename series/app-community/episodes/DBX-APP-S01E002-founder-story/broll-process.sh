@@ -15,10 +15,10 @@
 #   * The scene-3 ThumperTalk red logo is a third-party mark. Blur it with a full-width band
 #     at its y-row, active across the slide-in so it is covered while it moves into place.
 #
-# The phone is 884 wide in a 1080 frame; rather than crop off the search bar / tab bar, the
-# 98px side gaps are a blurred, dimmed cover-fill of the same footage (the photo-reveal trick).
-# Output: footage/07_scattered-apps_sdr.mp4, 1080x1920, 30fps CFR — a cutaway for the
-# scattered beat (placed on V2-Backdrop at timeline 31.55, under the captions).
+# Output: footage/07_scattered-apps_sdr.mp4 — the NATIVE 884x1920 phone cutout (no side-fill).
+# The compositor presents it like the invite card: scaled down and centred over the founder,
+# whose footage is blurred (not dimmed) behind it, snapping in on a shutter SFX. See
+# rebuild-e2.sh / edit-notes for the placement + the blur-V1 window.
 set -e
 : "${FF:=ffmpeg}"
 # Run from inside the media bundle (media/DBX-APP-S01E002), where _source/ and footage/ live.
@@ -48,9 +48,6 @@ OUT=${OUT:-footage/07_scattered-apps_sdr.mp4}
 [o3][b4]overlay=0:1086:enable='between(t,1.85,3.46)'[o4];\
 [o4][b5]overlay=0:1298:enable='between(t,1.85,3.46)'[o5];\
 [o5][b6]overlay=0:1516:enable='between(t,1.85,3.46)'[o6];\
-[o6][bl]overlay=0:260:enable='between(t,3.46,4.60)'[phone];\
-[phone]split=2[ph_fg][ph_src];\
-[ph_src]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=42:2,eq=brightness=-0.20:saturation=0.9[fill];\
-[fill][ph_fg]overlay=(1080-884)/2:0,format=yuv420p[out]" \
+[o6][bl]overlay=0:260:enable='between(t,3.46,4.60)',format=yuv420p[out]" \
  -map "[out]" -an -c:v libx264 -crf 19 -preset medium -pix_fmt yuv420p -fps_mode cfr -r 30 "$OUT"
 echo "wrote $OUT"

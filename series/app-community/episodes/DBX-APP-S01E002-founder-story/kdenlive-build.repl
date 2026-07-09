@@ -42,6 +42,7 @@ timeline add-clip 3 clip12 -p 63.8 --in 0 --out 2.0
 timeline add-clip 4 clip13 -p 0 --in 0 --out 65.75
 timeline add-clip 5 clip14 -p 6.9 --in 0 --out 0.8
 timeline add-clip 5 clip16 -p 9.95 --in 0 --out 0.31
+timeline add-clip 5 clip18 -p 31.55 --in 0 --out 0.6
 timeline add-clip 5 clip15 -p 25.0 --in 0 --out 0.47
 timeline add-clip 5 clip17 -p 32.8 --in 0 --out 0.8
 timeline add-clip 5 clip15 -p 41.5 --in 0 --out 0.47

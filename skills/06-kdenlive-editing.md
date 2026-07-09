@@ -231,12 +231,15 @@ stack can't deliver):
   **hard-cut the transition out** (`select`) rather than blurring through it. Check the exact
   boundary frame: an off-by-one in the enable window leaks one PII frame onto the next scene.
 - **Blur behind an overlay = blur V1 in the compositor, not a baked backdrop (Route B).** When
-  a logo / QR / card needs a soft, dimmed background, the honest way is to blur + dim the *actual
-  footage* underneath it, ramped with a ~0.35s fade — the background is then exactly the frame,
-  which a separately-extracted backdrop clip never quite matches. The overlay stays transparent;
-  the blur is an effect on the V1 clip (keyframed Blur + brightness on the Mac; baked in the
-  ffmpeg preview via a faded, blurred copy overlaid on the sharp base). Put cards that must clear
-  the subtitles on the subject's face, not the lower third.
+  a logo / QR / card needs a soft background, the honest way is to **blur the *actual footage***
+  underneath it, ramped with a ~0.35s fade — the background is then exactly the frame, which a
+  separately-extracted backdrop clip never quite matches. **Blur only — don't dim.** Darkening
+  the footage drops the mood of the whole shot; the blur alone is enough separation. The overlay
+  stays transparent; the blur is an effect on the V1 clip (keyframed Blur on the Mac; baked in
+  the ffmpeg preview via a faded, blurred copy overlaid on the sharp base). Put cards that must
+  clear the subtitles on the subject's face, not the lower third. A screen-recording cutaway can
+  be presented the same way — the phone scaled to a card, centred over the blurred subject,
+  snapping in on a shutter SFX — instead of full-bleed.
 - **`setpts` drops the frame-rate hint.** After `fps=30,select=...,setpts=N/30/TB`, a following
   `tpad` reads `stop_duration` against a bogus rate (1.11s silently became 2 frames) and libx264
   quietly encodes 25 fps. Re-assert `fps=30` after `setpts`, and pass `-fps_mode cfr -r 30`.
