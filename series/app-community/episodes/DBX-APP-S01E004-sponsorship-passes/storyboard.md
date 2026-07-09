@@ -12,12 +12,12 @@
 |---|---|
 | Canvas | 1080×1920, 30 fps, vertical |
 | Source | 10 talking-head clips, **HLG HDR** (iPhone, 1920×1080 coded + `-90` rotation → portrait) |
-| Raw length | 75.2s → **66.25s** after both-edge pause crops |
+| Raw length | 75.2s → **68.48s** after both-edge pause crops |
 | **Video** | The director's **enhanced renders** (`enhanced/`), already SDR bt709 / upright / 30fps. Do NOT tone-map or transpose them. |
 | **Audio** | Original `.MOV`, stream `0:1` (the 4.0 `apac` spatial track has no decoder). Frame-synced to the renders at 0 ms. |
 | **Transitions** | **Hard cuts only** between shots. Overlays are the exception: they *ease* in. |
 | **Motion** | Punch-in / pull-out only (Transform keyframes, not baked). |
-| **Captions** | One continuous `kinetic-captions` track, 0→66.25s, word-anchored to **real speech runs** (see `caption-map.mjs`). |
+| **Captions** | One continuous `kinetic-captions` track, 0→68.48s, word-anchored to **real speech runs** (see `caption-map.mjs`). |
 | **Music** | `bgm-vampire-heart.mp3` from 0.00s, flat ~10% under the VO. No ducking. |
 
 ## The two overlay conventions this episode establishes
@@ -43,21 +43,21 @@ which is where the platform's action rail lives.
 Legend — **[ZOOM]** camera move · **[SFX]** sound accent · **[CAP]** caption emphasis ·
 **[UI]** overlay. Timeline seconds are the built cut.
 
-### 1 · HOOK — `01_hook` · 0.00–9.79
+### 1 · HOOK — `01_hook` · 0.00–12.02
 
 > "I build **ad slots** in my app because I **hate ads**. / Yup, I know how that sounds, so let
 > me explain. / I could've made **DirtBikeX** full of flyers and banners, and honestly, that'd
 > be the easy way out."
 
 - **[ZOOM]** Open mid-push. The contradiction *is* the hook — hold on his face, no cutaway.
-- **[UI]** **`brand-drop` @6.80–11.80.** The wordmark surfaces from the top and settles at
-  **7.33s, exactly on the word "DirtBikeX"**, holds 1.2s, then flies to the top-right corner as
-  the mark and fades out ~2s into the next beat.
-- **[SFX]** `hit-1` on "hate ads" (@2.25) · `simple-whoosh-2` @6.80 as the logo surfaces.
+- **[UI]** **`brand-drop` @7.08–12.08.** The wordmark surfaces from the top and settles at
+  **7.63s, exactly on the word "DirtBikeX"**, holds 1.2s, then flies to the top-right corner as
+  the mark and fades out across the cut.
+- **[SFX]** `hit-1` on "hate ads" (@2.25) · `simple-whoosh-2` @7.08 as the logo surfaces.
 - **[CAP]** "slots" brand · "hate" / "ads." harsh · "DirtBikeX" brand.
 - *Purpose:* state the contradiction, promise the explanation.
 
-### 2 · HATE-ADS — `02_hate-ads` · 9.79–14.67
+### 2 · HATE-ADS — `02_hate-ads` · 12.02–16.90
 
 > "But I **hate ads** so much that I literally look **away** or close my **eyes** so that they
 > don't get into my head."
@@ -66,16 +66,16 @@ Legend — **[ZOOM]** camera move · **[SFX]** sound accent · **[CAP]** caption
 - **[CAP]** "hate" / "ads" / "away" / "eyes" harsh.
 - *Purpose:* prove the hook wasn't a gimmick. No overlay — his face carries it.
 
-### 3 · BILLBOARD — `03_billboard` · 14.67–19.61
+### 3 · BILLBOARD — `03_billboard` · 16.90–21.84
 
 > "And I definitely want no riders opening my app and feel like they walked into a damn
 > **billboard**."
 
-- **[SFX]** `radio-adjustment` on "billboard" (@19.19) — a flat, cheap, broadcast texture.
+- **[SFX]** `radio-adjustment` on "billboard" (@21.42) — a flat, cheap, broadcast texture.
 - **[CAP]** "billboard." harsh.
 - *Purpose:* name the thing he refuses to build. The turn lands next.
 
-### 4 · PASSES — `04_passes` · 19.61–25.45
+### 4 · PASSES — `04_passes` · 21.84–27.68
 
 > "So these slots work **differently**. There are **limited passes** for real **riders** who
 > actually belong in the sport."
@@ -85,7 +85,7 @@ Legend — **[ZOOM]** camera move · **[SFX]** sound accent · **[CAP]** caption
 - *Purpose:* the pivot from *what I hate* to *what I built*. Still no overlay: let the idea land
   before the UI shows up.
 
-### 5 · SPONSORSHIP — `05_sponsorship` · 25.45–33.09
+### 5 · SPONSORSHIP — `05_sponsorship` · 27.68–35.32
 
 > "Here, you can go to the **Sponsorship** page and pick your **spots**. / Choose when it
 > **starts**, choose how long it **runs**, and DirtBikeX got you covered."
@@ -100,7 +100,7 @@ Legend — **[ZOOM]** camera move · **[SFX]** sound accent · **[CAP]** caption
 - **[CAP]** "Sponsorship" / "spots." / "starts," / "runs," brand.
 - *Purpose:* the how. First time the product appears.
 
-### 6 · DISCOVERY — `06_discovery` · 33.09–38.34
+### 6 · DISCOVERY — `06_discovery` · 35.32–40.57
 
 > "Then, your profile will show up in **multiple places** across the app where people are
 > actively **looking**."
@@ -113,7 +113,7 @@ Legend — **[ZOOM]** camera move · **[SFX]** sound accent · **[CAP]** caption
 - **[CAP]** "multiple" / "places" / "looking" brand.
 - *Purpose:* placement breadth, shown not claimed.
 
-### 7 · SPLASH — `07_splash` · 38.34–44.53
+### 7 · SPLASH — `07_splash` · 40.57–46.76
 
 > "And the **biggest** one is the **splash screen**, where users can **pause** it, **tap** your
 > face, and go straight into your **profile**."
@@ -121,11 +121,11 @@ Legend — **[ZOOM]** camera move · **[SFX]** sound accent · **[CAP]** caption
 - **[UI]** `side-screen` — the re-shoot `15_screen-enter-splash`: **open the app from Spotlight →
   splash → pause → tap @rubio → profile**. Only frozen/dead stretches are cut. A **shrinking
   circle** contracts onto the play/pause control (the "pause" action), not the tap.
-- **[SFX]** `shutter` on the card · `hit-1` on "profile." (@44.15).
+- **[SFX]** `shutter` on the card · `hit-1` on "profile." (@46.38).
 - **[CAP]** "biggest" / "splash" / "pause" / "tap" / "profile." brand.
 - *Purpose:* the marquee placement. The most valuable 6 seconds in the video.
 
-### 8 · CAPPED — `08_capped` · 44.53–50.61
+### 8 · CAPPED — `08_capped` · 46.76–52.84
 
 > "And don't worry, to keep it **fair**, passes are **capped** and **rotated**, so nobody gets
 > to **flood** the scene."
@@ -136,7 +136,7 @@ Legend — **[ZOOM]** camera move · **[SFX]** sound accent · **[CAP]** caption
 - **[CAP]** "fair," / "capped" / "rotated," brand · "flood" harsh.
 - *Purpose:* the objection-handler. Scarcity is a feature, not a paywall.
 
-### 9 · STATS — `09_stats` · 50.61–56.81
+### 9 · STATS — `09_stats` · 52.84–59.04
 
 > "And you even get to check your **sponsorship stats** too. / **Regional exposure**, **daily
 > trends**, you name it."
@@ -147,16 +147,16 @@ Legend — **[ZOOM]** camera move · **[SFX]** sound accent · **[CAP]** caption
 - **[CAP]** "stats" / "Regional" / "exposure," / "daily" / "trends," brand.
 - *Purpose:* proof you can measure it. Closes the buyer's loop.
 
-### 10 · CTA — `10_cta` · 56.81–66.25
+### 10 · CTA — `10_cta` · 59.04–68.48
 
 > "So essentially, it's a **fair way** to get **seen** by the right people. / My name is
 > **Rubio**, and I'm giving out day **passes** for **free**. / Comment **"PASS"**, and I'll see
 > you in the app."
 
-- **[UI]** `profile-card` @60.40–63.20 on track **V4, above the captions** (E003's z-order), on the
-  **subtitle side** rather than over his face. Enters 0.29s *before* "My" and clears 0.78s before
-  "Comment" so the CTA stays readable *(comp reused from E002/E003)*.
-- **[SFX]** `hit-1` @60.40 (card) · soft `simple-whoosh-1` on "PASS".
+- **[UI]** `profile-card` @62.00–64.80 on track **V4, above the captions** (E003's z-order), on the
+  **subtitle side** rather than over his face. Enters 0.92s *before* "My" (@62.92) and clears 1.41s
+  before "Comment" (@66.21) so the CTA stays readable *(comp reused from E002/E003)*.
+- **[SFX]** `hit-1` @62.00 (card) · soft `simple-whoosh-1` on "PASS" (@66.45).
 - **[CAP]** "fair" / "seen" / "Rubio," / "passes" / "free." / ""PASS"," brand.
 - *Purpose:* one action, one word, a real incentive.
 
@@ -184,18 +184,19 @@ Short, recognizable, low-impact — punctuation, not carpet. No deep whooshes, n
 | Moment | File |
 |---|---|
 | "hate ads" (@2.25) | `hit-1.mp3` |
-| Logo surfaces (@6.80) | `simple-whoosh-2.wav` |
-| "billboard." (@19.19) | `radio-adjustment.mp3` |
+| Logo surfaces (@7.08) | `simple-whoosh-2.wav` |
+| "billboard." (@21.42) | `radio-adjustment.mp3` |
 | Each screen card enters | `shutter.mp3` |
-| "profile." (@44.15) | `hit-1.mp3` |
-| profile-card (@60.40) | `hit-1.mp3` |
-| "PASS" (@64.22) | `simple-whoosh-1.wav` |
+| "profile." (@46.38) | `hit-1.mp3` |
+| profile-card (@62.00) | `hit-1.mp3` |
+| "PASS" (@66.45) | `simple-whoosh-1.wav` |
 
 ## DECIDE (human)
 
-- **Interior breaths are left in.** Beat 1 carries two long ones (0.68s and 0.98s). Tightening
-  them with jump cuts would sharpen the hook but re-times every caption downstream — do it on
-  the Mac after the caption track is final, or accept the pacing.
+- **Interior breaths are left in.** Beat 1 carries three (0.68s, 0.98s, 0.53s). Tightening them
+  with jump cuts would sharpen the hook but re-times every caption downstream — do it on the Mac
+  after the caption track is final, or accept the pacing. The 0.53s one at 9.64 is load-bearing:
+  reading it as the end of the take is what cut the hook's last sentence for three builds.
 - Zoom keyframes are **not baked** (see `[ZOOM]` lines).
 - **Enhanced visuals are IN** (`enhanced/`), video only; the audio is still the `.MOV`. Frame-sync
   was verified (0 ms lag, proven 1:1 pairing). Re-verify if they are ever re-exported.

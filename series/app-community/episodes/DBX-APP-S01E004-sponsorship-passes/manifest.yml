@@ -16,7 +16,7 @@ formats:
 # How DirtBikeX's sponsorship "passes" work. Narration was recorded first — there is NO authored
 # reading script; script.en-US.md is the transcript of record and the .srt files are the
 # subtitles. Director's outline (incl. the [SCREEN: ...] overlay directives): rough.md.
-# Raw ~75.2s; both-edge pause-cropped timeline = 66.25s. Edit plan in storyboard.md.
+# Raw ~75.2s; both-edge pause-cropped timeline = 68.48s. Edit plan in storyboard.md.
 variants:
   en-US:
     script: script.en-US.md
@@ -33,10 +33,10 @@ variants:
 beats:
   - id: hook
     purpose: state the contradiction — ad slots built by someone who hates ads
-    visual_intent: founder to camera; brand-drop surfaces on "DirtBikeX" (@7.33) then retires to the top-right corner as an icon
+    visual_intent: founder to camera; brand-drop surfaces on "DirtBikeX" (@7.63) then retires to the top-right corner as an icon
     overlay: brand-drop
     target_duration_sec:
-      en-US: 9.79
+      en-US: 12.02
   - id: hate-ads
     purpose: earn the hook with a real confession (looking away from ads)
     visual_intent: small push-in; no overlay — the face carries it
@@ -87,7 +87,7 @@ beats:
       en-US: 6.20
   - id: cta
     purpose: one action — comment "PASS" for a free day pass
-    visual_intent: profile-card enters 0.29s BEFORE "My name is Rubio", on the subtitle side (E003 convention), gone 0.78s before "Comment"
+    visual_intent: profile-card enters 0.92s BEFORE "My name is Rubio", on the subtitle side (E003 convention), gone 1.41s before "Comment"
     overlay: profile-card
     target_duration_sec:
       en-US: 9.44
@@ -133,11 +133,13 @@ assets:
     - {asset_id: ENH_008, filename: enhanced/08_capped.mp4, of_asset_id: RAW_008, external_uri: null, notes: "SDR bt709 (6.85s)"}
     - {asset_id: ENH_009, filename: enhanced/09_stats.mp4, of_asset_id: RAW_009, external_uri: null, notes: "SDR bt709 (7.08s)"}
     - {asset_id: ENH_010, filename: enhanced/10_cta.mp4, of_asset_id: RAW_010, external_uri: null, notes: "SDR bt709 (9.91s)"}
-  # Narration selects = both-edge pause crops (silencedetect -32dB, d=0.30), reproduced by
-  # footage-process.sh. Screen chops are pure cuts + freeze-extends — see screen-chop.sh.
+  # Narration selects = both-edge pause crops, reproduced by footage-process.sh. The OUT point is
+  # the end of the last SPEECH RUN + 0.15s, not the last `silence_start` — 01_hook ends with only
+  # 0.24s of silence, so silencedetect reports none and its last silence_start is an interior
+  # breath. speech-check.py gates every beat against that. See edit-notes.md. Screen chops are pure cuts + freeze-extends — see screen-chop.sh.
   # Keep these in lockstep with caption-map.mjs BEATS or the captions drift.
   selected:
-    - {asset_id: SEL_001, source_asset_id: RAW_001, in: "00:00:00.000", out: "00:00:09.790", beat: hook}
+    - {asset_id: SEL_001, source_asset_id: RAW_001, in: "00:00:00.000", out: "00:00:12.020", beat: hook}
     - {asset_id: SEL_002, source_asset_id: RAW_002, in: "00:00:00.000", out: "00:00:04.880", beat: hate-ads}
     - {asset_id: SEL_003, source_asset_id: RAW_003, in: "00:00:00.000", out: "00:00:04.940", beat: billboard}
     - {asset_id: SEL_004, source_asset_id: RAW_004, in: "00:00:00.000", out: "00:00:05.840", beat: passes}

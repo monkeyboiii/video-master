@@ -87,13 +87,13 @@ chop() {
 # Start to finish with ONE cut. Card time == source time, so the words land themselves:
 #
 #   0.00-3.28  profile -> nav menu (marker: "Sponsorships") -> the page (circle: "Your spot +")
-#              ends exactly on "Choose"          (28.73)
-#   3.28-4.29  the calendar / start-date sheet   -> "Choose when it starts,"  (28.73-29.74)
+#              ends exactly on "Choose"          (30.96)
+#   3.28-4.29  the calendar / start-date sheet   -> "Choose when it starts,"  (30.96-31.97)
 #   4.29-6.23  the duration dropdown opens, 30d -> 7d, price resolves to $14.99. The picker
-#              CHANGE animation is kept in full  -> "choose how long it runs," (29.74-31.68)
+#              CHANGE animation is kept in full  -> "choose how long it runs," (31.97-33.91)
 #   [cut 6.23-6.48: 0.25s in which literally nothing changes -- Jul 9-15 / 7d / $14.99]
 #   6.48-7.85  the start day moves 9 -> 22, Jul 22-28, the pass is bought
-#                                             -> "and DirtBikeX got you covered." (31.68-33.05)
+#                                             -> "and DirtBikeX got you covered." (33.91-35.28)
 chop 11_screen-sponsorship.MP4 11_sponsorship_cut.mp4 "$CROP_PHONE" \
   seg:0.00:6.23 seg:6.48:7.85                                    # 7.60s (one cut, no freeze)
 
@@ -102,18 +102,18 @@ chop 11_screen-sponsorship.MP4 11_sponsorship_cut.mp4 "$CROP_PHONE" \
 # The director's sketch numbers the boxes 1 RIGHT, 2 MIDDLE-HIGH, 3 LEFT and now names them:
 #   1 "Search users"  2 "Filter authors"  3 "Create chat"
 # so `search` -> box 1, `filter` -> box 2, `chat` -> box 3 (chat and filter swapped vs the first
-# build). They enter one-two-three at a fixed 0.55s delay (33.15 / 33.70 / 34.25) and fade out
-# together at ~38.30. Each plays from frame 0 so the ENTRY into its surface is visible.
+# build). They enter one-two-three at a fixed 0.55s delay (35.38 / 35.93 / 36.48) and fade out
+# together at ~40.53. Each plays from frame 0 so the ENTRY into its surface is visible.
 #   search  3.555s source, 5.15s slot -> plays out, then holds its @rubio payoff 1.65s.
 #   filter  4.027s source, 4.60s slot -> plays out (incl. the Advanced Filters sheet), holds 0.65s.
 #   chat    4.323s source, 4.05s slot -> plays 4.05s; the trimmed 0.27s tail is keyboard-idle,
 #           after the @rubio row is already on screen. The only trim of the three.
 chop 12_screen-search.MP4 12_search_cut.mp4 "$CROP_PHONE" \
-  seg:0.00:3.50 hold:3.45:1.65                                   # 5.15s -> box 1, @33.15
+  seg:0.00:3.50 hold:3.45:1.65                                   # 5.15s -> box 1, @35.38
 chop 14_screen-filter.mov 14_filter_cut.mp4 "$CROP_PHONE" \
-  seg:0.00:3.95 hold:3.90:0.65                                   # 4.60s -> box 2, @33.70
+  seg:0.00:3.95 hold:3.90:0.65                                   # 4.60s -> box 2, @35.93
 chop 13_screen-chat.MP4 13_chat_cut.mp4 "$CROP_PHONE" \
-  seg:0.00:4.05                                                  # 4.05s -> box 3, @34.25
+  seg:0.00:4.05                                                  # 4.05s -> box 3, @36.48
 
 # ── beat 7 · splash · slot 5.95s ─────────────────────────────────────────────────────
 # [SCREEN: sponsor card on splash screen, pause -> tap -> profile]
@@ -122,7 +122,7 @@ chop 13_screen-chat.MP4 13_chat_cut.mp4 "$CROP_PHONE" \
 #   0.85s  1.15-2.00  Spotlight "dirtBikeX" -> app-open transition          (the entry)
 #   1.15s  2.00-3.15  the splash PLAYS, then he taps pause at src ~2.95
 #   1.35s  hold 3.15  the just-paused splash, frozen. A rock-steady target for the SHRINKING
-#                     CIRCLE that lands on the play/pause control at "pause" (card 2.85).
+#                     CIRCLE that lands on the play/pause control at "pause" (card 2.85 = 43.58).
 #                     [cuts src 3.15-5.00: the same frozen frame, nothing happens]
 #   0.60s  5.00-5.60  he taps the @rubio avatar; "Opening profile..." fires
 #                     [cuts src 5.60-7.10: the toast just sits there]
@@ -144,7 +144,7 @@ chop 15_screen-enter-splash.mov 15_splash_cut.mp4 "$CROP_PHONE" \
 # of it on the near-empty "Currently rotating" list, which sat dead for three seconds. Instead:
 #   * 1.00s on the head, where the screen is static anyway (the caps table + budget donut is the
 #     densest frame in the episode and the viewer needs the time to read it). It also keeps the
-#     caps on screen through "capped" (47.16); "rotated," (47.75) lands on the rotating list.
+#     caps on screen through "capped" (49.39); "rotated," (49.98) lands on the rotating list.
 #   * 0.67s on the tail payoff.
 chop 16_screen-capped.mov 16_capped_cut.mp4 "$CROP_PHONE" \
   hold:0.10:1.00 seg:0.05:3.28 hold:3.24:0.67                    # 4.90s (no cuts)
@@ -153,7 +153,7 @@ chop 16_screen-capped.mov 16_capped_cut.mp4 "$CROP_PHONE" \
 # [SCREEN: fast stats montage]   (884x1920 mirrored recording, not a device capture)
 # Plays straight through, entry included. No cuts, no freezes. The ENTRY is the point here: he
 # opens the nav menu, then taps the small round STAR button in the page's top-right corner
-# (source t=2.62). A shrinking circle narrows onto that button just before the tap.
+# (source t=2.62). A shrinking circle narrows onto that button just before the tap (54.68-55.48).
 chop 17_screen-stats.MP4 17_stats_cut.mp4 "$CROP_MIRROR" \
   seg:0.30:6.20                                                  # 5.90s
 

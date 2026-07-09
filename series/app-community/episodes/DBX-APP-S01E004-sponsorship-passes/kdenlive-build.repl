@@ -1,5 +1,5 @@
 project new --width 1080 --height 1920 --fps-num 30 --fps-den 1 -n sponsorship-passes
-bin import footage/01_hook_sdr.mp4 -n hook --type video -d 9.80
+bin import footage/01_hook_sdr.mp4 -n hook --type video -d 12.03
 bin import footage/02_hate-ads_sdr.mp4 -n hate-ads --type video -d 4.90
 bin import footage/03_billboard_sdr.mp4 -n billboard --type video -d 4.97
 bin import footage/04_passes_sdr.mp4 -n passes --type video -d 5.87
@@ -9,7 +9,7 @@ bin import footage/07_splash_sdr.mp4 -n splash --type video -d 6.20
 bin import footage/08_capped_sdr.mp4 -n capped --type video -d 6.10
 bin import footage/09_stats_sdr.mp4 -n stats --type video -d 6.20
 bin import footage/10_cta_sdr.mp4 -n cta --type video -d 9.47
-bin import overlays/DBX-APP-S01E004_en-US_9x16_kinetic-captions_v001.mov -n captions --type video -d 66.25
+bin import overlays/DBX-APP-S01E004_en-US_9x16_kinetic-captions_v001.mov -n captions --type video -d 68.48
 bin import overlays/DBX-APP-S01E004_en-US_9x16_brand-drop_v001.mov -n brand --type video -d 5.0
 bin import overlays/DBX-APP-S01E004_en-US_9x16_side-screen-sponsorship_v001.mov -n scr-sponsor --type video -d 7.60
 bin import overlays/DBX-APP-S01E004_en-US_9x16_side-screen-search_v001.mov -n scr-search --type video -d 5.15
@@ -25,45 +25,56 @@ bin import sfx/simple-whoosh-1.wav -n sfx-whoosh1 --type audio -d 0.47
 bin import sfx/simple-whoosh-2.wav -n sfx-whoosh2 --type audio -d 0.31
 bin import sfx/radio-adjustment.mp3 -n sfx-radio --type audio -d 4.82
 bin import sfx/shutter.mp3 -n sfx-shutter --type audio -d 0.65
+# ONE TRACK CANNOT HOLD OVERLAPPING CLIPS. `timeline add-clip -p` writes into an MLT playlist,
+# which is a strictly sequential list: if a clip's position lands inside the previous clip, the CLI
+# APPENDS it instead and every later clip ripples. It does not warn. The three fan-out cards all
+# overlap, so they get a track each; two SFX pairs overlap, so the SFX get two tracks.
+# `tools/kdenlive-verify.py` asserts the export matches this file. Run it after every export.
 timeline add-track -n V1 --type video
 timeline add-track -n V2-Overlays --type video
-timeline add-track -n V3-Captions --type video
-timeline add-track -n V4-CardOnTop --type video
+timeline add-track -n V3-Fan-1 --type video
+timeline add-track -n V4-Fan-2 --type video
+timeline add-track -n V5-Fan-3 --type video
+timeline add-track -n V6-Captions --type video
+timeline add-track -n V7-CardOnTop --type video
 timeline add-track -n A1-Music --type audio
 timeline add-track -n A2-SFX --type audio
-timeline add-clip 0 clip0 -p 0 --in 0 --out 9.79
-timeline add-clip 0 clip1 -p 9.79 --in 0 --out 4.88
-timeline add-clip 0 clip2 -p 14.67 --in 0 --out 4.94
-timeline add-clip 0 clip3 -p 19.61 --in 0 --out 5.84
-timeline add-clip 0 clip4 -p 25.45 --in 0 --out 7.64
-timeline add-clip 0 clip5 -p 33.09 --in 0 --out 5.25
-timeline add-clip 0 clip6 -p 38.34 --in 0 --out 6.19
-timeline add-clip 0 clip7 -p 44.53 --in 0 --out 6.08
-timeline add-clip 0 clip8 -p 50.61 --in 0 --out 6.20
-timeline add-clip 0 clip9 -p 56.81 --in 0 --out 9.44
-timeline add-clip 1 clip11 -p 6.80 --in 0 --out 5.0
-timeline add-clip 1 clip12 -p 25.45 --in 0 --out 7.60
-timeline add-clip 1 clip13 -p 33.15 --in 0 --out 5.15
-timeline add-clip 1 clip14 -p 33.70 --in 0 --out 4.60
-timeline add-clip 1 clip15 -p 34.25 --in 0 --out 4.05
-timeline add-clip 1 clip16 -p 38.50 --in 0 --out 5.95
-timeline add-clip 1 clip17 -p 44.70 --in 0 --out 4.90
-timeline add-clip 1 clip18 -p 50.80 --in 0 --out 5.90
-timeline add-clip 2 clip10 -p 0 --in 0 --out 66.25
-timeline add-clip 3 clip19 -p 60.40 --in 0 --out 2.80
-timeline add-clip 4 clip20 -p 0 --in 0 --out 66.25
-timeline add-clip 5 clip21 -p 2.25 --in 0 --out 0.8
-timeline add-clip 5 clip23 -p 6.80 --in 0 --out 0.31
-timeline add-clip 5 clip24 -p 19.19 --in 0 --out 0.8
-timeline add-clip 5 clip25 -p 25.45 --in 0 --out 0.6
-timeline add-clip 5 clip25 -p 33.15 --in 0 --out 0.6
-timeline add-clip 5 clip25 -p 33.70 --in 0 --out 0.6
-timeline add-clip 5 clip25 -p 34.25 --in 0 --out 0.6
-timeline add-clip 5 clip25 -p 38.50 --in 0 --out 0.6
-timeline add-clip 5 clip21 -p 44.15 --in 0 --out 0.8
-timeline add-clip 5 clip25 -p 44.70 --in 0 --out 0.6
-timeline add-clip 5 clip25 -p 50.80 --in 0 --out 0.6
-timeline add-clip 5 clip21 -p 60.40 --in 0 --out 0.8
-timeline add-clip 5 clip22 -p 64.22 --in 0 --out 0.47
+timeline add-track -n A3-SFX-overlap --type audio
+timeline add-clip 0 clip0 -p 0 --in 0 --out 12.02
+timeline add-clip 0 clip1 -p 12.02 --in 0 --out 4.88
+timeline add-clip 0 clip2 -p 16.90 --in 0 --out 4.94
+timeline add-clip 0 clip3 -p 21.84 --in 0 --out 5.84
+timeline add-clip 0 clip4 -p 27.68 --in 0 --out 7.64
+timeline add-clip 0 clip5 -p 35.32 --in 0 --out 5.25
+timeline add-clip 0 clip6 -p 40.57 --in 0 --out 6.19
+timeline add-clip 0 clip7 -p 46.76 --in 0 --out 6.08
+timeline add-clip 0 clip8 -p 52.84 --in 0 --out 6.20
+timeline add-clip 0 clip9 -p 59.04 --in 0 --out 9.44
+timeline add-clip 1 clip11 -p 7.08 --in 0 --out 5.0
+timeline add-clip 1 clip12 -p 27.68 --in 0 --out 7.60
+timeline add-clip 1 clip16 -p 40.73 --in 0 --out 5.95
+timeline add-clip 1 clip17 -p 46.93 --in 0 --out 4.90
+timeline add-clip 1 clip18 -p 53.03 --in 0 --out 5.90
+timeline add-clip 2 clip13 -p 35.38 --in 0 --out 5.15
+timeline add-clip 3 clip14 -p 35.93 --in 0 --out 4.60
+timeline add-clip 4 clip15 -p 36.48 --in 0 --out 4.05
+timeline add-clip 5 clip10 -p 0 --in 0 --out 68.48
+timeline add-clip 6 clip19 -p 62.00 --in 0 --out 2.80
+timeline add-clip 7 clip20 -p 0 --in 0 --out 68.48
+timeline add-clip 8 clip21 -p 2.25 --in 0 --out 0.8
+timeline add-clip 8 clip23 -p 7.08 --in 0 --out 0.31
+timeline add-clip 8 clip24 -p 21.42 --in 0 --out 0.8
+timeline add-clip 8 clip25 -p 27.68 --in 0 --out 0.6
+timeline add-clip 8 clip25 -p 35.38 --in 0 --out 0.6
+timeline add-clip 8 clip25 -p 36.48 --in 0 --out 0.6
+timeline add-clip 8 clip25 -p 40.73 --in 0 --out 0.6
+timeline add-clip 8 clip21 -p 46.38 --in 0 --out 0.8
+timeline add-clip 8 clip25 -p 53.03 --in 0 --out 0.6
+timeline add-clip 8 clip21 -p 62.00 --in 0 --out 0.8
+timeline add-clip 8 clip22 -p 66.45 --in 0 --out 0.47
+# these two would overlap their neighbours on A2 (shutter@35.93 inside shutter@35.38+0.6;
+# shutter@46.93 inside hit-1@46.38+0.8), so they get their own track
+timeline add-clip 9 clip25 -p 35.93 --in 0 --out 0.6
+timeline add-clip 9 clip25 -p 46.93 --in 0 --out 0.6
 timeline list
 export xml -o sponsorship-passes.kdenlive

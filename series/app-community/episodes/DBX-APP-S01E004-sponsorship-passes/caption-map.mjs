@@ -19,6 +19,13 @@
 // Reproduce RUNS with:
 //   ffmpeg -i narration/<clip> -map 0:a:0 -af silencedetect=noise=-32dB:d=0.30 -f null -
 //
+// CAREFUL: `silencedetect` only reports a silence at least `d` long. 01_hook ends with 0.24s of
+// silence, so it reports NO trailing silence, and its last `silence_start` (9.638) is an interior
+// breath — the one before "and honestly, that'd be the easy way out." Reading that as the end of
+// speech cut the sentence off the episode and squeezed its words into the first half. The last run
+// of every beat must therefore end at the last SPEECH sample, not at the last reported silence;
+// `speech-check.py` asserts exactly that against each beat's `dur`.
+//
 // Run from the video-master repo root:
 //   node series/app-community/episodes/DBX-APP-S01E004-sponsorship-passes/caption-map.mjs
 import fs from 'node:fs';
@@ -32,49 +39,50 @@ fs.mkdirSync(OUT, {recursive: true});
 // start = global timeline start; trimIn = head silence trimmed; dur = trimmed clip length.
 // runs = speech intervals in RAW clip seconds (before trimIn is subtracted).
 const BEATS = [
-  {f: '01_hook.srt', start: 0.00, trimIn: 0, dur: 9.79,
-   runs: [[0, 2.754], [3.439, 5.850], [6.830, 9.638]],
+  // 4 runs, 3 cues: the 0.53s breath at 9.638-10.167 is interior, not the end of the take.
+  {f: '01_hook.srt', start: 0.00, trimIn: 0, dur: 12.02,
+   runs: [[0, 2.754], [3.439, 5.850], [6.830, 9.638], [10.167, 11.870]],
    brand: ['slots', 'dirtbikex'], harsh: ['hate', 'ads']},
 
-  {f: '02_hate-ads.srt', start: 9.79, trimIn: 0, dur: 4.88,
+  {f: '02_hate-ads.srt', start: 12.02, trimIn: 0, dur: 4.88,
    runs: [[0, 4.725]],
    brand: [], harsh: ['hate', 'ads', 'away', 'eyes']},
 
-  {f: '03_billboard.srt', start: 14.67, trimIn: 0, dur: 4.94,
+  {f: '03_billboard.srt', start: 16.90, trimIn: 0, dur: 4.94,
    runs: [[0, 4.785]],
    brand: [], harsh: ['billboard']},
 
-  {f: '04_passes.srt', start: 19.61, trimIn: 0, dur: 5.84,
+  {f: '04_passes.srt', start: 21.84, trimIn: 0, dur: 5.84,
    runs: [[0, 1.624], [2.090, 5.693]],
    brand: ['differently', 'passes', 'riders'], harsh: []},
 
-  {f: '05_sponsorship.srt', start: 25.45, trimIn: 0.83, dur: 7.64,
+  {f: '05_sponsorship.srt', start: 27.68, trimIn: 0.83, dur: 7.64,
    // the 0.33-0.57 blip is a lip smack before the take; trimIn drops it
    runs: [[0.883, 3.624], [4.111, 5.128], [5.479, 6.437], [6.768, 8.322]],
    brand: ['sponsorship', 'spots', 'starts', 'runs', 'dirtbikex'], harsh: []},
 
-  {f: '06_discovery.srt', start: 33.09, trimIn: 0.44, dur: 5.25,
+  {f: '06_discovery.srt', start: 35.32, trimIn: 0.44, dur: 5.25,
    runs: [[0.495, 3.700], [4.121, 5.535]],
    brand: ['multiple', 'places', 'looking'], harsh: []},
 
-  {f: '07_splash.srt', start: 38.34, trimIn: 0, dur: 6.19,
+  {f: '07_splash.srt', start: 40.57, trimIn: 0, dur: 6.19,
    runs: [[0, 1.886], [2.295, 3.427], [3.859, 6.043]],
    brand: ['biggest', 'splash', 'pause', 'tap', 'profile'], harsh: []},
 
-  {f: '08_capped.srt', start: 44.53, trimIn: 0, dur: 6.08,
+  {f: '08_capped.srt', start: 46.76, trimIn: 0, dur: 6.08,
    runs: [[0, 3.999], [4.368, 5.926]],
    brand: ['fair', 'capped', 'rotated'], harsh: ['flood']},
 
-  {f: '09_stats.srt', start: 50.61, trimIn: 0.29, dur: 6.20,
+  {f: '09_stats.srt', start: 52.84, trimIn: 0.29, dur: 6.20,
    runs: [[0.341, 2.782], [3.397, 4.558], [5.001, 6.342]],
    brand: ['stats', 'regional', 'exposure', 'daily', 'trends'], harsh: []},
 
-  {f: '10_cta.srt', start: 56.81, trimIn: 0, dur: 9.44,
+  {f: '10_cta.srt', start: 59.04, trimIn: 0, dur: 9.44,
    runs: [[0, 3.082], [3.877, 6.587], [7.173, 9.293]],
    brand: ['fair', 'seen', 'rubio', 'passes', 'free', 'pass'], harsh: []},
 ];
 
-const TOTAL = +BEATS.reduce((a, b) => a + b.dur, 0).toFixed(2); // 66.25
+const TOTAL = +BEATS.reduce((a, b) => a + b.dur, 0).toFixed(2); // 68.48
 
 const norm = (w) => w.replace(/^[*"“”'']+|[*"“”''.,!?;:]+$/g, '').toLowerCase();
 
@@ -124,6 +132,23 @@ const speechAt = (group, frac) => {
   }
   return group[group.length - 1][1];
 };
+
+// A beat's `dur` must cover its last speech run, or the take is being cut mid-sentence — the bug
+// that lost "and honestly, that'd be the easy way out." And the starts must chain exactly.
+let acc = 0;
+for (const cfg of BEATS) {
+  if (Math.abs(cfg.start - acc) > 1e-6) {
+    throw new Error(`${cfg.f}: start ${cfg.start} but previous beats end at ${acc.toFixed(2)}`);
+  }
+  acc = +(acc + cfg.dur).toFixed(6);
+  const lastSpeech = cfg.runs[cfg.runs.length - 1][1] - cfg.trimIn;
+  if (lastSpeech > cfg.dur + 1e-6) {
+    throw new Error(
+      `${cfg.f}: speech runs to ${lastSpeech.toFixed(3)}s but dur is ${cfg.dur}s — the cut ` +
+      `truncates the take. Set dur >= lastSpeech + ~0.15 (and keep footage-process.sh in step).`,
+    );
+  }
+}
 
 const words = [];
 const cueTimes = []; // for the combined SRT artifact

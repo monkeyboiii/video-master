@@ -20,7 +20,11 @@
 # check before trusting this: `silencedetect` first-speech on both must agree within 1 frame.
 #
 # Trim: BOTH edges, from `silencedetect=noise=-32dB:d=0.30` on the ORIGINAL audio.
-#   out = last `silence_start` + 0.15s (the click/breath before the recording is stopped)
+#   out = END OF THE LAST SPEECH RUN + 0.15s.
+#   NOT "the last reported silence_start". `silencedetect` only reports a silence at least `d`
+#   long; 01_hook ends with 0.24s of silence, so it reports none, and its last silence_start
+#   (9.638) is the interior breath before "and honestly, that'd be the easy way out." Cutting
+#   there dropped that sentence from the episode for three builds. `speech-check.py` now gates it.
 #   in  = leading silence, where it exceeds ~0.25s (05, 06, 09 only; 05 also has a lip-smack
 #         blip at 0.33-0.57 that the trim removes)
 # Interior breaths are LEFT IN — see edit-notes DECIDE. Keep these numbers in lockstep with
@@ -35,7 +39,7 @@ NICE="nice -n 15"
 
 # beat:audioSrc:trimIn:cutOut   -> trimmed length = cutOut - trimIn
 CLIPS=(
-  "01_hook:01_hook.mov:0:9.79"
+  "01_hook:01_hook.mov:0:12.02"
   "02_hate-ads:02_hate-ads.MOV:0:4.88"
   "03_billboard:03_billboard.MOV:0:4.94"
   "04_passes:04_passes.MOV:0:5.84"
@@ -49,6 +53,9 @@ CLIPS=(
 # Optional: pass a space-separated list of base names to rebuild just those, e.g.
 #   ONLY="05_sponsorship 06_discovery 09_stats" bash footage-process.sh
 : "${ONLY:=}"
+
+# Preflight: no beat may cut its own take short. This is cheap; a truncated sentence is not.
+python3 "$(dirname "${BASH_SOURCE[0]}")/speech-check.py"
 
 mkdir -p footage
 for entry in "${CLIPS[@]}"; do

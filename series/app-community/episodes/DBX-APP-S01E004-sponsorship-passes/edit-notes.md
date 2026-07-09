@@ -12,9 +12,9 @@ Skills followed: `skills/04-storyboard.md`, `skills/05-remotion-graphics.md`,
 | Track | Content |
 |-------|---------|
 | V1 | `footage/NN_*_sdr.mp4` — the ENHANCED video + the original `.MOV` narration |
-| V2 · Overlays | `brand-drop` @6.80 · seven top-left `side-screen` cards |
-| V3 · Captions | `kinetic-captions` — one clip, 0→66.25s |
-| V4 · CardOnTop | `profile-card` @60.40 — **above** the captions, as in E003 |
+| V2 · Overlays | `brand-drop` @7.08 · seven top-left `side-screen` cards |
+| V3 · Captions | `kinetic-captions` — one clip, 0→68.48s |
+| V4 · CardOnTop | `profile-card` @62.00 — **above** the captions, as in E003 |
 | A1 · Music | `bgm-vampire-heart.mp3` from 0.00s, full length, flat ~10% under the VO |
 | A2 · SFX | see map below |
 
@@ -43,24 +43,34 @@ Each `.MOV` carries a second, undecodable 4.0 `apac` spatial audio track. `-map 
 
 ## Pause cropping — both edges
 
-`silencedetect=noise=-32dB:d=0.30`. Trailing cut = last `silence_start` + 0.15s. Head trim only
-where the clip opens with >0.25s of silence (05, 06, 09 — 05 also opens on a lip-smack blip).
+`silencedetect=noise=-32dB:d=0.30`. Trailing cut = **end of the last speech run** + 0.15s. Head trim
+only where the clip opens with >0.25s of silence (05, 06, 09 — 05 also opens on a lip-smack blip).
+
+> **Not "last `silence_start` + 0.15s".** `silencedetect` only reports a silence at least `d` long.
+> `01_hook` ends with **0.24s** of silence, so it reports **no trailing silence at all**, and its
+> last `silence_start` (9.638) is the interior breath before *"and honestly, that'd be the easy way
+> out."* Cutting there deleted that sentence from the episode — and, because `caption-map.mjs`'s
+> `runs` were copied from the same log, crammed the whole third cue into the surviving half, which
+> is what made the captions drift. `01_hook` is the only beat whose trailing silence is under 0.30s;
+> every other clip ends with 0.6–1.0s and was unaffected. **`speech-check.py` now gates this** and
+> `footage-process.sh` runs it before it encodes anything.
 
 | Beat | Source in→out | Timeline | Len |
 |---|---|---|---|
-| hook | 0 → 9.79 | 0.00 | 9.79 |
-| hate-ads | 0 → 4.88 | 9.79 | 4.88 |
-| billboard | 0 → 4.94 | 14.67 | 4.94 |
-| passes | 0 → 5.84 | 19.61 | 5.84 |
-| sponsorship | 0.83 → 8.47 | 25.45 | 7.64 |
-| discovery | 0.44 → 5.69 | 33.09 | 5.25 |
-| splash | 0 → 6.19 | 38.34 | 6.19 |
-| capped | 0 → 6.08 | 44.53 | 6.08 |
-| stats | 0.29 → 6.49 | 50.61 | 6.20 |
-| cta | 0 → 9.44 | 56.81 | 9.44 |
+| hook | 0 → **12.02** | 0.00 | 12.02 |
+| hate-ads | 0 → 4.88 | 12.02 | 4.88 |
+| billboard | 0 → 4.94 | 16.90 | 4.94 |
+| passes | 0 → 5.84 | 21.84 | 5.84 |
+| sponsorship | 0.83 → 8.47 | 27.68 | 7.64 |
+| discovery | 0.44 → 5.69 | 35.32 | 5.25 |
+| splash | 0 → 6.19 | 40.57 | 6.19 |
+| capped | 0 → 6.08 | 46.76 | 6.08 |
+| stats | 0.29 → 6.49 | 52.84 | 6.20 |
+| cta | 0 → 9.44 | 59.04 | 9.44 |
 
-Total **66.25s**. Keep this table, `footage-process.sh` and `caption-map.mjs`'s `BEATS` in
-lockstep — they are three copies of the same numbers.
+Total **68.48s**. Keep this table, `footage-process.sh`, `speech-check.py` and `caption-map.mjs`'s
+`BEATS` in lockstep — they are four copies of the same numbers, and `caption-map.mjs` now throws if
+the starts don't chain or a beat's `dur` cuts its own last speech run.
 
 ## Captions — anchored to real speech, not to the SRT clock
 
@@ -75,14 +85,18 @@ over its group's *speech* time, skipping silences. A word can never land in a pa
 sentence starts when it is actually spoken. Verified: beat 1's three sentences begin at 0.00 /
 3.44 / 6.83, matching `silencedetect` exactly.
 
-232 words, 66.25s, 16 SRT cues. Never hand-edit `captions.all.json` or `subtitles/en-US.srt`.
+`01_hook` has **four** speech runs and three cues: the 0.53s breath at 9.638–10.167 is interior, so
+the third cue spans runs 3 *and* 4 and its words skip the pause — "honestly," lands at 9.48 and
+"that'd" at 10.28.
+
+232 words, 68.48s, 16 SRT cues. Never hand-edit `captions.all.json` or `subtitles/en-US.srt`.
 
 ## The two overlay conventions
 
-### 1 · The logo never takes the screen (`brand-drop`, 6.80–11.80)
+### 1 · The logo never takes the screen (`brand-drop`, 7.08–12.08)
 
 A **standalone** transparent overlay — no full-screen brand card, no Route-B blur behind it.
-The wordmark **surfaces through the top edge**, settles at **7.33s exactly on the word
+The wordmark **surfaces through the top edge**, settles at **7.63s exactly on the word
 "DirtBikeX"**, holds 1.2s, then **flies to the top-trailing (right) corner** over 0.8s, shrinking
 and cross-fading from the wordmark into the bare mark. It sits there as an icon for 1.8s and
 fades out over 0.65s — ~2s into the next beat. The corner rest honours the platform safe zone
@@ -124,12 +138,12 @@ each 306×631, each carrying an E002-style label chip:
 
 | # | box | recording | enters | label |
 |---|---|---|---|---|
-| 1 | right, x740 y645 | `12_screen-search` | 33.15 | **Search users** |
-| 2 | middle, riding high, x416 y221 | `14_screen-filter` | 33.70 | **Filter authors** |
-| 3 | left, x66 y645 | `13_screen-chat` | 34.25 | **Create chat** |
+| 1 | right, x740 y645 | `12_screen-search` | 35.38 | **Search users** |
+| 2 | middle, riding high, x416 y221 | `14_screen-filter` | 35.93 | **Filter authors** |
+| 3 | left, x66 y645 | `13_screen-chat` | 36.48 | **Create chat** |
 
 Each **plays its own recording in full**, entry included (tap search → Users tab; open Advanced
-Filters → Author Username; tap `+` → New Chat). They fade out together at 38.30. Only `chat` is
+Filters → Author Username; tap `+` → New Chat). They fade out together at 40.53. Only `chat` is
 trimmed, by 0.27s of keyboard-idle tail after its payoff is already up; `search` and `filter` hold
 their payoff to reach the group fade.
 
@@ -142,85 +156,96 @@ founder's own.
 
 ## Assembly — en-US (timeline seconds, as built)
 
-### hook · 0.00–9.79
-V1 clip0. **`brand-drop` 6.80–11.80.** SFX `hit-1` @2.25 ("hate ads") · `simple-whoosh-2` @6.80
-(the logo surfaces). Captions: "slots" brand, "hate"/"ads." harsh, "DirtBikeX" brand @7.33.
+### hook · 0.00–12.02
+V1 clip0. **`brand-drop` 7.08–12.08.** SFX `hit-1` @2.25 ("hate ads") · `simple-whoosh-2` @7.08
+(the logo surfaces). Captions: "slots" brand, "hate"/"ads." harsh, "DirtBikeX" brand @7.63.
+The beat runs to 12.02 so the third sentence — *"...and honestly, that'd be the easy way out."* —
+is actually in the episode. It was cut at 9.79 for the first three builds.
 
-### hate-ads · 9.79–14.67
-V1 clip1. The logo icon is still in the corner, fading out at 11.80. No other overlay.
+### hate-ads · 12.02–16.90
+V1 clip1. The logo icon fades out at 12.08, just across the cut. No other overlay.
 
-### billboard · 14.67–19.61
-V1 clip2. SFX `radio-adjustment` @19.19 ("billboard."). Near-static, colder.
+### billboard · 16.90–21.84
+V1 clip2. SFX `radio-adjustment` @21.42 ("billboard."). Near-static, colder.
 
-### passes · 19.61–25.45
+### passes · 21.84–27.68
 V1 clip3. The pivot — deliberately **no UI**, so the idea lands before the product appears.
 
-### sponsorship · 25.45–33.09
-V1 clip4 · **`side-screen-sponsorship` 25.45–33.05** (7.60s). Plays start to finish with **one
+### sponsorship · 27.68–35.32
+V1 clip4 · **`side-screen-sponsorship` 27.68–35.28** (7.60s). Plays start to finish with **one
 cut**. Card time == source time, so the words land themselves: the entry (profile → nav menu,
 **orange border on "Sponsorships"** → the page, **circle on the round "Your spot +" tile**) ends
-on "Choose" @28.73; the calendar sheet carries "Choose when it starts," (28.73–29.74); the
-duration dropdown opens and resolves 30d→7d across "choose how long it runs," (29.74–31.68) with
+on "Choose" @30.96; the calendar sheet carries "Choose when it starts," (30.96–31.97); the
+duration dropdown opens and resolves 30d→7d across "choose how long it runs," (31.97–33.91) with
 the picker animation intact; the start day moves 9→22 and the pass is bought on "and DirtBikeX
 got you covered." The single cut removes 0.25s (source 6.23–6.48) in which literally nothing
-changes. SFX `shutter` @25.45.
+changes. SFX `shutter` @27.68.
 *Two earlier passes reordered this clip to chase the narration, and both made the app's state
 regress on screen ($14.99 → $39.99 → $14.99). Neither was needed — the calendar sheet is already
 up while he says "when it starts", because it IS the start picker. Measure before you rearrange.*
 
-### discovery · 33.09–38.34
-V1 clip5, **blurred 33.00–38.30** (0.35s fade in/out) · **three cards fan out in sequence at a
-fixed 0.55s delay**: `search` @33.15 (right), `chat` @33.70 (middle-high), `filter` @34.25 (left).
+### discovery · 35.32–40.57
+V1 clip5, **blurred 35.23–40.53** (0.35s fade in/out) · **three cards fan out in sequence at a
+fixed 0.55s delay**: `search` @35.38 (right), `filter` @35.93 (middle-high), `chat` @36.48 (left).
 Each plays its **own recording in full** — the tap into search, the `+` into New Chat, the filter
 into Author Username — so the entry is visible. Only `search` (the shortest) holds its payoff to
 reach the group fade. A marker points at the sponsored row in each. SFX `shutter` per entrance.
 
-### splash · 38.34–44.53
-V1 clip6 · **`side-screen-splash` 38.50–44.45**, from the director's **re-shoot**
+### splash · 40.57–46.76
+V1 clip6 · **`side-screen-splash` 40.73–46.68**, from the director's **re-shoot**
 (`15_screen-enter-splash.mov`), which opens on him **entering the app from Spotlight** — the entry
 is the point. Then the splash plays, he taps pause, he taps the @rubio avatar, the app pushes in,
 and the profile lands. Three cuts, all inside frozen or dead frames (the static paused splash, the
 "Opening profile…" wait, the "Loading @rubio…" spinner); the loaded profile is held so it is still
-up on "profile." @44.15.
+up on "profile." @46.38.
 The marker is a **shrinking circle** that starts wide and contracts onto the round play/pause
 control — "pause it" is the action, not the tap, and on a busy splash a static ring would not find
-it. SFX `shutter` @38.50 · `hit-1` @44.15 ("profile.").
+it. SFX `shutter` @40.73 · `hit-1` @46.38 ("profile.").
 
-### capped · 44.53–50.61
-V1 clip7 · **`side-screen-capped` 44.70–49.60**. **Nothing is cut** — the whole 3.23s recording
+### capped · 46.76–52.84
+V1 clip7 · **`side-screen-capped` 46.93–51.83**. **Nothing is cut** — the whole 3.23s recording
 plays. It is 1.67s shorter than the beat, so that time has to be held somewhere: 1.00s on the head
 (the screen is static there anyway, and the caps table + budget donut is the densest frame in the
-episode) and 0.67s on the tail payoff. That also keeps the caps on screen through "capped" @47.16,
-with "rotated," @47.75 landing on the rotating list. An earlier pass dumped all 1.65s on the
+episode) and 0.67s on the tail payoff. That also keeps the caps on screen through "capped" @49.39,
+with "rotated," @49.98 landing on the rotating list. An earlier pass dumped all 1.65s on the
 near-empty "Currently rotating" list, which then sat dead for three seconds.
-Marker on the **Pass 1/40** caps row. SFX `shutter` @44.70.
+Marker on the **Pass 1/40** caps row. SFX `shutter` @46.93.
 
-### stats · 50.61–56.81
-V1 clip8 · **`side-screen-stats` 50.80–56.70**. Plays straight through, entry included. No cuts,
+### stats · 52.84–59.04
+V1 clip8 · **`side-screen-stats` 53.03–58.93**. Plays straight through, entry included. No cuts,
 no freezes. A **shrinking circle narrows onto the round star button in the page's top-right
-corner** (card 1.65→2.45, i.e. 52.45–53.25, exactly under "check your **sponsorship stats**") —
-that button is the portal to the stats view, and he taps it at card 2.32. SFX `shutter` @50.80.
+corner** (card 1.65→2.45, i.e. 54.68–55.48, exactly under "check your **sponsorship stats**") —
+that button is the portal to the stats view, and he taps it at card 2.32. SFX `shutter` @53.03.
 
-### cta · 56.81–66.25
-V1 clip9 · **`profile-card` 60.40–63.20**, on track **V4, above the captions** — E003's z-order,
+### cta · 59.04–68.48
+V1 clip9 · **`profile-card` 62.00–64.80**, on track **V4, above the captions** — E003's z-order,
 which is what lets the card live on the subtitle side (`bottomInset` back to the default 190)
-instead of floating up over his chin. It enters **0.29s before "My"** (@60.69) and is gone
-**0.78s before "Comment"** (@63.98) and 1.02s before "PASS" (@64.22). E003's card entered on the
-word and cleared 0.43s before its CTA verb; this is the same move with a little more lead.
-SFX `hit-1` @60.40 · `simple-whoosh-1` @64.22.
+instead of floating up over his chin. Its clip starts **0.92s before "My"** (@62.92) — with the spring entrance it is fully up ~0.7s
+before, just after "people." (@61.89) — and it is gone **1.41s before "Comment"** (@66.21) and 1.65s before "PASS"
+(@66.45). E003's card entered *on* the word and cleared 0.43s before its CTA verb; the director
+asked for more daylight on both sides, so this leads by ~0.9s and clears by ~1.4s.
+SFX `hit-1` @62.00 · `simple-whoosh-1` @66.45.
 
 ## Regenerating
 
 ```bash
 # from the repo root
 node series/app-community/episodes/DBX-APP-S01E004-sponsorship-passes/caption-map.mjs
-# from inside media/DBX-APP-S01E004/
+# from inside media/DBX-APP-S01E004/   (footage-process.sh runs speech-check.py first)
 bash ../../series/app-community/episodes/DBX-APP-S01E004-sponsorship-passes/footage-process.sh
 bash ../../series/app-community/episodes/DBX-APP-S01E004-sponsorship-passes/screen-chop.sh
 # then, from the media bundle:
-bash tools/kdenlive-run.sh <episode>/kdenlive-build.repl   # NEVER pipe the repl in — see skills/06
-python3 tools/kdenlive-nativize.py sponsorship-passes.kdenlive --vertical
+bash ../../tools/kdenlive-run.sh <episode>/kdenlive-build.repl  # NEVER pipe the repl — see skills/06
+python3 ../../tools/kdenlive-nativize.py sponsorship-passes.kdenlive --vertical
+python3 ../../tools/kdenlive-verify.py <episode>/kdenlive-build.repl sponsorship-passes.kdenlive
 ```
+
+**Always run `kdenlive-verify.py`.** An MLT playlist is a sequential list and cannot hold two
+overlapping clips: `add-clip` silently *appends* the second one and ripples the rest of that track,
+exit 0, no warning. The three fan cards overlap by design, so they get a track each, and two SFX do
+too. Before the checker existed, the exported project had the splash card at 49.37s instead of
+40.73s and the "PASS" whoosh 0.38s late — while the flatten preview, which is composited by a
+separate ffmpeg script, was perfectly correct.
 
 `footage-process.sh` accepts `ONLY="05_sponsorship 06_discovery"` to rebuild a subset.
 Rendering is single-threaded by design (`THREADS=1`) — this box has two cores.
@@ -233,7 +258,9 @@ silent no-op rather than a failure.
 - Add punch-in / pull-out Transform keyframes per the storyboard's `[ZOOM]` lines (not baked).
 - **Interior breaths are left in.** Beat 1 carries two long ones (0.68s @2.75 and 0.98s @5.85).
   Tightening them with jump cuts sharpens the hook but re-times every caption downstream — do it
-  after the caption track is final, or accept the pacing.
+  after the caption track is final, or accept the pacing. The hook also carries a 0.53s breath at
+  9.64 before its last clause; that one is load-bearing (see the pause-cropping note) — do not
+  "tidy" it away without re-running `speech-check.py`.
 - **The right-hand fan card** (`search`, x740 w306 → right edge 1046) sits inside the platform's
   right safe-zone inset (145px), where TikTok's action rail lives. It is placed where the director
   sketched it; check it against a real TikTok preview before publish.

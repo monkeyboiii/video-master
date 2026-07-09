@@ -28,7 +28,7 @@
 
 Founder mid-sentence, streaming caption typing "I build ad **slots** in my app because I…" —
 "slots" already landed in the DBX accent, "hate ads" about to land in coral. No logo card: a
-person and a contradiction. The logo does not appear until 7.33s, and never takes the screen.
+person and a contradiction. The logo does not appear until 7.63s, and never takes the screen.
 
 ## Platform captions
 

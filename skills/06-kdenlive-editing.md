@@ -114,6 +114,16 @@ stack can't deliver):
   an MLT/`.kdenlive` with **relative** media paths (portable across machines). Run it from
   **inside the episode media bundle** so paths stay relative; keep the command script tracked as
   `kdenlive-build.repl` in the episode dir (production logic — regenerate from it).
+- **One track cannot hold overlapping clips — and the CLI will not tell you.** `timeline add-clip
+  <track> <clip> -p <sec>` writes into an MLT *playlist*, a strictly sequential list of
+  `<blank>`/`<entry>`. If a clip's position lands inside the previous clip on that track, the CLI
+  **appends** it instead and every later clip on the track ripples forward. No warning, exit 0.
+  Give every overlapping element its own track (S01E004's three fan-out cards, and two SFX whose
+  tails run into their neighbours). Then run **`tools/kdenlive-verify.py <build.repl>
+  <exported.kdenlive>`**, which refuses overlaps in the repl *and* asserts every clip in the export
+  starts within a frame of where the repl said. This bug is invisible from the flatten preview —
+  that is composited by a separate ffmpeg script — so the preview looked perfect while the project
+  a human would render from had the splash card 8.6s late and the CTA whoosh 0.38s late.
 - **Run the repl with `tools/kdenlive-run.sh <build.repl>`, never with a pipe.** The REPL
   refuses non-TTY stdin: `cat build.repl | cli-anything-kdenlive` prints
   `Warning: Input is not a terminal`, executes **nothing**, and **exits 0** — leaving the
@@ -122,7 +132,8 @@ stack can't deliver):
   throws its mutations away (`bin import` then `timeline add-clip` → "Track not found: 0").
   `kdenlive-run.sh` hands it a pty via `script(1)`, then asserts the export was written and
   warns if the bytes didn't change. After any regeneration, grep the `.kdenlive` for a clip
-  you *removed* — that is the cheapest proof the export really re-ran.
+  you *removed* — that is the cheapest proof the export really re-ran — and then run
+  `kdenlive-verify.py`, which is the cheapest proof it re-ran *correctly*.
 - **Make it Kdenlive-native after every export (learned on S01E002).** The CLI emits
   lightweight MLT that Kdenlive flags as invalid/corrupt: the root `<mlt producer=…>`
   points at a non-existent producer, bin producers are `clipN` with **no** numeric
@@ -150,11 +161,27 @@ stack can't deliver):
   word's timecode from the caption map. Keep the spec in a tracked `screen-chop.sh`.
 - **Trim trailing pauses before stitching (learned on S01E002).** Talking-head takes
   usually end with a pause + the stop-recording tap. Before threading clips back to back,
-  set each clip's out-point at its **speech end** — detect it with
-  `ffmpeg -i clip -af silencedetect=noise=-32dB:d=0.35 -f null -` and use the last
-  `silence_start` (+~0.15s) as the out. This removes the dead gap/click between takes and
-  tightens the cut; captions/SFX/overlay positions are then computed off the trimmed
-  cumulative timeline.
+  set each clip's out-point at its **speech end** (+~0.15s). This removes the dead gap/click
+  between takes and tightens the cut; captions/SFX/overlay positions are then computed off
+  the trimmed cumulative timeline.
+- **"Speech end" is not "the last `silence_start`" (learned the hard way on S01E004).**
+  `silencedetect` only reports a silence that lasts at least `d`. A take that ends with less
+  than `d` of silence yields **no trailing silence at all**, so its last `silence_start` is
+  whatever interior breath came before — and if the speaker pauses before their final clause,
+  that clause is silently deleted from the episode. S01E004's hook ended with 0.24s of silence
+  against `d=0.30`, so it was cut at 9.79s instead of 12.02s and lost *"and honestly, that'd be
+  the easy way out."* for three builds. Worse, the caption map's speech runs were copied from the
+  same log, so the surviving half of the sentence absorbed all of the cue's words and nothing
+  looked wrong. **Find the last speech SAMPLE** (an RMS gate over the decoded audio), not the last
+  reported silence, and **gate it**: `speech-check.py` in that episode fails the build if any
+  beat's out-point lands before its last speech run, and prints the runs to paste into the
+  caption map. Two independent copies of a number is a bug waiting; four is a promise to check.
+- **Lengthening one beat re-times the whole episode.** Every overlay in/out, every SFX delay,
+  every blur window, the caption track's `durationSec`, the music trim, and the `.kdenlive`
+  positions are absolute seconds. Shift them all in one edit, then re-derive the anchors that
+  are *word*-relative (a logo that lands on a spoken brand name, a card that clears a CTA word)
+  from the regenerated caption map rather than by adding the offset — the words move by the same
+  delta only if their beat did.
 - **Overlays position themselves; the timeline places them full-frame.** A card that must
   sit bottom-left, centered, or lower-third bakes that placement into the Remotion
   component (so the same overlay is correct in Kdenlive *and* any flatten preview) — the
