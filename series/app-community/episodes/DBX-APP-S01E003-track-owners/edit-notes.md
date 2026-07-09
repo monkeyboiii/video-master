@@ -10,7 +10,7 @@ renders on the Mac.
 | Track | Content |
 |-------|---------|
 | V1 · Footage | Enhanced footage `footage/NN_*_sdr.mp4` — carries the narration |
-| V2 · Backdrop | `brand-title` @18.05 (2.0s) — **opaque** (baked blur backdrop), must stay below captions |
+| V2 · Backdrop | `brand-title` @18.05 (2.0s) — transparent logo; V1 is blurred behind it (Route B) |
 | V3 · Captions | **One continuous** caption overlay (`kinetic-captions`, 0–53.61s) |
 | V4 · Overlays | `side-screen` ×3 (flair / create / rsvp) · `profile-card` @47.80 |
 | A1 · Music | `bgm-vampire-heart.mp3` from 0.0s, full length, flat ~10% under the VO |
@@ -19,8 +19,9 @@ renders on the Mac.
 Hard cuts only, everywhere — including *inside* the screen recordings (pure cutting out).
 Zoom (punch-in/out) is **not baked**; add it as Transform keyframes on V1 on the Mac.
 
-Track order is load-bearing: `brand-title` bakes its own blurred backdrop and is therefore
-**opaque**, so it must sit *below* the caption track or it hides the subtitles.
+Track order is load-bearing: the captions must stay on top. `brand-title` is a **transparent**
+logo — the softness behind it comes from blurring V1, not from a baked backdrop (Route B, see
+below), so it can sit below the caption track without hiding anything.
 
 ## Footage — enhanced renders, original audio
 
@@ -134,8 +135,10 @@ V1 clip0 · captions. **SFX** soft hit @2.90 ("discover"). **Zoom** slow punch-i
 Captions: `never` / `discover` harsh red.
 
 ### why 15.48–23.03
-V1 clip1 · V2 `brand-title` @18.05 (2.0s) — lands on the word "DirtBikeX" @18.05, now on its
-own blurred backdrop *(comp reused from E002)*. **SFX** soft whoosh @18.05.
+V1 clip1 · V2 `brand-title` @18.05 (2.0s) — lands on the word "DirtBikeX" @18.05. **Route B**:
+V1 is **blurred** (no dim) across 18.05–20.05 with a 0.35s fade in/out, so the logo sits on the
+real, softened footage rather than a separately-extracted backdrop clip that never quite matched
+it *(comp reused from E002)*. **SFX** soft whoosh @18.05.
 
 ### flair 23.03–28.95
 V1 clip2 · V4 `side-screen-flair` (full beat) — markers on the **Track Stewards** option and
@@ -180,6 +183,9 @@ Screen chops come from `screen-chop.sh`; caption timing from `caption-map.mjs`. 
 - No `invite-card` this episode — the CTA is "comment OWNER", not a QR.
 - Music/SFX levels: confirm the shutter sits right at each screen entrance. Music is a flat
   10% bed with no ducking.
+- **Route B blur is baked only in the preview, not the .kdenlive.** On the Mac, add a **Blur**
+  (no brightness change) to the V1 clip across **18.05–20.05**, keyframed to fade in/out over
+  ~0.35s. `brand-title` is transparent, so without it the footage behind the logo stays sharp.
 
 ## Preview
 Rough-cut flatten (no zooms):

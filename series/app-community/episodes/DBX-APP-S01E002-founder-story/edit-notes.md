@@ -12,10 +12,12 @@ Skill followed: `skills/06-kdenlive-editing.md` (+ `skills/05-remotion-graphics.
   three apps searching for a dirt-bike community — a dead Discourse search ("No sites found"),
   a member list, and ThumperTalk. The member names/locations/avatars are **per-row blurred**
   (full-width bands, covered through the app's slide-in) and the ThumperTalk **red logo is
-  blurred** (`broll-process.sh` → native 884×1920 cutout). It is presented **like the invite
-  card**: the phone scaled to a card, centred over the face, on **blurred V1** (blur only) —
-  **snapping in on a shutter SFX** (@31.55). Lands "No sites found" under "scattered," the
-  redacted list under "outdated,". Captions read over it.
+  blurred** (`broll-process.sh` → 884×1920 **ProRes 4444 with rounded corners + alpha**).
+  It is presented **exactly like the invite card**: scaled to **500px wide**, centred at
+  **yPct 43** (top y=283) with a soft drop shadow, on **blurred V1** (blur only) — **snapping
+  in on a shutter SFX** (@31.55). Rounded corners and the upper-centre placement are what make
+  it read as a card rather than a screenshot pasted on. Lands "No sites found" under
+  "scattered," the redacted list under "outdated,". Captions read over it.
 - **Logo & QR blur the ACTUAL footage (Route B), not a baked backdrop.** The v3 cut baked a
   separate `bg-brand.mp4` behind the logo; it never matched the real frame. Now `brand-title`
   and `invite-card` are transparent and **V1 itself is blurred** in their windows, ramped
@@ -63,7 +65,7 @@ Skill followed: `skills/06-kdenlive-editing.md` (+ `skills/05-remotion-graphics.
 | Track | Content |
 |-------|---------|
 | V1 | Enhanced footage `footage/NN_*_sdr.mp4` — carries the narration |
-| V2 · Backdrop | `photo-reveal` @9.95 (4.2s) · `07_scattered-apps` @31.55 (4.4s, phone card, scaled+centred, over blurred V1) · `brand-title` @41.5 (2.0s, transparent) — below captions |
+| V2 · Backdrop | `photo-reveal` @9.95 (4.2s) · `07_scattered-apps` @31.55 (4.4s, rounded phone card, 500w @yPct43, over blurred V1) · `brand-title` @41.5 (2.0s, transparent) — below captions |
 | V3 · Captions | `kinetic-captions` — one clip, 0→63.8s |
 | V4 · Overlays | `feature-phones-built-it` @47.5 · `feature-phones-cta` @54.5 · `invite-card` @59.5 · `profile-card` @63.8 |
 | A1 · Music | `bgm-vampire-heart.mp3` from 0.0s, full length, flat ~10% under the VO |
@@ -72,8 +74,10 @@ Skill followed: `skills/06-kdenlive-editing.md` (+ `skills/05-remotion-graphics.
 Cuts are **hard cuts only**. Zoom (punch-in / pull-out) is **not baked** — add it as
 Transform keyframes on the V1 clips on the Mac (the `Zoom:` lines below are the intent).
 
-Track order is load-bearing: anything opaque (photo reveal, logo backdrop) goes **below**
-the caption track, or it hides the subtitles.
+Track order is load-bearing: the captions must stay on top. `photo-reveal` is opaque, so it
+goes **below** the caption track. `brand-title`, `invite-card` and the phone card are all
+transparent now — the softness behind them comes from blurring V1 (Route B), not from a baked
+backdrop.
 
 ## Footage
 
@@ -146,7 +150,9 @@ raw CLI export as corrupt without it.
   **59.5–63.0** (behind the QR, ~0.35s fade). The `brand-title` / `invite-card` overlays and the
   `07_scattered-apps` phone clip are transparent/native, so without this the footage stays sharp.
 - **The phone card is not baked to size.** On the Mac, give `07_scattered-apps` (V2) a Transform:
-  scale ~79% (884→~700w) and centre, so it sits as a card over the founder.
+  scale to **500px wide (~57%)** and position its top at **y=283** (centre yPct 43), matching the
+  invite card. Its rounded corners + alpha are already baked into the ProRes, so no masking is
+  needed; add a soft drop shadow if Kdenlive offers one.
 - Add punch-in/pull-out Transform keyframes per the `Zoom:` lines (not baked).
 - Balance SFX levels; music is a flat 10% bed with no ducking, so watch the two `hit-1`s.
 - `brief.md` still names E001 as this episode's teaser sibling — E001 was deleted (quality).

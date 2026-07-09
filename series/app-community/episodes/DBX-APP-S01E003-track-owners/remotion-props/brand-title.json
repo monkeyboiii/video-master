@@ -1,8 +1,4 @@
 {
   "durationSec": 2.0,
-  "tagline": "built by a rider",
-  "bgSrc": "e003/bg-brand.mp4",
-  "bgTrimSec": 0,
-  "bgBlurPx": 8,
-  "bgDim": 0.14
+  "tagline": "built by a rider"
 }

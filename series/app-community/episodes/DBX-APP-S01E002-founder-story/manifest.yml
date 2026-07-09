@@ -125,7 +125,7 @@ assets:
     - {asset_id: SEL_006, source_asset_id: RAW_006, in: "00:00:00.000", out: "00:00:13.570", beat: cta}
     # scattered-apps phone cutout (baked redaction): usernames per-row blurred, ThumperTalk logo
     # blurred; native 884x1920, scaled+centred over blurred V1 in the edit. reproduced by
-    # broll-process.sh -> footage/07_scattered-apps_sdr.mp4
+    # broll-process.sh -> footage/07_scattered-apps.mov
     - {asset_id: SEL_007, source_asset_id: RAW_013, in: "00:00:00.000", out: "00:00:04.400", beat: problem}
   voiceover: [] # narration embedded in the talking-head clips; no separate VO file
   audio:
@@ -152,7 +152,7 @@ outputs:
       # One continuous whole-video caption track (replaced the six per-beat overlays).
       - DBX-APP-S01E002_en-US_9x16_kinetic-captions_v001.mov
       - DBX-APP-S01E002_en-US_9x16_photo-reveal_v001.mov
-  # Processed b-roll cutaway (not a Remotion overlay): footage/07_scattered-apps_sdr.mp4
+  # Processed b-roll cutaway (not a Remotion overlay): footage/07_scattered-apps.mov
   covers: {} # locale -> [filenames in media/exports/]
   kdenlive:
     en-US: media/DBX-APP-S01E002/founder-story.kdenlive

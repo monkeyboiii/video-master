@@ -15,15 +15,15 @@
 #   * The scene-3 ThumperTalk red logo is a third-party mark. Blur it with a full-width band
 #     at its y-row, active across the slide-in so it is covered while it moves into place.
 #
-# Output: footage/07_scattered-apps_sdr.mp4 — the NATIVE 884x1920 phone cutout (no side-fill).
-# The compositor presents it like the invite card: scaled down and centred over the founder,
-# whose footage is blurred (not dimmed) behind it, snapping in on a shutter SFX. See
-# rebuild-e2.sh / edit-notes for the placement + the blur-V1 window.
+# Output: footage/07_scattered-apps.mov — a 884x1920 phone card with ROUNDED CORNERS + alpha
+# (ProRes 4444), so it reads as a card like the invite card. The compositor scales it down and
+# centres it upper-frame over the founder, whose footage is blurred (not dimmed) behind it,
+# snapping in on a shutter SFX. See rebuild-e2.sh / edit-notes for placement + the blur-V1 window.
 set -e
 : "${FF:=ffmpeg}"
 # Run from inside the media bundle (media/DBX-APP-S01E002), where _source/ and footage/ live.
 SRC=${SRC:-_source/07_scatter-outdated.mov}
-OUT=${OUT:-footage/07_scattered-apps_sdr.mp4}
+OUT=${OUT:-footage/07_scattered-apps.mov}
 
 # The scene-2 hold ends at src 3.46 and scene 3 settles at src 3.70; the 0.24s nav slide
 # between is dropped with a hard cut (select), because blurring the names through that slide
@@ -48,6 +48,8 @@ OUT=${OUT:-footage/07_scattered-apps_sdr.mp4}
 [o3][b4]overlay=0:1086:enable='between(t,1.85,3.46)'[o4];\
 [o4][b5]overlay=0:1298:enable='between(t,1.85,3.46)'[o5];\
 [o5][b6]overlay=0:1516:enable='between(t,1.85,3.46)'[o6];\
-[o6][bl]overlay=0:260:enable='between(t,3.46,4.60)',format=yuv420p[out]" \
- -map "[out]" -an -c:v libx264 -crf 19 -preset medium -pix_fmt yuv420p -fps_mode cfr -r 30 "$OUT"
+[o6][bl]overlay=0:260:enable='between(t,3.46,4.60)',format=yuva420p[phone];\
+color=black:s=884x1920:d=4.4:r=30,format=gray,geq=lum='255*lte(sqrt(pow(max(max(0\,72-X)\,X-811)\,2)+pow(max(max(0\,72-Y)\,Y-1847)\,2))\,72)'[mask];\
+[phone][mask]alphamerge[rc]" \
+ -map "[rc]" -an -c:v prores_ks -profile:v 4444 -pix_fmt yuva444p10le -fps_mode cfr -r 30 "$OUT"
 echo "wrote $OUT"
