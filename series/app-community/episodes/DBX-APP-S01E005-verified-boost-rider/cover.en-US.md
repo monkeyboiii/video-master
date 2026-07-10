@@ -18,9 +18,9 @@
 
 ## Cover concept
 
-- Background image intent: founder centre-right (tone-mapped, natural colour), the **four-up fan**
-  frozen at its last beat — three plated feature icons down the reserved left column and the
-  blurred members-only post across his chin. That frame *is* the episode: the perks, and the one
+- Background image intent: founder centre-right (enhanced render, natural colour), the **four-up fan**
+  frozen at its last beat — three white-plated feature icons across the top and the blurred
+  members-only post across his chin. That frame *is* the episode: the perks, and the one
   thing you can't read.
 - On-cover text (≤2 lines): **"You don't stay / in the same gear."**
 - Aspect(s) needed per platform: tiktok/reels/ytshorts 9x16.
@@ -69,5 +69,5 @@ across the bottom above the caption band.
   Confirm the bio link actually points at a Verified Boost Rider invite before publish.
 - `DECIDE:` cover still not exported. Pull it from the final Mac render, not the rough cut — the
   fan-out's last beat (≈22.6s) is the frame to grab.
-- `DECIDE:` the invite QR shown at ≈34.3s is a **live, scannable** invite link ("Instagram people
-  welcome!", capped 0/3,000). It is on screen ~1.1s. Confirm you want it public before publish.
+- ~~`DECIDE:` the invite QR is live and scannable.~~ **Blurred at the source**, at the director's
+  instruction. Nothing scannable ships.

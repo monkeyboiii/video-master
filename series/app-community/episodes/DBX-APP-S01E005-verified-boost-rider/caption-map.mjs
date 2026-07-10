@@ -47,45 +47,45 @@ const SNAP = 0.20;
 // start = global timeline start; trimIn = head silence trimmed; dur = trimmed clip length.
 // runs = speech intervals in RAW clip seconds (before trimIn is subtracted).
 const BEATS = [
-  {f: '01_hook.srt', start: 0.00, trimIn: 0, dur: 10.74,
+  {f: '01_hook.srt', start: 0.00, trimIn: 0, dur: 11.00,
    runs: [[0.220, 0.590], [1.110, 3.150], [3.830, 3.980], [4.520, 5.740], [6.040, 6.740],
           [7.480, 10.590]],
    brand: ['screaming', 'notch', 'verified', 'boost', 'rider'], harsh: []},
 
-  {f: '02_layers.srt', start: 10.74, trimIn: 0, dur: 12.19,
+  {f: '02_layers.srt', start: 11.00, trimIn: 0, dur: 12.19,
    runs: [[0.040, 0.430], [0.930, 3.450], [3.960, 7.290], [7.960, 8.470], [8.880, 9.330],
           [9.660, 10.490], [11.010, 12.040]],
    brand: ['dirtbikex', 'flair', 'stats', 'invites', 'insider', 'hacks'], harsh: []},
 
-  {f: '03_flair.srt', start: 22.93, trimIn: 0.30, dur: 7.01,
+  {f: '03_flair.srt', start: 23.19, trimIn: 0.30, dur: 7.01,
    runs: [[0.400, 1.500], [1.960, 5.340], [5.840, 7.160]],
    brand: ['membership', 'flair', 'verified'], harsh: []},
 
-  {f: '04_invite.srt', start: 29.94, trimIn: 0, dur: 6.95,
+  {f: '04_invite.srt', start: 30.20, trimIn: 0, dur: 6.95,
    runs: [[0.170, 2.810], [3.370, 4.460], [5.040, 6.800]],
    brand: ['invite', 'code', 'accepted'], harsh: []},
 
-  {f: '05_stats-intro.srt', start: 36.89, trimIn: 0, dur: 3.12,
+  {f: '05_stats-intro.srt', start: 37.15, trimIn: 0, dur: 3.12,
    runs: [[0.190, 1.720], [2.100, 2.970]],
    brand: ['pass', 'deeper', 'stats'], harsh: []},
 
-  {f: '06_stats-detail.srt', start: 40.01, trimIn: 0, dur: 5.56,
+  {f: '06_stats-detail.srt', start: 40.27, trimIn: 0, dur: 5.56,
    runs: [[0.160, 0.830], [1.290, 2.070], [2.560, 5.410]],
    brand: ['months', 'updates', 'engaged'], harsh: []},
 
-  {f: '07_insider.srt', start: 45.57, trimIn: 0, dur: 6.26,
+  {f: '07_insider.srt', start: 45.83, trimIn: 0, dur: 6.50,
    runs: [[0.220, 2.160], [2.650, 3.150], [3.680, 5.670], [6.000, 6.110]],
    brand: ['chat', 'early', 'first'], harsh: []},
 
   // the transcriber split the last sentence mid-phrase ("...my link in" / "the bio."), so cue 4 is
   // a sub-span of one run. Largest-gap grouping cannot express that; boundary snapping can.
-  {f: '08_cta.srt', start: 51.83, trimIn: 0, dur: 12.95,
+  {f: '08_cta.srt', start: 52.33, trimIn: 0, dur: 12.95,
    runs: [[0.120, 0.480], [0.930, 2.610], [3.160, 4.860], [5.360, 7.170], [7.990, 10.350],
           [10.860, 12.800]],
    brand: ['rubio', 'follow', 'link', 'bio'], harsh: []},
 ];
 
-const TOTAL = +BEATS.reduce((a, b) => a + b.dur, 0).toFixed(2); // 64.78
+const TOTAL = +BEATS.reduce((a, b) => a + b.dur, 0).toFixed(2); // 65.28
 
 /** For matching against the brand/harsh lists. */
 const norm = (w) => w.replace(/^[*_"“”'']+|[*_"“”''.,!?;:]+$/g, '').toLowerCase();

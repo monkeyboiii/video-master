@@ -29,9 +29,12 @@ const itemSchema = z.object({
   /** Chip under the item. Same treatment as S01E002's feature-phone labels. */
   label: z.string().default(''),
   labelSize: z.number().default(24),
-  /** Draw a dark rounded plate behind the asset. Transparent icons need it to survive a
-   *  bright background; a screenshot that is already a dark card does not. */
+  /** Draw a rounded plate behind the asset. Transparent icons need one to survive whatever is
+   *  behind them; a screenshot that is already a card does not. */
   plate: z.boolean().default(false),
+  /** Plate fill. White reads as a sticker and keeps a blue glyph legible over blurred footage;
+   *  a dark plate makes a blue glyph muddy. The orange border carries the brand either way. */
+  plateColor: z.string().default('#FFFFFF'),
   /** Padding between the plate edge and the asset, in px. */
   platePad: z.number().default(34),
   /**
@@ -116,9 +119,9 @@ const Item: React.FC<{item: z.infer<typeof itemSchema>; riseSec: number; risePx:
                 padding: item.platePad,
                 boxSizing: 'border-box' as const,
                 borderRadius: 34,
-                background: 'rgba(11,11,11,0.86)',
-                border: `3px solid ${dirt[500]}`,
-                boxShadow: '0 22px 55px rgba(0,0,0,0.62)',
+                background: item.plateColor,
+                border: `4px solid ${dirt[500]}`,
+                boxShadow: '0 22px 55px rgba(0,0,0,0.55)',
               }
             : {
                 borderRadius: 22,

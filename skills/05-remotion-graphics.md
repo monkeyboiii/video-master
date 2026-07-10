@@ -164,9 +164,30 @@ web preview artifact. Compositions in this package set these render defaults via
   shorter than its time on screen must freeze on an extracted last-frame still (`FeaturePhones`,
   `FeatureFan`). And a VFR screen recording's container duration lies: S01E005's insider post claims
   2.10s and its last decodable frame is at 1.50s, with any seek past that yielding nothing.
+- **NEVER CROP A SCREEN RECORDING. Redact what you don't want and keep the frame.**
+  Got wrong twice, on two episodes, in two different ways, and caught by the director both times:
+    * S01E004 v1 cropped 44px off *each side* to force the native aspect into the card. The app UI
+      lost its edges.
+    * S01E004 v2 and S01E005 v1 cropped the status bar off the *top* to remove the red
+      screen-recording pill. Full width survived, but **the aspect ratio changed** — an 884x1920
+      phone became 884x1790, visibly stubbier than a real phone — and the app's nav header was
+      sliced off at the card's top edge. He called it "cut", both times.
+
+  The recording's aspect ratio is not yours to change. A red recording pill, a notification banner,
+  a third party's name, a live QR — all of these are **redaction** problems, not crop problems.
+  Paint over the pill, blur the credential, and size the card to the **native** aspect. The only
+  thing a crop ever buys you is a smaller, wronger picture.
+
+  Two corollaries:
+    * `drawbox color=black` on a `yuv420p` stream paints **limited-range** black (Y=16 → RGB 16,16,16),
+      a visibly grey rectangle on a true-black status bar. Do the fill in `rgb24` and convert back.
+      Verify by boosting the region's contrast 6x and looking; and by counting red pixels, not by eye.
+    * Cropping also moves every marker. S01E005's top-right chat button sat at yFrac 0.0017 of the
+      cropped clip — inside the card's 30px corner radius — and at a comfortable 0.074 of the native
+      frame. If a marker lands in a corner arc, suspect the crop before you nudge the marker.
 - **When a card stretches a video to fill it (`objectFit: fill`), the card's aspect IS the
-  contract.** Change the crop, recompute every height. And a crop that trims the sides to force a
-  target aspect is a crop the director will notice: trim vertically, then resize the card.
+  contract.** Compute `h` from the source's native aspect and the chosen `w`. Never eyeball it, and
+  never let a crop silently redefine it.
 - Text content comes from tracked props files, not hardcoded into components. Components
   are reusable across episodes; props are per-episode.
 - Respect platform safe zones (`docs/platforms.md`): overlay text stays inside the

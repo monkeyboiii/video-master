@@ -1,13 +1,13 @@
 project new --width 1080 --height 1920 --fps-num 30 --fps-den 1 -n verified-boost-rider
-bin import footage/01_hook_sdr.mp4 -n hook --type video -d 10.75
+bin import footage/01_hook_sdr.mp4 -n hook --type video -d 11.01
 bin import footage/02_layers_sdr.mp4 -n layers --type video -d 12.20
 bin import footage/03_flair_sdr.mp4 -n flair --type video -d 7.02
 bin import footage/04_invite_sdr.mp4 -n invite --type video -d 6.97
 bin import footage/05_stats-intro_sdr.mp4 -n stats-intro --type video -d 3.14
 bin import footage/06_stats-detail_sdr.mp4 -n stats-detail --type video -d 5.57
-bin import footage/07_insider_sdr.mp4 -n insider --type video -d 6.27
+bin import footage/07_insider_sdr.mp4 -n insider --type video -d 6.51
 bin import footage/08_cta_sdr.mp4 -n cta --type video -d 12.97
-bin import overlays/DBX-APP-S01E005_en-US_9x16_kinetic-captions_v001.mov -n captions --type video -d 64.78
+bin import overlays/DBX-APP-S01E005_en-US_9x16_kinetic-captions_v001.mov -n captions --type video -d 65.28
 bin import overlays/DBX-APP-S01E005_en-US_9x16_brand-drop_v001.mov -n brand --type video -d 5.0
 bin import overlays/DBX-APP-S01E005_en-US_9x16_side-screen-membership_v001.mov -n scr-memb --type video -d 3.55
 bin import overlays/DBX-APP-S01E005_en-US_9x16_feature-fan_v001.mov -n fan --type video -d 4.40
@@ -24,7 +24,7 @@ bin import sfx/shutter.mp3 -n sfx-shutter --type audio -d 0.65
 # ONE TRACK CANNOT HOLD OVERLAPPING CLIPS. `timeline add-clip -p` writes into an MLT playlist,
 # which is a strictly sequential list: if a clip's position lands inside the previous clip, the CLI
 # APPENDS it instead and every later clip on that track ripples forward. It does not warn, exit 0.
-# `brand-drop` (11.23-16.23) overlaps the membership card (15.00-18.55), so it gets its own track.
+# `brand-drop` (11.49-16.49) overlaps the membership card (15.26-18.81), so it gets its own track.
 # The other five cards + the fan are disjoint and share V2.
 # `tools/kdenlive-verify.py` asserts the export matches this file. Run it after every export.
 timeline add-track -n V1 --type video
@@ -34,36 +34,36 @@ timeline add-track -n V4-Captions --type video
 timeline add-track -n V5-CardOnTop --type video
 timeline add-track -n A1-Music --type audio
 timeline add-track -n A2-SFX --type audio
-timeline add-clip 0 clip0 -p 0 --in 0 --out 10.74
-timeline add-clip 0 clip1 -p 10.74 --in 0 --out 12.19
-timeline add-clip 0 clip2 -p 22.93 --in 0 --out 7.01
-timeline add-clip 0 clip3 -p 29.94 --in 0 --out 6.95
-timeline add-clip 0 clip4 -p 36.89 --in 0 --out 3.12
-timeline add-clip 0 clip5 -p 40.01 --in 0 --out 5.56
-timeline add-clip 0 clip6 -p 45.57 --in 0 --out 6.26
-timeline add-clip 0 clip7 -p 51.83 --in 0 --out 12.95
-timeline add-clip 1 clip10 -p 15.00 --in 0 --out 3.55
-timeline add-clip 1 clip11 -p 19.00 --in 0 --out 4.40
-timeline add-clip 1 clip12 -p 23.70 --in 0 --out 6.10
-timeline add-clip 1 clip13 -p 30.10 --in 0 --out 6.65
-timeline add-clip 1 clip14 -p 37.05 --in 0 --out 8.35
-timeline add-clip 1 clip15 -p 45.75 --in 0 --out 5.95
-timeline add-clip 2 clip9 -p 11.23 --in 0 --out 5.0
-timeline add-clip 3 clip8 -p 0 --in 0 --out 64.78
-timeline add-clip 4 clip16 -p 58.95 --in 0 --out 2.60
-timeline add-clip 5 clip17 -p 0 --in 0 --out 64.78
+timeline add-clip 0 clip0 -p 0 --in 0 --out 11.00
+timeline add-clip 0 clip1 -p 11.00 --in 0 --out 12.19
+timeline add-clip 0 clip2 -p 23.19 --in 0 --out 7.01
+timeline add-clip 0 clip3 -p 30.20 --in 0 --out 6.95
+timeline add-clip 0 clip4 -p 37.15 --in 0 --out 3.12
+timeline add-clip 0 clip5 -p 40.27 --in 0 --out 5.56
+timeline add-clip 0 clip6 -p 45.83 --in 0 --out 6.50
+timeline add-clip 0 clip7 -p 52.33 --in 0 --out 12.95
+timeline add-clip 1 clip10 -p 15.26 --in 0 --out 3.55
+timeline add-clip 1 clip11 -p 19.26 --in 0 --out 4.40
+timeline add-clip 1 clip12 -p 23.96 --in 0 --out 6.10
+timeline add-clip 1 clip13 -p 30.36 --in 0 --out 6.65
+timeline add-clip 1 clip14 -p 37.31 --in 0 --out 8.35
+timeline add-clip 1 clip15 -p 46.01 --in 0 --out 5.95
+timeline add-clip 2 clip9 -p 11.49 --in 0 --out 5.0
+timeline add-clip 3 clip8 -p 0 --in 0 --out 65.28
+timeline add-clip 4 clip16 -p 59.45 --in 0 --out 2.60
+timeline add-clip 5 clip17 -p 0 --in 0 --out 65.28
 timeline add-clip 6 clip18 -p 2.95 --in 0 --out 0.8
-timeline add-clip 6 clip20 -p 11.23 --in 0 --out 0.31
-timeline add-clip 6 clip21 -p 15.00 --in 0 --out 0.6
-timeline add-clip 6 clip21 -p 19.00 --in 0 --out 0.6
-timeline add-clip 6 clip21 -p 19.92 --in 0 --out 0.6
-timeline add-clip 6 clip21 -p 20.75 --in 0 --out 0.6
-timeline add-clip 6 clip18 -p 21.60 --in 0 --out 0.8
-timeline add-clip 6 clip21 -p 23.70 --in 0 --out 0.6
-timeline add-clip 6 clip21 -p 30.10 --in 0 --out 0.6
-timeline add-clip 6 clip21 -p 37.05 --in 0 --out 0.6
-timeline add-clip 6 clip21 -p 45.75 --in 0 --out 0.6
-timeline add-clip 6 clip18 -p 58.95 --in 0 --out 0.8
-timeline add-clip 6 clip19 -p 62.10 --in 0 --out 0.47
+timeline add-clip 6 clip20 -p 11.49 --in 0 --out 0.31
+timeline add-clip 6 clip21 -p 15.26 --in 0 --out 0.6
+timeline add-clip 6 clip21 -p 19.26 --in 0 --out 0.6
+timeline add-clip 6 clip21 -p 20.18 --in 0 --out 0.6
+timeline add-clip 6 clip21 -p 21.26 --in 0 --out 0.6
+timeline add-clip 6 clip18 -p 21.86 --in 0 --out 0.8
+timeline add-clip 6 clip21 -p 23.96 --in 0 --out 0.6
+timeline add-clip 6 clip21 -p 30.36 --in 0 --out 0.6
+timeline add-clip 6 clip21 -p 37.31 --in 0 --out 0.6
+timeline add-clip 6 clip21 -p 46.01 --in 0 --out 0.6
+timeline add-clip 6 clip18 -p 59.45 --in 0 --out 0.8
+timeline add-clip 6 clip19 -p 62.60 --in 0 --out 0.47
 timeline list
 export xml -o verified-boost-rider.kdenlive

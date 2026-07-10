@@ -17,7 +17,7 @@ formats:
 # script; the .srt files in media/DBX-APP-S01E005/_source/srt/ are CANONICAL (the words, the
 # subtitles, the sync source of truth) and script.en-US.md is a readable transcript of them.
 # Director's outline (incl. the [SCREEN: ...] overlay directives): _source/rough.md.
-# Raw ~70.5s; both-edge pause-cropped timeline = 64.78s. Edit plan in storyboard.md.
+# Raw ~70.5s; both-edge pause-cropped timeline = 65.28s. Edit plan in storyboard.md.
 #
 # zh-CN is a SIBLING VARIANT, not a translation (docs/localization.md). It is not scripted yet,
 # so it is absent rather than stubbed — the same choice S01E004 made.
@@ -42,10 +42,10 @@ beats:
     visual_intent: founder to camera, mid-push; no overlay. The tier is not named until 9.55s
     overlay: kinetic-captions
     target_duration_sec:
-      en-US: 10.74
+      en-US: 11.00
   - id: layers
     purpose: name the tier, then show its four contents
-    visual_intent: brand-drop settles on "DirtBikeX" (@11.78); the membership sheet; then four features fan out, the last one landing on his face as the background blurs
+    visual_intent: brand-drop settles on "DirtBikeX" (@12.04); the membership sheet CENTRED over his face as the background blurs; then three feature icons fan out horizontally and the members-only post lands on his face
     overlay: feature-fan
     target_duration_sec:
       en-US: 12.19
@@ -78,18 +78,24 @@ beats:
     visual_intent: side-screen — the group chat, a shrinking circle on the top-right button, the members-only message
     overlay: side-screen
     target_duration_sec:
-      en-US: 6.26
+      en-US: 6.50
   - id: cta
     purpose: refuse the hard sell, then ask once
-    visual_intent: profile-card enters 0.87s BEFORE "My name is Rubio", on the subtitle side (E003 convention), gone 0.55s before "follow"
+    visual_intent: profile-card enters 0.87s BEFORE "My name is Rubio" (@60.32), on the subtitle side (E003 convention), gone 0.55s before "follow" (@62.60)
     overlay: profile-card
     target_duration_sec:
       en-US: 12.95
 
 assets:
   # 8 talking-head clips (HLG HDR, 1920x1080 coded + -90 rotation -> 1080x1920 portrait) and
-  # 5 app screen recordings + 4 feature assets. NO enhanced renders yet; when they land, swap the
-  # VIDEO only, DROP the tone-map, and re-verify frame-sync first (see edit-notes.md).
+  # 5 app screen recordings + 4 feature assets.
+  #
+  # THIS CUT TAKES ITS VIDEO FROM enhanced/ AND ITS AUDIO FROM THE .MOV. The renders are already
+  # SDR bt709, upright 1080x1920, 30fps; do NOT tone-map them. Frame-synced: an 8x8 RMS-envelope
+  # cross-correlation picks each render's own original at corr 1.000 (next-best 0.12-0.38), 0ms lag.
+  #
+  # NOTHING IS CROPPED. The red screen-recording pill is PAINTED OUT at the source; the cards carry
+  # each recording's native aspect. Cropping is what made the cards look "cut" on E004 and E005 v1.
   # Each .MOV carries a second, undecodable 4.0 'apac' spatial audio track — map 0:a:0, never 0:a.
   #
   # PRIVACY: RAW_013 and RAW_015 show a real third party ("Shujin Li / @Rereliii"). screen-chop.sh
@@ -105,19 +111,19 @@ assets:
     - {asset_id: RAW_008, filename: 08_cta.MOV, external_uri: null, sha256: null, notes: "HLG HDR; you don't need this / my name is Rubio / follow, link in the bio (13.57s)"}
     - {asset_id: RAW_011, filename: 11_screen-membership.MP4, external_uri: null, sha256: null, notes: "screen rec 1170x2532 @60fps; profile -> menu -> Membership sheet (3.96s)"}
     - {asset_id: RAW_012, filename: 12_screen-flair.MP4, external_uri: null, sha256: null, notes: "screen rec 884x1920 @60fps; Edit -> flair dropdown -> Verified Boost Riders -> save (13.92s). The save step is cut."}
-    - {asset_id: RAW_013, filename: 13_screen-invite.MP4, external_uri: null, sha256: null, notes: "screen rec 884x1920 @60fps; invite tools -> QR sheet -> Redeemed (9.04s). THIRD-PARTY PII (Shujin Li) redacted at source. Shows a LIVE public invite QR."}
+    - {asset_id: RAW_013, filename: 13_screen-invite.MP4, external_uri: null, sha256: null, notes: "screen rec 884x1920 @60fps; invite tools -> QR sheet -> Redeemed (9.04s). THIRD-PARTY PII (Shujin Li) AND the live invite QR are both blurred at source."}
     - {asset_id: RAW_014, filename: 14_screen-stats.MP4, external_uri: null, sha256: null, notes: "screen rec 884x1920 @60fps; sponsorship -> stats -> prev months -> refresh -> engagement (19.20s). The longest source; four dead waits cut."}
     - {asset_id: RAW_015, filename: 15_screen-perks.MP4, external_uri: null, sha256: null, notes: "screen rec 884x1920 @60fps; chat list -> Messages -> members-only post (9.23s). THIRD-PARTY PII (Shujin Li) redacted at source."}
   # Narration selects = both-edge pause crops, reproduced by footage-process.sh. The OUT point is
   # the end of the last SPEECH RUN + 0.15s, not the last `silence_start` — see edit-notes.md.
   selected:
-    - {asset_id: SEL_001, source_asset_id: RAW_001, in: "00:00:00.000", out: "00:00:10.740", beat: hook}
+    - {asset_id: SEL_001, source_asset_id: RAW_001, in: "00:00:00.000", out: "00:00:11.000", beat: hook}
     - {asset_id: SEL_002, source_asset_id: RAW_002, in: "00:00:00.000", out: "00:00:12.190", beat: layers}
     - {asset_id: SEL_003, source_asset_id: RAW_003, in: "00:00:00.300", out: "00:00:07.310", beat: flair}
     - {asset_id: SEL_004, source_asset_id: RAW_004, in: "00:00:00.000", out: "00:00:06.950", beat: invite}
     - {asset_id: SEL_005, source_asset_id: RAW_005, in: "00:00:00.000", out: "00:00:03.120", beat: stats-intro}
     - {asset_id: SEL_006, source_asset_id: RAW_006, in: "00:00:00.000", out: "00:00:05.560", beat: stats-detail}
-    - {asset_id: SEL_007, source_asset_id: RAW_007, in: "00:00:00.000", out: "00:00:06.260", beat: insider}
+    - {asset_id: SEL_007, source_asset_id: RAW_007, in: "00:00:00.000", out: "00:00:06.500", beat: insider}
     - {asset_id: SEL_008, source_asset_id: RAW_008, in: "00:00:00.000", out: "00:00:12.950", beat: cta}
   voiceover: [] # narration embedded in the talking-head clips
   audio:
@@ -131,6 +137,16 @@ assets:
       external_uri: null
       source: "DECIDE: YouTube SFX Starter Pack — record origin URL"
       license: "DECIDE: confirm commercial-social license per used file before publish"
+  # Face-enhanced renders. VIDEO ONLY — the audio on these is a 44.1kHz re-encode and is unused.
+  enhanced:
+    - {asset_id: ENH_001, filename: enhanced/01_hook.mp4, of_asset_id: RAW_001, external_uri: null, notes: "SDR bt709, 1080x1920, 30fps (11.54s)"}
+    - {asset_id: ENH_002, filename: enhanced/02_layers.mp4, of_asset_id: RAW_002, external_uri: null, notes: "SDR bt709 (12.91s)"}
+    - {asset_id: ENH_003, filename: enhanced/03_flair.mp4, of_asset_id: RAW_003, external_uri: null, notes: "SDR bt709 (7.85s)"}
+    - {asset_id: ENH_004, filename: enhanced/04_invite.mp4, of_asset_id: RAW_004, external_uri: null, notes: "SDR bt709 (7.69s)"}
+    - {asset_id: ENH_005, filename: enhanced/05_stats-intro.mp4, of_asset_id: RAW_005, external_uri: null, notes: "SDR bt709 (4.02s)"}
+    - {asset_id: ENH_006, filename: enhanced/06_stats-detail.mp4, of_asset_id: RAW_006, external_uri: null, notes: "SDR bt709 (5.94s)"}
+    - {asset_id: ENH_007, filename: enhanced/07_insider.mp4, of_asset_id: RAW_007, external_uri: null, notes: "SDR bt709 (7.04s)"}
+    - {asset_id: ENH_008, filename: enhanced/08_cta.mp4, of_asset_id: RAW_008, external_uri: null, notes: "SDR bt709 (13.58s)"}
   # The four-up fan-out. The three icons are transparent PNGs, not screenshots.
   features:
     - {asset_id: FEA_001, filename: _source/features/f1_flair.png, external_uri: null, notes: "1254x1254 transparent; blue verified check"}

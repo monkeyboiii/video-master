@@ -1,21 +1,21 @@
 {
   "durationSec": 6.1,
   "src": "e005/12_flair_cut.mp4",
-  "x": 32,
-  "y": 120,
-  "w": 438,
-  "h": 887,
+  "x": 16,
+  "y": 110,
+  "w": 484,
+  "h": 1051,
   "markers": [
     {
-      "_": "the ENTRY: the 'Edit' button on his profile. NB the ORIGINAL grid read put this on the avatar ~90px lower; 'Edit' sits at source y158-185.",
+      "_": "the ENTRY: the 'Edit' button (source y158-185, NOT the avatar 90px below it)",
       "shape": "rect",
       "enter": "pop",
       "from": 0.55,
       "to": 1.3,
       "x": 0.033,
-      "y": 0.009966,
+      "y": 0.077,
       "w": 0.092,
-      "h": 0.025743
+      "h": 0.024
     },
     {
       "_": "the custom-flair row \u2014 the control the director asked to point out",
@@ -24,21 +24,21 @@
       "from": 4.4,
       "to": 6.1,
       "x": 0.0396,
-      "y": 0.603343,
+      "y": 0.6302,
       "w": 0.9198,
-      "h": 0.053631
+      "h": 0.05
     },
     {
-      "_": "the blue verified badge next to the flair \u2014 the payoff of 'so others know you're verified'",
+      "_": "the blue verified badge next to the flair",
       "shape": "circle",
       "enter": "shrink",
       "shrinkFrom": 3.2,
       "from": 5.3,
       "to": 6.1,
       "x": 0.165158,
-      "y": 0.608939,
+      "y": 0.635417,
       "w": 0.085973,
-      "h": 0.042458
+      "h": 0.039583
     }
   ]
 }

@@ -1,10 +1,10 @@
 {
   "durationSec": 8.35,
   "src": "e005/14_stats_cut.mp4",
-  "x": 32,
-  "y": 120,
-  "w": 438,
-  "h": 887,
+  "x": 16,
+  "y": 110,
+  "w": 484,
+  "h": 1051,
   "markers": [
     {
       "_": "the ENTRY: 'Sponsorships' in the dropdown",
@@ -13,9 +13,9 @@
       "from": 0.2,
       "to": 0.9,
       "x": 0.415,
-      "y": 0.433654,
+      "y": 0.472,
       "w": 0.525,
-      "h": 0.060067
+      "h": 0.056
     },
     {
       "_": "the stat cards \u2014 Views / Clicks / Pauses / Viewing time",
@@ -24,9 +24,9 @@
       "from": 2.1,
       "to": 3.05,
       "x": 0.04,
-      "y": 0.12581,
+      "y": 0.185,
       "w": 0.915,
-      "h": 0.225251
+      "h": 0.21
     },
     {
       "_": "'previous months' \u2014 the prev-month chevron",
@@ -36,9 +36,9 @@
       "from": 3.0,
       "to": 3.55,
       "x": 0.035,
-      "y": 0.056089,
+      "y": 0.12,
       "w": 0.07,
-      "h": 0.055777
+      "h": 0.052
     },
     {
       "_": "'faster updates' \u2014 the green refresh button",
@@ -48,9 +48,9 @@
       "from": 3.6,
       "to": 4.4,
       "x": 0.895928,
-      "y": 0.11676,
+      "y": 0.176563,
       "w": 0.063348,
-      "h": 0.031285
+      "h": 0.029167
     },
     {
       "_": "'who actually engaged with your spot' \u2014 the Who-engaged row",
@@ -59,9 +59,9 @@
       "from": 6.0,
       "to": 8.3,
       "x": 0.03,
-      "y": 0.755441,
+      "y": 0.772,
       "w": 0.92,
-      "h": 0.134078
+      "h": 0.125
     }
   ]
 }

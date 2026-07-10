@@ -203,8 +203,8 @@ export const RemotionRoot: React.FC = () => {
             {
               src: 'e005/f1_flair.png',
               x: 120, y: 300, w: 260, h: 260, atSec: 0,
-              label: 'Custom flair', labelSize: 24, plate: true, platePad: 34,
-              freezeSrc: '', videoSec: 0,
+              label: 'Custom flair', labelSize: 24, plate: true, plateColor: '#FFFFFF',
+              platePad: 34, freezeSrc: '', videoSec: 0,
             },
           ],
         }}

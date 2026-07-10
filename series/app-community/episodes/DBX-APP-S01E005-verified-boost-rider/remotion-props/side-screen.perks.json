@@ -1,22 +1,22 @@
 {
   "durationSec": 5.95,
   "src": "e005/15_perks_cut.mp4",
-  "x": 32,
-  "y": 120,
-  "w": 438,
-  "h": 887,
+  "x": 16,
+  "y": 110,
+  "w": 484,
+  "h": 1051,
   "markers": [
     {
-      "_": "the top-right button on the group chat \u2014 the director asked for this one to be circled",
+      "_": "the top-right button on the group chat \u2014 circled, as the director asked",
       "shape": "circle",
       "enter": "shrink",
       "shrinkFrom": 3.0,
       "from": 0.35,
       "to": 1.45,
       "x": 0.884615,
-      "y": 0.007263,
+      "y": 0.074479,
       "w": 0.076923,
-      "h": 0.037989
+      "h": 0.035417
     },
     {
       "_": "the members-only message, fully loaded",
@@ -25,9 +25,9 @@
       "from": 4.35,
       "to": 5.95,
       "x": 0.03,
-      "y": 0.222346,
+      "y": 0.275,
       "w": 0.925,
-      "h": 0.284246
+      "h": 0.265
     }
   ]
 }
