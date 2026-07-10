@@ -145,6 +145,12 @@ web preview artifact. Compositions in this package set these render defaults via
   a clip that a component consumes, that script must also copy it into `public/`. A manual
   copy is a step you will forget, and the next render silently reuses the previous asset —
   it does not fail. When a re-render "changes nothing", diff the mtimes in `public/` first.
+- **Redact a third party at the SOURCE, before the asset is generated.** A blur applied downstream
+  leaves an un-redacted intermediate somewhere — in `public/`, in a chop, in an export. S01E005's
+  `screen-chop.sh` runs its redaction pre-pass first and chops the redacted file, so no clean frame
+  of the other rider ever exists. Blur, not a black bar: a bar reads as censorship, a blur reads as
+  privacy. And verify the blur is *unrecoverable*: upscale 7x with contrast and unsharp and try to
+  read it. A real Gaussian yields word-shapes and no letters; a mosaic can sometimes be inverted.
 - **A marker's coordinates are a measurement, not a guess.** Overlay a labelled grid on the
   actual clip frame (`drawbox` every 5% + `drawtext`), read the element off it, and convert.
   An eyeballed fraction lands the ring on the wrong row and looks deliberate. Better still, find
@@ -154,6 +160,10 @@ web preview artifact. Compositions in this package set these render defaults via
   small round button on a busy screen, start the circle ~3x oversize and ease it down (0.55s,
   `Easing.out(cubic)`), and hold its fill alpha at 0 until it is nearly landed — otherwise the
   entrance paints a huge orange wash. `SideScreen`'s `enter: "shrink"` does this.
+- **`OffthreadVideo` renders NOTHING past its own end — it does not hold the last frame.** A clip
+  shorter than its time on screen must freeze on an extracted last-frame still (`FeaturePhones`,
+  `FeatureFan`). And a VFR screen recording's container duration lies: S01E005's insider post claims
+  2.10s and its last decodable frame is at 1.50s, with any seek past that yielding nothing.
 - **When a card stretches a video to fill it (`objectFit: fill`), the card's aspect IS the
   contract.** Change the crop, recompute every height. And a crop that trims the sides to force a
   target aspect is a crop the director will notice: trim vertically, then resize the card.

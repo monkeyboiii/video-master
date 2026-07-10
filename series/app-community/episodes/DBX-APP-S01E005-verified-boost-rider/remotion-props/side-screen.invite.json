@@ -1,0 +1,43 @@
+{
+  "durationSec": 6.65,
+  "src": "e005/13_invite_cut.mp4",
+  "x": 32,
+  "y": 120,
+  "w": 438,
+  "h": 887,
+  "markers": [
+    {
+      "_": "the invite tools \u2014 link cards, caps, QR/share/delete",
+      "shape": "rect",
+      "enter": "pop",
+      "from": 2.0,
+      "to": 3.5,
+      "x": 0.025,
+      "y": 0.157989,
+      "w": 0.95,
+      "h": 0.311061
+    },
+    {
+      "_": "his own PUBLIC invite QR ('Instagram people welcome!')",
+      "shape": "rect",
+      "enter": "pop",
+      "from": 3.9,
+      "to": 4.95,
+      "x": 0.2738,
+      "y": 0.64067,
+      "w": 0.4514,
+      "h": 0.203799
+    },
+    {
+      "_": "the Redeemed tab \u2014 who actually accepted. The third-party row is redacted at the source.",
+      "shape": "rect",
+      "enter": "pop",
+      "from": 5.6,
+      "to": 6.65,
+      "x": 0.025,
+      "y": 0.157989,
+      "w": 0.95,
+      "h": 0.450503
+    }
+  ]
+}

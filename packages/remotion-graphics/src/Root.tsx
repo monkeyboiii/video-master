@@ -10,6 +10,8 @@ import {BrandDrop, brandDropSchema} from './components/BrandDrop';
 import type {BrandDropProps} from './components/BrandDrop';
 import {BrandTitle, brandTitleSchema} from './components/BrandTitle';
 import type {BrandTitleProps} from './components/BrandTitle';
+import {FeatureFan, featureFanSchema} from './components/FeatureFan';
+import type {FeatureFanProps} from './components/FeatureFan';
 import {FeaturePhones, featurePhonesSchema} from './components/FeaturePhones';
 import type {FeaturePhonesProps} from './components/FeaturePhones';
 import {HookTitle, hookTitleSchema} from './components/HookTitle';
@@ -182,6 +184,29 @@ export const RemotionRoot: React.FC = () => {
           flySec: 0.8,
           iconHoldSec: 1.8,
           fadeSec: 0.65,
+        }}
+      />
+      <Composition
+        id="feature-fan"
+        component={FeatureFan}
+        schema={featureFanSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(4 * FPS)}
+        calculateMetadata={overlayMetadata<FeatureFanProps>(4)}
+        defaultProps={{
+          durationSec: 4,
+          riseSec: 0.45,
+          risePx: 70,
+          items: [
+            {
+              src: 'e005/f1_flair.png',
+              x: 120, y: 300, w: 260, h: 260, atSec: 0,
+              label: 'Custom flair', labelSize: 24, plate: true, platePad: 34,
+              freezeSrc: '', videoSec: 0,
+            },
+          ],
         }}
       />
       <Composition

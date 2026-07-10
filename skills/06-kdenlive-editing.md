@@ -264,6 +264,13 @@ stack can't deliver):
   frozen; put it on the frame the viewer needs time to *read*, and on the payoff — never on the
   emptiest screen just because it happens to be last. Holding the head of a static screen costs
   nothing and is invisible.
+- **Cue boundaries come from the SRT and get snapped out of pauses; they are not the largest gaps.**
+  Grouping speech runs at their biggest gaps works only when a beat's sentence boundaries are its
+  longest pauses. S01E005's CTA has interior breaths (0.45/0.50/0.51s) as long as its sentence gaps
+  (0.55s), and its transcriber split a sentence mid-phrase so one cue is a *sub-span* of one run —
+  which run-grouping cannot express at all. Take the SRT's own times, snap each boundary clear of
+  every silence, then spread words over each cue's speech time. Keep a fixture test that reproduces
+  the previous episode's known-good grouping before you switch generators.
 - **Swapping in enhanced/regraded renders: prove the sync, don't assume the order.** Cross-correlate
   every render's RMS envelope against *every* original (N x N, not pairwise) — the winner must beat
   the runner-up by a wide margin, or the filenames lied. Then check the lag is 0 and the decoded
@@ -271,6 +278,11 @@ stack can't deliver):
   30fps, so the tone-map and transpose the .MOV needs would have *corrupted* them. Finally, after
   cutting, confirm `-ss` landed on the same frame in both streams (SAD of frame 0 against the
   source at trimIn +/- 2 frames must bottom out at 0).
+- **Measure the safe box over each overlay's OWN window, not over its beat.** A speaker drifts
+  inside a take. On S01E005 he fills the frame at t=1.5s of a beat and not at t=9.0s, so a card
+  sized against the beat's average would have crossed his face for two seconds. And re-derive which
+  side is blank per episode: E005 reversed nothing, but a squished 8-across contact sheet made it
+  *look* reversed, and one wrong glance sent a measurement pass at the wrong half of the frame.
 - **A card that covers an eye covers the face.** "It can seep onto my face" is not "cover it".
   Sweep the whole beat, not one frame: draw the candidate box on 8 frames and look. On E004 the
   binding constraint was one beat's *last* second, and three candidate widths differed by whether

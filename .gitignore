@@ -49,3 +49,11 @@ Thumbs.db
 
 # Zipped render bundles next to out/
 packages/remotion-graphics/out*.zip
+
+# ── Per-episode assets published into Remotion's public/ by screen-chop.sh ──
+# Chopped screen recordings, fan-out assets, freeze stills. All are GENERATED from media/ and are
+# reproducible from tracked sources (rule 1: never commit generated media). They are neither tracked
+# nor previously ignored, which means one `git add -A` would have swept ~5MB of clips per episode
+# into the repo. e002's stills are hand-made source and stay tracked.
+packages/remotion-graphics/public/e0*/
+!packages/remotion-graphics/public/e002/

@@ -1,0 +1,63 @@
+{
+  "durationSec": 4.4,
+  "riseSec": 0.45,
+  "risePx": 70,
+  "items": [
+    {
+      "src": "e005/f1_flair.png",
+      "x": 46,
+      "y": 120,
+      "w": 210,
+      "h": 210,
+      "atSec": 0.0,
+      "label": "Custom flair",
+      "labelSize": 22,
+      "plate": true,
+      "platePad": 32,
+      "freezeSrc": "",
+      "videoSec": 0
+    },
+    {
+      "src": "e005/f3_stats.png",
+      "x": 46,
+      "y": 440,
+      "w": 210,
+      "h": 210,
+      "atSec": 0.92,
+      "label": "Deeper stats",
+      "labelSize": 22,
+      "plate": true,
+      "platePad": 32,
+      "freezeSrc": "",
+      "videoSec": 0
+    },
+    {
+      "src": "e005/f2_invite.png",
+      "x": 46,
+      "y": 760,
+      "w": 210,
+      "h": 210,
+      "atSec": 1.75,
+      "label": "Custom invites",
+      "labelSize": 22,
+      "plate": true,
+      "platePad": 32,
+      "freezeSrc": "",
+      "videoSec": 0
+    },
+    {
+      "src": "e005/f4_insider.mov",
+      "x": 160,
+      "y": 1065,
+      "w": 761,
+      "h": 270,
+      "atSec": 2.6,
+      "label": "",
+      "labelSize": 24,
+      "plate": false,
+      "platePad": 0,
+      "freezeSrc": "e005/f4_insider_freeze.png",
+      "videoSec": 1.5
+    }
+  ]
+}

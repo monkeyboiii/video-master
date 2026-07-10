@@ -1,0 +1,44 @@
+{
+  "durationSec": 3.55,
+  "src": "e005/11_membership_cut.mp4",
+  "x": 32,
+  "y": 120,
+  "w": 344,
+  "h": 712,
+  "markers": [
+    {
+      "_": "the ENTRY: the 'Membership' row in the profile's dropdown menu",
+      "shape": "rect",
+      "enter": "pop",
+      "from": 1.3,
+      "to": 2.1,
+      "x": 0.418,
+      "y": 0.367523,
+      "w": 0.347,
+      "h": 0.043908
+    },
+    {
+      "_": "the verified badge at the top of the Membership sheet \u2014 the 'verified' of the name",
+      "shape": "circle",
+      "enter": "shrink",
+      "shrinkFrom": 3.0,
+      "from": 2.6,
+      "to": 3.55,
+      "x": 0.418803,
+      "y": 0.11602,
+      "w": 0.162393,
+      "h": 0.078448
+    },
+    {
+      "_": "'Become a Member' \u2014 the payoff action. NB the ORIGINAL grid read put this on the Annual pricing ring 270px higher; the solid button is at source y1990-2143.",
+      "shape": "rect",
+      "enter": "pop",
+      "from": 2.85,
+      "to": 3.55,
+      "x": 0.0513,
+      "y": 0.776281,
+      "w": 0.897,
+      "h": 0.06377
+    }
+  ]
+}

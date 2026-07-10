@@ -1,0 +1,160 @@
+# Episode manifest — source of truth for this episode.
+# Schema notes: docs/production-model.md · naming: docs/naming-conventions.md
+# Validate with: node tools/validate.mjs
+
+video_id: "DBX-APP-S01E005" # DBX-{SERIES}-S{ss}E{eee}
+slug: "verified-boost-rider"
+series: "app-community"
+status: editing # topic|packaging|scripting|shooting|editing|qc|published|retro
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+# The Verified Boost Rider membership. Narration was recorded first — there is NO authored reading
+# script; the .srt files in media/DBX-APP-S01E005/_source/srt/ are CANONICAL (the words, the
+# subtitles, the sync source of truth) and script.en-US.md is a readable transcript of them.
+# Director's outline (incl. the [SCREEN: ...] overlay directives): _source/rough.md.
+# Raw ~70.5s; both-edge pause-cropped timeline = 64.78s. Edit plan in storyboard.md.
+#
+# zh-CN is a SIBLING VARIANT, not a translation (docs/localization.md). It is not scripted yet,
+# so it is absent rather than stubbed — the same choice S01E004 made.
+variants:
+  en-US:
+    script: script.en-US.md
+    cover: cover.en-US.md
+    subtitles: subtitles/en-US.srt
+    # No single locale props file: this episode renders per-comp props
+    # (remotion-props/captions.all.json, feature-fan.json, side-screen.*.json, ...).
+    remotion_props: null
+    voiceover_asset_id: null # narration is diegetic in the talking-head clips
+    platforms: [tiktok, ytshorts, reels]
+
+# The `.srt` files in media/DBX-APP-S01E005/_source/srt/ are CANONICAL — the words, the subtitles
+# and the sync source of truth. rough.md records intent; script.en-US.md is a readable transcript.
+# One continuous caption overlay spans the whole video, so each beat's `overlay` below names that
+# beat's *distinctive* overlay. Durations are the pause-cropped cut lengths.
+beats:
+  - id: hook
+    purpose: speak rider, not product — a gear change as a status metaphor
+    visual_intent: founder to camera, mid-push; no overlay. The tier is not named until 9.55s
+    overlay: kinetic-captions
+    target_duration_sec:
+      en-US: 10.74
+  - id: layers
+    purpose: name the tier, then show its four contents
+    visual_intent: brand-drop settles on "DirtBikeX" (@11.78); the membership sheet; then four features fan out, the last one landing on his face as the background blurs
+    overlay: feature-fan
+    target_duration_sec:
+      en-US: 12.19
+  - id: flair
+    purpose: the first perk, and the only one you must be told how to find
+    visual_intent: side-screen — Profile > Edit > custom flair; the save step is cut
+    overlay: side-screen
+    target_duration_sec:
+      en-US: 7.01
+  - id: invite
+    purpose: the perk that grows the place
+    visual_intent: side-screen — invite tools, the QR sheet, who actually accepted
+    overlay: side-screen
+    target_duration_sec:
+      en-US: 6.95
+  - id: stats-intro
+    purpose: hand off to E004's sponsorship buyer
+    visual_intent: side-screen — the sponsorship stats card opens here and survives the next cut
+    overlay: side-screen
+    target_duration_sec:
+      en-US: 3.12
+  - id: stats-detail
+    purpose: prove the upsell is real
+    visual_intent: the same card, still up — previous months, refresh, engagement detail
+    overlay: side-screen
+    target_duration_sec:
+      en-US: 5.56
+  - id: insider
+    purpose: the perk that is really the pitch — proximity to the person building it
+    visual_intent: side-screen — the group chat, a shrinking circle on the top-right button, the members-only message
+    overlay: side-screen
+    target_duration_sec:
+      en-US: 6.26
+  - id: cta
+    purpose: refuse the hard sell, then ask once
+    visual_intent: profile-card enters 0.87s BEFORE "My name is Rubio", on the subtitle side (E003 convention), gone 0.55s before "follow"
+    overlay: profile-card
+    target_duration_sec:
+      en-US: 12.95
+
+assets:
+  # 8 talking-head clips (HLG HDR, 1920x1080 coded + -90 rotation -> 1080x1920 portrait) and
+  # 5 app screen recordings + 4 feature assets. NO enhanced renders yet; when they land, swap the
+  # VIDEO only, DROP the tone-map, and re-verify frame-sync first (see edit-notes.md).
+  # Each .MOV carries a second, undecodable 4.0 'apac' spatial audio track — map 0:a:0, never 0:a.
+  #
+  # PRIVACY: RAW_013 and RAW_015 show a real third party ("Shujin Li / @Rereliii"). screen-chop.sh
+  # blurs them at the SOURCE before chopping, so no un-redacted frame reaches public/ or an export.
+  raw:
+    - {asset_id: RAW_001, filename: 01_hook.MOV, external_uri: null, sha256: null, notes: "HLG HDR; bike screaming / kick it up a notch / Verified Boost Rider (11.53s)"}
+    - {asset_id: RAW_002, filename: 02_layers.MOV, external_uri: null, sha256: null, notes: "HLG HDR; the next layer — flair, stats, custom invites, insider hacks (12.90s)"}
+    - {asset_id: RAW_003, filename: 03_flair.MOV, external_uri: null, sha256: null, notes: "HLG HDR; Profile Edit, custom flair (7.85s); opens with 0.40s of silence"}
+    - {asset_id: RAW_004, filename: 04_invite.MOV, external_uri: null, sha256: null, notes: "HLG HDR; invite tools, custom invite code, who accepted (7.67s)"}
+    - {asset_id: RAW_005, filename: 05_stats-intro.MOV, external_uri: null, sha256: null, notes: "HLG HDR; if you hold a sponsorship pass, deeper stats (4.00s) — the shortest beat"}
+    - {asset_id: RAW_006, filename: 06_stats-detail.MOV, external_uri: null, sha256: null, notes: "HLG HDR; previous months, faster updates, who engaged (5.95s)"}
+    - {asset_id: RAW_007, filename: 07_insider.MOV, external_uri: null, sha256: null, notes: "HLG HDR; special group chat, early updates, features tested first (7.03s)"}
+    - {asset_id: RAW_008, filename: 08_cta.MOV, external_uri: null, sha256: null, notes: "HLG HDR; you don't need this / my name is Rubio / follow, link in the bio (13.57s)"}
+    - {asset_id: RAW_011, filename: 11_screen-membership.MP4, external_uri: null, sha256: null, notes: "screen rec 1170x2532 @60fps; profile -> menu -> Membership sheet (3.96s)"}
+    - {asset_id: RAW_012, filename: 12_screen-flair.MP4, external_uri: null, sha256: null, notes: "screen rec 884x1920 @60fps; Edit -> flair dropdown -> Verified Boost Riders -> save (13.92s). The save step is cut."}
+    - {asset_id: RAW_013, filename: 13_screen-invite.MP4, external_uri: null, sha256: null, notes: "screen rec 884x1920 @60fps; invite tools -> QR sheet -> Redeemed (9.04s). THIRD-PARTY PII (Shujin Li) redacted at source. Shows a LIVE public invite QR."}
+    - {asset_id: RAW_014, filename: 14_screen-stats.MP4, external_uri: null, sha256: null, notes: "screen rec 884x1920 @60fps; sponsorship -> stats -> prev months -> refresh -> engagement (19.20s). The longest source; four dead waits cut."}
+    - {asset_id: RAW_015, filename: 15_screen-perks.MP4, external_uri: null, sha256: null, notes: "screen rec 884x1920 @60fps; chat list -> Messages -> members-only post (9.23s). THIRD-PARTY PII (Shujin Li) redacted at source."}
+  # Narration selects = both-edge pause crops, reproduced by footage-process.sh. The OUT point is
+  # the end of the last SPEECH RUN + 0.15s, not the last `silence_start` — see edit-notes.md.
+  selected:
+    - {asset_id: SEL_001, source_asset_id: RAW_001, in: "00:00:00.000", out: "00:00:10.740", beat: hook}
+    - {asset_id: SEL_002, source_asset_id: RAW_002, in: "00:00:00.000", out: "00:00:12.190", beat: layers}
+    - {asset_id: SEL_003, source_asset_id: RAW_003, in: "00:00:00.300", out: "00:00:07.310", beat: flair}
+    - {asset_id: SEL_004, source_asset_id: RAW_004, in: "00:00:00.000", out: "00:00:06.950", beat: invite}
+    - {asset_id: SEL_005, source_asset_id: RAW_005, in: "00:00:00.000", out: "00:00:03.120", beat: stats-intro}
+    - {asset_id: SEL_006, source_asset_id: RAW_006, in: "00:00:00.000", out: "00:00:05.560", beat: stats-detail}
+    - {asset_id: SEL_007, source_asset_id: RAW_007, in: "00:00:00.000", out: "00:00:06.260", beat: insider}
+    - {asset_id: SEL_008, source_asset_id: RAW_008, in: "00:00:00.000", out: "00:00:12.950", beat: cta}
+  voiceover: [] # narration embedded in the talking-head clips
+  audio:
+    - asset_id: MUS_001
+      filename: bgm-vampire-heart.mp3
+      external_uri: null
+      source: "DECIDE: record library/vendor + track URL"
+      license: "DECIDE: confirm cleared for commercial social use before publish"
+    - asset_id: SFX_PACK_001
+      filename: sfx/ # hit-1, simple-whoosh-1, simple-whoosh-2, shutter
+      external_uri: null
+      source: "DECIDE: YouTube SFX Starter Pack — record origin URL"
+      license: "DECIDE: confirm commercial-social license per used file before publish"
+  # The four-up fan-out. The three icons are transparent PNGs, not screenshots.
+  features:
+    - {asset_id: FEA_001, filename: _source/features/f1_flair.png, external_uri: null, notes: "1254x1254 transparent; blue verified check"}
+    - {asset_id: FEA_002, filename: _source/features/f2_invite.png, external_uri: null, notes: "1254x1254 transparent; blue ticket + plus"}
+    - {asset_id: FEA_003, filename: _source/features/f3_stats.png, external_uri: null, notes: "1254x1254 transparent; blue rising bar chart"}
+    - {asset_id: FEA_004, filename: _source/features/f4_insider.mov, external_uri: null, notes: "1702x604 VFR; a @teamdirtbikex post whose body the app blurs for non-members. Container says 2.10s; last decodable frame is 1.50s. FeatureFan freezes it on a last-frame still."}
+outputs:
+  # ProRes 4444 alpha overlays in media/DBX-APP-S01E005/overlays/
+  overlays:
+    en-US:
+      - DBX-APP-S01E005_en-US_9x16_kinetic-captions_v001.mov
+      - DBX-APP-S01E005_en-US_9x16_brand-drop_v001.mov
+      - DBX-APP-S01E005_en-US_9x16_side-screen-membership_v001.mov
+      - DBX-APP-S01E005_en-US_9x16_feature-fan_v001.mov
+      - DBX-APP-S01E005_en-US_9x16_side-screen-flair_v001.mov
+      - DBX-APP-S01E005_en-US_9x16_side-screen-invite_v001.mov
+      - DBX-APP-S01E005_en-US_9x16_side-screen-stats_v001.mov
+      - DBX-APP-S01E005_en-US_9x16_side-screen-perks_v001.mov
+      - DBX-APP-S01E005_en-US_9x16_profile-card_v001.mov
+  covers: {}
+  kdenlive:
+    en-US: media/DBX-APP-S01E005/verified-boost-rider.kdenlive
+  # Rough-cut flatten for review; final renders on the Mac from the .kdenlive.
+  exports:
+    en-US:
+      - DBX-APP-S01E005_en-US_tiktok_9x16_v001_review.mp4
+  published: {}
