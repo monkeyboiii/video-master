@@ -37,15 +37,16 @@ NICE="nice -n 15"
 
 # beat:audioSrc:trimIn:cutOut   -> trimmed length = cutOut - trimIn
 #
-# The 1->2 and 7->8 cuts were too tight (0.19s and 0.27s of air). Their out-points are relaxed by
-# ~0.25s each, giving 0.45s and 0.51s — a breath, not a gap. Both clips have ~0.95s of trailing
-# silence to spend, so nothing is truncated; `speech-check.py` still gates that.
+# Three cuts were too tight: 1->2 (0.19s of air), 5->6 (0.31s) and 7->8 (0.27s). The pulse never
+# landed. Their out-points are relaxed to 11.00 / 3.30 / 6.50, giving 0.45s, 0.49s and 0.51s — a
+# breath, not a gap. Each clip has 0.9-1.0s of trailing silence to spend, so nothing is truncated;
+# `speech-check.py` still gates that.
 CLIPS=(
   "01_hook:01_hook.MOV:0:11.00"
   "02_layers:02_layers.MOV:0:12.19"
   "03_flair:03_flair.MOV:0.30:7.31"
   "04_invite:04_invite.MOV:0:6.95"
-  "05_stats-intro:05_stats-intro.MOV:0:3.12"
+  "05_stats-intro:05_stats-intro.MOV:0:3.30"
   "06_stats-detail:06_stats-detail.MOV:0:5.56"
   "07_insider:07_insider.MOV:0:6.50"
   "08_cta:08_cta.MOV:0:12.95"

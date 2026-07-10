@@ -17,7 +17,7 @@ formats:
 # script; the .srt files in media/DBX-APP-S01E005/_source/srt/ are CANONICAL (the words, the
 # subtitles, the sync source of truth) and script.en-US.md is a readable transcript of them.
 # Director's outline (incl. the [SCREEN: ...] overlay directives): _source/rough.md.
-# Raw ~70.5s; both-edge pause-cropped timeline = 65.28s. Edit plan in storyboard.md.
+# Raw ~70.5s; both-edge pause-cropped timeline = 65.46s. Edit plan in storyboard.md.
 #
 # zh-CN is a SIBLING VARIANT, not a translation (docs/localization.md). It is not scripted yet,
 # so it is absent rather than stubbed — the same choice S01E004 made.
@@ -66,7 +66,7 @@ beats:
     visual_intent: side-screen — the sponsorship stats card opens here and survives the next cut
     overlay: side-screen
     target_duration_sec:
-      en-US: 3.12
+      en-US: 3.30
   - id: stats-detail
     purpose: prove the upsell is real
     visual_intent: the same card, still up — previous months, refresh, engagement detail
@@ -81,7 +81,7 @@ beats:
       en-US: 6.50
   - id: cta
     purpose: refuse the hard sell, then ask once
-    visual_intent: profile-card enters 0.87s BEFORE "My name is Rubio" (@60.32), on the subtitle side (E003 convention), gone 0.55s before "follow" (@62.60)
+    visual_intent: profile-card enters 0.87s BEFORE "My name is Rubio" (@60.50), on the subtitle side (E003 convention), gone 0.55s before "follow" (@62.78)
     overlay: profile-card
     target_duration_sec:
       en-US: 12.95
@@ -121,7 +121,7 @@ assets:
     - {asset_id: SEL_002, source_asset_id: RAW_002, in: "00:00:00.000", out: "00:00:12.190", beat: layers}
     - {asset_id: SEL_003, source_asset_id: RAW_003, in: "00:00:00.300", out: "00:00:07.310", beat: flair}
     - {asset_id: SEL_004, source_asset_id: RAW_004, in: "00:00:00.000", out: "00:00:06.950", beat: invite}
-    - {asset_id: SEL_005, source_asset_id: RAW_005, in: "00:00:00.000", out: "00:00:03.120", beat: stats-intro}
+    - {asset_id: SEL_005, source_asset_id: RAW_005, in: "00:00:00.000", out: "00:00:03.300", beat: stats-intro}
     - {asset_id: SEL_006, source_asset_id: RAW_006, in: "00:00:00.000", out: "00:00:05.560", beat: stats-detail}
     - {asset_id: SEL_007, source_asset_id: RAW_007, in: "00:00:00.000", out: "00:00:06.500", beat: insider}
     - {asset_id: SEL_008, source_asset_id: RAW_008, in: "00:00:00.000", out: "00:00:12.950", beat: cta}

@@ -65,27 +65,27 @@ const BEATS = [
    runs: [[0.170, 2.810], [3.370, 4.460], [5.040, 6.800]],
    brand: ['invite', 'code', 'accepted'], harsh: []},
 
-  {f: '05_stats-intro.srt', start: 37.15, trimIn: 0, dur: 3.12,
+  {f: '05_stats-intro.srt', start: 37.15, trimIn: 0, dur: 3.30,
    runs: [[0.190, 1.720], [2.100, 2.970]],
    brand: ['pass', 'deeper', 'stats'], harsh: []},
 
-  {f: '06_stats-detail.srt', start: 40.27, trimIn: 0, dur: 5.56,
+  {f: '06_stats-detail.srt', start: 40.45, trimIn: 0, dur: 5.56,
    runs: [[0.160, 0.830], [1.290, 2.070], [2.560, 5.410]],
    brand: ['months', 'updates', 'engaged'], harsh: []},
 
-  {f: '07_insider.srt', start: 45.83, trimIn: 0, dur: 6.50,
+  {f: '07_insider.srt', start: 46.01, trimIn: 0, dur: 6.50,
    runs: [[0.220, 2.160], [2.650, 3.150], [3.680, 5.670], [6.000, 6.110]],
    brand: ['chat', 'early', 'first'], harsh: []},
 
   // the transcriber split the last sentence mid-phrase ("...my link in" / "the bio."), so cue 4 is
   // a sub-span of one run. Largest-gap grouping cannot express that; boundary snapping can.
-  {f: '08_cta.srt', start: 52.33, trimIn: 0, dur: 12.95,
+  {f: '08_cta.srt', start: 52.51, trimIn: 0, dur: 12.95,
    runs: [[0.120, 0.480], [0.930, 2.610], [3.160, 4.860], [5.360, 7.170], [7.990, 10.350],
           [10.860, 12.800]],
    brand: ['rubio', 'follow', 'link', 'bio'], harsh: []},
 ];
 
-const TOTAL = +BEATS.reduce((a, b) => a + b.dur, 0).toFixed(2); // 65.28
+const TOTAL = +BEATS.reduce((a, b) => a + b.dur, 0).toFixed(2); // 65.46
 
 /** For matching against the brand/harsh lists. */
 const norm = (w) => w.replace(/^[*_"“”'']+|[*_"“”''.,!?;:]+$/g, '').toLowerCase();

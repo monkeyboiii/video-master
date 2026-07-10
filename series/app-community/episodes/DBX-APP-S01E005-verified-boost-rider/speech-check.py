@@ -19,7 +19,7 @@ GATE_DB, MIN_SIL, MIN_RUN, TAIL = -32.0, 0.30, 0.10, 0.15
 CLIPS = [
     ("01_hook", "01_hook.MOV", 0.0, 11.00), ("02_layers", "02_layers.MOV", 0.0, 12.19),
     ("03_flair", "03_flair.MOV", 0.30, 7.31), ("04_invite", "04_invite.MOV", 0.0, 6.95),
-    ("05_stats-intro", "05_stats-intro.MOV", 0.0, 3.12),
+    ("05_stats-intro", "05_stats-intro.MOV", 0.0, 3.30),
     ("06_stats-detail", "06_stats-detail.MOV", 0.0, 5.56),
     ("07_insider", "07_insider.MOV", 0.0, 6.50), ("08_cta", "08_cta.MOV", 0.0, 12.95),
 ]

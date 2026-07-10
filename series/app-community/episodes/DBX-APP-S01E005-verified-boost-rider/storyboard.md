@@ -13,12 +13,12 @@
 |---|---|
 | Canvas | 1080×1920, 30 fps, vertical |
 | Source | 8 talking-head clips, **HLG HDR** (iPhone, 1920×1080 coded + `-90` rotation → portrait) |
-| Raw length | 70.5s → **65.28s** after both-edge pause crops |
+| Raw length | 70.5s → **65.46s** after both-edge pause crops |
 | **Video** | The director's **enhanced renders** (`enhanced/`), already SDR bt709 / upright / 30fps. Do NOT tone-map them. |
 | **Audio** | Original `.MOV`, stream `0:1` (the 4.0 `apac` spatial track has no decoder). Frame-synced to the renders at 0 ms. |
 | **Transitions** | **Hard cuts only** between shots. Overlays are the exception: they *ease* in. |
 | **Motion** | Punch-in / pull-out only (Transform keyframes, not baked). |
-| **Captions** | One continuous `kinetic-captions` track, 0→65.28s, word-anchored to **real speech runs**, cue boundaries snapped out of pauses (see `caption-map.mjs`). |
+| **Captions** | One continuous `kinetic-captions` track, 0→65.46s, word-anchored to **real speech runs**, cue boundaries snapped out of pauses (see `caption-map.mjs`). |
 | **Music** | `bgm-vampire-heart.mp3` from 0.00s, flat ~10% under the VO. No ducking. |
 
 ## The framing, and why nothing is cropped
@@ -88,7 +88,7 @@ when the recording comes in, blur background"*.
 | 1 | `f1_flair.png` | 147,150 · 215² | 19.26 | "the **flair**," | Custom flair |
 | 2 | `f3_stats.png` | 432,150 · 215² | 20.18 | "the **stats**," | Deeper stats |
 | 3 | `f2_invite.png` | 717,150 · 215² | 21.26 | "the custom **invites**," | Custom invites |
-| 4 | `f4_insider.mov` | 160,1065 · 761×270 | 21.86 | the clause "and the insider hacks" | *(none — see below)* |
+| 4 | `f4_insider.mov` | **160,760** · 761×270 | 21.86 | the clause "and the insider hacks" | *(none — see below)* |
 
 He points **top-left → top-middle → top-right**, so the icons lay out horizontally across the top.
 
@@ -133,49 +133,49 @@ word. That is the trade; it is recorded in `edit-notes.md` DECIDE.
 - **[CAP]** "invite" / "code," / "accepted." brand.
 - *Purpose:* the perk that grows the place. It is also the only beat carrying a credential on screen.
 
-### 5 · STATS-INTRO — `05_stats-intro` · 37.15–40.27
+### 5 · STATS-INTRO — `05_stats-intro` · 37.15–40.45
 
 > "And if you hold a sponsorship **pass**, you get **deeper stats**."
 
-- **[UI]** `side-screen-stats` @37.31 — one card, spanning **into the next beat**.
+- **[UI]** `side-screen-stats` @37.49 — one card, spanning **into the next beat**.
 - **[CAP]** "pass," / "deeper" / "stats." brand.
 - *Purpose:* the handoff to E004's buyer. The shortest beat in the series.
 
-### 6 · STATS-DETAIL — `06_stats-detail` · 40.27–45.83
+### 6 · STATS-DETAIL — `06_stats-detail` · 40.45–46.01
 
 > "Previous **months**, faster **updates**, and more insight into who actually **engaged** with your
 > spot."
 
-- **[UI]** the same card, still up, to 45.66. `[SCREEN: sponsorship open → stats → previous months →
+- **[UI]** the same card, still up, to 45.84. `[SCREEN: sponsorship open → stats → previous months →
   refresh → engagement detail]` — five states, each on the word that names it: the Sponsorships
   portal, the stat cards, the prev-month chevron, a shrinking circle on the green refresh, and the
   "Who engaged" row.
-- **[SFX]** `shutter` @37.31 (the card, one beat earlier).
+- **[SFX]** `shutter` @37.49 (the card, one beat earlier).
 - **[CAP]** "months," / "updates," / "engaged" brand.
 - *Purpose:* prove the upsell is real. The one card that survives a hard cut.
 
-### 7 · INSIDER — `07_insider` · 45.83–52.33
+### 7 · INSIDER — `07_insider` · 46.01–52.51
 
 > "Boost Rider also get a special group **chat**, **early** updates, and features I'm testing with the
 > community **first**."
 
-- **[UI]** `side-screen-perks` @46.01–51.96 — `[SCREEN: group chat → message through top right
+- **[UI]** `side-screen-perks` @46.19–52.14 — `[SCREEN: group chat → message through top right
   button, circle it, load message]`. A **shrinking circle** on the top-right button, as asked. The
   chat list's third-party row is redacted at the source.
-- **[SFX]** `shutter` @46.01.
+- **[SFX]** `shutter` @46.19.
 - **[CAP]** "chat," / "early" / "first." brand.
 - *Purpose:* the perk that is really the pitch — proximity to the person building it.
 
-### 8 · CTA — `08_cta` · 52.33–65.28
+### 8 · CTA — `08_cta` · 52.51–65.46
 
 > "So no, you don't need this to enjoy the community, but if you want to be part of what I'm
 > building, / I can guarantee you this will help shape it. / My name is **Rubio**, and if you want to
 > become one, **follow** and go check out my **link** in the **bio**."
 
-- **[UI]** `profile-card` @59.45–62.05, on track **V5, above the captions** (E003's z-order), on the
-  **subtitle side**. It enters 0.87s *before* "My" (@60.32) and clears 0.55s before the CTA verb
-  "follow" (@62.60).
-- **[SFX]** `hit-1` @59.45 (card) · soft `simple-whoosh-1` on "follow" (@62.60).
+- **[UI]** `profile-card` @59.63–62.23, on track **V5, above the captions** (E003's z-order), on the
+  **subtitle side**. It enters 0.87s *before* "My" (@60.50) and clears 0.55s before the CTA verb
+  "follow" (@62.78).
+- **[SFX]** `hit-1` @59.63 (card) · soft `simple-whoosh-1` on "follow" (@62.78).
 - **[CAP]** "Rubio," / "follow" / "link" / "bio." brand.
 - *Purpose:* refuse the hard sell, then ask once. **No "BOOST" anywhere** — `rough.md` drafted a
   comment CTA, the take says "link in the bio", and the SRT is canonical.
@@ -207,8 +207,8 @@ Short, recognizable, low-impact — punctuation, not carpet.
 | Each screen card enters | `shutter.mp3` |
 | Each fan icon (19.26 / 20.18 / 21.26) | `shutter.mp3`, quieter |
 | The insider post (@21.86) | `hit-1.mp3` |
-| profile-card (@59.45) | `hit-1.mp3` |
-| "follow" (@62.60) | `simple-whoosh-1.wav` |
+| profile-card (@59.63) | `hit-1.mp3` |
+| "follow" (@62.78) | `simple-whoosh-1.wav` |
 
 ## DECIDE (human)
 

@@ -15,8 +15,8 @@ Skills followed: `skills/04-storyboard.md`, `skills/05-remotion-graphics.md`,
 | V1 | `footage/NN_*_sdr.mp4` — the ENHANCED video + the original `.MOV` narration |
 | V2 · Overlays | `side-screen-membership` @15.26 (centred) · `feature-fan` @19.26 · four more cards |
 | V3 · Brand | `brand-drop` @11.49 — its own track: it overlaps the membership card in time |
-| V4 · Captions | `kinetic-captions` — one clip, 0→65.28s |
-| V5 · CardOnTop | `profile-card` @59.45 — **above** the captions, as in E003/E004 |
+| V4 · Captions | `kinetic-captions` — one clip, 0→65.46s |
+| V5 · CardOnTop | `profile-card` @59.63 — **above** the captions, as in E003/E004 |
 | A1 · Music | `bgm-vampire-heart.mp3` from 0.00s, full length, flat ~10% under the VO |
 | A2 · SFX | see map below |
 
@@ -51,10 +51,15 @@ Each `.MOV` carries a second, undecodable 4.0 `apac` spatial audio track. `-map 
 Trailing cut = **end of the last speech run** + 0.15s. Head trim only where the clip opens with
 >0.25s of silence (`03_flair` only).
 
-**Two cuts were too aggressive and are relaxed.** `01_hook`→`02_layers` had 0.19s of air and
-`07_insider`→`08_cta` had 0.27s: the pulse never landed. Their out-points get ~0.25s more (11.00 and
-6.50), giving **0.45s and 0.51s** of room tone across the cut — a breath, not a gap. Both takes have
-~0.95s of trailing silence to spend, so nothing is truncated; `speech-check.py` still gates it.
+**Three cuts were too aggressive and are relaxed.** `01_hook`→`02_layers` had 0.19s of air,
+`05_stats-intro`→`06_stats-detail` 0.31s and `07_insider`→`08_cta` 0.27s: the pulse never landed.
+Their out-points become **11.00 / 3.30 / 6.50**, giving **0.45s, 0.49s and 0.51s** of room tone
+across the cut — a breath, not a gap. Each take has 0.9–1.0s of trailing silence to spend, so
+nothing is truncated; `speech-check.py` still gates it.
+
+> Relaxing `05_stats-intro` moves beat 6's words +0.18s, and the **stats card spans that cut**. Its
+> start moves with them (37.31 → 37.49), not with beat 5's start, or its five states drift off the
+> words they were cut to land on.
 
 > **Not "last `silence_start` + 0.15s".** `silencedetect` only reports a silence at least `d` long,
 > so a take that ends with less than `d` of silence reports none and its last `silence_start` is an
@@ -68,12 +73,12 @@ Trailing cut = **end of the last speech run** + 0.15s. Head trim only where the 
 | layers | 0 → 12.19 | 11.00 | 12.19 |
 | flair | 0.30 → 7.31 | 23.19 | 7.01 |
 | invite | 0 → 6.95 | 30.20 | 6.95 |
-| stats-intro | 0 → 3.12 | 37.15 | 3.12 |
-| stats-detail | 0 → 5.56 | 40.27 | 5.56 |
-| insider | 0 → **6.50** | 45.83 | 6.50 |
-| cta | 0 → 12.95 | 52.33 | 12.95 |
+| stats-intro | 0 → **3.30** | 37.15 | 3.30 |
+| stats-detail | 0 → 5.56 | 40.45 | 5.56 |
+| insider | 0 → **6.50** | 46.01 | 6.50 |
+| cta | 0 → 12.95 | 52.51 | 12.95 |
 
-Total **65.28s**. Keep this table, `footage-process.sh`, `speech-check.py` and `caption-map.mjs`'s
+Total **65.46s**. Keep this table, `footage-process.sh`, `speech-check.py` and `caption-map.mjs`'s
 `BEATS` in lockstep — four copies of the same numbers, and `caption-map.mjs` throws if the starts
 don't chain or a beat's `dur` cuts its own last speech run.
 
@@ -95,7 +100,7 @@ inside a run stays (a real mid-run split). Words then spread over each cue's *sp
 `01_hook.srt` marks the product name with `*asterisks*`. Those are an emphasis cue, not caption text
 — stripped from the display token, used only to confirm the brand tag.
 
-212 words, 65.28s, 13 SRT cues. Never hand-edit `captions.all.json` or `subtitles/en-US.srt`.
+212 words, 65.46s, 13 SRT cues. Never hand-edit `captions.all.json` or `subtitles/en-US.srt`.
 
 ## The overlay conventions
 
@@ -158,7 +163,7 @@ the top**, not stacked down the column.
 | 1 | `f1_flair.png` | 147,150 · 215² | 19.26 | "the **flair**," |
 | 2 | `f3_stats.png` | 432,150 · 215² | 20.18 | "the **stats**," |
 | 3 | `f2_invite.png` | 717,150 · 215² | 21.26 | "the custom **invites**," |
-| 4 | `f4_insider.mov` | 160,1065 · 761×270 | 21.86 | the clause "and the insider hacks" |
+| 4 | `f4_insider.mov` | **160,760** · 761×270 | 21.86 | the clause "and the insider hacks" |
 
 The three icons are flat blue transparent PNGs on **white plates** with the orange brand border, and
 they are **not recoloured** — a blue verified check is a universally-read symbol and retinting costs
@@ -206,25 +211,25 @@ V1 clip3 · **`side-screen-invite` 30.36–37.01** (6.65s). The nav popover → 
 → the QR sheet (marker) → the Redeemed tab (marker). **One cut**: a 1.2s backtrack to a Pending list
 already shown. SFX `shutter` @30.36.
 
-### stats-intro + stats-detail · 37.15–45.83
-V1 clips 4+5 · **`side-screen-stats` 37.31–45.66** (8.35s) — the one card that stays up across a
-hard cut (40.27). Five states, each on its word: the Sponsorships portal (marker, "sponsorship"
-38.43), the stat cards (marker, "stats." 39.90), the prev-month chevron (40.74), a shrinking circle
-on the green refresh (41.81), the "Who engaged" row (marker, "engaged" 44.45). **Four cuts, every
+### stats-intro + stats-detail · 37.15–46.01
+V1 clips 4+5 · **`side-screen-stats` 37.49–45.84** (8.35s) — the one card that stays up across a
+hard cut (40.45). Five states, each on its word: the Sponsorships portal (marker, "sponsorship"
+38.43), the stat cards (marker, "stats." 39.90), the prev-month chevron (40.92), a shrinking circle
+on the green refresh (41.99), the "Who engaged" row (marker, "engaged" 44.63). **Four cuts, every
 one a measured dead wait** (a loading view, 3.5s of idle, 1.75s of idle, a dwelling tooltip). The
-counters step forward across them (Views 60 → 61); never backwards. SFX `shutter` @37.31.
+counters step forward across them (Views 60 → 61); never backwards. SFX `shutter` @37.49.
 
-### insider · 45.83–52.33
-V1 clip6 · **`side-screen-perks` 46.01–51.96** (5.95s). The Chat list — the "group chat" — with a
+### insider · 46.01–52.51
+V1 clip6 · **`side-screen-perks` 46.19–52.14** (5.95s). The Chat list — the "group chat" — with a
 **shrinking circle on the top-right button**, as asked; then Personal Messages, then the message
 opens and loads, then the members-only post. **Two cuts**: 1.8s of idle profile, and 1.3s of
-"Loading topic…" skeleton. SFX `shutter` @46.01. The out-point is 6.50, not 6.26: the cut into the CTA had no pulse.
+"Loading topic…" skeleton. SFX `shutter` @46.19. The out-point is 6.50, not 6.26: the cut into the CTA had no pulse.
 
-### cta · 52.33–65.28
-V1 clip7 · **`profile-card` 59.45–62.05** on track **V5, above the captions** — E003's z-order,
+### cta · 52.51–65.46
+V1 clip7 · **`profile-card` 59.63–62.23** on track **V5, above the captions** — E003's z-order,
 which is what lets it sit on the subtitle side (`bottomInset` 190) rather than over his face. It
-enters **0.87s before "My"** (@60.32) and is gone **0.55s before the CTA verb "follow"** (@62.60).
-SFX `hit-1` @59.45 · `simple-whoosh-1` @62.60.
+enters **0.87s before "My"** (@60.50) and is gone **0.55s before the CTA verb "follow"** (@62.78).
+SFX `hit-1` @59.63 · `simple-whoosh-1` @62.78.
 **No "BOOST" anywhere.** `rough.md` drafted a comment CTA; the take says "link in the bio", and the
 SRT is canonical.
 
@@ -281,7 +286,7 @@ re-render a silent no-op rather than a failure.
 
 ## Preview
 Rough-cut flatten (no zooms):
-`media/DBX-APP-S01E005/exports/DBX-APP-S01E005_en-US_tiktok_9x16_v001_review.mp4` — 65.33s.
+`media/DBX-APP-S01E005/exports/DBX-APP-S01E005_en-US_tiktok_9x16_v001_review.mp4` — 65.49s.
 Review only — the final render happens on the Mac from `verified-boost-rider.kdenlive`.
 
 ## Retention checklist (fill after final cut)
