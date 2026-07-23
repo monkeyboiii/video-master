@@ -1,0 +1,120 @@
+# Episode manifest — source of truth for this episode.
+# Schema notes: docs/production-model.md · naming: docs/naming-conventions.md
+# Validate with: node tools/validate.mjs
+
+video_id: "DBX-APP-S02E001"
+slug: "synced-app-flavor"
+series: "app-community"
+status: qc
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 60
+
+variants:
+  en-US:
+    script: script.en-US.md
+    cover: cover.en-US.md
+    subtitles: subtitles/en-US.srt
+    remotion_props: null
+    voiceover_asset_id: null # music-synced montage; no spoken VO
+    platforms: [tiktok, ytshorts, reels]
+
+beats:
+  - id: hook-x-callouts
+    purpose: first-frame retention; point the viewer at the DirtBikeX mark immediately
+    visual_intent: first hard-cut still sequence; three balanced orange X callouts scale up dramatically on the fingertip, then balanced DirtBikeX wordmark lands on the fourth pointing still and clears before the next scene
+    overlay: null
+    target_duration_sec:
+      en-US: 2.767
+  - id: gear-up
+    purpose: music-synced identity build before the app/community proof
+    visual_intent: helmet and riding-gear transition run; no added text so the music cut breathes
+    overlay: null
+    target_duration_sec:
+      en-US: 7.783
+  - id: first-walk-feature
+    purpose: show the practical app promise while the rider walks through frame
+    visual_intent: reuse S01E002 combined 21-languages / post-once feature overlay, cropped to the hard cut
+    overlay: null
+    target_duration_sec:
+      en-US: 3.483
+  - id: second-walk-logo
+    purpose: brand lock-in on the second walking section without the removed poster card
+    visual_intent: balanced DirtBikeX SVG wordmark floats above the helmet/head with separate close/wide placements across the 15.400s zoom-state cut
+    overlay: null
+    target_duration_sec:
+      en-US: 2.850
+  - id: rubio-profile
+    purpose: connect the suited rider to Rubio/founder identity on the arms-crossed pose
+    visual_intent: copied S01E002 profile-card overlay stays solid on the arms-crossed beat, then fades only during the 18.800-19.200 transition blur
+    overlay: null
+    target_duration_sec:
+      en-US: 2.317
+  - id: app-icon-point
+    purpose: close on the app logo as the rider points up, then cut before blackout
+    visual_intent: balanced rounded/shadowed iOS-style AppIcon card uses a fixed-position fade-in lower near the pointing hand; export trims at first black frame
+    overlay: null
+    target_duration_sec:
+      en-US: 3.350
+
+assets:
+  raw:
+    - asset_id: RAW_001
+      filename: 01_synced.MP4
+      external_uri: null
+      sha256: null
+      notes: "Mature 60fps HLG/Dolby Vision music-synced source; copied to media/DBX-APP-S02E001/footage/."
+  selected:
+    - {asset_id: SEL_001, source_asset_id: RAW_001, in: "00:00:00.000", out: "00:00:02.767", beat: hook-x-callouts}
+    - {asset_id: SEL_002, source_asset_id: RAW_001, in: "00:00:02.767", out: "00:00:10.550", beat: gear-up}
+    - {asset_id: SEL_003, source_asset_id: RAW_001, in: "00:00:10.550", out: "00:00:14.033", beat: first-walk-feature}
+    - {asset_id: SEL_004, source_asset_id: RAW_001, in: "00:00:14.033", out: "00:00:16.883", beat: second-walk-logo}
+    - {asset_id: SEL_005, source_asset_id: RAW_001, in: "00:00:16.883", out: "00:00:19.200", beat: rubio-profile}
+    - {asset_id: SEL_006, source_asset_id: RAW_001, in: "00:00:19.200", out: "00:00:22.550", beat: app-icon-point}
+  voiceover: []
+  audio:
+    - asset_id: MUS_001
+      filename: embedded-in-01_synced.MP4
+      external_uri: null
+      source: "Already synced into RAW_001 before this touch-up pass"
+      license: "DECIDE: confirm background music is cleared for commercial social use before final publish"
+  static:
+    - asset_id: GFX_001
+      filename: DirtBikeX.svg
+      notes: "Provided wordmark; copied to media/DBX-APP-S02E001/assets/ and public/e201/."
+    - asset_id: GFX_002
+      filename: orange-X.svg
+      notes: "Provided orange X callout; copied to media/DBX-APP-S02E001/assets/ and public/e201/."
+    - asset_id: GFX_003
+      filename: AppIcon.png
+      notes: "Provided app icon; copied to media/DBX-APP-S02E001/assets/ and public/e201/."
+    - asset_id: OVL_001
+      filename: DBX-APP-S02E001_en-US_9x16_feature-phones-built-it_v001.mov
+      notes: "Copied from S01E002; combined 21 languages / post once feature overlay."
+    - asset_id: OVL_002
+      filename: DBX-APP-S02E001_en-US_9x16_profile-card_v001.mov
+      notes: "Copied from S01E002 Rubio profile-card overlay."
+    - asset_id: GFX_004
+      filename: orange-X-64-balanced.png, orange-X-136-balanced.png, orange-X-228-balanced.png
+      notes: "Generated from GFX_002 for the first three fingertip callouts; balanced saturation/contrast/alpha for HLG compositing, a drastic small-to-large size ramp, and lowered second/third placements close to the fingertip."
+    - asset_id: GFX_005
+      filename: DirtBikeX-500-balanced.png, DirtBikeX-560-balanced.png, DirtBikeX-460-balanced.png
+      notes: "Generated from GFX_001 for the larger fourth opener callout and two second-walk camera states; balanced saturation/contrast/alpha for HDR compositing."
+    - asset_id: GFX_006
+      filename: AppIcon-ios-card-balanced.png
+      notes: "Generated from GFX_003 with rounded iOS-style corners, drop shadow, and mild SDR-overlay grade for the final pointing beat."
+
+outputs:
+  overlays:
+    en-US:
+      - DBX-APP-S02E001_en-US_9x16_feature-phones-built-it_v001.mov
+      - DBX-APP-S02E001_en-US_9x16_profile-card_v001.mov
+  covers: {}
+  kdenlive: {}
+  exports:
+    en-US:
+      - DBX-APP-S02E001_en-US_tiktok_9x16_v001_review.mp4
+  published: {}
