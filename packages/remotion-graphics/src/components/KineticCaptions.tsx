@@ -35,6 +35,32 @@ const PANEL_PAD_X = 26;
 const WORD_GAP = 16;
 /** Approx advance width of Bricolage Grotesque ExtraBold, in em per character. */
 const AVG_CHAR_EM = 0.55;
+/** CJK/full-width glyphs are square — a full em each, not 0.55. */
+const CJK_CHAR_EM = 1;
+
+/** True for codepoints drawn on a full-width (square) advance. */
+const isFullWidth = (cp: number): boolean =>
+  (cp >= 0x3000 && cp <= 0x303f) || // CJK symbols and punctuation
+  (cp >= 0x3040 && cp <= 0x30ff) || // Hiragana + Katakana
+  (cp >= 0x3400 && cp <= 0x4dbf) || // CJK Unified Ideographs Extension A
+  (cp >= 0x4e00 && cp <= 0x9fff) || // CJK Unified Ideographs
+  (cp >= 0xf900 && cp <= 0xfaff) || // CJK Compatibility Ideographs
+  (cp >= 0xff00 && cp <= 0xffef); // Halfwidth and Fullwidth Forms
+
+/**
+ * Estimated advance width of `t`, in em. Latin is unchanged — an all-Latin
+ * string returns exactly `t.length * AVG_CHAR_EM` — while CJK/full-width
+ * codepoints count a whole em, so zh-CN lines are not under-measured by ~half.
+ */
+const estWidthEm = (t: string): number => {
+  let narrow = 0;
+  let wide = 0;
+  for (const ch of t) {
+    if (isFullWidth(ch.codePointAt(0) ?? 0)) wide++;
+    else narrow++;
+  }
+  return narrow * AVG_CHAR_EM + wide * CJK_CHAR_EM;
+};
 
 /**
  * Streaming captions: words appear one-by-one as spoken (like a message typing
@@ -69,7 +95,7 @@ export const KineticCaptions: React.FC<KineticCaptionsProps> = ({
   for (let k = revealedIdx.length - 1; k >= 0 && shown.length < win; k--) {
     const idx = revealedIdx[k];
     const wPx =
-      words[idx].t.length * fontSize * AVG_CHAR_EM + (shown.length ? WORD_GAP : 0);
+      estWidthEm(words[idx].t) * fontSize + (shown.length ? WORD_GAP : 0);
     if (shown.length > 0 && used + wPx > usable) break;
     used += wPx;
     shown.unshift(idx);

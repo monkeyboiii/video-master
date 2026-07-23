@@ -19,8 +19,9 @@ formats:
 # Director's outline (incl. the [SCREEN: ...] overlay directives): _source/rough.md.
 # Raw ~70.5s; both-edge pause-cropped timeline = 65.46s. Edit plan in storyboard.md.
 #
-# zh-CN is a SIBLING VARIANT, not a translation (docs/localization.md). It is not scripted yet,
-# so it is absent rather than stubbed — the same choice S01E004 made.
+# zh-CN would normally be a SIBLING VARIANT, not a translation (docs/localization.md). The
+# director overrode that here: zh-CN is a LITERAL translation of the en-US text riding the
+# UNCHANGED English audio, so every timing — and every beat duration below — is shared.
 variants:
   en-US:
     script: script.en-US.md
@@ -31,6 +32,15 @@ variants:
     remotion_props: null
     voiceover_asset_id: null # narration is diegetic in the talking-head clips
     platforms: [tiktok, ytshorts, reels]
+  zh-CN:
+    script: script.zh-CN.md
+    cover: cover.zh-CN.md
+    subtitles: subtitles/zh-CN.srt # bilingual: the English line, then the Chinese one
+    # Per-comp props as above, with the Chinese display text:
+    # remotion-props/captions.all.zh-CN.json, feature-fan.zh-CN.json.
+    remotion_props: null
+    voiceover_asset_id: null # the ENGLISH narration is retained; there is no zh-CN voiceover
+    platforms: [rednote, douyin, bilibili]
 
 # The `.srt` files in media/DBX-APP-S01E005/_source/srt/ are CANONICAL — the words, the subtitles
 # and the sync source of truth. rough.md records intent; script.en-US.md is a readable transcript.
@@ -43,48 +53,56 @@ beats:
     overlay: kinetic-captions
     target_duration_sec:
       en-US: 11.00
+      zh-CN: 11.00
   - id: layers
     purpose: name the tier, then show its four contents
     visual_intent: brand-drop settles on "DirtBikeX" (@12.04); the membership sheet CENTRED over his face as the background blurs; then three feature icons fan out horizontally and the members-only post lands on his face
     overlay: feature-fan
     target_duration_sec:
       en-US: 12.19
+      zh-CN: 12.19
   - id: flair
     purpose: the first perk, and the only one you must be told how to find
     visual_intent: side-screen — Profile > Edit > custom flair; the save step is cut
     overlay: side-screen
     target_duration_sec:
       en-US: 7.01
+      zh-CN: 7.01
   - id: invite
     purpose: the perk that grows the place
     visual_intent: side-screen — invite tools, the QR sheet, who actually accepted
     overlay: side-screen
     target_duration_sec:
       en-US: 6.95
+      zh-CN: 6.95
   - id: stats-intro
     purpose: hand off to E004's sponsorship buyer
     visual_intent: side-screen — the sponsorship stats card opens here and survives the next cut
     overlay: side-screen
     target_duration_sec:
       en-US: 3.30
+      zh-CN: 3.30
   - id: stats-detail
     purpose: prove the upsell is real
     visual_intent: the same card, still up — previous months, refresh, engagement detail
     overlay: side-screen
     target_duration_sec:
       en-US: 5.56
+      zh-CN: 5.56
   - id: insider
     purpose: the perk that is really the pitch — proximity to the person building it
     visual_intent: side-screen — the group chat, a shrinking circle on the top-right button, the members-only message
     overlay: side-screen
     target_duration_sec:
       en-US: 6.50
+      zh-CN: 6.50
   - id: cta
     purpose: refuse the hard sell, then ask once
     visual_intent: profile-card enters 0.87s BEFORE "My name is Rubio" (@60.50), on the subtitle side (E003 convention), gone 0.55s before "follow" (@62.78)
     overlay: profile-card
     target_duration_sec:
       en-US: 12.95
+      zh-CN: 12.95
 
 assets:
   # 8 talking-head clips (HLG HDR, 1920x1080 coded + -90 rotation -> 1080x1920 portrait) and
@@ -166,6 +184,11 @@ outputs:
       - DBX-APP-S01E005_en-US_9x16_side-screen-stats_v001.mov
       - DBX-APP-S01E005_en-US_9x16_side-screen-perks_v001.mov
       - DBX-APP-S01E005_en-US_9x16_profile-card_v001.mov
+    # Only the two text-bearing overlays are re-rendered for zh-CN; brand-drop, profile-card
+    # and the four side-screens carry no words and are reused from the en-US renders.
+    zh-CN:
+      - DBX-APP-S01E005_zh-CN_9x16_kinetic-captions_v001.mov
+      - DBX-APP-S01E005_zh-CN_9x16_feature-fan_v001.mov
   covers: {}
   kdenlive:
     en-US: media/DBX-APP-S01E005/verified-boost-rider.kdenlive

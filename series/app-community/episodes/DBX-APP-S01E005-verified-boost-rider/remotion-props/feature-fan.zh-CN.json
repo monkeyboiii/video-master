@@ -1,0 +1,67 @@
+{
+  "durationSec": 4.4,
+  "riseSec": 0.45,
+  "risePx": 70,
+  "items": [
+    {
+      "src": "e005/f1_flair.png",
+      "x": 147,
+      "y": 150,
+      "w": 215,
+      "h": 215,
+      "atSec": 0.0,
+      "label": "自定义标识",
+      "labelSize": 22,
+      "plate": true,
+      "plateColor": "#FFFFFF",
+      "platePad": 30,
+      "freezeSrc": "",
+      "videoSec": 0
+    },
+    {
+      "src": "e005/f3_stats.png",
+      "x": 432,
+      "y": 150,
+      "w": 215,
+      "h": 215,
+      "atSec": 0.92,
+      "label": "更深入的数据",
+      "labelSize": 22,
+      "plate": true,
+      "plateColor": "#FFFFFF",
+      "platePad": 30,
+      "freezeSrc": "",
+      "videoSec": 0
+    },
+    {
+      "src": "e005/f2_invite.png",
+      "x": 717,
+      "y": 150,
+      "w": 215,
+      "h": 215,
+      "atSec": 2.0,
+      "label": "自定义邀请",
+      "labelSize": 22,
+      "plate": true,
+      "plateColor": "#FFFFFF",
+      "platePad": 30,
+      "freezeSrc": "",
+      "videoSec": 0
+    },
+    {
+      "src": "e005/f4_insider.mov",
+      "x": 160,
+      "y": 760,
+      "w": 761,
+      "h": 270,
+      "atSec": 2.6,
+      "label": "",
+      "labelSize": 24,
+      "plate": false,
+      "plateColor": "#FFFFFF",
+      "platePad": 0,
+      "freezeSrc": "e005/f4_insider_freeze.png",
+      "videoSec": 1.5
+    }
+  ]
+}

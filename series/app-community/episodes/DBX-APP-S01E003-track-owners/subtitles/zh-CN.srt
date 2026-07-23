@@ -1,0 +1,49 @@
+1
+00:00:00,000 --> 00:00:05,805
+You can't show up to a dirt bike event you never discover, and honestly, that's what I felt as a new rider.
+你无法参加一场你从未发现的越野摩托活动，说实话，这就是我当年作为新手车友的感受。
+
+2
+00:00:05,805 --> 00:00:11,610
+If you don't already know the track name, follow the right Instagram page, or know somebody who's plugged in,
+如果你本来就不知道赛道名字，没有关注对的 Instagram 主页，也不认识圈内的熟人，
+
+3
+00:00:11,610 --> 00:00:15,480
+you might just never find out there's a ride day happening right next to you.
+你可能永远不会发现，就在你旁边正在举行一场骑行日活动。
+
+4
+00:00:15,508 --> 00:00:18,329
+And that's one of the reasons why I'm building DirtBikeX.
+这也正是我打造 DirtBikeX 的原因之一。
+
+5
+00:00:18,329 --> 00:00:23,030
+I want tracks to be easier to find, and exactly where riders are looking.
+我希望赛道更容易被找到，而且就出现在车友们正在寻找的地方。
+
+6
+00:00:23,030 --> 00:00:28,670
+Here, if you run a dirt bike track, you can get verified as a track owner so riders know your updates are real.
+在这里，如果你经营一条越野摩托赛道，你可以认证成为赛道主，让车友知道你发布的更新是真实的。
+
+7
+00:00:28,950 --> 00:00:34,010
+You can create ride days, races, open practices, and even reoccurring events.
+你可以创建骑行日、比赛、自由练习，甚至是重复举办的活动。
+
+8
+00:00:34,010 --> 00:00:41,980
+Then, fellow riders can find them in the Events tab, filter what's nearby, RSVP, and get reminded before it starts.
+然后，其他车友可以在「活动」标签页里找到它们，筛选附近的活动，报名参加，并在开始前收到提醒。
+
+9
+00:00:41,980 --> 00:00:47,795
+The idea is simple, help riders find places to ride, and help tracks to get more people to show up.
+想法很简单，帮助车友找到骑行的地方，也帮助赛道吸引更多人到场。
+
+10
+00:00:47,795 --> 00:00:53,610
+My name is Rubio, and if you're a track owner, comment "OWNER" and I'll send you the link!
+我叫鲁比奥，如果你是赛道主，评论「OWNER」，我就把链接发给你！

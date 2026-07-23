@@ -1,0 +1,22 @@
+{
+  "durationSec": 4.05,
+  "src": "e004/13_chat_cut.mp4",
+  "x": 66,
+  "y": 645,
+  "w": 306,
+  "h": 631,
+  "label": "创建聊天",
+  "labelSize": 22,
+  "markers": [
+    {
+      "_": "the sponsored @rubio row in New Chat > Suggested",
+      "shape": "rect",
+      "from": 1.6,
+      "to": 4.05,
+      "x": 0.04,
+      "y": 0.233682,
+      "w": 0.88,
+      "h": 0.089229
+    }
+  ]
+}

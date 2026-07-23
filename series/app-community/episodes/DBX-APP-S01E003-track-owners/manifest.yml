@@ -26,6 +26,18 @@ variants:
     remotion_props: null
     voiceover_asset_id: null # narration is diegetic in the talking-head clips
     platforms: [tiktok, ytshorts, reels]
+  # Literal translation of en-US (human-directed exception to docs/localization.md), over the
+  # ORIGINAL ENGLISH AUDIO — no Chinese voiceover, so every timing is identical to en-US.
+  # subtitles/zh-CN.srt is bilingual (English line + Chinese line per cue).
+  zh-CN:
+    script: script.zh-CN.md
+    cover: cover.zh-CN.md
+    subtitles: subtitles/zh-CN.srt
+    # Same per-comp convention as en-US: remotion-props/*.zh-CN.json
+    # (captions.all.zh-CN.json, brand-title.zh-CN.json — the rest carry no display text).
+    remotion_props: null
+    voiceover_asset_id: null # English narration is retained; no zh-CN voiceover exists
+    platforms: [rednote, douyin, bilibili]
 
 # One continuous caption overlay spans the whole video, so each beat's `overlay` below
 # names that beat's *distinctive* overlay. See storyboard.md.
@@ -36,36 +48,42 @@ beats:
     overlay: kinetic-captions
     target_duration_sec:
       en-US: 15.48
+      zh-CN: 15.48 # timings unchanged — English audio is retained
   - id: why
     purpose: why DirtBikeX exists — put tracks where riders already look
     visual_intent: brand-title logo lands on the word "DirtBikeX"
     overlay: brand-title
     target_duration_sec:
       en-US: 7.55
+      zh-CN: 7.55 # timings unchanged — English audio is retained
   - id: flair
     purpose: feature 1 — track owners get verified so their updates read as real
     visual_intent: side screen (left blank space) — Edit Profile → flair → Track Stewards
     overlay: side-screen
     target_duration_sec:
       en-US: 5.92
+      zh-CN: 5.92 # timings unchanged — English audio is retained
   - id: create
     purpose: feature 2 — create ride days, races, open practices, recurring events
     visual_intent: side screen — New Event form → filled → Recurrence "Every other Wednesday"
     overlay: side-screen
     target_duration_sec:
       en-US: 5.06
+      zh-CN: 5.06 # timings unchanged — English audio is retained
   - id: rsvp
     purpose: feature 3 — riders discover in the Events tab, RSVP, get reminded
     visual_intent: side screen — Events tab → detail → (map loading cut) → RSVP → Going
     overlay: side-screen
     target_duration_sec:
       en-US: 7.97
+      zh-CN: 7.97 # timings unchanged — English audio is retained
   - id: cta
     purpose: turn it into one action — track owners comment "OWNER" for the link
     visual_intent: profile-card on "My name is Rubio", clears before the CTA words
     overlay: profile-card
     target_duration_sec:
       en-US: 11.63
+      zh-CN: 11.63 # timings unchanged — English audio is retained
 
 assets:
   # 6 talking-head clips (HLG HDR, -90 rotation -> portrait) + 3 app screen recordings (SDR).
@@ -120,6 +138,15 @@ outputs:
       - DBX-APP-S01E003_en-US_9x16_side-screen-rsvp_v001.mov
       - DBX-APP-S01E003_en-US_9x16_brand-title_v001.mov
       - DBX-APP-S01E003_en-US_9x16_profile-card_v001.mov
+    # Planned, not yet rendered — same six comps with the zh-CN props
+    # (captions.all.zh-CN.json / brand-title.zh-CN.json; the side screens are unchanged).
+    zh-CN:
+      - DBX-APP-S01E003_zh-CN_9x16_kinetic-captions_v001.mov
+      - DBX-APP-S01E003_zh-CN_9x16_side-screen-flair_v001.mov
+      - DBX-APP-S01E003_zh-CN_9x16_side-screen-create_v001.mov
+      - DBX-APP-S01E003_zh-CN_9x16_side-screen-rsvp_v001.mov
+      - DBX-APP-S01E003_zh-CN_9x16_brand-title_v001.mov
+      - DBX-APP-S01E003_zh-CN_9x16_profile-card_v001.mov
   covers: {}
   kdenlive:
     en-US: media/DBX-APP-S01E003/track-owners.kdenlive

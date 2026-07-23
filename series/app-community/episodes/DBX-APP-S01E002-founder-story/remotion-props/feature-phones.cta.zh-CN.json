@@ -1,0 +1,12 @@
+{
+  "durationSec": 4.5,
+  "phones": [
+    {
+      "label": "被真正的骑手看见",
+      "segments": [
+        {"src": "sponsor.mp4", "seconds": 2.6},
+        {"src": "sponsor-freeze.png", "seconds": 1.9}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "durationSec": 6.0,
+  "phones": [
+    {
+      "label": "21种语言",
+      "segments": [
+        {"src": "lang-pick.mp4", "seconds": 2.5},
+        {"src": "lang-refresh.mp4", "seconds": 2.5},
+        {"src": "lang-refresh-freeze.png", "seconds": 1.0}
+      ]
+    },
+    {
+      "label": "只发一次",
+      "segments": [
+        {"src": "embed.mp4", "seconds": 3.5},
+        {"src": "embed-freeze.png", "seconds": 2.5}
+      ]
+    }
+  ]
+}

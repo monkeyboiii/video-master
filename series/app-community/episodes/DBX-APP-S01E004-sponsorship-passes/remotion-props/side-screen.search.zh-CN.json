@@ -1,0 +1,22 @@
+{
+  "durationSec": 5.15,
+  "src": "e004/12_search_cut.mp4",
+  "x": 740,
+  "y": 645,
+  "w": 306,
+  "h": 631,
+  "label": "搜索用户",
+  "labelSize": 22,
+  "markers": [
+    {
+      "_": "the sponsored @rubio row in the Users tab",
+      "shape": "rect",
+      "from": 2.4,
+      "to": 5.15,
+      "x": 0.04,
+      "y": 0.275672,
+      "w": 0.92,
+      "h": 0.094478
+    }
+  ]
+}

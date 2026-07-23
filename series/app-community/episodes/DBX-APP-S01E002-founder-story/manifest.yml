@@ -28,6 +28,17 @@ variants:
     remotion_props: null
     voiceover_asset_id: null # narration is diegetic in the talking-head clips (no separate VO file)
     platforms: [tiktok, ytshorts, reels]
+  # zh-CN ships the SAME cut with the ENGLISH audio kept — subtitles are bilingual
+  # (English line + Chinese line) and every timing is identical to en-US.
+  zh-CN:
+    script: script.zh-CN.md
+    cover: cover.zh-CN.md
+    subtitles: subtitles/zh-CN.srt
+    # Same per-comp props layout as en-US, with .zh-CN.json siblings
+    # (remotion-props/captions.all.zh-CN.json, brand-title.zh-CN.json, ...).
+    remotion_props: null
+    voiceover_asset_id: null # the English audio is retained — there is no zh-CN voiceover
+    platforms: [rednote, douyin, bilibili]
 
 # Beats are the recorded narration clips, in order. One continuous caption overlay spans
 # the whole video, so each beat's `overlay` below names that beat's *distinctive* overlay.
@@ -39,18 +50,21 @@ beats:
     overlay: kinetic-captions
     target_duration_sec:
       en-US: 7.90
+      zh-CN: 7.90
   - id: first-ride
     purpose: vivid physical low; earn the story, relatable not heroic
     visual_intent: photo-reveal — first-ride.jpg fills frame and zooms out after "brutal,"
     overlay: photo-reveal
     target_duration_sec:
       en-US: 11.00
+      zh-CN: 11.00
   - id: addictive
     purpose: the turn — hardship to love to the point of sharing
     visual_intent: pull-out on release, punch-in on "addictive" / "share it with"
     overlay: kinetic-captions
     target_duration_sec:
       en-US: 10.90
+      zh-CN: 10.90
   - id: problem
     purpose: name the gap the product fills (scattered/outdated), briefly
     visual_intent: a real "scattered/outdated apps" phone card (07_scattered-apps) centred over
@@ -59,18 +73,21 @@ beats:
     overlay: kinetic-captions
     target_duration_sec:
       en-US: 7.05
+      zh-CN: 7.05
   - id: built-it
     purpose: solution + features in the founder's own hands (seasoning, not montage)
     visual_intent: brand-title logo lands on "DirtBikeX"; feature-phones under the features
     overlay: brand-title
     target_duration_sec:
       en-US: 16.05
+      zh-CN: 16.05
   - id: cta
     purpose: turn the story into one action — grab the invite code
     visual_intent: warm settle; invite-card (QR) over the face on blurred footage, profile-card on "My name is Rubio"
     overlay: invite-card
     target_duration_sec:
       en-US: 12.85
+      zh-CN: 12.85
 
 assets:
   # 6 recorded talking-head clips (HLG HDR). The EDIT now uses the enhanced (face-retouched)
@@ -152,6 +169,16 @@ outputs:
       # One continuous whole-video caption track (replaced the six per-beat overlays).
       - DBX-APP-S01E002_en-US_9x16_kinetic-captions_v001.mov
       - DBX-APP-S01E002_en-US_9x16_photo-reveal_v001.mov
+    # Same overlays re-rendered from the .zh-CN.json props (durations/geometry unchanged).
+    # Names reserved; not rendered yet.
+    zh-CN:
+      - DBX-APP-S01E002_zh-CN_9x16_brand-title_v001.mov
+      - DBX-APP-S01E002_zh-CN_9x16_profile-card_v001.mov
+      - DBX-APP-S01E002_zh-CN_9x16_invite-card_v001.mov
+      - DBX-APP-S01E002_zh-CN_9x16_feature-phones-built-it_v001.mov
+      - DBX-APP-S01E002_zh-CN_9x16_feature-phones-cta_v001.mov
+      - DBX-APP-S01E002_zh-CN_9x16_kinetic-captions_v001.mov
+      - DBX-APP-S01E002_zh-CN_9x16_photo-reveal_v001.mov
   # Processed b-roll cutaway (not a Remotion overlay): footage/07_scattered-apps.mov
   covers: {} # locale -> [filenames in media/exports/]
   kdenlive:

@@ -1,0 +1,69 @@
+1
+00:00:00,000 --> 00:00:02,963
+Nobody tells you this when you first start dirt biking.
+刚开始玩越野摩托时，没人会告诉你这件事。
+
+2
+00:00:02,963 --> 00:00:05,431
+The hard part is not about learning how to ride,
+难的部分不是学会怎么骑车，
+
+3
+00:00:05,431 --> 00:00:07,900
+it's actually finding somebody who gets it.
+其实是找到一个懂这件事的人。
+
+4
+00:00:07,900 --> 00:00:18,900
+My first real ride was brutal, it was 100 degrees outside, I was sweating through everything, my legs were shaking, my hands were tired, and honestly I could barely stay on the bike.
+我第一次真正的骑行非常残酷，外面37度，我浑身都被汗湿透了，腿在发抖，手也没了力气，说实话我几乎坐不住车了。
+
+5
+00:00:18,900 --> 00:00:22,533
+But you know what the crazy thing is, I couldn't stop thinking about it.
+但你知道疯狂的是什么吗，我一直忍不住想着它。
+
+6
+00:00:22,533 --> 00:00:26,167
+That's when I realized dirt biking is addictive.
+那时我意识到，越野摩托会让人上瘾。
+
+7
+00:00:26,167 --> 00:00:29,800
+And it gets even better when you have somebody to share it to.
+而当你有人可以分享时，它会变得更好。
+
+8
+00:00:29,800 --> 00:00:36,800
+However, most of what I found online felt scattered, outdated, or just not the way I wanted to be built.
+然而，我在网上找到的大部分都感觉零散、过时，或者根本不是我想要的那种做法。
+
+9
+00:00:36,850 --> 00:00:42,130
+So as a software engineer, I set out to do the one thing I know how. To build DirtBikeX
+所以作为一名软件工程师，我决定去做我唯一会做的事。去打造 DirtBikeX
+
+10
+00:00:42,130 --> 00:00:48,289
+myself. The kind of place I wish existed. It's got no bloat. You don't have to post
+自己动手。我一直希望存在的那种地方。它没有臃肿的功能。你不用把同一个内容
+
+11
+00:00:48,289 --> 00:00:52,769
+the same thing twice. 21 languages. All the good stuff.
+发两遍。21种语言。所有好东西都有。
+
+12
+00:00:52,900 --> 00:00:57,872
+Most importantly, a real chance for us to be seen by fellow riders, so if you've been looking
+最重要的是，我们真正有机会被同好骑手看见，所以如果你也像我一样，一直在寻找
+
+13
+00:00:57,872 --> 00:01:03,838
+for dirt bike people like me, go and check out the invite code in the description. My name is Rubio
+越野摩托伙伴，就去看看简介里的邀请码。我叫鲁比奥
+
+14
+00:01:03,838 --> 00:01:05,750
+and I'll be waiting for you there!
+我在那里等你！

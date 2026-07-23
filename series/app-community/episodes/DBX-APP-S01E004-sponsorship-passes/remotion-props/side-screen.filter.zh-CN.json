@@ -1,0 +1,22 @@
+{
+  "durationSec": 4.6,
+  "src": "e004/14_filter_cut.mp4",
+  "x": 416,
+  "y": 221,
+  "w": 306,
+  "h": 631,
+  "label": "筛选作者",
+  "labelSize": 22,
+  "markers": [
+    {
+      "_": "the sponsored @rubio row under Author Username",
+      "shape": "rect",
+      "from": 2.8,
+      "to": 4.6,
+      "x": 0.05,
+      "y": 0.354403,
+      "w": 0.88,
+      "h": 0.08398
+    }
+  ]
+}
