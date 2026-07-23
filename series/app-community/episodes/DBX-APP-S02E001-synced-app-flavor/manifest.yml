@@ -25,7 +25,7 @@ variants:
 beats:
   - id: hook-x-callouts
     purpose: first-frame retention; point the viewer at the DirtBikeX mark immediately
-    visual_intent: first hard-cut still sequence; three balanced orange X callouts scale up dramatically on the fingertip, then balanced DirtBikeX wordmark lands on the fourth pointing still and clears before the next scene
+    visual_intent: first hard-cut still sequence; three orange X callouts scale up dramatically, each centred on the measured fingertip, then the DirtBikeX wordmark lands on the fourth pointing still; every prop runs edge to edge of its own still and clears on the cut
     overlay: null
     target_duration_sec:
       en-US: 2.767
@@ -43,7 +43,7 @@ beats:
       en-US: 3.483
   - id: second-walk-logo
     purpose: brand lock-in on the second walking section without the removed poster card
-    visual_intent: balanced DirtBikeX SVG wordmark floats above the helmet/head with separate close/wide placements across the 15.400s zoom-state cut
+    visual_intent: DirtBikeX SVG wordmark floats above the helmet/head with separate close/wide placements across the 15.400s zoom-state cut
     overlay: null
     target_duration_sec:
       en-US: 2.850
@@ -55,7 +55,7 @@ beats:
       en-US: 2.317
   - id: app-icon-point
     purpose: close on the app logo as the rider points up, then cut before blackout
-    visual_intent: balanced rounded/shadowed iOS-style AppIcon card uses a fixed-position fade-in lower near the pointing hand; export trims at first black frame
+    visual_intent: rounded/shadowed iOS-style AppIcon card uses a fixed-position fade-in lower near the pointing hand; export trims at first black frame
     overlay: null
     target_duration_sec:
       en-US: 3.350
@@ -84,10 +84,10 @@ assets:
   static:
     - asset_id: GFX_001
       filename: DirtBikeX.svg
-      notes: "Provided wordmark; copied to media/DBX-APP-S02E001/assets/ and public/e201/."
+      notes: "Provided wordmark; rasterized in-graph by ffmpeg/librsvg at 500x238, 560x267 and 460x219. No pre-generated PNG variants."
     - asset_id: GFX_002
       filename: orange-X.svg
-      notes: "Provided orange X callout; copied to media/DBX-APP-S02E001/assets/ and public/e201/."
+      notes: "Provided orange X callout; rasterized in-graph by ffmpeg/librsvg at 58x64, 124x136 and 208x228. No pre-generated PNG variants."
     - asset_id: GFX_003
       filename: AppIcon.png
       notes: "Provided app icon; copied to media/DBX-APP-S02E001/assets/ and public/e201/."
@@ -97,15 +97,9 @@ assets:
     - asset_id: OVL_002
       filename: DBX-APP-S02E001_en-US_9x16_profile-card_v001.mov
       notes: "Copied from S01E002 Rubio profile-card overlay."
-    - asset_id: GFX_004
-      filename: orange-X-64-balanced.png, orange-X-136-balanced.png, orange-X-228-balanced.png
-      notes: "Generated from GFX_002 for the first three fingertip callouts; balanced saturation/contrast/alpha for HLG compositing, a drastic small-to-large size ramp, and lowered second/third placements close to the fingertip."
-    - asset_id: GFX_005
-      filename: DirtBikeX-500-balanced.png, DirtBikeX-560-balanced.png, DirtBikeX-460-balanced.png
-      notes: "Generated from GFX_001 for the larger fourth opener callout and two second-walk camera states; balanced saturation/contrast/alpha for HDR compositing."
     - asset_id: GFX_006
-      filename: AppIcon-ios-card-balanced.png
-      notes: "Generated from GFX_003 with rounded iOS-style corners, drop shadow, and mild SDR-overlay grade for the final pointing beat."
+      filename: AppIcon-ios-card.png
+      notes: "Generated from GFX_003 with rounded iOS-style corners and drop shadow, no grade. Converted sRGB -> HLG/BT.2020 at composite time like every other graphic."
 
 outputs:
   overlays:

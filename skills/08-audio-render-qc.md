@@ -83,6 +83,40 @@ Probe with `node tools/probe-media.mjs <file>` (uses Remotion's bundled ffprobe)
 - QC does not edit content. It routes failures to the owning stage.
 - A FAIL on any technical check blocks `final` renaming, no exceptions.
 
+## SDR graphics over HDR footage: convert, never grade
+
+Overlaying an sRGB graphic onto an HLG/BT.2020 timeline without a colour conversion does not
+make it "a bit contrasty" — it **destroys colour**. Stamped raw, DBX-APP-S02E001's whole orange
+gradient (`#ff4a16`, `#ff3a08`, `#df2100`) collapsed to the same flat `(255,0,0)`. White
+survives unchanged, so the damage looks selective and invites the wrong diagnosis.
+
+Never fight it with `eq=contrast/saturation/brightness`, `colorchannelmixer=aa`, or pre-dimmed
+`*-balanced` / `*-soft` asset variants. Dimming a flat red cannot restore a gradient; it only
+dulls the brand colour. If someone is hand-tuning opacity to make a graphic "sit right" in HDR,
+the pipeline is wrong, not the number.
+
+Convert once, uniformly, per graphic layer:
+
+```
+zscale=transferin=iec61966-2-1:primariesin=bt709:matrixin=gbr:rangein=full
+      :transfer=arib-std-b67:primaries=bt2020:matrix=bt2020nc:range=tv:npl=203
+```
+
+- `npl=203` is BT.2408 HDR reference (graphics) white — not a taste knob. Verify it: sRGB white
+  must land at 10-bit **Y=721**, the 75% HLG signal. Measure with
+  `signalstats,metadata=print`; `-v error` suppresses it, so don't use that flag.
+- Composite in **10-bit RGB**. Pin `format=gbrp10le` after *every* overlay:
+  `overlay=format=auto` alone lets negotiation settle on YUV to please the encoder, which
+  silently reintroduces an implicit matrix on the graphics. `overlay=format=gbrp` is 8-bit and
+  will band an HDR sky.
+- Prove it before rendering 20 minutes of video: push each brand colour through
+  forward-convert → display-transform and confirm it returns to source RGB within ~2/255.
+
+ffmpeg is built with librsvg, so rasterize from the tracked `.svg` at the exact size needed
+(`-width/-height` *before* `-i`) instead of maintaining a zoo of per-size PNGs. Two decoder
+gotchas: `keep_ar` may shift a dimension by 1px, and `min=` in a zscale option string is parsed
+as the `min()` math function — always write `matrixin=`.
+
 ## Done criteria
 
 - QC block exists in `edit-notes.md` with all 13 checks and measured values.
