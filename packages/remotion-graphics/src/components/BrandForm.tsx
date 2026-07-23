@@ -44,8 +44,8 @@ export const brandFormSchema = z.object({
   centerX: z.number().default(540),
   centerY: z.number().default(980),
 
-  convergeSec: z.number().default(2.93),
-  formSec: z.number().default(3.38),
+  convergeSec: z.number().default(2.55),
+  formSec: z.number().default(2.90),
   expandSec: z.number().default(3.68),
 
   logoWidthSmall: z.number().default(360),

@@ -41,7 +41,7 @@ beats measured frame-by-frame:
 | 19.15-19.35 | points **bottom-left** (peak 19.25) |
 | 19.72-19.92 | points **bottom-right** (peak 19.85) |
 | 20.00-20.50 | arms spread wide — not a point; no mark |
-| 20.60-20.95 | **clap** (hands together) |
+| 20.567 | **clap impact** — hands meet (frame 617; held to f625, part at f627/20.900) |
 | 21.05-21.30 | hands part — pan-out **step 1** |
 | 21.35-21.85 | arms open wide — pan-out **step 2** |
 | ~21.95 | whip blur out of the sticker clip |
@@ -102,6 +102,11 @@ Carry over from S02E001, unchanged and non-negotiable:
   the four accumulate and frame the rider, then all clear together on the clap at 20.60. (Flip to
   enter-and-clear-per-gesture if the accumulation reads busy on the phone.) The 20.00-20.50
   arms-spread is a dance pose, not a point — no mark.
+
+- **The brand formation is pinned to the clap.** The four marks merge at **20.567**, the frame
+  where the hands actually meet — not at the end of the clap gesture. A first pass merged at
+  21.050 and read half a second behind the beat. The collapse runs 20.220-20.567 (0.35s, tightened
+  to suit the impact); the expand stays at 21.350 where it already matched the second hand sweep.
 
 - **Finale starts early.** The DirtBikeX wordmark now enters on the fist beat at **25.60** rather
   than waiting for 26.30, so the brand is established before the pose settles and the 0.83s tail
