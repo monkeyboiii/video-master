@@ -7,6 +7,10 @@ import {Cover, coverSchema} from './components/Cover';
 import {CtaCard, ctaCardSchema} from './components/CtaCard';
 import type {CtaCardProps} from './components/CtaCard';
 import {BrandDrop, brandDropSchema} from './components/BrandDrop';
+import {BrandForm, brandFormSchema} from './components/BrandForm';
+import type {BrandFormProps} from './components/BrandForm';
+import {MarkPop, markPopSchema} from './components/MarkPop';
+import type {MarkPopProps} from './components/MarkPop';
 import type {BrandDropProps} from './components/BrandDrop';
 import {BrandTitle, brandTitleSchema} from './components/BrandTitle';
 import type {BrandTitleProps} from './components/BrandTitle';
@@ -471,6 +475,59 @@ export const RemotionRoot: React.FC = () => {
         height={1920}
         fps={FPS}
         durationInFrames={150}
+      />
+      <Composition
+        id="brand-form"
+        component={BrandForm}
+        schema={brandFormSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(4.28 * FPS)}
+        calculateMetadata={overlayMetadata<BrandFormProps>(4.28)}
+        defaultProps={{
+          durationSec: 4.28,
+          markSrc: 'e202/orange-X.svg',
+          logoSrc: 'e202/DirtBikeX.svg',
+          corners: [
+            {x: 200, y: 430, atSec: 0.0},
+            {x: 880, y: 430, atSec: 0.68},
+            {x: 200, y: 1490, atSec: 1.48},
+            {x: 880, y: 1490, atSec: 2.05},
+          ],
+          markWidth: 240,
+          centerX: 540,
+          centerY: 980,
+          convergeSec: 2.93,
+          formSec: 3.38,
+          expandSec: 3.68,
+          logoWidthSmall: 360,
+          logoWidthLarge: 760,
+          finalCenterX: 540,
+          finalCenterY: 980,
+          sparkCount: 14,
+        }}
+      />
+      <Composition
+        id="mark-pop"
+        component={MarkPop}
+        schema={markPopSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(1.5 * FPS)}
+        calculateMetadata={overlayMetadata<MarkPopProps>(1.5)}
+        defaultProps={{
+          durationSec: 1.5,
+          src: 'e202/orange-X.svg',
+          x: 540,
+          y: 960,
+          width: 240,
+          aspect: 377 / 344,
+          popSec: 0.45,
+          fromScale: 0.55,
+          shadow: true,
+        }}
       />
     </>
   );

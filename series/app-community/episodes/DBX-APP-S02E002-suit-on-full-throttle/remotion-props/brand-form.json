@@ -1,0 +1,38 @@
+{
+  "durationSec": 4.28,
+  "markSrc": "e202/orange-X.svg",
+  "logoSrc": "e202/DirtBikeX.svg",
+  "corners": [
+    {
+      "x": 200,
+      "y": 430,
+      "atSec": 0.0
+    },
+    {
+      "x": 880,
+      "y": 430,
+      "atSec": 0.68
+    },
+    {
+      "x": 200,
+      "y": 1490,
+      "atSec": 1.48
+    },
+    {
+      "x": 880,
+      "y": 1490,
+      "atSec": 2.05
+    }
+  ],
+  "markWidth": 240,
+  "centerX": 540,
+  "centerY": 980,
+  "convergeSec": 2.93,
+  "formSec": 3.38,
+  "expandSec": 3.68,
+  "logoWidthSmall": 360,
+  "logoWidthLarge": 760,
+  "sparkCount": 14,
+  "finalCenterX": 540,
+  "finalCenterY": 980
+}

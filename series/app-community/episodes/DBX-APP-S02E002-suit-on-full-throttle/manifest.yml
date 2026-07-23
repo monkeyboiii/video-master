@@ -1,0 +1,140 @@
+# Episode manifest — source of truth for this episode.
+# Schema notes: docs/production-model.md · naming: docs/naming-conventions.md
+# Validate with: node tools/validate.mjs
+
+video_id: "DBX-APP-S02E002" # DBX-{SERIES}-S{ss}E{eee}
+slug: "suit-on-full-throttle"
+series: "app-community"
+status: topic # storyboard done; script + cover are the next gate # topic|packaging|scripting|shooting|editing|qc|published|retro
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+variants:
+  en-US:
+    script: script.en-US.md
+    cover: cover.en-US.md
+    subtitles: subtitles/en-US.srt
+    remotion_props: null
+    voiceover_asset_id: null # music-synced montage; no spoken VO
+    platforms: [tiktok, ytshorts, reels]
+
+# Added at the scripting stage. Beat IDs are stable slugs; every script line
+# belongs to one beat. `overlay` names a composition in packages/remotion-graphics
+# (hook-title | checklist-card | cta-card | lower-third | subtitle-track | stage-cards) or null.
+beats:
+  - id: pov-without-suit
+    purpose: hook; land the premise in the first second with zero setup
+    visual_intent: 'desk coding in ordinary clothes under the source caption "Pov: without the suit"'
+    overlay: null
+    target_duration_sec:
+      en-US: 5.433
+  - id: pov-with-suit
+    purpose: the joke; identical work, full race kit
+    visual_intent: same desk and framing in full MX gear, "Compiled!" beat lands ~9.4
+    overlay: null
+    target_duration_sec:
+      en-US: 8.134
+  - id: suit-up-rush
+    purpose: raise energy into the brand section
+    visual_intent: 0.2-0.3s stutter cuts standing up and turning to camera; deliberately clean
+    overlay: null
+    target_duration_sec:
+      en-US: 2.200
+  - id: palm-push-trace
+    purpose: hand the viewer the mark
+    visual_intent: arm pushes to camera; orange X rides the hand and settles in the open palm
+    overlay: null
+    target_duration_sec:
+      en-US: 0.966
+  - id: palm-zoom-x
+    purpose: the mark arrives full size without becoming a different mark
+    visual_intent: palm fills frame; the same X scales proportionally with the palm
+    overlay: null
+    target_duration_sec:
+      en-US: 0.834
+  - id: corner-callouts
+    purpose: keep the eye moving across the frame on the beat
+    visual_intent: white-outlined rider points; an orange X lands sequentially at each corner
+    overlay: null
+    target_duration_sec:
+      en-US: 3.033
+  - id: clap-logo-expand
+    purpose: brand reveal earned by a physical action
+    visual_intent: clap, then the DirtBikeX wordmark presents and expands in two steps locked to the hands opening
+    overlay: null
+    target_duration_sec:
+      en-US: 1.350
+  - id: full-throttle-fists
+    purpose: payoff energy; source caption owns the frame
+    visual_intent: fists pushed to camera under "Zenkai! Full throttle!"; no added overlay
+    overlay: null
+    target_duration_sec:
+      en-US: 4.350
+  - id: brand-lockup
+    purpose: close on brand plus founder identity
+    visual_intent: hands drop; DirtBikeX wordmark above the helmet and the Rubio profile card
+    overlay: null
+    target_duration_sec:
+      en-US: 0.833
+# - id: hook
+#   purpose: pain point
+#   visual_intent: rider stalling on a hill start
+#   overlay: hook-title
+#   target_duration_sec:
+#     en-US: 3.5
+#     zh-CN: 3.0
+
+assets:
+  raw:
+    - asset_id: RAW_001
+      filename: 01_synced.MP4
+      external_uri: null
+      sha256: null
+      notes: "Mature 30fps HLG/BT.2020 music-synced source with burned-in captions; copied from Raw/synced2.MP4."
+  selected:
+    - {asset_id: SEL_001, source_asset_id: RAW_001, in: "00:00:00.000", out: "00:00:05.433", beat: pov-without-suit}
+    - {asset_id: SEL_002, source_asset_id: RAW_001, in: "00:00:05.433", out: "00:00:13.567", beat: pov-with-suit}
+    - {asset_id: SEL_003, source_asset_id: RAW_001, in: "00:00:13.567", out: "00:00:15.767", beat: suit-up-rush}
+    - {asset_id: SEL_004, source_asset_id: RAW_001, in: "00:00:15.767", out: "00:00:16.733", beat: palm-push-trace}
+    - {asset_id: SEL_005, source_asset_id: RAW_001, in: "00:00:16.733", out: "00:00:17.567", beat: palm-zoom-x}
+    - {asset_id: SEL_006, source_asset_id: RAW_001, in: "00:00:17.567", out: "00:00:20.600", beat: corner-callouts}
+    - {asset_id: SEL_007, source_asset_id: RAW_001, in: "00:00:20.600", out: "00:00:21.950", beat: clap-logo-expand}
+    - {asset_id: SEL_008, source_asset_id: RAW_001, in: "00:00:21.950", out: "00:00:26.300", beat: full-throttle-fists}
+    - {asset_id: SEL_009, source_asset_id: RAW_001, in: "00:00:26.300", out: "00:00:27.133", beat: brand-lockup}
+  voiceover: []
+  # - asset_id: VO_EN_001
+  #   locale: en-US
+  #   filename: DBX-BEG-S01E003_en-US_vo_v001.wav
+  #   external_uri: null
+  #   notes: null
+  audio:
+    - asset_id: MUS_001
+      filename: embedded-in-01_synced.MP4
+      external_uri: null
+      source: "Already synced into RAW_001 before this touch-up pass"
+      license: "DECIDE: confirm background music is cleared for commercial social use before final publish"
+  static:
+    - asset_id: GFX_001
+      filename: DirtBikeX.svg
+      notes: "Provided wordmark; rasterized in-graph by ffmpeg/librsvg at the sizes the edit needs."
+    - asset_id: GFX_002
+      filename: orange-X.svg
+      notes: "Provided orange X callout; rasterized in-graph by ffmpeg/librsvg."
+
+outputs:
+  overlays:
+    en-US:
+      - DBX-APP-S02E002_en-US_9x16_brand-form_v001.mov
+      - DBX-APP-S02E002_en-US_9x16_mark-pop-palm_v001.mov
+      - DBX-APP-S02E002_en-US_9x16_mark-pop-finale_v001.mov
+      - DBX-APP-S02E002_en-US_9x16_profile-card_v001.mov
+  covers: {} # locale -> [filenames in media/exports/]
+  kdenlive: {} # locale -> path in media/timelines/
+  exports:
+    en-US:
+      - DBX-APP-S02E002_en-US_tiktok_9x16_v001_review.mp4
+  published: {} # locale -> [{platform, export, url, date: YYYY-MM-DD}]
