@@ -138,18 +138,15 @@ outputs:
       - DBX-APP-S01E003_en-US_9x16_side-screen-rsvp_v001.mov
       - DBX-APP-S01E003_en-US_9x16_brand-title_v001.mov
       - DBX-APP-S01E003_en-US_9x16_profile-card_v001.mov
-    # Planned, not yet rendered — same six comps with the zh-CN props
-    # (captions.all.zh-CN.json / brand-title.zh-CN.json; the side screens are unchanged).
+    # zh-CN round 1 = CAPTIONS ONLY: the caption overlay is the sole re-render (bilingual EN+ZH),
+    # over the original English audio; every other overlay reuses the en-US .mov above.
+    # brand-title.zh-CN.json exists for a later full-localization round but is NOT part of this cut.
     zh-CN:
       - DBX-APP-S01E003_zh-CN_9x16_kinetic-captions_v001.mov
-      - DBX-APP-S01E003_zh-CN_9x16_side-screen-flair_v001.mov
-      - DBX-APP-S01E003_zh-CN_9x16_side-screen-create_v001.mov
-      - DBX-APP-S01E003_zh-CN_9x16_side-screen-rsvp_v001.mov
-      - DBX-APP-S01E003_zh-CN_9x16_brand-title_v001.mov
-      - DBX-APP-S01E003_zh-CN_9x16_profile-card_v001.mov
   covers: {}
   kdenlive:
     en-US: media/DBX-APP-S01E003/track-owners.kdenlive
+    zh-CN: media/DBX-APP-S01E003/DBX-APP-S01E003_zh-CN_v001.kdenlive
   # Rough-cut flatten for review; final renders on the Mac from the .kdenlive.
   exports:
     en-US:

@@ -194,3 +194,21 @@ Review only — the final render happens on the Mac from `track-owners.kdenlive`
 
 ## Retention checklist (fill after final cut)
 1–10. TBD after the Mac polish + render.
+
+## Assembly plan — zh-CN (caption-only, round 1)
+
+Same as en-US in every respect — same selects, cuts, timeline seconds, **original English audio**,
+SFX, music, and every overlay — with exactly ONE substitution: the caption clip on **V3-Captions**
+is the Chinese (bilingual EN+ZH) render `DBX-APP-S01E003_zh-CN_9x16_kinetic-captions_v001.mov`
+(from `subtitles/zh-CN.srt` via `remotion-props/captions.all.zh-CN.json`) in place of the en-US
+one. No soundtrack change; nothing else moved.
+
+Build: `bash build-zh-CN.sh` — renders that one overlay (ProRes 4444 alpha; Noto Sans SC is
+tracked in `public/fonts`) then assembles `DBX-APP-S01E003_zh-CN_v001.kdenlive` from
+`kdenlive-build.zh-CN.repl` (kdenlive-run → nativize → verify). The timeline logic is identical to
+`kdenlive-build.repl`; `diff` the two and only the caption import and the export name differ.
+
+Deferred (out of scope this round): re-rendering `brand-title` in Chinese (`brand-title.zh-CN.json`
+already exists) and the two-language "split" subtitle presentation. Open translation-term calls
+(hashtags Latin vs translated; 骑手 vs 车友 for "rider") remain the user's to rule on before a
+full-localization pass.

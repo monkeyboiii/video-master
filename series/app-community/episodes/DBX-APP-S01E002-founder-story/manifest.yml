@@ -169,20 +169,17 @@ outputs:
       # One continuous whole-video caption track (replaced the six per-beat overlays).
       - DBX-APP-S01E002_en-US_9x16_kinetic-captions_v001.mov
       - DBX-APP-S01E002_en-US_9x16_photo-reveal_v001.mov
-    # Same overlays re-rendered from the .zh-CN.json props (durations/geometry unchanged).
-    # Names reserved; not rendered yet.
+    # zh-CN round 1 = CAPTIONS ONLY: the caption overlay is the sole re-render (bilingual EN+ZH),
+    # over the original English audio; every other overlay reuses the en-US .mov above. Other
+    # .zh-CN.json props (brand-title, feature-phones, invite-card) exist for a later
+    # full-localization round but are NOT part of this cut.
     zh-CN:
-      - DBX-APP-S01E002_zh-CN_9x16_brand-title_v001.mov
-      - DBX-APP-S01E002_zh-CN_9x16_profile-card_v001.mov
-      - DBX-APP-S01E002_zh-CN_9x16_invite-card_v001.mov
-      - DBX-APP-S01E002_zh-CN_9x16_feature-phones-built-it_v001.mov
-      - DBX-APP-S01E002_zh-CN_9x16_feature-phones-cta_v001.mov
       - DBX-APP-S01E002_zh-CN_9x16_kinetic-captions_v001.mov
-      - DBX-APP-S01E002_zh-CN_9x16_photo-reveal_v001.mov
   # Processed b-roll cutaway (not a Remotion overlay): footage/07_scattered-apps.mov
   covers: {} # locale -> [filenames in media/exports/]
   kdenlive:
     en-US: media/DBX-APP-S01E002/founder-story.kdenlive
+    zh-CN: media/DBX-APP-S01E002/DBX-APP-S01E002_zh-CN_v001.kdenlive
   # Rough-cut preview (ffmpeg flatten of the timeline). Final renders on the Mac from
   # the .kdenlive after zoom-keyframe polish. Lives in media/DBX-APP-S01E002/exports/.
   exports:
