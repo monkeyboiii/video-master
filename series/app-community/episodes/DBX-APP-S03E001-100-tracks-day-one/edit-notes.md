@@ -5,7 +5,7 @@ Track layout: V1 footage · V2 overlays · V3 spare · A1 voiceover · A2 music/
 Footage is not shot yet. This file currently carries the **VO audio** decisions only;
 the assembly plan lands after the shoot.
 
-## VO audio — take 1 (VO_EN_002)
+## VO audio — take 1 (VO_EN_003)
 
 Reproduce with `./vo-process.sh` (needs `auto-editor` on PATH and `ffmpeg`). Writes the
 master, an MP3 review copy, and a review mix under the bed — all into `media/**`, out of git.
@@ -20,16 +20,24 @@ that made the voice switch between acoustics, and a tempo + normalising gain pas
 Verified rather than asserted: v001's octave-band balance matched the raw take to **0.1 dB**
 across 80 Hz–8 kHz, and true peak is **unchanged at −8.9 dBFS** through v002.
 
-### Word-level tweaks (v002)
+### Word-level tweaks (v003)
 
-Three timing edits on top of the splice, listed in the script's `EDITS` array:
+Four timing edits on top of the splice, listed in the script's `EDITS` array:
 
 | Tweak | Before | After |
 |---|---|---|
 | Beat before "Boom" | 0.20s gap | **0.55s** |
 | bow → beg | 0.19s | **0.34s** |
 | beg → tear up | 0.21s | **0.36s** |
-| "pull out the whole childhood trauma" | 1.72s | **1.47s** (1.15x) |
+| "pull out the whole childhood trauma" | 1.72s | **1.59s** (1.08x) |
+| Beat before closing "That's it" | 0.21s gap | **0.51s** |
+
+**The speed-up uses `atempo`, not `rubberband`.** v002 ran the phrase at 1.15x through
+rubberband and it sounded processed — a phase vocoder smears speech transients even when it
+holds pitch. `atempo` is WSOLA (overlap-add): it keeps timbre and pitch untouched, and at
+1.08x the phrase reads as a nudge rather than an effect. The segment's level is then matched
+back to the source with `volumedetect` (verified: −30.1 dB both sides), so the sped words sit
+at exactly the same volume as everything around them.
 
 Word positions were located with `auto-editor whisper <file> <model> --split-words`, then
 refined against energy-based run detection — whisper's boundaries snap to neighbouring words
@@ -46,9 +54,9 @@ doesn't shorten anything. Symptom: output longer than the arithmetic predicts.
 
 ### Result
 
-| | take 1 raw | v001 splice | **v002 master** |
+| | take 1 raw | v001 splice | **v003 master** |
 |---|---|---|---|
-| Duration | 68.29s | 36.23s | **36.63s** |
+| Duration | 68.29s | 36.23s | **37.05s** |
 | Speech | 27.68s (40.5%) | 27.54s (76.0%) | **27.5s** |
 | Max gap | 3.58s | 0.32s | **0.55s (the Boom beat)** |
 | p90 gap | 1.55s | 0.22s | **0.25s** |
@@ -58,7 +66,7 @@ doesn't shorten anything. Symptom: output longer than the arithmetic predicts.
 This take is the sparsest of the three recorded so far — only 40.5% speech, so the splice
 removes almost half the file. Speech lost: **0.14s**.
 
-At 36.63s the VO runs well under the ~47s the script was drafted against, which is a good
+At 37.05s the VO runs well under the ~47s the script was drafted against, which is a good
 problem: it leaves room for the on-location punchline, the track-dog beat to breathe, and
 reaction/B-roll pauses that carry no narration.
 
@@ -92,7 +100,7 @@ than at a fixed volume, so the balance survives any change of take or level. 0.5
 more present bed. Perceived voice level is preserved through the mix (−31.2 → −31.2 LUFS);
 the lower mix *peak* is only mono being spread across two channels, not an attenuation.
 
-The track is 235.9s against a 36.6s master, so the bed uses only its opening — check that
+The track is 235.9s against a 37.1s master, so the bed uses only its opening — check that
 the section under the hook is the part you want, and offset the music start if not.
 
 In the timeline this stays a separate A2 clip — the A1 master is clean and unmixed.
@@ -106,13 +114,13 @@ In the timeline this stays a separate A2 clip — the A1 master is clean and unm
   character ships as-is; only a re-record changes it.
 - The punchline (girlfriend / "group chat") is **not** in this master — it is on-location
   dialogue. Leave A1 clear for it after `mission-accomplished`.
-- Beat durations in `manifest.yml` follow the 36.63s master — the tweak time was added to the
-  beats that actually changed (`build-app`, `rider-to-rider`), not spread across all nine.
-  Still provisional; lock them against VO_EN_002 at the subtitle pass.
+- Beat durations in `manifest.yml` follow the 37.05s master — the tweak time was added to the
+  beats that actually changed (`build-app`, `rider-to-rider`, `mission-accomplished`), not
+  spread across all nine. Still provisional; lock them against VO_EN_003 at the subtitle pass.
 
 ## Subtitle notes
 
-Not started. Time against VO_EN_002 — not the raw take, and not v001 (the tweaks shift
+Not started. Time against VO_EN_003 — not the raw take, and not v001 (the tweaks shift
 everything after 5.42s).
 
 ## Retention checklist

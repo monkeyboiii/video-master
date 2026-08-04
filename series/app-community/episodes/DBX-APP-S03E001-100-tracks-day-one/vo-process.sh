@@ -8,7 +8,7 @@ set -euo pipefail
 EP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VM="$(cd "$EP_DIR/../../../.." && pwd)"
 VID="DBX-APP-S03E001"
-VER="v002"
+VER="v003"
 TAKE="${TAKE:-take1}"
 MEDIA="$VM/media/$VID/voiceover"
 SRC="${1:-$MEDIA/${VID}_en-US_vo-${TAKE}.m4a}"
@@ -37,8 +37,10 @@ EDITS=(
   "keep 23.66 24.22"     # "beg"
   "gap 0.15"             # separate beg / tear up
   "keep 24.22 24.97"     # "tear up"
-  "fast 24.97 26.93 1.15" # "pull out the whole childhood trauma" — rushed for comedy
-  "keep 26.93 end"       # "Basically..." through "Mission accomplished."
+  "fast 24.97 26.93 1.08" # "pull out the whole childhood trauma" — nudged, not rushed
+  "keep 26.93 34.42"     # "Basically..." through "...you little cutie"
+  "gap 0.30"             # beat before the closing "That's it."
+  "keep 34.42 end"       # "That's it. Mission accomplished."
 )
 
 command -v auto-editor >/dev/null || { echo "auto-editor not on PATH" >&2; exit 1; }
@@ -50,6 +52,8 @@ peak_of() { ffmpeg -hide_banner -nostats -i "$1" -af ebur128=peak=true -f null -
 lufs_of() { ffmpeg -hide_banner -nostats -i "$1" -af ebur128 -f null - 2>&1 \
   | sed -n '/Summary:/,$p' | grep -A1 "Integrated loudness:" | grep -oP 'I:\s*\K[-0-9.]+'; }
 dur_of()  { ffprobe -v error -show_entries format=duration -of csv=p=0 "$1"; }
+mean_vol() { ffmpeg -hide_banner -nostats -i "$1" -af volumedetect -f null - 2>&1 \
+  | grep -oP 'mean_volume:\s*\K[-0-9.]+'; }
 
 echo ">>> splice  $(basename "$SRC")"
 auto-editor "$SRC" --edit "audio:threshold=$THRESHOLD" --margin "$MARGIN" --smooth "$SMOOTH" \
@@ -72,9 +76,15 @@ for e in "${EDITS[@]}"; do
     keep) END=$3; [ "$END" = end ] && END="$D"
           ffmpeg -y -v error -ss "$2" -to "$END" -i "$TMP/spliced.wav" -c:a pcm_s24le "$P" ;;
     gap)  ffmpeg -y -v error -f lavfi -i anullsrc=r=48000:cl=mono -t "$2" -c:a pcm_s24le "$P" ;;
-    fast) ffmpeg -y -v error -ss "$2" -to "$3" -i "$TMP/spliced.wav" \
-            -af "rubberband=tempo=$4:pitchq=quality:transients=crisp:formant=preserved" \
-            -c:a pcm_s24le "$P" ;;
+    # atempo, not rubberband: WSOLA keeps timbre and pitch intact at small ratios,
+    # where the phase vocoder smears speech. Level is matched back to the source
+    # segment afterwards so the sped part sits at exactly the same volume.
+    fast) R="$TMP/ref$i.wav"
+          ffmpeg -y -v error -ss "$2" -to "$3" -i "$TMP/spliced.wav" -c:a pcm_s24le "$R"
+          ffmpeg -y -v error -i "$R" -af "atempo=$4" -c:a pcm_s24le "$TMP/fast$i.wav"
+          DG=$(awk -v a="$(mean_vol "$R")" -v b="$(mean_vol "$TMP/fast$i.wav")" \
+                 'BEGIN{printf "%.2f", a-b}')
+          ffmpeg -y -v error -i "$TMP/fast$i.wav" -af "volume=${DG}dB" -c:a pcm_s24le "$P" ;;
   esac
   echo "file '$P'" >> "$TMP/list.txt"
 done
