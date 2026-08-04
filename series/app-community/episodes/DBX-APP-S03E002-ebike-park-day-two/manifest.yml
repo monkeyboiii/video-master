@@ -1,0 +1,118 @@
+# Episode manifest — source of truth for this episode.
+# Schema notes: docs/production-model.md · naming: docs/naming-conventions.md
+# Validate with: node tools/validate.mjs
+
+video_id: "DBX-APP-S03E002"
+slug: "ebike-park-day-two"
+series: "app-community"
+status: scripting # script locked, VO take 1 spliced; storyboard + shoot are the next gates
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+variants:
+  en-US:
+    script: script.en-US.md
+    cover: cover.en-US.md
+    subtitles: subtitles/en-US.srt
+    remotion_props: null
+    voiceover_asset_id: VO_EN_004
+    platforms: [tiktok, ytshorts, reels]
+
+# Beat durations are provisional: they sum to the 44.23s VO master, but the real
+# boundaries get locked at the subtitle pass against VO_EN_004.
+beats:
+  - id: hook
+    purpose: carry the E001 counter forward and make day two personal in one line
+    visual_intent: arrival wide on the hometown park; the 100-track counter carries over from E001
+    overlay: null
+    target_duration_sec:
+      en-US: 4.52
+  - id: hometown-knowledge
+    purpose: establish authority so the e-bike reversal has something to land against
+    visual_intent: mountain/trail wides; old downhill lines pointed out on camera
+    overlay: null
+    target_duration_sec:
+      en-US: 5.45
+  - id: all-electric
+    purpose: the reversal — the place changed while he was away
+    visual_intent: rack of e-bikes, battery close-ups, deadpan to camera on "Fantastic"
+    overlay: null
+    target_duration_sec:
+      en-US: 6.77
+  - id: why-it-matters
+    purpose: the positioning line — the app follows what riders actually ride
+    visual_intent: riders on e-bikes mid-session; no phone on screen yet
+    overlay: null
+    target_duration_sec:
+      en-US: 6.39
+  - id: same-dirt
+    purpose: argue that this still counts as a dirt bike track
+    visual_intent: one cutaway per noun — dirt, jumps, berms — then riders
+    overlay: null
+    target_duration_sec:
+      en-US: 5.08
+  - id: no-more-pushing
+    purpose: the relatable pain, told against himself
+    visual_intent: e-bike climbing effortlessly, intercut with the stairs he used to push up
+    overlay: null
+    target_duration_sec:
+      en-US: 6.02
+  - id: seal-the-deal
+    purpose: the series mechanic — owner conversation and the track badge
+    visual_intent: handheld approach to the owner, over-the-shoulder on the app, badge on the track page
+    overlay: null
+    target_duration_sec:
+      en-US: 6.96
+  - id: track-two-secured
+    purpose: pay off the count
+    visual_intent: E-BIKE PARK 2 / 100 counter card over a wide of the park
+    overlay: null
+    target_duration_sec:
+      en-US: 3.04
+  - id: punchline
+    purpose: deflate the mission; the send-to-a-friend beat
+    visual_intent: girlfriend off-hand on location; hard cut out on the reply
+    overlay: null
+    target_duration_sec:
+      en-US: 4.0
+
+assets:
+  raw: []
+  selected: []
+  voiceover:
+    - asset_id: VO_EN_003
+      locale: en-US
+      filename: DBX-APP-S03E002_en-US_vo_v003.wav
+      external_uri: null
+      notes: >-
+        Take 1, splice + 1.05x tempo + a gain to -1.0 dBTP. Kept only for A/B against take 2;
+        superseded by VO_EN_004, which is the pure-splice master.
+    - asset_id: VO_EN_004
+      locale: en-US
+      filename: DBX-APP-S03E002_en-US_vo_v004.wav
+      external_uri: null
+      notes: >-
+        Take 2, PURE SPLICE — dead air cut with auto-editor and nothing else: no EQ, denoise,
+        gate, compression, limiting, tempo or gain. Verified untouched (octave-band balance
+        matches the raw take to 0.1 dB; peak unchanged at -8.7 dBFS). -30.0 LUFS / 44.23s.
+        Reproduce with ./vo-process.sh; see edit-notes.md (## VO audio). Level is deliberately
+        the take's own — set loudness at the video mix. Punchline is not in this master.
+  audio:
+    - asset_id: MUS_001
+      filename: 50-cent-just-a-lil-bit-instrumental.mp3 # lives in media/audio/
+      external_uri: null
+      source: operator-supplied instrumental rip (KLICKAUD)
+      license: >-
+        NOT CLEARED — commercial recording, no licence on file for social commercial use.
+        Placeholder for the review mix only; must be replaced or licensed before publish.
+
+outputs:
+  overlays: {}
+  covers: {}
+  kdenlive: {}
+  exports: {}
+  published: {}

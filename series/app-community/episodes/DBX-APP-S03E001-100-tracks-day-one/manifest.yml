@@ -1,0 +1,126 @@
+# Episode manifest — source of truth for this episode.
+# Schema notes: docs/production-model.md · naming: docs/naming-conventions.md
+# Validate with: node tools/validate.mjs
+
+video_id: "DBX-APP-S03E001"
+slug: "100-tracks-day-one"
+series: "app-community"
+status: scripting # script locked; storyboard + shoot are the next gates
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+variants:
+  en-US:
+    script: script.en-US.md
+    cover: cover.en-US.md
+    subtitles: subtitles/en-US.srt
+    remotion_props: null
+    voiceover_asset_id: VO_EN_002
+    platforms: [tiktok, ytshorts, reels]
+
+# S03 runs as a numbered field mission: one real track per episode, counted toward 100.
+# The app appears as a step inside the mission, never as a pitch.
+# The nine VO beats sum to the 36.63s master; `punchline` is on-location dialogue on top.
+# Boundaries are provisional until the subtitle pass locks them against VO_EN_002.
+beats:
+  - id: hook
+    purpose: scroll-stop on the absurd number and open the 100-track loop
+    visual_intent: founder to camera in the open, bikes or track visible behind; the number lands as an on-screen pop
+    overlay: null
+    target_duration_sec:
+      en-US: 3.41
+  - id: build-app
+    purpose: establish the software-guy identity as a throwaway, not a brag
+    visual_intent: screen-recording or laptop insert cut hard against the outdoor shot; deliberately too fast to be believable
+    overlay: null
+    target_duration_sec:
+      en-US: 5.04
+  - id: drive-to-track
+    purpose: set the running girlfriend dynamic that pays off in the punchline
+    visual_intent: car POV or passenger-seat shot, then arrival wide on real riders
+    overlay: null
+    target_duration_sec:
+      en-US: 5.97
+  - id: find-owner
+    purpose: the real mechanic of the series — permission from the track owner
+    visual_intent: handheld approach to the owner; keep it documentary, no staged framing
+    overlay: null
+    target_duration_sec:
+      en-US: 5.11
+  - id: show-the-app
+    purpose: the single product moment, one line long
+    visual_intent: over-the-shoulder on the phone showing the track page
+    overlay: null
+    target_duration_sec:
+      en-US: 1.7
+  - id: rider-to-rider
+    purpose: comedy escalation that also shows real riders being onboarded
+    visual_intent: four quick hard cuts, one per escalation (bow / beg / tear up / trauma)
+    overlay: null
+    target_duration_sec:
+      en-US: 5.59
+  - id: whatever-it-takes
+    purpose: land the escalation and reset the pace before the mascot beat
+    visual_intent: riders on phones signing up; quick montage of real faces
+    overlay: null
+    target_duration_sec:
+      en-US: 2.98
+  - id: track-dog
+    purpose: pattern interrupt right before the payoff; the most shareable second
+    visual_intent: low-angle close on the track dog; hold longer than feels right
+    overlay: null
+    target_duration_sec:
+      en-US: 4.69
+  - id: mission-accomplished
+    purpose: pay off the loop and make the count feel real
+    visual_intent: wide of the track, TRACK 1 / 100 counter card
+    overlay: null
+    target_duration_sec:
+      en-US: 2.14
+  - id: punchline
+    purpose: deflate the whole mission; the reason the video gets sent to a friend
+    visual_intent: girlfriend delivers the line off-hand; hard cut to black mid-word
+    overlay: null
+    target_duration_sec:
+      en-US: 4.5
+
+assets:
+  raw: []
+  selected: []
+  voiceover:
+    - asset_id: VO_EN_001
+      locale: en-US
+      filename: DBX-APP-S03E001_en-US_vo_v001.wav
+      external_uri: null
+      notes: >-
+        Take 1, splice only, no word-level tweaks. Kept for A/B; superseded by VO_EN_002.
+    - asset_id: VO_EN_002
+      locale: en-US
+      filename: DBX-APP-S03E001_en-US_vo_v002.wav
+      external_uri: null
+      notes: >-
+        Take 1, splice + three word-level tweaks: a 0.35s beat before "Boom", +0.15s between
+        each of bow / beg / tear up, and "pull out the whole childhood trauma" at 1.15x.
+        No EQ, denoise, gate, compression, limiting or overall gain — level is the take's own
+        (-31.2 LUFS / -8.9 dBFS peak / 36.63s). Reproduce with ./vo-process.sh; the tweak
+        offsets live in its EDITS list and are guarded against the splice length.
+        Punchline is not in this master.
+  audio:
+    - asset_id: MUS_001
+      filename: freek-a-leek-instrumental.mp3 # lives in media/audio/
+      external_uri: null
+      source: operator-supplied instrumental
+      license: >-
+        NOT CLEARED — commercial recording, no licence on file for social commercial use.
+        Placeholder for the review mix only; must be replaced or licensed before publish.
+
+outputs:
+  overlays: {}
+  covers: {}
+  kdenlive: {}
+  exports: {}
+  published: {}
