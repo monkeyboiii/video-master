@@ -1,0 +1,109 @@
+# Episode manifest — source of truth for this episode.
+# Schema notes: docs/production-model.md · naming: docs/naming-conventions.md
+# Validate with: node tools/validate.mjs
+
+video_id: "DBX-APP-S03E000"
+slug: "track-zero"
+series: "app-community"
+status: scripting # script locked, both VO soundtracks cut; storyboard + shoot are next
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+variants:
+  en-US:
+    script: script.en-US.md
+    cover: cover.en-US.md
+    subtitles: subtitles/en-US.srt
+    remotion_props: null
+    voiceover_asset_id: VO_EN_001
+    platforms: [tiktok, ytshorts, reels]
+
+# Episode zero: the series opener that sets up the 100-track mission. The counter starts
+# here at 0 and runs to 100 across S03.
+# Two soundtracks ship from one body: VO_EN_001 opens with the English hook, VO_EN_002 with
+# the Chinese one. Beat durations follow VO_EN_001 (32.33s) — the `hook` beat is 6.19s
+# shorter on the Chinese cut. Provisional until the subtitle pass locks them.
+beats:
+  - id: hook
+    purpose: state the invisibility of the whole scene, flat, before any pitch
+    visual_intent: wide of an empty or unremarkable track; nothing heroic yet — the shot should look like nowhere
+    overlay: null
+    target_duration_sec:
+      en-US: 8.72
+  - id: somebody-gotta
+    purpose: turn the observation into a shrug-sized motive
+    visual_intent: founder to camera, handheld, unpolished
+    overlay: null
+    target_duration_sec:
+      en-US: 4.63
+  - id: hometown-100
+    purpose: the series premise; the number is the hook that makes it a series
+    visual_intent: hometown establishing shot, then a 100-track counter card at 0
+    overlay: null
+    target_duration_sec:
+      en-US: 3.47
+  - id: meeting-riders
+    purpose: promise what each episode will actually contain
+    visual_intent: three-part build, one cutaway per line — riders, an owner, the scene itself
+    overlay: null
+    target_duration_sec:
+      en-US: 6.17
+  - id: rubio
+    purpose: introduce the founder late and small, after the mission
+    visual_intent: name pop over a plain portrait; deliberately not a brand moment
+    overlay: null
+    target_duration_sec:
+      en-US: 2.87
+  - id: not-qualified
+    purpose: disarm; the likeability beat the whole series rests on
+    visual_intent: "\"Absolutely not.\" lands on its own frame, hard cut either side"
+    overlay: null
+    target_duration_sec:
+      en-US: 4.75
+  - id: welcome
+    purpose: name the thing and start the count
+    visual_intent: TRACK ZERO card over a wide; the counter reads 0 / 100
+    overlay: null
+    target_duration_sec:
+      en-US: 1.72
+
+assets:
+  raw: []
+  selected: []
+  voiceover:
+    - asset_id: VO_EN_001
+      locale: en-US
+      filename: DBX-APP-S03E000_en-US_vo_v001.wav
+      external_uri: null
+      notes: >-
+        Take 1 (en-full), LINE-BOUNDARY SPLICE — silence trimmed to 0.30s only where the
+        script starts a new line; every in-sentence pause kept as delivered. No EQ, denoise,
+        gate, compression, limiting, tempo or gain. -29.5 LUFS / -8.7 dBFS / 32.33s.
+        Reproduce with ./vo-process.sh; boundary table in edit-notes.md (## VO audio).
+    - asset_id: VO_EN_002
+      locale: en-US
+      filename: DBX-APP-S03E000_en-US_vo-cnhook_v001.wav
+      external_uri: null
+      notes: >-
+        Same English body, opened with the Chinese hook take instead of the English one —
+        for the Chinese-language platforms. Identical cut policy and no processing.
+        -29.4 LUFS / -8.7 dBFS / 29.80s. Built by the same ./vo-process.sh run.
+  audio:
+    - asset_id: MUS_001
+      filename: praise-the-lord-instrumental.mp3 # lives in media/audio/
+      external_uri: null
+      source: operator-supplied instrumental
+      license: >-
+        NOT CLEARED — commercial recording, no licence on file for social commercial use.
+        Placeholder for the review mixes only; must be replaced or licensed before publish.
+
+outputs:
+  overlays: {}
+  covers: {}
+  kdenlive: {}
+  exports: {}
+  published: {}
