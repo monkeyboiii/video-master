@@ -14,7 +14,7 @@ set -euo pipefail
 EP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VM="$(cd "$EP_DIR/../../../.." && pwd)"
 VID="DBX-APP-S03E000"
-VER="v001"
+VER="v002"
 MEDIA="$VM/media/$VID/voiceover"
 EN_SRC="$MEDIA/${VID}_en-US_vo-take1-enfull.m4a"
 CN_SRC="$MEDIA/${VID}_en-US_vo-take1-cnhook.m4a"
@@ -24,12 +24,14 @@ OUT_CN="$MEDIA/${VID}_en-US_vo-cnhook_${VER}.wav"   # Chinese hook + English bod
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 
 BOUNDARY=0.30       # seconds of silence left at each script line break
-MUSIC_BELOW_VO=10   # dB the bed sits under the measured voice. Smaller = more present.
+MUSIC_BELOW_VO=7    # dB the bed sits under the measured voice. Smaller = more present.
 
 # Ranges are seconds into each raw take and were derived by aligning a whisper
 # transcript to the script's lines, then snapping to the real silence edges either
 # side (see edit-notes.md). Re-derive them if a take is re-recorded.
-EN_CUTS=(0,1.06sec 9.63sec,10.75sec 15.38sec,16.00sec 19.47sec,19.82sec
+# 5.62,7.29 is the hook's own line break ("...to the rest of the world," / "this whole
+# scene..."), split in script.en-US.md so it trims like any other boundary.
+EN_CUTS=(0,1.06sec 5.62sec,7.29sec 9.63sec,10.75sec 15.38sec,16.00sec 19.47sec,19.82sec
          22.45sec,22.57sec 23.81sec,23.99sec 26.29sec,27.46sec 30.33sec,31.19sec
          33.00sec,33.14sec 36.08sec,37.25sec 39.19sec,end)
 # Same, but the whole English hook (line 1) is dropped so the Chinese hook can lead.

@@ -19,13 +19,13 @@ variants:
     cover: cover.en-US.md
     subtitles: subtitles/en-US.srt
     remotion_props: null
-    voiceover_asset_id: VO_EN_001
+    voiceover_asset_id: VO_EN_003
     platforms: [tiktok, ytshorts, reels]
 
 # Episode zero: the series opener that sets up the 100-track mission. The counter starts
 # here at 0 and runs to 100 across S03.
-# Two soundtracks ship from one body: VO_EN_001 opens with the English hook, VO_EN_002 with
-# the Chinese one. Beat durations follow VO_EN_001 (32.33s) — the `hook` beat is 6.19s
+# Two soundtracks ship from one body: VO_EN_003 opens with the English hook, VO_EN_004 with
+# the Chinese one. Beat durations follow VO_EN_003 (30.66s) — the `hook` beat is 4.52s
 # shorter on the Chinese cut. Provisional until the subtitle pass locks them.
 beats:
   - id: hook
@@ -33,7 +33,7 @@ beats:
     visual_intent: wide of an empty or unremarkable track; nothing heroic yet — the shot should look like nowhere
     overlay: null
     target_duration_sec:
-      en-US: 8.72
+      en-US: 7.05
   - id: somebody-gotta
     purpose: turn the observation into a shrug-sized motive
     visual_intent: founder to camera, handheld, unpolished
@@ -75,23 +75,26 @@ assets:
   raw: []
   selected: []
   voiceover:
-    - asset_id: VO_EN_001
+    - asset_id: VO_EN_003
       locale: en-US
-      filename: DBX-APP-S03E000_en-US_vo_v001.wav
+      filename: DBX-APP-S03E000_en-US_vo_v002.wav
       external_uri: null
       notes: >-
         Take 1 (en-full), LINE-BOUNDARY SPLICE — silence trimmed to 0.30s only where the
         script starts a new line; every in-sentence pause kept as delivered. No EQ, denoise,
-        gate, compression, limiting, tempo or gain. -29.5 LUFS / -8.7 dBFS / 32.33s.
+        gate, compression, limiting, tempo or gain. -29.4 LUFS / -8.7 dBFS / 30.67s.
+        Supersedes v001: the hook was split into two script lines so its 1.98s internal
+        pause became a real boundary and trimmed to 0.31s.
         Reproduce with ./vo-process.sh; boundary table in edit-notes.md (## VO audio).
-    - asset_id: VO_EN_002
+    - asset_id: VO_EN_004
       locale: en-US
-      filename: DBX-APP-S03E000_en-US_vo-cnhook_v001.wav
+      filename: DBX-APP-S03E000_en-US_vo-cnhook_v002.wav
       external_uri: null
       notes: >-
         Same English body, opened with the Chinese hook take instead of the English one —
         for the Chinese-language platforms. Identical cut policy and no processing.
-        -29.4 LUFS / -8.7 dBFS / 29.80s. Built by the same ./vo-process.sh run.
+        -29.4 LUFS / -8.7 dBFS / 29.80s. Unchanged from v001 by the hook edit (the English
+        hook is dropped from this cut entirely); rebuilt only for the louder bed.
   audio:
     - asset_id: MUS_001
       filename: praise-the-lord-instrumental.mp3 # lives in media/audio/

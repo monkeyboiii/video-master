@@ -17,7 +17,9 @@ master; pauses *inside* a line are kept as delivered. See edit-notes.md (## VO a
 
 **Opening formula used:** A pain point — the scene the viewer loves is invisible to everyone else, said flat.
 
-**Spoken (en):** Most people around here have never seen a dirt-bike track — and to the rest of the world, this whole scene might as well not exist.
+**Spoken (en):**
+- Most people around here have never seen a dirt-bike track — and to the rest of the world,
+- this whole scene might as well not exist.
 
 **Spoken (zh, alternate hook — separate soundtrack):**
 > 这里绝大部分的人一辈子都没见过越野摩托。
