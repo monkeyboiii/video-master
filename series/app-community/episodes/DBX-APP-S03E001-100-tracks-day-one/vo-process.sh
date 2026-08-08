@@ -18,7 +18,7 @@ set -euo pipefail
 EP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VM="$(cd "$EP_DIR/../../../.." && pwd)"
 VID="DBX-APP-S03E001"
-VER="v006"
+VER="v007"
 MEDIA="$VM/media/$VID/voiceover"
 T1="$MEDIA/${VID}_en-US_vo-take1.m4a"
 T4="$MEDIA/${VID}_en-US_vo-take4-enfull.m4a"
@@ -45,7 +45,7 @@ BODY=("t4 0.88 1.49 1.97 4.69"                          # Second step, get your 
       "t4 18.73 19.81 20.17 22.18"                      # And five minutes in, everybody keeps pointing...
       "t4 23.34 23.89 24.14 26.72"                      # Turns out, this guy grew up on this track (literally)
       "t4 28.11 28.73 28.97 29.54 30.13 30.96"          # every jump, every line, he knows it by heart.
-      "sn 0.20 1.11 1.45 2.69"                          # Um hum. That's what I'm talking about!  (snippet — softer take, used at its own level)
+      "sn 0.76 1.11 1.45 2.69"                          # Um hum. That's what I'm talking about!  (snippet — softer take, used at its own level)
       "t4 35.60 37.21 37.61 39.37"                      # And yeah to a rookie like myself, one day barely...
       "t4 41.08 42.39 42.50 42.85"                      # A track is way more than just dirt.
       "t4 43.51 47.03"                                  # There are enough riders and stories here...

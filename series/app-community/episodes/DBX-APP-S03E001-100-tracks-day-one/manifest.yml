@@ -19,7 +19,7 @@ variants:
     cover: cover.en-US.md
     subtitles: subtitles/en-US.srt
     remotion_props: null
-    voiceover_asset_id: VO_EN_008
+    voiceover_asset_id: VO_EN_010
     platforms: [tiktok, ytshorts, reels]
 
 # S03 runs as a numbered field mission: one real track per episode, counted toward 100.
@@ -56,7 +56,7 @@ beats:
     visual_intent: riders pointing him onward, then the guy; kid standing behind the grown-up on "(literally)"
     overlay: null
     target_duration_sec:
-      en-US: 12.19
+      en-US: 11.63
   - id: more-than-dirt
     purpose: the series thesis, said in passing rather than declared
     visual_intent: wides of the track working — jumps, berms, people talking between runs
@@ -79,9 +79,9 @@ assets:
   raw: []
   selected: []
   voiceover:
-    - asset_id: VO_EN_008
+    - asset_id: VO_EN_010
       locale: en-US
-      filename: DBX-APP-S03E001_en-US_vo_v006.wav
+      filename: DBX-APP-S03E001_en-US_vo_v007.wav
       external_uri: null
       notes: >-
         Takes 1 + 4 + snippet. Hook and first-step from take 1 (take 4's wording),
@@ -90,15 +90,15 @@ assets:
         because the take-4 read was too loud there. Lines join at 0.30s, sub-phrases at
         0.12s; "the track dog!" is its own line so a beat lands before the reveal.
         Drumroll is the spoken line only. No EQ, denoise, gate, compression, limiting or
-        tempo. -26.2 LUFS / -6.3 dBFS / 46.86s.
+        tempo. -26.2 LUFS / -6.3 dBFS / 46.30s.
         Reproduce with ./vo-process.sh; line table in edit-notes.md (## VO audio).
-    - asset_id: VO_EN_009
+    - asset_id: VO_EN_011
       locale: en-US
-      filename: DBX-APP-S03E001_en-US_vo-cnhook_v006.wav
+      filename: DBX-APP-S03E001_en-US_vo-cnhook_v007.wav
       external_uri: null
       notes: >-
         Same cut with the recorded Chinese hook replacing the English one — for the
-        Chinese-language platforms. -26.3 LUFS / -6.3 dBFS / 47.88s.
+        Chinese-language platforms. -26.3 LUFS / -6.3 dBFS / 47.32s.
   audio:
     - asset_id: MUS_001
       filename: freek-a-leek-instrumental.mp3 # lives in media/audio/

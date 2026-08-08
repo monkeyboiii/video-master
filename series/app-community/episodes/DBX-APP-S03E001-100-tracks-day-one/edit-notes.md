@@ -5,7 +5,7 @@ Track layout: V1 footage · V2 overlays · V3 spare · A1 voiceover · A2 music/
 Footage is not shot yet. This file currently carries the **VO audio** decisions only;
 the assembly plan lands after the shoot.
 
-## VO audio — takes 1 + 4 + snippet (VO_EN_008 / VO_EN_009)
+## VO audio — takes 1 + 4 + snippet (VO_EN_010 / VO_EN_011)
 
 Reproduce with `./vo-process.sh` (needs `ffmpeg`; auto-editor is not used here — see below).
 One run writes both soundtracks, MP3 review copies, and a review mix of each under the bed.
@@ -61,6 +61,11 @@ two source files.
 "Um hum. That's what I'm talking about!" comes from `vo-take4-snippet`, replacing take 4's
 own read of that line, which was too loud for the moment.
 
+Its range starts at **0.76**, not at the first energy in the file. The snippet opens with
+~0.56s of breath sitting ~18 dB under the word, and including it put a 0.87s gap between
+"…he knows it by heart" and the "um hum". Trimmed to the real onset, that gap is 0.31s.
+Same failure mode as the blips elsewhere: a threshold detector calls faint breath "speech".
+
 **It is used at its own level — deliberately not matched up.** The snippet sits ~3 dB under
 the surrounding take-4 delivery (measured −26.7/−29.0 dB against −25.3 dB either side), and
 that softness is the point. Take 1 gets a match gain because a level *step* mid-sentence is a
@@ -103,7 +108,7 @@ barely moves when the bed does, because the voice dominates it.
   publishing. Same status as the beds on S03E000 and S03E002.
 - The `(Kid standing behind grown up)` note in the script is a visual direction, not a line —
   it has no VO and no beat of its own; it plays under `the-guy`.
-- Beat durations follow VO_EN_008, are all measured, and are provisional until the
+- Beat durations follow VO_EN_010, are all measured, and are provisional until the
   subtitle pass.
 - If a real drumroll SFX is wanted under "(drums rolling…)", it belongs on A2.
 
@@ -111,7 +116,7 @@ barely moves when the bed does, because the voice dominates it.
 
 Not started. Two passes needed: the bodies are identical, but the two cuts open differently,
 so cues diverge by ~1.0s after the hook. Time each against its own master
-(VO_EN_008 / VO_EN_009).
+(VO_EN_010 / VO_EN_011).
 
 ## Retention checklist
 
