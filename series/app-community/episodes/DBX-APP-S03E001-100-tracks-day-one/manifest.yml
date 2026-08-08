@@ -19,7 +19,7 @@ variants:
     cover: cover.en-US.md
     subtitles: subtitles/en-US.srt
     remotion_props: null
-    voiceover_asset_id: VO_EN_004
+    voiceover_asset_id: VO_EN_006
     platforms: [tiktok, ytshorts, reels]
 
 # S03 runs as a numbered field mission: one real track per episode, counted toward 100.
@@ -32,73 +32,72 @@ beats:
     visual_intent: founder to camera in the open; the number lands as an on-screen pop
     overlay: null
     target_duration_sec:
-      en-US: 4.0
+      en-US: 3.87
   - id: first-step
     purpose: establish the software-guy identity as a throwaway, not a brag
     visual_intent: screen-recording or laptop insert cut hard against the outdoor shot; deliberately too fast to be believable
     overlay: null
     target_duration_sec:
-      en-US: 5.0
+      en-US: 4.85
   - id: second-step
     purpose: set up the reveal, and the running girlfriend dynamic
     visual_intent: car POV or passenger-seat shot heading out
     overlay: null
     target_duration_sec:
-      en-US: 4.11
+      en-US: 3.75
   - id: the-reveal
     purpose: name the real track; the drumroll is the joke
     visual_intent: drumroll over a held frame, then a 湖州 / HUZHOU card and the arrival wide
     overlay: null
     target_duration_sec:
-      en-US: 5.42
+      en-US: 5.15
   - id: the-guy
     purpose: the episode's actual find — the rider who grew up on this track
     visual_intent: riders pointing him onward, then the guy; kid standing behind the grown-up on "(literally)"
     overlay: null
     target_duration_sec:
-      en-US: 13.10
+      en-US: 11.32
   - id: more-than-dirt
     purpose: the series thesis, said in passing rather than declared
     visual_intent: wides of the track working — jumps, berms, people talking between runs
     overlay: null
     target_duration_sec:
-      en-US: 11.15
+      en-US: 9.69
   - id: track-dog
     purpose: pattern interrupt right before the payoff; the most shareable second
     visual_intent: low-angle close on the track dog; hold longer than feels right
     overlay: null
     target_duration_sec:
-      en-US: 5.10
+      en-US: 4.97
   - id: track-one-down
     purpose: pay off the count and make it feel real
     visual_intent: wide of the track, +1 — 1 / 100 counter card
     overlay: null
     target_duration_sec:
-      en-US: 2.35
+      en-US: 2.21
 assets:
   raw: []
   selected: []
   voiceover:
-    - asset_id: VO_EN_004
+    - asset_id: VO_EN_006
       locale: en-US
-      filename: DBX-APP-S03E001_en-US_vo_v004.wav
+      filename: DBX-APP-S03E001_en-US_vo_v005.wav
       external_uri: null
       notes: >-
-        Take 4 (en), LINE-BOUNDARY SPLICE — every script line kept whole with 0.15s either
-        side, so lines land 0.30s apart and in-line pauses survive as delivered. The drumroll
-        sound and the words "drum rolling" are MIXED ON TOP OF EACH OTHER, not sequential
-        (verified: exact sample sum, peak -11.8 dBFS). No EQ, denoise, gate, compression,
-        limiting, tempo or gain. -26.2 LUFS / -6.3 dBFS / 41.23s.
-        STARTS AT `second-step` — `hook` and `first-step` are not in this take.
+        Takes 1 + 4. Hook and first-step from take 1 (same wording as take 4's script),
+        gain-matched +5.00 dB — verified at -26.2 vs -26.1 LUFS across the seam. Body from
+        take 4. LINE-BOUNDARY SPLICE: lines join at 0.30s, sub-phrases inside a line at
+        0.12s, blips excluded so no dead air rides the end of a line. The drumroll is the
+        spoken line only — the vocalised roll is dropped. No EQ, denoise, gate, compression,
+        limiting or tempo. -26.2 LUFS / -6.3 dBFS / 45.81s.
         Reproduce with ./vo-process.sh; line table in edit-notes.md (## VO audio).
-    - asset_id: VO_EN_005
+    - asset_id: VO_EN_007
       locale: en-US
-      filename: DBX-APP-S03E001_en-US_vo-cnhook_v004.wav
+      filename: DBX-APP-S03E001_en-US_vo-cnhook_v005.wav
       external_uri: null
       notes: >-
-        Same English body, opened with the recorded Chinese hook — for the Chinese-language
-        platforms, and currently the only cut with any hook at all. Identical cut policy and
-        no processing. -26.2 LUFS / -6.3 dBFS / 46.12s.
+        Same cut with the recorded Chinese hook replacing the English one — for the
+        Chinese-language platforms. -26.2 LUFS / -6.3 dBFS / 46.83s.
   audio:
     - asset_id: MUS_001
       filename: freek-a-leek-instrumental.mp3 # lives in media/audio/

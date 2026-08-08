@@ -5,7 +5,7 @@ Track layout: V1 footage · V2 overlays · V3 spare · A1 voiceover · A2 music/
 Footage is not shot yet. This file currently carries the **VO audio** decisions only;
 the assembly plan lands after the shoot.
 
-## VO audio — take 4 (VO_EN_004 / VO_EN_005)
+## VO audio — takes 1 + 4 (VO_EN_006 / VO_EN_007)
 
 Reproduce with `./vo-process.sh` (needs `ffmpeg`; auto-editor is not used here — see below).
 One run writes both soundtracks, MP3 review copies, and a review mix of each under the bed.
@@ -13,58 +13,62 @@ All live in `media/**`, out of git.
 
 **Take 4 is a rewrite, not a re-read.** The track is a real one (Huzhou), the
 bow/beg/tear-up escalation and the girlfriend punchline are gone, and the episode now ends
-on the rider who grew up on the track. Takes 1–3 and their masters are superseded and
-deleted; do not splice them in, the wording differs throughout.
+on the rider who grew up on the track.
 
-### ⚠️ Recording gap
+**The hook and first-step come from take 1.** Take 4 starts at `second-step`, but take 1
+already delivers those two lines in take 4's wording ("…Thanks to my nerdy side"), so they
+are concatenated in front rather than re-recorded. An earlier note in this file claimed the
+wordings differed — that was wrong; only a leading "So" differs.
 
-`vo-take4-enfull` **starts at `second-step`**. The `hook` and `first-step` lines are in
-`script.en-US.md` but were never recorded, so:
+### Joining two takes
 
-- **VO_EN_004** (English) opens cold on "Second step,…" — no hook.
-- **VO_EN_005** opens on the recorded Chinese hook, and is currently the only cut with a hook.
+Take 1 was recorded ~5 dB quieter than take 4, so its pieces get a **linear gain of +5.00 dB**,
+computed in the script from the two takes' integrated loudness rather than typed in. Verified
+across the seam: the take-1 region measures **−26.2 LUFS** against the take-4 region's
+**−26.1 LUFS**. (Individual phrases either side of the seam differ by ~3 dB, but that is
+ordinary phrase-to-phrase variation, not a level step.)
 
-Either record the two missing lines as a pickup in take 4's wording, or commit to opening on
-the Chinese hook and cut the English one from the script. Their beat durations in
-`manifest.yml` are estimates; the other six are measured.
+This gain is the one exception to the no-processing rule on this episode, and it is
+unavoidable: two takes at different levels cannot be concatenated without it. It is a plain
+linear gain — no dynamics, no tone change.
 
-### Policy: line-boundary cuts only
+### Policy: line-boundary cuts, plus phrase tightening
 
-**Every script line is kept whole with 0.15s either side**, so consecutive lines land 0.30s
-apart and pauses *inside* a line survive as delivered. Same rule as S03E000, different
-mechanism: offsets here are absolute positions in the raw take and each line is extracted as
-its own piece, so editing one range never shifts another. auto-editor is not used on this
-episode because the drumroll needs two pieces layered, which its cut model cannot express.
+Each script line is one entry in `vo-process.sh` and may list several **sub-phrases**.
+Sub-phrases join at **0.12s**, lines at **0.30s**. Offsets are absolute positions in the raw
+takes, so editing one range never shifts another.
 
-### The drumroll — mixed, not sequential
+This differs from S03E000, where every pause inside a line survived untouched. Take 4 is a
+slower read and that rule left audible dead air mid-line — at "(literally)", inside "every
+jump, every line, he knows it by heart", before "That's what I'm talking about!", and after
+"one day…". Splitting those lines into sub-phrases fixes all four at once.
 
-"Which apparently means *(drums rolling…)* Huzhou" was delivered as two separate things back
-to back:
+The other half of the fix: **blips are excluded from the ranges.** Breaths and mouth clicks
+sit 20+ dB under speech, and when a coarse detector folded them into a line's extent they
+dragged an extra ~0.2s of near-silence onto the end of that line. Every range now ends on
+real speech.
 
-```
- 5.54- 6.62   "Which apparently means..."
- 8.37- 9.12   [the drumroll sound]      0.75s
-10.43-11.18   "drum rolling"  (spoken)  0.75s
-12.89-13.44   "Huzhou"
-```
+Measurement note: a threshold detector will report some line gaps as 0.4–0.5s. That is the
+natural decay of the last syllable falling under the threshold, not inserted silence — the
+inserted gaps are exactly 0.12s and 0.30s. Checked at "Turns out, this" (speech to 23.83 of a
+23.89 range) and "…he knows it by heart" (30.93 of 30.96).
 
-The two 0.75s pieces are **overlaid onto each other** (`mix` in `EN_LINES`), so the words land
-*while* the drumroll plays instead of after it. They are exactly the same length, so they
-align without stretching anything.
+auto-editor is not used on this episode: its cut model cannot express per-phrase joins across
+two source files.
 
-Verified rather than assumed: the output piece correlates with both sources (r = +0.68 against
-the drumroll alone, +0.76 against the speech alone) and differs from their exact sum by
-**−137.9 dB** — a sample-accurate overlay. Summing two speech pieces adds ~3 dB; the result
-peaks at **−11.8 dBFS**, so there is no clipping and no limiter was needed.
+### The drumroll — spoken line only
 
-If the balance wants adjusting, add a `volume` to either leg of the `amix` in `vo-process.sh`
-rather than re-recording.
+"Which apparently means *(drums rolling…)* Huzhou" was delivered as two things back to back:
+the vocalised roll (8.37–9.12) and the words "drum rolling" (10.43–11.18), both 0.75s.
+
+**Only the spoken line is used.** The vocalised roll is dropped — an earlier cut layered the
+two on top of each other, which worked technically but is not what the episode wants. If a
+real drumroll SFX is added later it goes on A2 under this line, not into the VO master.
 
 ### Level
 
-None applied. The master sits at the take's own **−26.2 LUFS / −6.3 dBFS** — take 4 was
-recorded ~4 dB hotter than takes 1–3, which is an improvement. Loudness remains a video-mix
-decision, not a VO-asset one.
+No dynamics anywhere. The master sits at take 4's own **−26.2 LUFS / −6.3 dBFS**; take 1 is
+brought up to meet it. Loudness remains a video-mix decision, not a VO-asset one.
 
 ### Music bed
 
@@ -78,18 +82,19 @@ barely moves when the bed does, because the voice dominates it.
 
 ### DECIDE (human)
 
-- **The recording gap above is the blocking one.** Everything else is finished.
 - **MUS_001 is not licensed.** Commercial instrumental, fine for judging the cut, not for
   publishing. Same status as the beds on S03E000 and S03E002.
 - The `(Kid standing behind grown up)` note in the script is a visual direction, not a line —
   it has no VO and no beat of its own; it plays under `the-guy`.
-- Beat durations follow VO_EN_004 and are provisional; lock them at the subtitle pass.
+- Beat durations follow VO_EN_006, are all measured now, and are provisional until the
+  subtitle pass.
+- If a real drumroll SFX is wanted under "(drums rolling…)", it belongs on A2.
 
 ## Subtitle notes
 
-Not started. Two passes needed: the bodies are identical, but VO_EN_005 carries the Chinese
-hook in front, so every English cue sits 4.89s later on that cut. Time each against its own
-master.
+Not started. Two passes needed: the bodies are identical, but the two cuts open differently,
+so cues diverge by ~1.0s after the hook. Time each against its own master
+(VO_EN_006 / VO_EN_007).
 
 ## Retention checklist
 

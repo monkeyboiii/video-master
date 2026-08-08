@@ -8,14 +8,14 @@
      Two soundtracks: the English body, and the same body opened with the Chinese hook.
      The Chinese hook is separately authored, not a translation (docs/localization.md). -->
 
-Target total duration: ~50s (**41.2s recorded** — see the gap flagged below)
+Target total duration: **45.8s** (English) · **46.8s** (Chinese hook) — fully recorded
 
-**Line breaks are load-bearing.** Each line below is kept whole in the VO master with 0.15s
-either side; pauses *inside* a line survive as delivered. See edit-notes.md (## VO audio).
+**Line breaks are load-bearing.** Each line below is kept whole in the VO master; sub-phrases
+inside a line join at 0.12s, lines at 0.30s. See edit-notes.md (## VO audio).
 
 ---
 
-## hook (≤2s to land) — ⚠️ NOT IN TAKE 4
+## hook (≤2s to land)
 
 **Opening formula used:** D counterintuitive — the number is absurd enough to stop the scroll.
 
@@ -31,7 +31,7 @@ either side; pauses *inside* a line survive as delivered. See edit-notes.md (## 
 
 **On-screen / subtitle emphasis:** "**100**" pops on the number.
 
-## first-step — ⚠️ NOT IN TAKE 4
+## first-step
 
 **Spoken:** First step, build the app. **Boom.** Ready in a minute. Thanks to my nerdy side.
 
@@ -50,7 +50,7 @@ either side; pauses *inside* a line survive as delivered. See edit-notes.md (## 
 - **Huzhou** (湖州).
 - Alright~ **Track number one!**
 
-**On-screen / subtitle emphasis:** **湖州 / HUZHOU** card on the reveal. The drumroll and the words "drum rolling" play **at the same time** — see edit-notes.
+**On-screen / subtitle emphasis:** **湖州 / HUZHOU** card on the reveal. The line is spoken as written; the vocalised roll from the take is not used. A real drumroll SFX, if wanted, goes on A2.
 
 ## the-guy
 
@@ -87,12 +87,10 @@ either side; pauses *inside* a line survive as delivered. See edit-notes.md (## 
 
 ---
 
-## ⚠️ Recording gap
+## Sources
 
-Take 4 (`vo-take4-enfull`) starts at **second-step**. The `hook` and `first-step` lines above
-are written but **not recorded** — the English soundtrack currently opens on "Second step,…".
-Either record them as a pickup with take 4's wording, or open on the Chinese hook (which *is*
-recorded) and drop the English hook. Do not splice takes 1–3 in: the wording differs.
+`hook` and `first-step` come from **take 1**, which delivers them in this wording; everything
+from `second-step` on is **take 4**. Take 1 is gain-matched to take 4 in `vo-process.sh`.
 
 ---
 

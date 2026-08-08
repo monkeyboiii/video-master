@@ -1,56 +1,59 @@
 #!/usr/bin/env bash
-# Take 4 -> two en-US soundtracks (+ review mixes under the music bed).
+# Takes 1 + 4 -> two en-US soundtracks (+ review mixes under the music bed).
 #
-# Cuts are LINE-BOUNDARY ONLY: every script line is kept whole with PAD either side, so
-# consecutive lines land 2*PAD apart and pauses *inside* a line survive as delivered.
-# Offsets are seconds into the raw takes, so nothing shifts when a range is edited.
+# The hook and first-step lines were never re-recorded for take 4, so they come from
+# take 1, which uses take 4's wording ("...Thanks to my nerdy side"). Take 1 was recorded
+# quieter, so its pieces get a linear gain to match take 4 — measured, not guessed.
 #
-# One line is special. "Which apparently means (drums rolling...) Huzhou" was delivered as
-# the drumroll sound and the words "drum rolling" back to back; they are MIXED ON TOP OF
-# EACH OTHER here (`mix`), not played in sequence.
+# Each script line is one entry below and may list several sub-phrases. Sub-phrases join
+# at INTRA, lines join at 2*PAD. Offsets are absolute positions in the raw takes, so
+# editing one range never shifts another. Blips (breaths, mouth clicks) are excluded from
+# the ranges, which is what keeps dead air off the end of a line.
 #
-# No EQ, denoise, gate, compression, limiting, tempo or gain — level stays the take's own.
-# The only level set anywhere is the music bed's.
+# No EQ, denoise, gate, compression, limiting or tempo. The only levels set anywhere are
+# take 1's match gain and the music bed's.
 # Rationale and the line table: edit-notes.md (## VO audio).
 set -euo pipefail
 
 EP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VM="$(cd "$EP_DIR/../../../.." && pwd)"
 VID="DBX-APP-S03E001"
-VER="v004"
+VER="v005"
 MEDIA="$VM/media/$VID/voiceover"
-EN_SRC="$MEDIA/${VID}_en-US_vo-take4-enfull.m4a"
-CN_SRC="$MEDIA/${VID}_en-US_vo-take4-cnhook.m4a"
+T1="$MEDIA/${VID}_en-US_vo-take1.m4a"
+T4="$MEDIA/${VID}_en-US_vo-take4-enfull.m4a"
+CN="$MEDIA/${VID}_en-US_vo-take4-cnhook.m4a"
 MUSIC="$VM/media/audio/freek-a-leek-instrumental.mp3"
 OUT_EN="$MEDIA/${VID}_en-US_vo_${VER}.wav"
 OUT_CN="$MEDIA/${VID}_en-US_vo-cnhook_${VER}.wav"
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 
-PAD=0.15            # kept either side of every line -> 0.30s between lines
-MUSIC_BELOW_VO=7    # dB the bed sits under the measured voice. Smaller = more present.
+PAD=0.15            # kept either side of a line   -> 0.30s between lines
+INTRA=0.06          # kept either side of a phrase -> 0.12s inside a line
+MUSIC_BELOW_VO=7    # dB the bed sits under the measured voice
 
-# One entry per spoken script line, in order. `mix A B C D` overlays [A,B] with [C,D].
-EN_LINES=(
-  "0.88 4.69"     # Second step, get your girlfriend to drive you to the best track...
-  "5.54 6.62"     # Which apparently means...
-  "mix 8.37 9.12 10.43 11.18"   # [drumroll] + "drum rolling" — layered, not sequential
-  "12.89 13.44"   # Huzhou
-  "14.74 16.58"   # Alright~ Track number one!
-  "18.73 22.18"   # And five minutes in, everybody keeps pointing me toward this guy.
-  "23.34 26.72"   # Turns out, this guy basically grew up on this track (literally)
-  "27.80 31.47"   # every jump, every line, he knows it by heart.
-  "32.80 34.20"   # That's what I'm talking about!
-  "35.60 39.73"   # And yeah to a rookie like myself, one day barely scratches the surface.
-  "40.25 42.85"   # A track is way more than just dirt.
-  "43.51 47.03"   # There are enough riders and stories here to keep me coming back...
-  "47.86 51.30"   # And don't forget to pay a visit to the track mascot, the track dog!
-  "51.87 52.93"   # What's up you little cutie~
-  "53.71 55.76"   # That's it. Track one down.
-)
-CN_LINES=("0.84 3.06" "4.31 6.38")
+# "<src> a b [a b ...]" — one entry per spoken script line.
+HOOK_EN=("t1 1.43 5.00")                                # I'm gonna be building the best community...
+FIRST=("t1 6.63 7.42 8.97 9.55"                         # First step, build the app.
+       "t1 11.46 12.00 12.83 13.62 15.43 16.62")        # Boom. Ready in a minute. Thanks to my nerdy side.
+BODY=("t4 0.88 1.49 1.97 4.69"                          # Second step, get your girlfriend to the best track...
+      "t4 5.54 6.62"                                    # Which apparently means...
+      "t4 10.43 11.18"                                  # (drums rolling) — the spoken line only
+      "t4 12.89 13.44"                                  # Huzhou
+      "t4 14.74 15.28 15.67 16.58"                      # Alright~ Track number one!
+      "t4 18.73 19.81 20.17 22.18"                      # And five minutes in, everybody keeps pointing...
+      "t4 23.34 23.89 24.14 26.72"                      # Turns out, this guy grew up on this track (literally)
+      "t4 28.11 28.73 28.97 29.54 30.13 30.96"          # every jump, every line, he knows it by heart.
+      "t4 32.80 34.20"                                  # That's what I'm talking about!
+      "t4 35.60 37.21 37.61 39.37"                      # And yeah to a rookie like myself, one day barely...
+      "t4 41.08 42.39 42.50 42.85"                      # A track is way more than just dirt.
+      "t4 43.51 47.03"                                  # There are enough riders and stories here...
+      "t4 47.86 50.26 50.51 51.30"                      # And don't forget the track mascot, the track dog!
+      "t4 51.87 52.93"                                  # What's up you little cutie~
+      "t4 53.71 54.17 54.43 55.76")                     # That's it. Track one down.
+CN_HOOK=("cn 0.84 3.06" "cn 4.31 6.38")
 
-[ -f "$EN_SRC" ] || { echo "missing take: $EN_SRC" >&2; exit 1; }
-[ -f "$CN_SRC" ] || { echo "missing take: $CN_SRC" >&2; exit 1; }
+for f in "$T1" "$T4" "$CN"; do [ -f "$f" ] || { echo "missing take: $f" >&2; exit 1; }; done
 mkdir -p "$MEDIA"
 
 lufs_of() { ffmpeg -hide_banner -nostats -i "$1" -af ebur128 -f null - 2>&1 \
@@ -58,38 +61,38 @@ lufs_of() { ffmpeg -hide_banner -nostats -i "$1" -af ebur128 -f null - 2>&1 \
 peak_of() { ffmpeg -hide_banner -nostats -i "$1" -af ebur128=peak=true -f null - 2>&1 \
   | sed -n '/Summary:/,$p' | grep -A1 "True peak:" | grep -oP 'Peak:\s*\K[-0-9.]+'; }
 dur_of()  { ffprobe -v error -show_entries format=duration -of csv=p=0 "$1"; }
-sub() { awk -v a="$1" -v b="$2" 'BEGIN{printf "%.3f", (a-b<0)?0:a-b}'; }
-add() { awk -v a="$1" -v b="$2" 'BEGIN{printf "%.3f", a+b}'; }
+fadd() { awk -v a="$1" -v b="$2" 'BEGIN{printf "%.3f", (a+b<0)?0:a+b}'; }
 
-# build SRC OUT LINE...  — one PCM piece per line, concatenated in order
-build() {
-  local src="$1" out="$2"; shift 2
-  local i=0; : > "$TMP/list.txt"
-  for spec in "$@"; do
-    set -- $spec; i=$((i+1)); local P="$TMP/$(basename "$out" .wav)_$(printf %02d $i).wav"
-    if [ "$1" = mix ]; then
-      ffmpeg -y -v error -ss "$(sub "$2" $PAD)" -to "$(add "$3" $PAD)" -i "$src" \
-        -ar 48000 -ac 1 -c:a pcm_s24le "$TMP/mx_a.wav"
-      ffmpeg -y -v error -ss "$(sub "$4" $PAD)" -to "$(add "$5" $PAD)" -i "$src" \
-        -ar 48000 -ac 1 -c:a pcm_s24le "$TMP/mx_b.wav"
-      ffmpeg -y -v error -i "$TMP/mx_a.wav" -i "$TMP/mx_b.wav" \
-        -filter_complex "[0:a][1:a]amix=inputs=2:duration=longest:normalize=0[o]" \
-        -map "[o]" -ar 48000 -ac 1 -c:a pcm_s24le "$P"
-    else
-      ffmpeg -y -v error -ss "$(sub "$1" $PAD)" -to "$(add "$2" $PAD)" -i "$src" \
-        -ar 48000 -ac 1 -c:a pcm_s24le "$P"
-    fi
-    echo "file '$P'" >> "$TMP/list.txt"
+GAIN_T1=$(awk -v a="$(lufs_of "$T4")" -v b="$(lufs_of "$T1")" 'BEGIN{printf "%.2f", a-b}')
+echo ">>> take 1 gain-matched to take 4: ${GAIN_T1} dB (linear, no dynamics)"
+
+IDX=0
+emit() {  # emit <listfile> <entry>
+  local lf="$1"; set -- $2; local src="$1"; shift
+  local file gain=0
+  case "$src" in t1) file="$T1"; gain="$GAIN_T1";; t4) file="$T4";; cn) file="$CN";; esac
+  local nsub=$(( $# / 2 )) i=0
+  while [ $# -ge 2 ]; do
+    i=$((i+1)); IDX=$((IDX+1))
+    local lead=$INTRA tail=$INTRA
+    [ $i -eq 1 ] && lead=$PAD
+    [ $i -eq $nsub ] && tail=$PAD
+    local P="$TMP/p$(printf %04d $IDX).wav"
+    ffmpeg -y -v error -ss "$(fadd "$1" "-$lead")" -to "$(fadd "$2" "$tail")" -i "$file" \
+      -af "volume=${gain}dB" -ar 48000 -ac 1 -c:a pcm_s24le "$P"
+    echo "file '$P'" >> "$lf"
+    shift 2
   done
-  ffmpeg -y -v error -f concat -safe 0 -i "$TMP/list.txt" -ar 48000 -c:a pcm_s24le "$out"
 }
 
-echo ">>> english: ${#EN_LINES[@]} script lines, drumroll layered"
-build "$EN_SRC" "$OUT_EN" "${EN_LINES[@]}"
-echo ">>> chinese hook + english body"
-build "$CN_SRC" "$TMP/cn_hook.wav" "${CN_LINES[@]}"
-printf "file '%s'\n" "$TMP/cn_hook.wav" "$OUT_EN" > "$TMP/join.txt"
-ffmpeg -y -v error -f concat -safe 0 -i "$TMP/join.txt" -ar 48000 -c:a pcm_s24le "$OUT_CN"
+build() { local lf="$TMP/l$$.txt"; : > "$lf"; local out="$1"; shift
+  for e in "$@"; do emit "$lf" "$e"; done
+  ffmpeg -y -v error -f concat -safe 0 -i "$lf" -ar 48000 -c:a pcm_s24le "$out"; rm -f "$lf"; }
+
+echo ">>> english: hook + first step (take 1) + body (take 4)"
+build "$OUT_EN" "${HOOK_EN[@]}" "${FIRST[@]}" "${BODY[@]}"
+echo ">>> chinese hook replaces the english hook"
+build "$OUT_CN" "${CN_HOOK[@]}" "${FIRST[@]}" "${BODY[@]}"
 
 for OUT in "$OUT_EN" "$OUT_CN"; do
   BASE="${OUT%.wav}"
