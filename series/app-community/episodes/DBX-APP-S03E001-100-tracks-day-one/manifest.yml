@@ -19,7 +19,7 @@ variants:
     cover: cover.en-US.md
     subtitles: subtitles/en-US.srt
     remotion_props: null
-    voiceover_asset_id: VO_EN_003
+    voiceover_asset_id: VO_EN_004
     platforms: [tiktok, ytshorts, reels]
 
 # S03 runs as a numbered field mission: one real track per episode, counted toward 100.
@@ -29,87 +29,76 @@ variants:
 beats:
   - id: hook
     purpose: scroll-stop on the absurd number and open the 100-track loop
-    visual_intent: founder to camera in the open, bikes or track visible behind; the number lands as an on-screen pop
+    visual_intent: founder to camera in the open; the number lands as an on-screen pop
     overlay: null
     target_duration_sec:
-      en-US: 3.41
-  - id: build-app
+      en-US: 4.0
+  - id: first-step
     purpose: establish the software-guy identity as a throwaway, not a brag
     visual_intent: screen-recording or laptop insert cut hard against the outdoor shot; deliberately too fast to be believable
     overlay: null
     target_duration_sec:
-      en-US: 5.04
-  - id: drive-to-track
-    purpose: set the running girlfriend dynamic that pays off in the punchline
-    visual_intent: car POV or passenger-seat shot, then arrival wide on real riders
+      en-US: 5.0
+  - id: second-step
+    purpose: set up the reveal, and the running girlfriend dynamic
+    visual_intent: car POV or passenger-seat shot heading out
     overlay: null
     target_duration_sec:
-      en-US: 5.97
-  - id: find-owner
-    purpose: the real mechanic of the series — permission from the track owner
-    visual_intent: handheld approach to the owner; keep it documentary, no staged framing
+      en-US: 4.11
+  - id: the-reveal
+    purpose: name the real track; the drumroll is the joke
+    visual_intent: drumroll over a held frame, then a 湖州 / HUZHOU card and the arrival wide
     overlay: null
     target_duration_sec:
-      en-US: 5.11
-  - id: show-the-app
-    purpose: the single product moment, one line long
-    visual_intent: over-the-shoulder on the phone showing the track page
+      en-US: 5.42
+  - id: the-guy
+    purpose: the episode's actual find — the rider who grew up on this track
+    visual_intent: riders pointing him onward, then the guy; kid standing behind the grown-up on "(literally)"
     overlay: null
     target_duration_sec:
-      en-US: 1.7
-  - id: rider-to-rider
-    purpose: comedy escalation that also shows real riders being onboarded
-    visual_intent: four quick hard cuts, one per escalation (bow / beg / tear up / trauma)
+      en-US: 13.10
+  - id: more-than-dirt
+    purpose: the series thesis, said in passing rather than declared
+    visual_intent: wides of the track working — jumps, berms, people talking between runs
     overlay: null
     target_duration_sec:
-      en-US: 5.7
-  - id: whatever-it-takes
-    purpose: land the escalation and reset the pace before the mascot beat
-    visual_intent: riders on phones signing up; quick montage of real faces
-    overlay: null
-    target_duration_sec:
-      en-US: 2.98
+      en-US: 11.15
   - id: track-dog
     purpose: pattern interrupt right before the payoff; the most shareable second
     visual_intent: low-angle close on the track dog; hold longer than feels right
     overlay: null
     target_duration_sec:
-      en-US: 4.69
-  - id: mission-accomplished
-    purpose: pay off the loop and make the count feel real
-    visual_intent: wide of the track, TRACK 1 / 100 counter card
+      en-US: 5.10
+  - id: track-one-down
+    purpose: pay off the count and make it feel real
+    visual_intent: wide of the track, +1 — 1 / 100 counter card
     overlay: null
     target_duration_sec:
-      en-US: 2.45
-  - id: punchline
-    purpose: deflate the whole mission; the reason the video gets sent to a friend
-    visual_intent: girlfriend delivers the line off-hand; hard cut to black mid-word
-    overlay: null
-    target_duration_sec:
-      en-US: 4.5
-
+      en-US: 2.35
 assets:
   raw: []
   selected: []
   voiceover:
-    - asset_id: VO_EN_001
+    - asset_id: VO_EN_004
       locale: en-US
-      filename: DBX-APP-S03E001_en-US_vo_v001.wav
+      filename: DBX-APP-S03E001_en-US_vo_v004.wav
       external_uri: null
       notes: >-
-        Take 1, splice only, no word-level tweaks. Kept for A/B; superseded by VO_EN_003.
-    - asset_id: VO_EN_003
+        Take 4 (en), LINE-BOUNDARY SPLICE — every script line kept whole with 0.15s either
+        side, so lines land 0.30s apart and in-line pauses survive as delivered. The drumroll
+        sound and the words "drum rolling" are MIXED ON TOP OF EACH OTHER, not sequential
+        (verified: exact sample sum, peak -11.8 dBFS). No EQ, denoise, gate, compression,
+        limiting, tempo or gain. -26.2 LUFS / -6.3 dBFS / 41.23s.
+        STARTS AT `second-step` — `hook` and `first-step` are not in this take.
+        Reproduce with ./vo-process.sh; line table in edit-notes.md (## VO audio).
+    - asset_id: VO_EN_005
       locale: en-US
-      filename: DBX-APP-S03E001_en-US_vo_v003.wav
+      filename: DBX-APP-S03E001_en-US_vo-cnhook_v004.wav
       external_uri: null
       notes: >-
-        Take 1, splice + four word-level tweaks: a 0.35s beat before "Boom", +0.15s between
-        each of bow / beg / tear up, "pull out the whole childhood trauma" at 1.08x with its
-        level matched back to source, and a 0.30s beat before the closing "That's it".
-        No EQ, denoise, gate, compression, limiting or overall gain — level is the take's own
-        (-31.2 LUFS / -8.9 dBFS peak / 37.05s). Reproduce with ./vo-process.sh; the tweak
-        offsets live in its EDITS list and are guarded against the splice length.
-        Punchline is not in this master.
+        Same English body, opened with the recorded Chinese hook — for the Chinese-language
+        platforms, and currently the only cut with any hook at all. Identical cut policy and
+        no processing. -26.2 LUFS / -6.3 dBFS / 46.12s.
   audio:
     - asset_id: MUS_001
       filename: freek-a-leek-instrumental.mp3 # lives in media/audio/

@@ -5,123 +5,91 @@ Track layout: V1 footage · V2 overlays · V3 spare · A1 voiceover · A2 music/
 Footage is not shot yet. This file currently carries the **VO audio** decisions only;
 the assembly plan lands after the shoot.
 
-## VO audio — take 1 (VO_EN_003)
+## VO audio — take 4 (VO_EN_004 / VO_EN_005)
 
-Reproduce with `./vo-process.sh` (needs `auto-editor` on PATH and `ffmpeg`). Writes the
-master, an MP3 review copy, and a review mix under the bed — all into `media/**`, out of git.
+Reproduce with `./vo-process.sh` (needs `ffmpeg`; auto-editor is not used here — see below).
+One run writes both soundtracks, MP3 review copies, and a review mix of each under the bed.
+All live in `media/**`, out of git.
 
-### Policy: splice + named word-level tweaks
+**Take 4 is a rewrite, not a re-read.** The track is a real one (Huzhou), the
+bow/beg/tear-up escalation and the girlfriend punchline are gone, and the episode now ends
+on the rider who grew up on the track. Takes 1–3 and their masters are superseded and
+deleted; do not splice them in, the wording differs throughout.
 
-**No tone processing.** No EQ, denoise, gate, compression, limiting or overall gain. The only
-level set anywhere is the music bed's. This matches S03E002 and is the standing policy for
-the series — see that episode's edit-notes for the two rejected alternatives (a de-room chain
-that made the voice switch between acoustics, and a tempo + normalising gain pass).
+### ⚠️ Recording gap
 
-Verified rather than asserted: v001's octave-band balance matched the raw take to **0.1 dB**
-across 80 Hz–8 kHz, and true peak is **unchanged at −8.9 dBFS** through v002.
+`vo-take4-enfull` **starts at `second-step`**. The `hook` and `first-step` lines are in
+`script.en-US.md` but were never recorded, so:
 
-### Word-level tweaks (v003)
+- **VO_EN_004** (English) opens cold on "Second step,…" — no hook.
+- **VO_EN_005** opens on the recorded Chinese hook, and is currently the only cut with a hook.
 
-Four timing edits on top of the splice, listed in the script's `EDITS` array:
+Either record the two missing lines as a pickup in take 4's wording, or commit to opening on
+the Chinese hook and cut the English one from the script. Their beat durations in
+`manifest.yml` are estimates; the other six are measured.
 
-| Tweak | Before | After |
-|---|---|---|
-| Beat before "Boom" | 0.20s gap | **0.55s** |
-| bow → beg | 0.19s | **0.34s** |
-| beg → tear up | 0.21s | **0.36s** |
-| "pull out the whole childhood trauma" | 1.72s | **1.59s** (1.08x) |
-| Beat before closing "That's it" | 0.21s gap | **0.51s** |
+### Policy: line-boundary cuts only
 
-**The speed-up uses `atempo`, not `rubberband`.** v002 ran the phrase at 1.15x through
-rubberband and it sounded processed — a phase vocoder smears speech transients even when it
-holds pitch. `atempo` is WSOLA (overlap-add): it keeps timbre and pitch untouched, and at
-1.08x the phrase reads as a nudge rather than an effect. The segment's level is then matched
-back to the source with `volumedetect` (verified: −30.1 dB both sides), so the sped words sit
-at exactly the same volume as everything around them.
+**Every script line is kept whole with 0.15s either side**, so consecutive lines land 0.30s
+apart and pauses *inside* a line survive as delivered. Same rule as S03E000, different
+mechanism: offsets here are absolute positions in the raw take and each line is extracted as
+its own piece, so editing one range never shifts another. auto-editor is not used on this
+episode because the drumroll needs two pieces layered, which its cut model cannot express.
 
-Word positions were located with `auto-editor whisper <file> <model> --split-words`, then
-refined against energy-based run detection — whisper's boundaries snap to neighbouring words
-and are ~0.2s loose, so they are good enough to *identify* a word but not to cut on.
+### The drumroll — mixed, not sequential
 
-**The offsets are relative to the spliced audio, so they move if `THRESHOLD`, `MARGIN` or
-`SMOOTH` change.** `SPLICE_DUR` guards this: the script aborts rather than applying stale
-offsets to a different splice.
-
-**Gotcha that bit once:** in the `fast` step `-ss/-to` must come *before* `-i`. As output
-options ffmpeg applies the tempo filter to the whole stream first and then trims the
-*filtered* timeline — which silently splices in a chunk from the wrong part of the take and
-doesn't shorten anything. Symptom: output longer than the arithmetic predicts.
-
-### Result
-
-| | take 1 raw | v001 splice | **v003 master** |
-|---|---|---|---|
-| Duration | 68.29s | 36.23s | **37.05s** |
-| Speech | 27.68s (40.5%) | 27.54s (76.0%) | **27.5s** |
-| Max gap | 3.58s | 0.32s | **0.55s (the Boom beat)** |
-| p90 gap | 1.55s | 0.22s | **0.25s** |
-| Gaps > 1s | 15 | 0 | **0** |
-| Integrated | −31.3 LUFS | −31.1 LUFS | **−31.2 LUFS (take's own)** |
-
-This take is the sparsest of the three recorded so far — only 40.5% speech, so the splice
-removes almost half the file. Speech lost: **0.14s**.
-
-At 37.05s the VO runs well under the ~47s the script was drafted against, which is a good
-problem: it leaves room for the on-location punchline, the track-dog beat to breathe, and
-reaction/B-roll pauses that carry no narration.
-
-### Splice (auto-editor)
+"Which apparently means *(drums rolling…)* Huzhou" was delivered as two separate things back
+to back:
 
 ```
---edit audio:threshold=-34dB --margin 0.06s,0.12s --smooth 0.10s,0.08s
+ 5.54- 6.62   "Which apparently means..."
+ 8.37- 9.12   [the drumroll sound]      0.75s
+10.43-11.18   "drum rolling"  (spoken)  0.75s
+12.89-13.44   "Huzhou"
 ```
 
-- Measured on this take: room-tone peaks ≈ −48.5 dB (p95 −44.2), speech peaks ≈ −20.4 dB.
-  auto-editor's threshold is **peak-based**, so −34 dB clears the room tone by ~10 dB and
-  still sits ~14 dB under speech. Re-measure before reusing these numbers on a take recorded
-  somewhere else.
-- **`--smooth` mincut is the knob for in-phrase pauses.** The default 0.2 s leaves any
-  shorter silence alone; 0.10 s removes them. Below ~0.05 s the delivery sounds clipped.
-- **`--margin` sets the pacing**: the silence between kept clips is removed entirely, so the
-  residual pause is `margin_after + margin_before` ≈ 0.18 s. Never use threshold for pacing.
+The two 0.75s pieces are **overlaid onto each other** (`mix` in `EN_LINES`), so the words land
+*while* the drumroll plays instead of after it. They are exactly the same length, so they
+align without stretching anything.
+
+Verified rather than assumed: the output piece correlates with both sources (r = +0.68 against
+the drumroll alone, +0.76 against the speech alone) and differs from their exact sum by
+**−137.9 dB** — a sample-accurate overlay. Summing two speech pieces adds ~3 dB; the result
+peaks at **−11.8 dBFS**, so there is no clipping and no limiter was needed.
+
+If the balance wants adjusting, add a `volume` to either leg of the `amix` in `vo-process.sh`
+rather than re-recording.
 
 ### Level
 
-None applied. The master sits at the take's own −31.2 LUFS / −8.9 dBFS. Loudness is a
-**video-mix decision**, not a VO-asset one, and TikTok/Reels/Shorts all normalise quiet
-uploads upward anyway.
+None applied. The master sits at the take's own **−26.2 LUFS / −6.3 dBFS** — take 4 was
+recorded ~4 dB hotter than takes 1–3, which is an improvement. Loudness remains a video-mix
+decision, not a VO-asset one.
 
 ### Music bed
 
 `MUS_001` (Freek-A-Leek instrumental), flat, **no ducking** — the one thing the script sets.
-It is placed **`MUSIC_BELOW_VO` dB under the measured voice loudness** (currently 10) rather
-than at a fixed volume, so the balance survives any change of take or level. 0.5 s fade in,
-1.5 s out; `amix=normalize=0` (the default would halve both inputs). Lower the number for a
-more present bed. Perceived voice level is preserved through the mix (−31.2 → −31.2 LUFS);
-the lower mix *peak* is only mono being spread across two channels, not an attenuation.
+Placed **`MUSIC_BELOW_VO` dB under the measured voice loudness** (currently 7, matching
+S03E000) rather than at a fixed volume, so the balance holds across both soundtracks.
+0.5s fade in, 1.5s out; `amix=normalize=0` (the default would halve both inputs).
 
-The track is 235.9s against a 37.1s master, so the bed uses only its opening — check that
-the section under the hook is the part you want, and offset the music start if not.
-
-In the timeline this stays a separate A2 clip — the A1 master is clean and unmixed.
+To check a bed change, measure inside a verified voice gap — the mix's integrated LUFS
+barely moves when the bed does, because the voice dominates it.
 
 ### DECIDE (human)
 
+- **The recording gap above is the blocking one.** Everything else is finished.
 - **MUS_001 is not licensed.** Commercial instrumental, fine for judging the cut, not for
-  publishing. Swap for a cleared track before any export leaves review. Same status as
-  S03E002's bed.
-- **Take 1 was captured at −31.3 LUFS in a live room.** Under the pure-splice policy that
-  character ships as-is; only a re-record changes it.
-- The punchline (girlfriend / "group chat") is **not** in this master — it is on-location
-  dialogue. Leave A1 clear for it after `mission-accomplished`.
-- Beat durations in `manifest.yml` follow the 37.05s master — the tweak time was added to the
-  beats that actually changed (`build-app`, `rider-to-rider`, `mission-accomplished`), not
-  spread across all nine. Still provisional; lock them against VO_EN_003 at the subtitle pass.
+  publishing. Same status as the beds on S03E000 and S03E002.
+- The `(Kid standing behind grown up)` note in the script is a visual direction, not a line —
+  it has no VO and no beat of its own; it plays under `the-guy`.
+- Beat durations follow VO_EN_004 and are provisional; lock them at the subtitle pass.
 
 ## Subtitle notes
 
-Not started. Time against VO_EN_003 — not the raw take, and not v001 (the tweaks shift
-everything after 5.42s).
+Not started. Two passes needed: the bodies are identical, but VO_EN_005 carries the Chinese
+hook in front, so every English cue sits 4.89s later on that cut. Time each against its own
+master.
 
 ## Retention checklist
 

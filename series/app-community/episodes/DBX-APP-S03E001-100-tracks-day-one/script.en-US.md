@@ -1,83 +1,106 @@
-# Reading Script (口播稿) — DBX-APP-S03E001 · en-US
+# Reading Script (口播稿) — DBX-APP-S03E001 · en-US — RECORDED (take 4)
 
 <!-- Content layer only. Visual execution lives in storyboard.md.
-     Every section maps to a beat ID in manifest.yml. -->
+     Every section maps to a beat ID in manifest.yml.
+     Take 4 is a rewrite, not a re-read: the track is now a real one (Huzhou), the
+     bow/beg/tear-up escalation and the girlfriend punchline are gone, and the episode
+     ends on the rider who grew up on the track. Takes 1-3 are superseded.
+     Two soundtracks: the English body, and the same body opened with the Chinese hook.
+     The Chinese hook is separately authored, not a translation (docs/localization.md). -->
 
-Target total duration: ~47s · narrated to camera + field footage · S03 format: one track per episode, counted toward 100
+Target total duration: ~50s (**41.2s recorded** — see the gap flagged below)
+
+**Line breaks are load-bearing.** Each line below is kept whole in the VO master with 0.15s
+either side; pauses *inside* a line survive as delivered. See edit-notes.md (## VO audio).
 
 ---
 
-## hook (≤2s to land)
+## hook (≤2s to land) — ⚠️ NOT IN TAKE 4
 
-**Opening formula used:** D counterintuitive — the number is absurd enough to stop the scroll, and it opens a loop (100 tracks? how?).
+**Opening formula used:** D counterintuitive — the number is absurd enough to stop the scroll.
 
-**Spoken:** I'm gonna be building the best community by visiting **100 dirt bike tracks**.
+**Spoken (en):** I'm gonna be building the best community by visiting 100 dirt bike tracks.
 
-**On-screen / subtitle emphasis:** "**100**" pops on the number. Running counter idea seeded here, paid off at the end.
+**Spoken (zh, alternate hook — separate soundtrack, recorded):**
+> 我要走遍100个越野摩托场地，
+>
+> 弄个顶结棍的社区出来。
 
-## build-app
+<!-- Reading guide the author wrote for the second Chinese line, kept from the take-4 draft:
+     "nong ge ding jie gun ge shei qu ce lai". A pronunciation aid, not a third line. -->
 
-**Spoken:** So the first step, **build the app**. Boom, ready in a minute. Shoutout to all nerdy programmers.
+**On-screen / subtitle emphasis:** "**100**" pops on the number.
 
-**On-screen / subtitle emphasis:** "**build the app**" · the "ready in a minute" beat is the joke — the cut does the work.
+## first-step — ⚠️ NOT IN TAKE 4
 
-## drive-to-track
+**Spoken:** First step, build the app. **Boom.** Ready in a minute. Thanks to my nerdy side.
 
-**Spoken:** Second step, get your girlfriend to **drive you to a track** and find some actual riders, alive and kicking in the wild.
+**On-screen / subtitle emphasis:** "**Boom.**" lands on the finished app. The "ready in a minute" beat is the joke — the cut does the work.
 
-**On-screen / subtitle emphasis:** "**Step 2**" label · "alive and kicking in the wild" plays over real riders.
+## second-step
 
-## find-owner
+**Spoken:** Second step, get your girlfriend to drive you to the **best track in my vicinity**.
 
-**Spoken:** Next, find the **owner**, explain the whole thing, and get the **green light** to bother everyone here.
+**On-screen / subtitle emphasis:** "**best track**" — sets up the reveal.
 
-**On-screen / subtitle emphasis:** "**owner**" · "**green light**"
+## the-reveal
 
-## show-the-app
+**Spoken:**
+- Which apparently means *(drums rolling…)*
+- **Huzhou** (湖州).
+- Alright~ **Track number one!**
 
-**Spoken:** Show him the app. **Beautiful.**
+**On-screen / subtitle emphasis:** **湖州 / HUZHOU** card on the reveal. The drumroll and the words "drum rolling" play **at the same time** — see edit-notes.
 
-**On-screen / subtitle emphasis:** "**Beautiful.**" — lands on the phone screen.
+## the-guy
 
-## rider-to-rider
+**Spoken:**
+- And five minutes in, everybody keeps pointing me toward **this guy**.
+- Turns out, this guy basically **grew up on this track** (literally) —
+- every jump, every line, he knows it **by heart**.
+- That's what I'm talking about!
 
-**Spoken:** Now once he says yes, go **rider to rider**. Bow. Beg. Tear up. Pull out the whole childhood trauma.
+**On-screen / subtitle emphasis:** Kid standing behind the grown-up on "(literally)". "**grew up on this track**" is the episode's real find.
 
-**On-screen / subtitle emphasis:** Each escalation is its own hard cut — "bow / beg / tear up / childhood trauma" as four quick beats.
+## more-than-dirt
 
-## whatever-it-takes
+**Spoken:**
+- And yeah, to a **rookie** like myself, one day barely scratches the surface.
+- A track is **way more than just dirt**.
+- There are enough **riders and stories** here to keep me coming back for months.
 
-**Spoken:** Basically, whatever it takes to get everybody **onboard**. Nice.
-
-**On-screen / subtitle emphasis:** "**onboard**"
+**On-screen / subtitle emphasis:** "**way more than just dirt**" — the thesis of the whole series, said in passing.
 
 ## track-dog
 
-**Spoken:** And don't forget to pay a visit to the track mascot — the **track dog**! What's up, you little cutie.
+**Spoken:**
+- And don't forget to pay a visit to the track mascot — the **track dog**!
+- What's up, you little cutie~
 
 **On-screen / subtitle emphasis:** "**track dog**" — the pattern interrupt before the payoff.
 
-## mission-accomplished
+## track-one-down
 
-**Spoken:** That's it. **Mission accomplished.**
+**Spoken:** That's it. **Track one down.**
 
-**On-screen / subtitle emphasis:** Counter lands: **TRACK 1 / 100**.
+**On-screen / subtitle emphasis:** **+1 — 1 / 100** counter card.
 
-## punchline
+---
 
-**Spoken:**
-- [girlfriend] You could've just posted in the group chat.
-- [me] Oh, son of a—
+## ⚠️ Recording gap
 
-**On-screen / subtitle emphasis:** Hard cut to black on the unfinished word. No CTA card over the joke.
+Take 4 (`vo-take4-enfull`) starts at **second-step**. The `hook` and `first-step` lines above
+are written but **not recorded** — the English soundtrack currently opens on "Second step,…".
+Either record them as a pickup with take 4's wording, or open on the Chinese hook (which *is*
+recorded) and drop the English hook. Do not splice takes 1–3 in: the wording differs.
 
 ---
 
 ## Self-check before done (skills/03-script-writing.md)
 
 - [x] Hook lands in ≤2s via one of the four opening formulas; no self-introduction
-- [x] Core conclusion inside the first third (the mission + the app are both stated by ~10s)
-- [x] Delete-test passed: every line is premise, escalation, or payoff; no filler
-- [x] Positioning embedded, not introduced — the app appears as a step in the mission, never pitched
-- [x] Written natively for en-US, not translated
+- [x] Core conclusion inside the first third (the mission + track one land early)
+- [x] Delete-test passed: premise, reveal, the find, the thesis, payoff — no filler
+- [x] Positioning embedded — "a rookie like myself" undercuts rather than sells
+- [x] Written natively for en-US; the Chinese hook is separately authored, not translated
 - [x] Every section's beat ID exists in manifest.yml
