@@ -18,11 +18,12 @@ set -euo pipefail
 EP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VM="$(cd "$EP_DIR/../../../.." && pwd)"
 VID="DBX-APP-S03E001"
-VER="v005"
+VER="v006"
 MEDIA="$VM/media/$VID/voiceover"
 T1="$MEDIA/${VID}_en-US_vo-take1.m4a"
 T4="$MEDIA/${VID}_en-US_vo-take4-enfull.m4a"
 CN="$MEDIA/${VID}_en-US_vo-take4-cnhook.m4a"
+SN="$MEDIA/${VID}_en-US_vo-take4-snippet.m4a"
 MUSIC="$VM/media/audio/freek-a-leek-instrumental.mp3"
 OUT_EN="$MEDIA/${VID}_en-US_vo_${VER}.wav"
 OUT_CN="$MEDIA/${VID}_en-US_vo-cnhook_${VER}.wav"
@@ -44,16 +45,17 @@ BODY=("t4 0.88 1.49 1.97 4.69"                          # Second step, get your 
       "t4 18.73 19.81 20.17 22.18"                      # And five minutes in, everybody keeps pointing...
       "t4 23.34 23.89 24.14 26.72"                      # Turns out, this guy grew up on this track (literally)
       "t4 28.11 28.73 28.97 29.54 30.13 30.96"          # every jump, every line, he knows it by heart.
-      "t4 32.80 34.20"                                  # That's what I'm talking about!
+      "sn 0.20 1.11 1.45 2.69"                          # Um hum. That's what I'm talking about!  (snippet — softer take, used at its own level)
       "t4 35.60 37.21 37.61 39.37"                      # And yeah to a rookie like myself, one day barely...
       "t4 41.08 42.39 42.50 42.85"                      # A track is way more than just dirt.
       "t4 43.51 47.03"                                  # There are enough riders and stories here...
-      "t4 47.86 50.26 50.51 51.30"                      # And don't forget the track mascot, the track dog!
+      "t4 47.86 50.26"                                  # And don't forget to pay a visit to the track mascot,
+      "t4 50.51 51.30"                                  # the track dog!  (own line = 0.30s beat before the reveal)
       "t4 51.87 52.93"                                  # What's up you little cutie~
       "t4 53.71 54.17 54.43 55.76")                     # That's it. Track one down.
 CN_HOOK=("cn 0.84 3.06" "cn 4.31 6.38")
 
-for f in "$T1" "$T4" "$CN"; do [ -f "$f" ] || { echo "missing take: $f" >&2; exit 1; }; done
+for f in "$T1" "$T4" "$CN" "$SN"; do [ -f "$f" ] || { echo "missing take: $f" >&2; exit 1; }; done
 mkdir -p "$MEDIA"
 
 lufs_of() { ffmpeg -hide_banner -nostats -i "$1" -af ebur128 -f null - 2>&1 \
@@ -70,7 +72,7 @@ IDX=0
 emit() {  # emit <listfile> <entry>
   local lf="$1"; set -- $2; local src="$1"; shift
   local file gain=0
-  case "$src" in t1) file="$T1"; gain="$GAIN_T1";; t4) file="$T4";; cn) file="$CN";; esac
+  case "$src" in t1) file="$T1"; gain="$GAIN_T1";; t4) file="$T4";; cn) file="$CN";; sn) file="$SN";; esac
   local nsub=$(( $# / 2 )) i=0
   while [ $# -ge 2 ]; do
     i=$((i+1)); IDX=$((IDX+1))

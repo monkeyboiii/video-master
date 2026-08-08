@@ -8,7 +8,7 @@
      Two soundtracks: the English body, and the same body opened with the Chinese hook.
      The Chinese hook is separately authored, not a translation (docs/localization.md). -->
 
-Target total duration: **45.8s** (English) · **46.8s** (Chinese hook) — fully recorded
+Target total duration: **46.9s** (English) · **47.9s** (Chinese hook) — fully recorded
 
 **Line breaks are load-bearing.** Each line below is kept whole in the VO master; sub-phrases
 inside a line join at 0.12s, lines at 0.30s. See edit-notes.md (## VO audio).
@@ -58,9 +58,9 @@ inside a line join at 0.12s, lines at 0.30s. See edit-notes.md (## VO audio).
 - And five minutes in, everybody keeps pointing me toward **this guy**.
 - Turns out, this guy basically **grew up on this track** (literally) —
 - every jump, every line, he knows it **by heart**.
-- That's what I'm talking about!
+- **Um hum.** That's what I'm talking about!
 
-**On-screen / subtitle emphasis:** Kid standing behind the grown-up on "(literally)". "**grew up on this track**" is the episode's real find.
+**On-screen / subtitle emphasis:** Kid standing behind the grown-up on "(literally)". "**grew up on this track**" is the episode's real find. The closing line uses the softer snippet take — deliberately under the surrounding delivery, not levelled up to it.
 
 ## more-than-dirt
 
@@ -74,10 +74,11 @@ inside a line join at 0.12s, lines at 0.30s. See edit-notes.md (## VO audio).
 ## track-dog
 
 **Spoken:**
-- And don't forget to pay a visit to the track mascot — the **track dog**!
+- And don't forget to pay a visit to the track mascot —
+- the **track dog**!
 - What's up, you little cutie~
 
-**On-screen / subtitle emphasis:** "**track dog**" — the pattern interrupt before the payoff.
+**On-screen / subtitle emphasis:** "**track dog**" — the pattern interrupt before the payoff. "track mascot —" and "the track dog!" are separate lines so a 0.30s beat lands before the reveal.
 
 ## track-one-down
 
@@ -90,7 +91,9 @@ inside a line join at 0.12s, lines at 0.30s. See edit-notes.md (## VO audio).
 ## Sources
 
 `hook` and `first-step` come from **take 1**, which delivers them in this wording; everything
-from `second-step` on is **take 4**. Take 1 is gain-matched to take 4 in `vo-process.sh`.
+from `second-step` on is **take 4**, except "Um hum. That's what I'm talking about!" which is
+the **snippet** take. Take 1 is gain-matched to take 4; the snippet is not — it is meant to
+sit softer.
 
 ---
 

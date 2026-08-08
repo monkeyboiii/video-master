@@ -19,7 +19,7 @@ variants:
     cover: cover.en-US.md
     subtitles: subtitles/en-US.srt
     remotion_props: null
-    voiceover_asset_id: VO_EN_006
+    voiceover_asset_id: VO_EN_008
     platforms: [tiktok, ytshorts, reels]
 
 # S03 runs as a numbered field mission: one real track per episode, counted toward 100.
@@ -56,7 +56,7 @@ beats:
     visual_intent: riders pointing him onward, then the guy; kid standing behind the grown-up on "(literally)"
     overlay: null
     target_duration_sec:
-      en-US: 11.32
+      en-US: 12.19
   - id: more-than-dirt
     purpose: the series thesis, said in passing rather than declared
     visual_intent: wides of the track working — jumps, berms, people talking between runs
@@ -68,7 +68,7 @@ beats:
     visual_intent: low-angle close on the track dog; hold longer than feels right
     overlay: null
     target_duration_sec:
-      en-US: 4.97
+      en-US: 5.15
   - id: track-one-down
     purpose: pay off the count and make it feel real
     visual_intent: wide of the track, +1 — 1 / 100 counter card
@@ -79,25 +79,26 @@ assets:
   raw: []
   selected: []
   voiceover:
-    - asset_id: VO_EN_006
+    - asset_id: VO_EN_008
       locale: en-US
-      filename: DBX-APP-S03E001_en-US_vo_v005.wav
+      filename: DBX-APP-S03E001_en-US_vo_v006.wav
       external_uri: null
       notes: >-
-        Takes 1 + 4. Hook and first-step from take 1 (same wording as take 4's script),
-        gain-matched +5.00 dB — verified at -26.2 vs -26.1 LUFS across the seam. Body from
-        take 4. LINE-BOUNDARY SPLICE: lines join at 0.30s, sub-phrases inside a line at
-        0.12s, blips excluded so no dead air rides the end of a line. The drumroll is the
-        spoken line only — the vocalised roll is dropped. No EQ, denoise, gate, compression,
-        limiting or tempo. -26.2 LUFS / -6.3 dBFS / 45.81s.
+        Takes 1 + 4 + snippet. Hook and first-step from take 1 (take 4's wording),
+        gain-matched +5.00 dB. Body from take 4. "Um hum. That's what I'm talking about!"
+        from the snippet take, used AT ITS OWN LEVEL (~3 dB under the surrounding delivery)
+        because the take-4 read was too loud there. Lines join at 0.30s, sub-phrases at
+        0.12s; "the track dog!" is its own line so a beat lands before the reveal.
+        Drumroll is the spoken line only. No EQ, denoise, gate, compression, limiting or
+        tempo. -26.2 LUFS / -6.3 dBFS / 46.86s.
         Reproduce with ./vo-process.sh; line table in edit-notes.md (## VO audio).
-    - asset_id: VO_EN_007
+    - asset_id: VO_EN_009
       locale: en-US
-      filename: DBX-APP-S03E001_en-US_vo-cnhook_v005.wav
+      filename: DBX-APP-S03E001_en-US_vo-cnhook_v006.wav
       external_uri: null
       notes: >-
         Same cut with the recorded Chinese hook replacing the English one — for the
-        Chinese-language platforms. -26.2 LUFS / -6.3 dBFS / 46.83s.
+        Chinese-language platforms. -26.3 LUFS / -6.3 dBFS / 47.88s.
   audio:
     - asset_id: MUS_001
       filename: freek-a-leek-instrumental.mp3 # lives in media/audio/

@@ -5,7 +5,7 @@ Track layout: V1 footage · V2 overlays · V3 spare · A1 voiceover · A2 music/
 Footage is not shot yet. This file currently carries the **VO audio** decisions only;
 the assembly plan lands after the shoot.
 
-## VO audio — takes 1 + 4 (VO_EN_006 / VO_EN_007)
+## VO audio — takes 1 + 4 + snippet (VO_EN_008 / VO_EN_009)
 
 Reproduce with `./vo-process.sh` (needs `ffmpeg`; auto-editor is not used here — see below).
 One run writes both soundtracks, MP3 review copies, and a review mix of each under the bed.
@@ -56,6 +56,23 @@ inserted gaps are exactly 0.12s and 0.30s. Checked at "Turns out, this" (speech 
 auto-editor is not used on this episode: its cut model cannot express per-phrase joins across
 two source files.
 
+### The snippet line
+
+"Um hum. That's what I'm talking about!" comes from `vo-take4-snippet`, replacing take 4's
+own read of that line, which was too loud for the moment.
+
+**It is used at its own level — deliberately not matched up.** The snippet sits ~3 dB under
+the surrounding take-4 delivery (measured −26.7/−29.0 dB against −25.3 dB either side), and
+that softness is the point. Take 1 gets a match gain because a level *step* mid-sentence is a
+defect; this is a performance choice, so it stays.
+
+### The track-dog beat
+
+"…pay a visit to the track mascot —" and "the track dog!" are **separate line entries**, so a
+0.30s beat lands before the reveal instead of the 0.12s a single line would give. Measured
+0.34s in the master. Splitting the line is how any beat like this gets added — do not
+special-case a gap in the builder.
+
 ### The drumroll — spoken line only
 
 "Which apparently means *(drums rolling…)* Huzhou" was delivered as two things back to back:
@@ -86,7 +103,7 @@ barely moves when the bed does, because the voice dominates it.
   publishing. Same status as the beds on S03E000 and S03E002.
 - The `(Kid standing behind grown up)` note in the script is a visual direction, not a line —
   it has no VO and no beat of its own; it plays under `the-guy`.
-- Beat durations follow VO_EN_006, are all measured now, and are provisional until the
+- Beat durations follow VO_EN_008, are all measured, and are provisional until the
   subtitle pass.
 - If a real drumroll SFX is wanted under "(drums rolling…)", it belongs on A2.
 
@@ -94,7 +111,7 @@ barely moves when the bed does, because the voice dominates it.
 
 Not started. Two passes needed: the bodies are identical, but the two cuts open differently,
 so cues diverge by ~1.0s after the hook. Time each against its own master
-(VO_EN_006 / VO_EN_007).
+(VO_EN_008 / VO_EN_009).
 
 ## Retention checklist
 
