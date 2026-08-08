@@ -5,7 +5,7 @@ Track layout: V1 footage · V2 overlays · V3 spare · A1 voiceover · A2 music/
 Footage is not shot yet. This file currently carries the **VO audio** decisions only;
 the assembly plan lands after the shoot.
 
-## VO audio — take 1 (VO_EN_003 / VO_EN_004)
+## VO audio — take 1 (VO_EN_007 / VO_EN_008)
 
 Reproduce with `./vo-process.sh` (needs `auto-editor` on PATH and `ffmpeg`). One run writes
 both soundtracks, their MP3 review copies, and a review mix of each under the bed — all into
@@ -19,30 +19,57 @@ to flatten in-sentence pauses as well — so this episode uses auto-editor's **m
 (`--edit 1 --cut A,B --cut C,D …`) instead. An automatic threshold cannot tell a line break
 from a mid-sentence breath; only the script can.
 
-This rule has teeth, and v001 proved it: the hook was one script line delivered with **0.67s
-and 1.98s pauses inside it**, and both survived. The 1.98s made the hook drag. **The fix was
-a script change, not a special case** — the hook is now two lines in `script.en-US.md`, split
-after "…to the rest of the world,", so that pause is a real boundary and trims to 0.31s like
-any other. The 0.67s beat is still inside line 1 and still survives.
+This rule has teeth, and the hook proved it twice. As one script line it was delivered with
+**0.67s and 1.98s pauses inside it**, and the rule preserved both — which made it drag. **Both
+fixes were script changes, not special cases:** the hook is now **three lines** in
+`script.en-US.md`, broken after "…dirt-bike track —" and after "…to the rest of the world,",
+so each pause is a real boundary and trims to ~0.31s.
 
 Keep doing it this way. If another pause needs to go, split the line; do not hand-add a range
 that no line break justifies, or the cut list stops being derivable from the script.
+
+### The one exception: `15.00,15.14`
+
+There is exactly one cut that no line break justifies, and it is marked as such in the script.
+"…at least somebody's gotta do something about it" was delivered with the final **"it" 15 dB
+below the rest of the line** — a 0.06s burst at −46 dB against a −54 dB floor. Measured:
+
+```
+"...about"   ends 14.92
+             0.28s silence
+"it"         15.18-15.26   -46 dB  (speech elsewhere is ~-31 dB)
+             0.88s silence  -> trimmed to 0.28s by the line boundary
+"Why not"    16.16
+```
+
+So the line ends with ~0.6s of near-silence wrapped around a word most listeners will not
+hear — and in the review mix the bed sits **above** it. This is a hesitation inside a word
+group, not a rhetorical pause, and splitting "…about" / "it" into separate script lines would
+be nonsense. It is cut as a documented exception instead: 0.14s removed before the "it",
+leaving the word intact.
+
+**Still open:** dropping that "it" entirely would close the whole thing to a clean 0.26s.
+That deletes a word from the delivered line, so it is the author's call, not the editor's —
+change `15.00sec,15.14sec` to `15.00sec,16.00sec` in both `EN_CUTS` and `BODY_CUTS` if wanted.
 
 Beyond the cuts: no EQ, denoise, gate, compression, limiting, tempo or gain. Level stays the
 take's own. The only level set anywhere is the music bed's. Same policy as the rest of S03.
 
 ### The two soundtracks
 
-| | VO_EN_003 | VO_EN_004 |
+| | VO_EN_007 | VO_EN_008 |
 |---|---|---|
 | Opens with | English hook | Chinese hook |
 | Body | identical English body | identical English body |
-| Duration | **30.67s** | **29.80s** |
+| Duration | **30.17s** | **29.67s** |
 | Integrated | −29.4 LUFS | −29.4 LUFS |
 | True peak | −8.7 dBFS | −8.7 dBFS |
 
-The hook edit does not touch VO_EN_004 — the English hook is dropped from that cut entirely,
-so it was rebuilt only to pick up the louder bed.
+The hook edits do not touch VO_EN_006 — the English hook is dropped from that cut entirely.
+The **bodies are identical** (23.63s vs 23.62s measured); only the hook beat differs,
+**6.67s English vs 6.18s Chinese**, so every body cue sits **0.49s earlier** on the Chinese
+cut. (Earlier revisions of this file quoted 2.53s and 0.86s for that offset; both were wrong
+— the figure is measured by comparing where the body starts in each master.)
 
 The Chinese cut is built by re-splicing the same English take with the hook line dropped
 (`BODY_CUTS`) and concatenating it after the spliced Chinese take. **No silence is inserted
@@ -60,9 +87,11 @@ Whisper's own word boundaries snap to neighbouring words and are ~0.2s loose —
 | Boundary | raw gap | Boundary | raw gap |
 |---|---|---|---|
 | lead-in | 1.16s | L6→L7 | 1.47s |
-| **hook line break** | **1.98s** | L7→L8 | 0.31s (already at target) |
+| **hook break 1** | **0.67s** | L7→L8 | 0.31s (already at target) |
+| **hook break 2** | **1.98s** | | |
 | L1→L2 | 1.42s | | |
 | L2→L3 | 0.92s | L8→L9 | 1.16s |
+| *(hesitation 15.00–15.14, not a line break)* | 0.28s | | |
 | L3→L4 | 0.65s | L9→L10 | 0.44s |
 | L4→L5 | 0.42s | L10→L11 | 0.32s (already at target) |
 | L5→L6 | 0.48s | L11→L12 | 1.47s |
@@ -103,14 +132,14 @@ compressed slightly by the take's own room tone sharing the window).
   beds on S03E001 and S03E002.
 - Both takes were captured at ≈ −29.5 LUFS in a live room; under the no-processing policy
   that character ships as-is.
-- Beat durations in `manifest.yml` follow VO_EN_003. The `hook` beat is 4.52s shorter on the
-  Chinese cut — if that variant gets its own timeline, its hook beat is 2.53s, not 7.05s.
+- Beat durations in `manifest.yml` follow VO_EN_007. If the Chinese cut gets its own
+  timeline, only the `hook` beat changes: 6.18s instead of 6.67s.
 
 ## Subtitle notes
 
 Not started, and this episode needs **two** subtitle passes — the bodies are identical but
-every cue after the hook is offset by 0.86s between the two soundtracks. Time each against
-its own master (VO_EN_003 / VO_EN_004).
+every body cue sits 0.49s earlier on the Chinese cut. Time each against its own master
+(VO_EN_007 / VO_EN_008).
 
 ## Retention checklist
 
