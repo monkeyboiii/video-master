@@ -4,10 +4,10 @@
      Every section maps to a beat ID in manifest.yml.
      Rev 2 keeps take 2's hook and body and replaces everything from "Anyway, enough of
      that." onward: the owner became the boss, and he turns the app down. The girlfriend
-     punchline is dropped. Two soundtracks — VO_EN_012 (English hook) and VO_EN_013
+     punchline is dropped. Two soundtracks — VO_EN_014 (English hook) and VO_EN_015
      (Chinese hook); only the hook differs. See edit-notes.md (## VO audio). -->
 
-Target total duration: **50.34s** (English hook) · **49.84s** (Chinese hook) — fully recorded
+Target total duration: **50.14s** (English hook) · **49.64s** (Chinese hook) — fully recorded
 
 ---
 
@@ -65,7 +65,7 @@ Target total duration: **50.34s** (English hook) · **49.84s** (Chinese hook) �
 - show him my gorgeous app and —
 - *(record scratch)*
 
-**On-screen / subtitle emphasis:** plays as the confident setup, so the scratch has something to knock over. The VO master leaves a **1.24s hole** at the scratch; the SFX itself lives on A2. Rev 1 said "owner" and ended with a badge and a secured track — both gone.
+**On-screen / subtitle emphasis:** plays as the confident setup, so the scratch has something to knock over. The VO master leaves a **1.25s hole** at the scratch; the SFX itself lives on A2. Rev 1 said "owner" and ended with a badge and a secured track — both gone.
 
 ## not-quite
 

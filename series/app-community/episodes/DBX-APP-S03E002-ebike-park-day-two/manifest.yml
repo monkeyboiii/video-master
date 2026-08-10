@@ -19,13 +19,13 @@ variants:
     cover: cover.en-US.md
     subtitles: subtitles/en-US.srt
     remotion_props: null
-    voiceover_asset_id: VO_EN_012
+    voiceover_asset_id: VO_EN_014
     platforms: [tiktok, ytshorts, reels]
 
 # S03 runs as a numbered field mission: one real track per episode, counted toward 100.
-# The nine beats sum to the 50.34s English master. On the Chinese-hook cut the hook beat is
+# The nine beats sum to the 50.14s English master. On the Chinese-hook cut the hook beat is
 # 4.29s instead of 4.79s, so every later cue sits 0.50s earlier — see edit-notes.md.
-# Boundaries are measured off VO_EN_012 but stay provisional until the subtitle pass.
+# Boundaries are measured off VO_EN_014 but stay provisional until the subtitle pass.
 beats:
   - id: hook
     purpose: carry the E001 counter forward and make day two personal in one line
@@ -74,7 +74,7 @@ beats:
     visual_intent: founder to camera, no cutaway to hide behind; GPX / live tracking called out on screen
     overlay: null
     target_duration_sec:
-      en-US: 8.06
+      en-US: 7.86
   - id: learning
     purpose: pay off the count without pretending the deal happened
     visual_intent: E-BIKE PARK 2 / 100 counter card over a wide of the park
@@ -86,26 +86,27 @@ assets:
   raw: []
   selected: []
   voiceover:
-    - asset_id: VO_EN_012
+    - asset_id: VO_EN_014
       locale: en-US
-      filename: DBX-APP-S03E002_en-US_vo_v005.wav
+      filename: DBX-APP-S03E002_en-US_vo_v006.wav
       external_uri: null
       notes: >-
         Take 2 (hook + body, unchanged from v004) + the rev-2 ending take, joined at the line
         boundary after "Oh man, the flashbacks!". Every region spliced with v004's auto-editor
-        settings, then concatenated; joins measure 0.20s, the same as the internal pacing.
-        A 1.24s hole is left where the record scratch goes — the SFX is not in this master.
+        settings, then concatenated; joins measure 0.20-0.24s, the same as the internal
+        pacing. A 1.25s hole is left where the record scratch goes — the SFX is not in this
+        master.
         No EQ, denoise, gate, compression, limiting or tempo; the rev-2 ending carries a flat
-        +0.80 dB match gain (verified flat to 0.5 dB across 125 Hz-8 kHz).
-        -30.0 LUFS / -8.7 dBFS / 50.34s. Reproduce with ./vo-process.sh; see edit-notes.md.
-    - asset_id: VO_EN_013
+        +0.90 dB match gain (verified flat to 0.45 dB across 125 Hz-8 kHz).
+        -30.0 LUFS / -8.7 dBFS / 50.14s. Reproduce with ./vo-process.sh; see edit-notes.md.
+    - asset_id: VO_EN_015
       locale: en-US
-      filename: DBX-APP-S03E002_en-US_vo-cnhook_v005.wav
+      filename: DBX-APP-S03E002_en-US_vo-cnhook_v006.wav
       external_uri: null
       notes: >-
         Same cut with the recorded Chinese (Hangzhou dialect) hook replacing the English one —
         for the Chinese-language platforms. Hook carries a flat -0.30 dB match gain.
-        -30.1 LUFS / -8.7 dBFS / 49.84s.
+        -30.0 LUFS / -8.7 dBFS / 49.64s.
   audio:
     - asset_id: MUS_001
       filename: 50-cent-just-a-lil-bit-instrumental.mp3 # lives in media/audio/
@@ -120,7 +121,7 @@ assets:
       source: operator-supplied
       license: >-
         UNKNOWN — no licence on file. Clear or replace before publish.
-        Lands at 37.88s on VO_EN_012 / 37.38s on VO_EN_013, in the hole left after
+        Lands at 38.01s on VO_EN_014 / 37.51s on VO_EN_015, in the hole left after
         "show him my gorgeous app and". A2 only; never mixed into the VO master.
 
 outputs:

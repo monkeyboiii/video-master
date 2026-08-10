@@ -17,7 +17,7 @@ set -euo pipefail
 EP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VM="$(cd "$EP_DIR/../../../.." && pwd)"
 VID="DBX-APP-S03E002"
-VER="v005"
+VER="v006"
 MEDIA="$VM/media/$VID/voiceover"
 T2="$MEDIA/${VID}_en-US_vo-take2.m4a"
 ND="$MEDIA/${VID}_en-US_vo-rev2-ending.m4a"
@@ -34,14 +34,17 @@ MARGIN=0.06s,0.12s
 SMOOTH=0.10s,0.08s
 SCRATCH_GAP=1.20    # s of hole left for the record scratch, matching the delivered pause
 MUSIC_BELOW_VO=10   # dB the bed sits under the measured voice
-SFX_BELOW_VO_PEAK=3 # dB the scratch peaks under the voice, review mix only
+SFX_BELOW_VO_PEAK=9 # dB the scratch peaks under the voice, review mix only
+SFX_TRIM=0.17       # s of lead silence in the SFX file before the hit at 0.178
+SFX_FADE_IN=0.05    # s ramp on the hit; the raw file goes silent -> full in 10ms
 
 # Regions are absolute seconds into each raw take, cut a little wide; auto-editor trims
 # the edges to MARGIN. Editing one never shifts another.
 R_ENHOOK="$T2 0.60 7.90"   # Day two... / ...back in my hometown.
 R_BODY="$T2 9.40 50.30"    # I used to ride... -> Oh man, the flashbacks!
 R_ENDA="$ND 0.30 5.15"     # Anyways, enough of that. / ...find the boss, / show him my gorgeous app and
-R_ENDB="$ND 6.15 23.60"    # Yeah, not quite. -> electric warriors, let's go?!
+R_ENDB1="$ND 6.15 13.85"   # Yeah, not quite. / He passed on the app, but gave me some solid advice
+R_ENDB2="$ND 15.00 23.60"  # - for enduro riders... -> electric warriors, let's go?!
 R_CNHOOK="$CN 1.10 6.60"   # 走遍100个越野摩托车场的第二集，搿趟...回屋里厢！
 
 command -v auto-editor >/dev/null || { echo "auto-editor not on PATH" >&2; exit 1; }
@@ -69,25 +72,27 @@ echo ">>> splice each region with v004 settings"
 splice enhook "$R_ENHOOK"
 splice body   "$R_BODY"
 splice enda   "$R_ENDA"
-splice endb   "$R_ENDB"
+splice endb1  "$R_ENDB1"
+splice endb2  "$R_ENDB2"
 splice cnhook "$R_CNHOOK"
 
 # The rev-2 takes are a different session. Match them to take 2's body, measured — the
 # ending is measured as one piece because R128 is unreliable on a 4s fragment.
-printf "file '%s'\nfile '%s'\n" "$TMP/enda.wav" "$TMP/endb.wav" > "$TMP/endcat.txt"
+printf "file '%s'\nfile '%s'\nfile '%s'\n" "$TMP/enda.wav" "$TMP/endb1.wav" "$TMP/endb2.wav" \
+  > "$TMP/endcat.txt"
 ffmpeg -y -v error -f concat -safe 0 -i "$TMP/endcat.txt" -c copy "$TMP/endcat.wav"
 BODY_I="$(lufs_of "$TMP/body.wav")"
 GAIN_END=$(awk -v a="$BODY_I" -v b="$(lufs_of "$TMP/endcat.wav")" 'BEGIN{printf "%.2f", a-b}')
 GAIN_CN=$(awk  -v a="$BODY_I" -v b="$(lufs_of "$TMP/cnhook.wav")" 'BEGIN{printf "%.2f", a-b}')
 echo ">>> match gain vs body (${BODY_I} LUFS): ending ${GAIN_END} dB · cn hook ${GAIN_CN} dB"
-for p in enda endb; do
+for p in enda endb1 endb2; do
   ffmpeg -y -v error -i "$TMP/$p.wav" -af "volume=${GAIN_END}dB" -ar 48000 -ac 1 \
     -c:a pcm_s24le "$TMP/${p}_g.wav" && mv "$TMP/${p}_g.wav" "$TMP/$p.wav"
 done
 ffmpeg -y -v error -i "$TMP/cnhook.wav" -af "volume=${GAIN_CN}dB" -ar 48000 -ac 1 \
   -c:a pcm_s24le "$TMP/cnhook_g.wav" && mv "$TMP/cnhook_g.wav" "$TMP/cnhook.wav"
 
-# The scratch hole. enda ends ~0.10s after the last word and endb starts ~0.06s before the
+# The scratch hole. enda ends 0.12s after the last word and endb1 starts 0.06s before the
 # next, so only the remainder is generated.
 JOIN=$(awk -v g="$SCRATCH_GAP" 'BEGIN{printf "%.3f", g-0.16}')
 ffmpeg -y -v error -f lavfi -i "anullsrc=r=48000:cl=mono" -t "$JOIN" -c:a pcm_s24le "$TMP/hole.wav"
@@ -102,14 +107,15 @@ build() {  # build <out> <piece...>; prints the scratch offset on stdout
     off=$(awk -v a="$off" -v b="$(dur_of "$TMP/$p.wav")" 'BEGIN{printf "%.3f", a+b}')
   done
   ffmpeg -y -v error -f concat -safe 0 -i "$lf" -ar 48000 -c:a pcm_s24le "$out"
-  # scratch lands where enda's speech ends: its own 0.15s of lead silence is pulled back out
-  awk -v a="$sfx_at" -v b="$(dur_of "$TMP/enda.wav")" 'BEGIN{printf "%.3f", a+b-0.25}'
+  # top of the hole = end of enda less its 0.12s tail margin; the SFX is trimmed to its own
+  # onset in the mix, so this is where the hit lands
+  awk -v a="$sfx_at" -v b="$(dur_of "$TMP/enda.wav")" 'BEGIN{printf "%.3f", a+b-0.12}'
 }
 
 echo ">>> english hook + body + rev-2 ending"
-SFX_EN=$(build "$OUT_EN" enhook body enda hole endb)
+SFX_EN=$(build "$OUT_EN" enhook body enda hole endb1 endb2)
 echo ">>> chinese hook replaces the english hook"
-SFX_CN=$(build "$OUT_CN" cnhook body enda hole endb)
+SFX_CN=$(build "$OUT_CN" cnhook body enda hole endb1 endb2)
 echo ">>> record scratch at ${SFX_EN}s (en) / ${SFX_CN}s (cn) — review mix only, A1 stays clean"
 
 for OUT in "$OUT_EN" "$OUT_CN"; do
@@ -127,7 +133,9 @@ for OUT in "$OUT_EN" "$OUT_CN"; do
     "[0:a]aresample=48000,aformat=channel_layouts=stereo[v];\
 [1:a]aresample=48000,aformat=channel_layouts=stereo,volume=${MG}dB,\
 afade=t=in:st=0:d=0.5,afade=t=out:st=$FADE:d=1.5[m];\
-[2:a]aresample=48000,aformat=channel_layouts=stereo,volume=${SG}dB,\
+[2:a]aresample=48000,aformat=channel_layouts=stereo,\
+atrim=start=${SFX_TRIM},asetpts=PTS-STARTPTS,\
+afade=t=in:st=0:d=${SFX_FADE_IN},volume=${SG}dB,\
 adelay=${DELAY}|${DELAY}[s];\
 [v][m][s]amix=inputs=3:duration=first:normalize=0[out]" \
     -map "[out]" -ar 44100 -c:a libmp3lame -b:a 192k "${BASE}_review-mix.mp3"
