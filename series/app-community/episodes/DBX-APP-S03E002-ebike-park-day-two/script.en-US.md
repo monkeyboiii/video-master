@@ -1,10 +1,13 @@
-# Reading Script (口播稿) — DBX-APP-S03E002 · en-US — RECORDED (take 1)
+# Reading Script (口播稿) — DBX-APP-S03E002 · en-US — RECORDED (rev 2)
 
 <!-- Content layer only. Visual execution lives in storyboard.md.
      Every section maps to a beat ID in manifest.yml.
-     VO take 1 is recorded and mastered — VO_EN_001, 47.00s. See edit-notes.md (## VO audio). -->
+     Rev 2 keeps take 2's hook and body and replaces everything from "Anyway, enough of
+     that." onward: the owner became the boss, and he turns the app down. The girlfriend
+     punchline is dropped. Two soundtracks — VO_EN_012 (English hook) and VO_EN_013
+     (Chinese hook); only the hook differs. See edit-notes.md (## VO audio). -->
 
-Target total duration: ~51s (VO master 47.00s + the on-location punchline) · S03 format: one track per episode, counted toward 100
+Target total duration: **50.34s** (English hook) · **49.84s** (Chinese hook) — fully recorded
 
 ---
 
@@ -12,7 +15,15 @@ Target total duration: ~51s (VO master 47.00s + the on-location punchline) · S0
 
 **Opening formula used:** B identity contrast — "day two" implies day one exists and the count is real; the hometown turn makes it personal immediately.
 
-**Spoken:** Day two of visiting **100 dirt bike tracks**, and this time I'm back in my **hometown**.
+**Spoken (en):** Day two of visiting **100 dirt bike tracks**, and this time I'm back in my **hometown**.
+
+**Spoken (zh, alternate hook — separate soundtrack, recorded):**
+> 走遍100个越野摩托车场的第二集，
+>
+> 搿趟 gen nwo 回屋里厢！
+
+<!-- 杭州方言. The romanisation is the author's reading aid for the middle of the second
+     line, not a third line. -->
 
 **On-screen / subtitle emphasis:** "**100**" · "**hometown**" — counter from E001 carries over.
 
@@ -24,19 +35,19 @@ Target total duration: ~51s (VO master 47.00s + the on-location punchline) · S0
 
 ## all-electric
 
-**Spoken:** But now I came back, and suddenly all the bikes had **batteries**. Fantastic. The future is here whether we like it or not.
+**Spoken:** But now I came back, and suddenly all the bikes had **big batteries**. Fantastic. The future is here whether we like it or not.
 
-**On-screen / subtitle emphasis:** "**batteries**" — the reversal beat; "Fantastic" is deadpan, let the cut sell it.
+**On-screen / subtitle emphasis:** "**big batteries**" — the reversal beat; "Fantastic" is deadpan, let the cut sell it.
 
 ## why-it-matters
 
-**Spoken:** E-bikes are growing really fast around here, and I'd be kicking myself, had my app completely **missed out** on them.
+**Spoken:** E-bikes are growing really fast around here, and I'd be kicking myself in the butt, if my app completely **missed out** on them.
 
 **On-screen / subtitle emphasis:** "**missed out**" — this is the positioning line: the app adapts to what riders actually ride.
 
 ## same-dirt
 
-**Spoken:** Alright, look what we've got here. This park has the **same dirt, jumps, berms** — and enthusiasts.
+**Spoken:** Alright, look what we've got here. This park has the **same dirt, jumps, berms**, and enthusiasts —
 
 **On-screen / subtitle emphasis:** "**same dirt, jumps, berms**" over matching cutaways of each.
 
@@ -46,33 +57,53 @@ Target total duration: ~51s (VO master 47.00s + the on-location punchline) · S0
 
 **On-screen / subtitle emphasis:** "**pushing the bike up the stairs**" — the relatable pain; flashback insert if any old footage exists.
 
-## seal-the-deal
-
-**Spoken:** Anyway, enough of that. Let's go find the **owner**, show him my gorgeous app, and seal the deal with a **shiny badge** for his track.
-
-**On-screen / subtitle emphasis:** "**owner**" · "**shiny badge**" — the badge is the tangible thing a track owner gets.
-
-## track-two-secured
-
-**Spoken:** Nice. **Track two secured.** Electric warriors, let's go!
-
-**On-screen / subtitle emphasis:** **E-BIKE PARK 2 / 100** counter card.
-
-## punchline
+## find-the-boss
 
 **Spoken:**
-- [girlfriend] So now you need an e-bike?
-- [me] For **research purposes**.
+- Anyway, enough of that.
+- Let's go and find the **boss**,
+- show him my gorgeous app and —
+- *(record scratch)*
 
-**On-screen / subtitle emphasis:** "**research purposes**" — hard cut out on the line. Not in the VO master; captured on location.
+**On-screen / subtitle emphasis:** plays as the confident setup, so the scratch has something to knock over. The VO master leaves a **1.24s hole** at the scratch; the SFX itself lives on A2. Rev 1 said "owner" and ended with a badge and a secured track — both gone.
+
+## not-quite
+
+**Spoken:**
+- Yeah... not quite.
+- He passed on the app, but gave me some solid advice
+- — for enduro riders, GPX and live tracking can be a lifeline.
+
+**On-screen / subtitle emphasis:** "**He passed on the app**" — this is the episode's honesty beat; do not soften it in the edit. "**GPX and live tracking**" is the takeaway a viewer can hold the app to.
+
+## learning
+
+**Spoken:** Guess we're learning... **electric warriors, let's go?!**
+
+**On-screen / subtitle emphasis:** **E-BIKE PARK 2 / 100** counter card — the count is visits, not deals, so it still ticks.
+
+---
+
+## Sources
+
+`hook` (English) and `hometown-knowledge` → `no-more-pushing` are **take 2**, unchanged from
+v004. `find-the-boss` → `learning` are the **rev-2 ending** take, spliced in at the line
+boundary after "Oh man, the flashbacks!". The Chinese hook is its own **rev-2** take and is
+separately authored, not a translation (docs/localization.md).
+
+**The delivery differs from the written lines in small ways** where the body was not
+re-recorded — "all the bikes **have** big batteries", "**so** I'd be kicking myself",
+"look what **we got** here", "**Oh man, the flashbacks!**" (order reversed), "**Anyways**".
+Subtitles follow the delivery, not this page; confirm each by ear at the subtitle pass.
 
 ---
 
 ## Self-check before done (skills/03-script-writing.md)
 
 - [x] Hook lands in ≤2s via one of the four opening formulas; no self-introduction
-- [x] Core conclusion inside the first third (the e-bike reversal + why it matters land by ~18s)
-- [x] Delete-test passed: every line is premise, reversal, proof, or payoff
-- [x] Positioning embedded — the app adapting to e-bikes IS the argument, never pitched
-- [x] Written natively for en-US, not translated
+- [x] Core conclusion inside the first third (the e-bike reversal + why it matters land by ~22s)
+- [x] Delete-test passed: every line is premise, reversal, proof, rejection, or lesson
+- [x] Positioning embedded — the app adapting to e-bikes IS the argument, and the rejection
+      keeps it from reading as a pitch
+- [x] Written natively for en-US; the Chinese hook is separately authored, not translated
 - [x] Every section's beat ID exists in manifest.yml

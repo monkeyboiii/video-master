@@ -1,71 +1,140 @@
 #!/usr/bin/env bash
-# Raw VO take -> en-US VO master (+ a review mix under the music bed).
-# PURE SPLICE: dead air is cut and nothing else is touched — no EQ, denoise, gate,
-# compression, limiting, tempo or gain. The only level set anywhere is the music bed's.
-# Rationale, measurements and every knob: edit-notes.md (## VO audio).
+# Take 2 + rev-2 ending (+ rev-2 Chinese hook) -> two en-US soundtracks.
+#
+# Script rev 2 keeps take 2's hook and body verbatim and replaces everything from
+# "Anyway, enough of that." onward with a new read: the owner became the boss, and he
+# turns the app down. Only the hook differs between the two soundtracks.
+#
+# Each source region is spliced on its own with the same auto-editor settings that made
+# v004, then the pieces are concatenated. That keeps v004's pacing inside every region
+# while leaving the joins — and the record-scratch hole — under explicit control.
+#
+# No EQ, denoise, gate, compression, limiting or tempo. The only levels set anywhere are
+# the rev-2 takes' match gain (they were recorded quieter) and the bed's.
+# Rationale, region table and measurements: edit-notes.md (## VO audio).
 set -euo pipefail
 
 EP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VM="$(cd "$EP_DIR/../../../.." && pwd)"
 VID="DBX-APP-S03E002"
-VER="v004"
-TAKE="${TAKE:-take2}"
+VER="v005"
 MEDIA="$VM/media/$VID/voiceover"
-SRC="${1:-$MEDIA/${VID}_en-US_vo-${TAKE}.m4a}"
+T2="$MEDIA/${VID}_en-US_vo-take2.m4a"
+ND="$MEDIA/${VID}_en-US_vo-rev2-ending.m4a"
+CN="$MEDIA/${VID}_en-US_vo-rev2-cnhook.m4a"
 MUSIC="$VM/media/audio/50-cent-just-a-lil-bit-instrumental.mp3"
-OUT="$MEDIA/${VID}_en-US_vo_${VER}.wav"
-REVIEW="$MEDIA/${VID}_en-US_vo_${VER}_review.mp3"
-MIX="$MEDIA/${VID}_en-US_vo_${VER}_review-mix.mp3"
+SFX="$VM/media/sfx/record-scratch.mp3"
+OUT_EN="$MEDIA/${VID}_en-US_vo_${VER}.wav"
+OUT_CN="$MEDIA/${VID}_en-US_vo-cnhook_${VER}.wav"
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 
-# Room-tone peaks sit ~-47 dB on both takes; speech peaks ~-17 dB.
-# mincut under ~0.15s is what removes the short in-phrase pauses ("jumps, berms").
+# v004 settings, unchanged. Room-tone peaks sit ~-47 dB on every take here.
 THRESHOLD=-34dB
 MARGIN=0.06s,0.12s
 SMOOTH=0.10s,0.08s
-TEMPO=1.0           # 1.0 = off (pure splice). Set e.g. 1.05 to re-enable the speed-up.
-MUSIC_BELOW_VO=10   # dB the bed sits under the measured voice. Smaller = more present.
+SCRATCH_GAP=1.20    # s of hole left for the record scratch, matching the delivered pause
+MUSIC_BELOW_VO=10   # dB the bed sits under the measured voice
+SFX_BELOW_VO_PEAK=3 # dB the scratch peaks under the voice, review mix only
+
+# Regions are absolute seconds into each raw take, cut a little wide; auto-editor trims
+# the edges to MARGIN. Editing one never shifts another.
+R_ENHOOK="$T2 0.60 7.90"   # Day two... / ...back in my hometown.
+R_BODY="$T2 9.40 50.30"    # I used to ride... -> Oh man, the flashbacks!
+R_ENDA="$ND 0.30 5.15"     # Anyways, enough of that. / ...find the boss, / show him my gorgeous app and
+R_ENDB="$ND 6.15 23.60"    # Yeah, not quite. -> electric warriors, let's go?!
+R_CNHOOK="$CN 1.10 6.60"   # 走遍100个越野摩托车场的第二集，搿趟...回屋里厢！
 
 command -v auto-editor >/dev/null || { echo "auto-editor not on PATH" >&2; exit 1; }
-[ -f "$SRC" ] || { echo "missing source take: $SRC" >&2; exit 1; }
+for f in "$T2" "$ND" "$CN"; do [ -f "$f" ] || { echo "missing source: $f" >&2; exit 1; }; done
 mkdir -p "$MEDIA"
 
-peak_of() { ffmpeg -hide_banner -nostats -i "$1" -af ebur128=peak=true -f null - 2>&1 \
-  | sed -n '/Summary:/,$p' | grep -A1 "True peak:" | grep -oP 'Peak:\s*\K[-0-9.]+'; }
 lufs_of() { ffmpeg -hide_banner -nostats -i "$1" -af ebur128 -f null - 2>&1 \
   | sed -n '/Summary:/,$p' | grep -A1 "Integrated loudness:" | grep -oP 'I:\s*\K[-0-9.]+'; }
+peak_of() { ffmpeg -hide_banner -nostats -i "$1" -af ebur128=peak=true -f null - 2>&1 \
+  | sed -n '/Summary:/,$p' | grep -A1 "True peak:" | grep -oP 'Peak:\s*\K[-0-9.]+'; }
+dur_of()  { ffprobe -v error -show_entries format=duration -of csv=p=0 "$1"; }
 
-echo ">>> splice  $(basename "$SRC")"
-auto-editor "$SRC" --edit "audio:threshold=$THRESHOLD" --margin "$MARGIN" --smooth "$SMOOTH" \
-  -o "$TMP/spliced.wav"
+splice() {  # splice <name> <"file start end">  -> $TMP/<name>.wav, spliced at unity
+  local name="$1"; set -- $2
+  ffmpeg -y -v error -ss "$2" -to "$3" -i "$1" -ar 48000 -ac 1 -c:a pcm_s24le "$TMP/${name}_raw.wav"
+  auto-editor "$TMP/${name}_raw.wav" --edit "audio:threshold=$THRESHOLD" \
+    --margin "$MARGIN" --smooth "$SMOOTH" -o "$TMP/${name}_cut.wav" >/dev/null
+  ffmpeg -y -v error -i "$TMP/${name}_cut.wav" -ar 48000 -ac 1 -c:a pcm_s24le "$TMP/${name}.wav"
+  printf "  %-7s %5.2fs -> %ss  %s LUFS\n" "$name" \
+    "$(awk -v a="$2" -v b="$3" 'BEGIN{print b-a}')" "$(dur_of "$TMP/${name}.wav")" \
+    "$(lufs_of "$TMP/${name}.wav")"
+}
 
-if [ "$TEMPO" = "1.0" ]; then
-  echo ">>> no tempo / no gain / no correction -> $(basename "$OUT")"
-  ffmpeg -y -v error -i "$TMP/spliced.wav" -ar 48000 -c:a pcm_s24le "$OUT"
-else
-  echo ">>> tempo ${TEMPO}x (pitch + formants preserved) -> $(basename "$OUT")"
-  ffmpeg -y -v error -i "$TMP/spliced.wav" \
-    -af "rubberband=tempo=$TEMPO:pitchq=quality:transients=crisp:formant=preserved" \
-    -ar 48000 -c:a pcm_s24le "$OUT"
-fi
-ffmpeg -y -v error -i "$OUT" -ac 2 -ar 44100 -c:a libmp3lame -b:a 192k "$REVIEW"
+echo ">>> splice each region with v004 settings"
+splice enhook "$R_ENHOOK"
+splice body   "$R_BODY"
+splice enda   "$R_ENDA"
+splice endb   "$R_ENDB"
+splice cnhook "$R_CNHOOK"
 
-if [ -f "$MUSIC" ]; then
-  VO_I=$(lufs_of "$OUT"); MUS_I=$(lufs_of "$MUSIC")
-  MG=$(awk -v v="$VO_I" -v m="$MUS_I" -v s="$MUSIC_BELOW_VO" 'BEGIN{printf "%.2f", v-s-m}')
-  DUR=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$OUT")
-  FADE=$(awk -v d="$DUR" 'BEGIN{printf "%.3f", (d-1.5>0)?d-1.5:0}')
-  echo ">>> review mix: bed ${MUSIC_BELOW_VO} dB under the voice (${MG} dB, flat, no ducking)"
-  ffmpeg -y -v error -i "$OUT" -i "$MUSIC" -filter_complex \
+# The rev-2 takes are a different session. Match them to take 2's body, measured — the
+# ending is measured as one piece because R128 is unreliable on a 4s fragment.
+printf "file '%s'\nfile '%s'\n" "$TMP/enda.wav" "$TMP/endb.wav" > "$TMP/endcat.txt"
+ffmpeg -y -v error -f concat -safe 0 -i "$TMP/endcat.txt" -c copy "$TMP/endcat.wav"
+BODY_I="$(lufs_of "$TMP/body.wav")"
+GAIN_END=$(awk -v a="$BODY_I" -v b="$(lufs_of "$TMP/endcat.wav")" 'BEGIN{printf "%.2f", a-b}')
+GAIN_CN=$(awk  -v a="$BODY_I" -v b="$(lufs_of "$TMP/cnhook.wav")" 'BEGIN{printf "%.2f", a-b}')
+echo ">>> match gain vs body (${BODY_I} LUFS): ending ${GAIN_END} dB · cn hook ${GAIN_CN} dB"
+for p in enda endb; do
+  ffmpeg -y -v error -i "$TMP/$p.wav" -af "volume=${GAIN_END}dB" -ar 48000 -ac 1 \
+    -c:a pcm_s24le "$TMP/${p}_g.wav" && mv "$TMP/${p}_g.wav" "$TMP/$p.wav"
+done
+ffmpeg -y -v error -i "$TMP/cnhook.wav" -af "volume=${GAIN_CN}dB" -ar 48000 -ac 1 \
+  -c:a pcm_s24le "$TMP/cnhook_g.wav" && mv "$TMP/cnhook_g.wav" "$TMP/cnhook.wav"
+
+# The scratch hole. enda ends ~0.10s after the last word and endb starts ~0.06s before the
+# next, so only the remainder is generated.
+JOIN=$(awk -v g="$SCRATCH_GAP" 'BEGIN{printf "%.3f", g-0.16}')
+ffmpeg -y -v error -f lavfi -i "anullsrc=r=48000:cl=mono" -t "$JOIN" -c:a pcm_s24le "$TMP/hole.wav"
+
+build() {  # build <out> <piece...>; prints the scratch offset on stdout
+  local out="$1"; shift
+  local lf="$TMP/list.txt"; : > "$lf"
+  local off=0 sfx_at=0 p
+  for p in "$@"; do
+    [ "$p" = "enda" ] && sfx_at=$off
+    echo "file '$TMP/$p.wav'" >> "$lf"
+    off=$(awk -v a="$off" -v b="$(dur_of "$TMP/$p.wav")" 'BEGIN{printf "%.3f", a+b}')
+  done
+  ffmpeg -y -v error -f concat -safe 0 -i "$lf" -ar 48000 -c:a pcm_s24le "$out"
+  # scratch lands where enda's speech ends: its own 0.15s of lead silence is pulled back out
+  awk -v a="$sfx_at" -v b="$(dur_of "$TMP/enda.wav")" 'BEGIN{printf "%.3f", a+b-0.25}'
+}
+
+echo ">>> english hook + body + rev-2 ending"
+SFX_EN=$(build "$OUT_EN" enhook body enda hole endb)
+echo ">>> chinese hook replaces the english hook"
+SFX_CN=$(build "$OUT_CN" cnhook body enda hole endb)
+echo ">>> record scratch at ${SFX_EN}s (en) / ${SFX_CN}s (cn) — review mix only, A1 stays clean"
+
+for OUT in "$OUT_EN" "$OUT_CN"; do
+  BASE="${OUT%.wav}"
+  [ "$OUT" = "$OUT_EN" ] && SFX_AT="$SFX_EN" || SFX_AT="$SFX_CN"
+  ffmpeg -y -v error -i "$OUT" -ac 2 -ar 44100 -c:a libmp3lame -b:a 192k "${BASE}_review.mp3"
+  [ -f "$MUSIC" ] || continue
+  MG=$(awk -v v="$(lufs_of "$OUT")" -v m="$(lufs_of "$MUSIC")" -v s="$MUSIC_BELOW_VO" \
+        'BEGIN{printf "%.2f", v-s-m}')
+  SG=$(awk -v v="$(peak_of "$OUT")" -v p="$(peak_of "$SFX")" -v s="$SFX_BELOW_VO_PEAK" \
+        'BEGIN{printf "%.2f", v-s-p}')
+  FADE=$(awk -v d="$(dur_of "$OUT")" 'BEGIN{printf "%.3f", (d-1.5>0)?d-1.5:0}')
+  DELAY=$(awk -v t="$SFX_AT" 'BEGIN{printf "%d", (t>0?t:0)*1000}')
+  ffmpeg -y -v error -i "$OUT" -i "$MUSIC" -i "$SFX" -filter_complex \
     "[0:a]aresample=48000,aformat=channel_layouts=stereo[v];\
 [1:a]aresample=48000,aformat=channel_layouts=stereo,volume=${MG}dB,\
 afade=t=in:st=0:d=0.5,afade=t=out:st=$FADE:d=1.5[m];\
-[v][m]amix=inputs=2:duration=first:normalize=0[out]" \
-    -map "[out]" -ar 44100 -c:a libmp3lame -b:a 192k "$MIX"
-fi
+[2:a]aresample=48000,aformat=channel_layouts=stereo,volume=${SG}dB,\
+adelay=${DELAY}|${DELAY}[s];\
+[v][m][s]amix=inputs=3:duration=first:normalize=0[out]" \
+    -map "[out]" -ar 44100 -c:a libmp3lame -b:a 192k "${BASE}_review-mix.mp3"
+done
 
 echo ">>> done"
-printf "  master : %s LUFS  peak %s dBFS  %ss  (untouched level)\n" \
-  "$(lufs_of "$OUT")" "$(peak_of "$OUT")" \
-  "$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$OUT")"
-[ -f "$MIX" ] && printf "  mix    : %s LUFS  peak %s dBFS\n" "$(lufs_of "$MIX")" "$(peak_of "$MIX")"
+for OUT in "$OUT_EN" "$OUT_CN"; do
+  printf "  %-46s %s LUFS  peak %s dBFS  %ss\n" "$(basename "$OUT")" \
+    "$(lufs_of "$OUT")" "$(peak_of "$OUT")" "$(dur_of "$OUT")"
+done

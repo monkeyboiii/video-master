@@ -34,21 +34,30 @@ has a home in it.
 
 ## Topic formula (one line)
 
-Pain (my park/my bike isn't represented) + solution (he shows up and adds an e-bike park as
-track 2) + benefit (the app expands to what you actually ride).
+Pain (my park/my bike isn't represented) + solution (he shows up and the e-bike park counts
+as track 2) + benefit (the app expands to what you actually ride).
+
+Script rev 2 adds a third move: the boss **turns the app down** and hands back a real
+requirement instead — GPX and live tracking for enduro riders. The benefit is no longer
+asserted by the founder, it's earned by him being corrected on camera.
 
 ## Designed reactions (the judgment test — all four must have real answers)
 
-- Like because: the deadpan "Fantastic" turn and the stairs flashback.
+- Like because: the deadpan "Fantastic" turn, the stairs flashback, and the record scratch.
 - Save because: weak — same as E001, don't force it.
 - Comment because: the e-bike debate will argue itself in the replies, plus track nominations.
   **Watch the tone:** the video must not read as mocking e-bikes, or the comments turn hostile.
-- Follow because: the counter is now at 2 / 100 — the format is visibly a series, not a one-off.
+  Rev 2 adds a second thread — being rejected on camera invites "good, you deserved it" as
+  much as sympathy, and both are engagement.
+- Follow because: the counter is now at 2 / 100 — the format is visibly a series, not a
+  one-off — and the rejection sets up an open question the next episode can answer.
 
 ## References (optional)
 
-- S03E001 — direct predecessor; the counter, the girlfriend punchline, and the owner beat
-  must stay structurally identical so the format reads as a format.
+- S03E001 — direct predecessor; the counter and the go-find-the-person beat carry over so
+  the format reads as a format. Rev 2 deliberately breaks the beat's *outcome* — E001 ends
+  on a find, E002 on a refusal — which is what stops the series looking scripted.
+  The girlfriend punchline is dropped from this episode.
 
 ## Related episodes / duplicates checked
 
