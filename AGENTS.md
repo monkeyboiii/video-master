@@ -21,7 +21,7 @@ structured production work.
 | Storyboard / shooting plan | `skills/04-storyboard.md` |
 | Remotion motion graphics | `skills/05-remotion-graphics.md` |
 | Kdenlive timeline / edit prep | `skills/06-kdenlive-editing.md` |
-| Subtitles / localization | `skills/07-subtitles-localization.md` |
+| Subtitles / localization / burned-in captions | `skills/07-subtitles-localization.md` |
 | Audio & render QC | `skills/08-audio-render-qc.md` |
 | Review / retrospective | `skills/09-review-retrospective.md` |
 
@@ -49,6 +49,7 @@ node tools/new-episode.mjs <series> <slug>     # scaffold a new episode
 node tools/validate.mjs [episode-dir]          # validate manifests, naming, artifacts
 cd packages/remotion-graphics && npm run studio    # preview graphics (human)
 node tools/render-overlays.mjs <episode-dir> <locale>   # render overlays per manifest
+tools/burn-subtitles.py <episode-dir> --render         # burn in captions (see skills/07)
 ```
 
 ## Non-negotiable rules

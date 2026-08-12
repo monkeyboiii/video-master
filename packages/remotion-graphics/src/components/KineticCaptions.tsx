@@ -63,6 +63,12 @@ const estWidthEm = (t: string): number => {
 };
 
 /**
+ * @deprecated Captions are burned in with libass now — see
+ * skills/07-subtitles-localization.md and tools/burn-subtitles.py. This composition is
+ * kept only to rebuild the S01/S02 overlays that already shipped against it; do not use
+ * it for new episodes. Word-by-word streaming was also dropped on its own merits: it
+ * holds the reader behind the information, badly so in Chinese.
+ *
  * Streaming captions: words appear one-by-one as spoken (like a message typing
  * out), accumulate in a rolling window, keyword-colored. Bottom-anchored above
  * the platform safe zone. Rendered as a ProRes 4444 alpha overlay for Kdenlive.

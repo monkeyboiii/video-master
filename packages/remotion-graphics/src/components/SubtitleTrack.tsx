@@ -41,7 +41,13 @@ const renderWithEmphasis = (
   );
 };
 
-/** Timed subtitle cues at the safe-zone bottom; line-level timing from SRT. */
+/**
+ * @deprecated Captions are burned in with libass now — see
+ * skills/07-subtitles-localization.md and tools/burn-subtitles.py. Kept only to rebuild
+ * S01/S02; do not use for new episodes.
+ *
+ * Timed subtitle cues at the safe-zone bottom; line-level timing from SRT.
+ */
 export const SubtitleTrack: React.FC<SubtitleTrackProps> = ({
   locale,
   srt,

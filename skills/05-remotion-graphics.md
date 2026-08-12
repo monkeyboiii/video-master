@@ -7,14 +7,19 @@ thirds, subtitle burns) and cover stills for an episode, from per-locale prop fi
 `packages/remotion-graphics/`. Remotion is the reusable visual language — not a full
 editor.
 
+> **Captions are no longer a Remotion job.** `subtitle-track` and `kinetic-captions` are
+> deprecated in favour of burned-in captions driven by `subtitles.yml`
+> (`skills/07-subtitles-localization.md`). Do not reach for them for new work; they stay in
+> the registry only so the S01/S02 overlays that already shipped can be rebuilt.
+
 In retention terms (`docs/golden-rules.md`, Edit 剪辑 section), each composition is an
 attention device the edit deploys:
 
 | Composition | Retention role |
 |-------------|----------------|
 | `hook-title` | First-frame grab — big hook text at 0.0s |
-| `subtitle-track` | Kinetic captions from an SRT: word pacing + keyword highlight |
-| `kinetic-captions` | Word-by-word streaming captions in a **fixed bounded panel**, keyword color (`brand`/`harsh`) — driven by the word-timed caption map, one render per beat |
+| ~~`subtitle-track`~~ | **DEPRECATED** — captions are burned in now, see `skills/07` |
+| ~~`kinetic-captions`~~ | **DEPRECATED** — as above; kept only to rebuild S01/S02 |
 | `checklist-card` | Save-worthy value; each tick is a pattern-interrupt beat (pair with dings) |
 | `stage-cards` | Segment reset / pattern interrupt between chapters |
 | `lower-third` | Context without stopping the flow |
