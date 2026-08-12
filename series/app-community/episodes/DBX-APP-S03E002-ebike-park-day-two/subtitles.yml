@@ -1,0 +1,70 @@
+# Burned-in bilingual captions for the zh-CN cut.
+#   tools/retime-subtitles.py <this dir>     # touched.srt -> retimed.srt
+#   tools/burn-subtitles.py   <this dir> --render
+# Method, measurements and the traps: skills/07-subtitles-localization.md
+#                                     edit-notes.md (## Subtitle notes)
+video_id: DBX-APP-S03E002
+locale: zh-CN
+
+source: media/DBX-APP-S03E002/footage/S03E002-cn-2.MP4
+srt:    media/DBX-APP-S03E002/subtitles/S03E002-bilingual-retimed.srt
+ass:    media/DBX-APP-S03E002/subtitles/S03E002-bilingual-retimed.ass
+export: media/DBX-APP-S03E002/exports/DBX-APP-S03E002_zh-CN_douyin_9x16_v003_review.mp4
+fonts:  media/_fonts
+
+style:
+  # House default is 1926, matching the graded en-US cut. Lifted here because this grade
+  # carries a burned-in location pin (柳浪闻莺) at y1862-1966 — exactly where captions land.
+  # The pin is only up for the first ~1.2s but the lift is uniform: captions that jump
+  # position mid-video read as a mistake. Cue 1 ink sits y1740-1806, clearing it by 56 px.
+  block_mid: 1770
+
+# The touched SRT drifted against the delivery — worst at cue 10, where the line was 1.6s
+# into the ear before its subtitle appeared. Times below are read off the en-US cut's own
+# burned-in captions, which lead this cut by exactly 0.50s (cross-correlated, r=0.891).
+retime:
+  source: media/DBX-APP-S03E002/subtitles/S03E002-bilingual-touched.srt
+  fix:
+    5:  {start: 9.52,  end: 10.48, why: end ran 0.72s past; "But" confirmed at 9.45}
+    6:  {start: 10.74, end: 12.96, why: 0.46s late; "and" confirmed at 10.65}
+    # en-US gives "Fantastic!" a top callout, not a caption, so this one is audio-derived:
+    # its phrase is bounded by cue 6's last word and cue 8's first.
+    7:  {start: 13.24, end: 14.06, why: 0.52s late}
+    9:  {start: 16.22, end: 17.96, why: end ran 1.76s into the next line}
+    10: {start: 18.18, end: 21.65, why: started 1.61s late and dropped two spoken beats,
+         secondary: "so I'd be kicking myself in the butt if my app completely missed out on them."}
+    11: {start: 21.70, end: 23.65, why: '"All" starts 21.70'}
+    12: {start: 23.70, end: 27.16, why: '"This" starts 23.70'}
+    15: {start: 30.30, end: 31.85, why: '"...like I did" runs to 31.85'}
+    16: {start: 32.15, end: 33.26, why: '"Oh man" starts 32.15'}
+  split:
+    # Two beats with a real gap between them; en-US captions them separately.
+    24:
+      - {start: 46.60, end: 47.45, primary: 行，又学到了。,      secondary: "Guess we're learning."}
+      - {start: 47.50, end: 49.36, primary: 电动勇士们，走起？！, secondary: "Electric warriors, let's go?!"}
+
+# Semantic emphasis: the words that hold the point, same idea in both languages. Keyed by
+# cue number in the RETIMED file. An entry that matches nothing warns at build time.
+highlights:
+  1:  {primary: ['100'],                    secondary: []}
+  2:  {primary: [老家],                      secondary: []}
+  3:  {primary: [小时候],                    secondary: [downhill]}
+  4:  {primary: [熟得不能再熟],               secondary: [back of my hand]}
+  6:  {primary: [大电池],                    secondary: [big batteries]}
+  7:  {primary: [太棒了],                    secondary: [Fantastic]}
+  8:  {primary: [未来已经来了],               secondary: [The future is here]}
+  9:  {primary: [飞快],                      secondary: [really fast]}
+  10: {primary: [后悔死],                    secondary: [kicking myself]}
+  12: {primary: [土, 跳台, 弯墙],             secondary: [dirt, jumps, berms]}
+  13: {primary: [电车],                      secondary: [e-bikes]}
+  14: {primary: [不用再推],                   secondary: ["don't have to push"]}
+  15: {primary: [上楼梯],                    secondary: [the stairs]}
+  16: {primary: [回忆],                      secondary: [flashbacks]}
+  18: {primary: [老板],                      secondary: [boss]}
+  19: {primary: [漂亮],                      secondary: [gorgeous]}
+  20: {primary: [没那么顺利],                 secondary: [not quite]}
+  21: {primary: [没要, 靠谱建议],             secondary: [passed, solid advice]}
+  22: {primary: [Enduro],                    secondary: [enduro]}
+  23: {primary: [GPX, 实时定位, 刚需],        secondary: [GPX, live tracking, lifeline]}
+  24: {primary: [学到了],                    secondary: [learning]}
+  25: {primary: [电动勇士们],                 secondary: [Electric warriors]}

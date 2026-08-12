@@ -4,10 +4,10 @@
      Every section maps to a beat ID in manifest.yml.
      Rev 2 keeps take 2's hook and body and replaces everything from "Anyway, enough of
      that." onward: the owner became the boss, and he turns the app down. The girlfriend
-     punchline is dropped. Two soundtracks — VO_EN_014 (English hook) and VO_EN_015
+     punchline is dropped. Two soundtracks — VO_EN_016 (English hook) and VO_EN_017
      (Chinese hook); only the hook differs. See edit-notes.md (## VO audio). -->
 
-Target total duration: **50.14s** (English hook) · **49.64s** (Chinese hook) — fully recorded
+Target total duration: **49.94s** (English hook) · **49.44s** (Chinese hook) — fully recorded
 
 ---
 
@@ -74,7 +74,7 @@ Target total duration: **50.14s** (English hook) · **49.64s** (Chinese hook) �
 - He passed on the app, but gave me some solid advice
 - — for enduro riders, GPX and live tracking can be a lifeline.
 
-**On-screen / subtitle emphasis:** "**He passed on the app**" — this is the episode's honesty beat; do not soften it in the edit. "**GPX and live tracking**" is the takeaway a viewer can hold the app to.
+**On-screen / subtitle emphasis:** "**He passed on the app**" — this is the episode's honesty beat; do not soften it in the edit. "**GPX and live tracking**" is the takeaway a viewer can hold the app to. The last two lines are bulleted separately but are **one sentence and now delivered as one** (0.065s between them as of v007) — do not put a subtitle cue break there.
 
 ## learning
 

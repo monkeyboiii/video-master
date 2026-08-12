@@ -17,7 +17,7 @@ set -euo pipefail
 EP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VM="$(cd "$EP_DIR/../../../.." && pwd)"
 VID="DBX-APP-S03E002"
-VER="v006"
+VER="v007"
 MEDIA="$VM/media/$VID/voiceover"
 T2="$MEDIA/${VID}_en-US_vo-take2.m4a"
 ND="$MEDIA/${VID}_en-US_vo-rev2-ending.m4a"
@@ -31,12 +31,15 @@ TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 # v004 settings, unchanged. Room-tone peaks sit ~-47 dB on every take here.
 THRESHOLD=-34dB
 MARGIN=0.06s,0.12s
+JOIN_TAIL=0.060     # s of silence left after "...solid advice" — the line runs on
+JOIN_HEAD=0.040     # s left before "for enduro riders"; 0.10s total = a word boundary
 SMOOTH=0.10s,0.08s
 SCRATCH_GAP=1.20    # s of hole left for the record scratch, matching the delivered pause
 MUSIC_BELOW_VO=10   # dB the bed sits under the measured voice
-SFX_BELOW_VO_PEAK=9 # dB the scratch peaks under the voice, review mix only
-SFX_TRIM=0.17       # s of lead silence in the SFX file before the hit at 0.178
-SFX_FADE_IN=0.05    # s ramp on the hit; the raw file goes silent -> full in 10ms
+SFX_BELOW_VO_PEAK=14 # dB the scratch peaks under the voice, review mix only
+SFX_TRIM=0.180      # s of lead silence trimmed; the hit's onset is at 0.183
+SFX_FADE_IN=0.06    # s ramp, quadratic; the raw file goes silent -> full in 12ms
+SFX_FADE_CURVE=qua  # faint start then rise — linear still read as a hard edge
 
 # Regions are absolute seconds into each raw take, cut a little wide; auto-editor trims
 # the edges to MARGIN. Editing one never shifts another.
@@ -68,6 +71,27 @@ splice() {  # splice <name> <"file start end">  -> $TMP/<name>.wav, spliced at u
     "$(lufs_of "$TMP/${name}.wav")"
 }
 
+sil_head() {  # s of silence before the first above-threshold sample
+  ffmpeg -hide_banner -nostats -i "$1" -af "silencedetect=n=$THRESHOLD:d=0.01" -f null - 2>&1 \
+    | grep -oP 'silence_end:\s*\K[0-9.]+' | head -1; }
+sil_tail() {  # s of silence after the last one
+  awk -v d="$(dur_of "$1")" -v s="$(ffmpeg -hide_banner -nostats -i "$1" \
+    -af "silencedetect=n=$THRESHOLD:d=0.01" -f null - 2>&1 \
+    | grep -oP 'silence_start:\s*\K[0-9.]+' | tail -1)" \
+    'BEGIN{printf "%.3f", (s==""?0:d-s)}'; }
+
+tighten() {  # tighten <name> <head|-> <tail|->; trims one join edge, leaves pacing inside
+  local name="$1" ht="$2" tt="$3"
+  local f="$TMP/$name.wav" d h t ss to
+  d="$(dur_of "$f")"; h="$(sil_head "$f")"; t="$(sil_tail "$f")"
+  h="${h:-0}"; t="${t:-0}"
+  ss=$(awk -v h="$h" -v ht="$ht" 'BEGIN{v=(ht=="-")?0:h-ht; printf "%.3f", (v>0?v:0)}')
+  to=$(awk -v d="$d" -v t="$t" -v tt="$tt" 'BEGIN{v=(tt=="-")?d:d-(t-tt); printf "%.3f", (v<d&&v>0?v:d)}')
+  ffmpeg -y -v error -ss "$ss" -to "$to" -i "$f" -ar 48000 -ac 1 -c:a pcm_s24le "$TMP/${name}_t.wav"
+  mv "$TMP/${name}_t.wav" "$f"
+  printf "  %-7s head %.3f->%-6s tail %.3f->%-6s %ss\n" "$name" "$h" "$ht" "$t" "$tt" "$(dur_of "$f")"
+}
+
 echo ">>> splice each region with v004 settings"
 splice enhook "$R_ENHOOK"
 splice body   "$R_BODY"
@@ -75,6 +99,12 @@ splice enda   "$R_ENDA"
 splice endb1  "$R_ENDB1"
 splice endb2  "$R_ENDB2"
 splice cnhook "$R_CNHOOK"
+
+# "…solid advice: for enduro riders" is one sentence, but the join carried a 0.30s hole —
+# a sentence beat mid-sentence. Only the two joining edges move; house margins stay.
+echo ">>> close the join after \"solid advice\""
+tighten endb1 - "$JOIN_TAIL"
+tighten endb2 "$JOIN_HEAD" -
 
 # The rev-2 takes are a different session. Match them to take 2's body, measured — the
 # ending is measured as one piece because R128 is unreliable on a 4s fragment.
@@ -135,7 +165,7 @@ for OUT in "$OUT_EN" "$OUT_CN"; do
 afade=t=in:st=0:d=0.5,afade=t=out:st=$FADE:d=1.5[m];\
 [2:a]aresample=48000,aformat=channel_layouts=stereo,\
 atrim=start=${SFX_TRIM},asetpts=PTS-STARTPTS,\
-afade=t=in:st=0:d=${SFX_FADE_IN},volume=${SG}dB,\
+afade=t=in:st=0:d=${SFX_FADE_IN}:curve=${SFX_FADE_CURVE},volume=${SG}dB,\
 adelay=${DELAY}|${DELAY}[s];\
 [v][m][s]amix=inputs=3:duration=first:normalize=0[out]" \
     -map "[out]" -ar 44100 -c:a libmp3lame -b:a 192k "${BASE}_review-mix.mp3"
