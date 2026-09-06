@@ -14,8 +14,14 @@ export const ASPECTS = ['9x16', '16x9', '1x1', '3x4', '16x10'];
 export const OVERLAY_COMPS = ['hook-title', 'checklist-card', 'cta-card', 'lower-third', 'subtitle-track', 'stage-cards', 'stage-cards-wide', 'phone-language', 'phone-embed', 'phone-sponsor', 'brand-title', 'brand-drop', 'profile-card', 'invite-card', 'kinetic-captions', 'feature-phones', 'feature-fan', 'side-screen', 'photo-reveal', 'brand-form', 'mark-pop'];
 export const COVER_COMPS = ['cover-9x16', 'cover-3x4'];
 
+// Video IDs appear inside the derived filename patterns below, and an interstitial ID
+// carries a literal dot — escape before interpolating so it can't match any character.
+const esc = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 export const RE = {
-  videoId: /^DBX-[A-Z]{3,4}-S\d{2}E\d{3}$/,
+  // E### is a numbered episode. E###.# is an interstitial that publishes between two of
+  // them without taking a number of its own (docs/naming-conventions.md).
+  videoId: /^DBX-[A-Z]{3,4}-S\d{2}E\d{3}(?:\.\d)?$/,
   slug: /^[a-z0-9]+(-[a-z0-9]+)*$/,
   seriesCode: /^[A-Z]{3,4}$/,
   locale: /^[a-z]{2}-[A-Z]{2}$/,
@@ -26,22 +32,22 @@ export const RE = {
   // for easy pickup (one clip per beat), e.g. 01_hook.MOV.
   shotFile: (videoId) =>
     new RegExp(
-      `^(?:${videoId}_SH\\d{3}_TK\\d{2}_[a-z0-9]+(?:-[a-z0-9]+)*` +
-        `|(?:${videoId}_)?\\d{2}_[a-z0-9]+(?:-[a-z0-9]+)*)\\.[A-Za-z0-9]+$`,
+      `^(?:${esc(videoId)}_SH\\d{3}_TK\\d{2}_[a-z0-9]+(?:-[a-z0-9]+)*` +
+        `|(?:${esc(videoId)}_)?\\d{2}_[a-z0-9]+(?:-[a-z0-9]+)*)\\.[A-Za-z0-9]+$`,
     ),
-  voFile: (videoId) => new RegExp(`^${videoId}_(${LOCALES.join('|')})_vo(-[a-z0-9]+)?_v\\d{3}\\.\\w+$`),
+  voFile: (videoId) => new RegExp(`^${esc(videoId)}_(${LOCALES.join('|')})_vo(-[a-z0-9]+)?_v\\d{3}\\.\\w+$`),
   // Optional `-<variant>` after the comp name for per-beat instances of one
   // composition, e.g. ..._kinetic-captions-hook_v001.mov
   overlayFile: (videoId, locale) =>
-    new RegExp(`^${videoId}_${locale}_(${ASPECTS.join('|')})_(${OVERLAY_COMPS.join('|')})(-[a-z0-9]+(-[a-z0-9]+)*)?_v\\d{3}\\.mov$`),
+    new RegExp(`^${esc(videoId)}_${locale}_(${ASPECTS.join('|')})_(${OVERLAY_COMPS.join('|')})(-[a-z0-9]+(-[a-z0-9]+)*)?_v\\d{3}\\.mov$`),
   coverFile: (videoId, locale) =>
-    new RegExp(`^${videoId}_${locale}_(${PLATFORMS.join('|')})_(${ASPECTS.join('|')})_cover_v\\d{3}\\.(png|jpg)$`),
+    new RegExp(`^${esc(videoId)}_${locale}_(${PLATFORMS.join('|')})_(${ASPECTS.join('|')})_cover_v\\d{3}\\.(png|jpg)$`),
   exportFile: (videoId, locale) =>
-    new RegExp(`^${videoId}_${locale}_(${PLATFORMS.join('|')})_(${ASPECTS.join('|')})_v\\d{3}_(review|final)\\.mp4$`),
+    new RegExp(`^${esc(videoId)}_${locale}_(${PLATFORMS.join('|')})_(${ASPECTS.join('|')})_v\\d{3}_(review|final)\\.mp4$`),
   // Canonical `{videoId}_{locale}_v###.kdenlive`, or a friendly slug name (e.g.
   // founder-story.kdenlive) when the project lives inside the episode media bundle.
   timelineFile: (videoId, locale) =>
-    new RegExp(`^(${videoId}_${locale}_v\\d{3}|[a-z0-9]+(-[a-z0-9]+)*)\\.kdenlive$`),
+    new RegExp(`^(${esc(videoId)}_${locale}_v\\d{3}|[a-z0-9]+(-[a-z0-9]+)*)\\.kdenlive$`),
   timecode: /^\d{2}:\d{2}:\d{2}\.\d{3}$/,
 };
 

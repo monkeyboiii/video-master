@@ -24,6 +24,12 @@ DBX-TRK-S01E001-how-track-owners-get-found
 ```
 
 - Season and episode are zero-padded: `S01`, `E001`.
+- **Interstitials** take a one-decimal episode number — `E002.5` publishes between `E002`
+  and `E003` without consuming a number of its own, and (in a counted series like S03)
+  without advancing the counter. The dot is legal in every derived filename:
+  `DBX-APP-S03E002.5_en-US_vo_v001.wav`. Use it only for episodes that genuinely sit
+  between two others; `new-episode.mjs` ignores decimal IDs when picking the next number,
+  so an interstitial never shifts the sequence.
 - Slug is lowercase kebab-case ASCII, ≤ 40 chars, derived from the English title.
 - The slug may be refined once before the `scripting` status; after that it is frozen
   (issues, filenames, and external storage reference it).
