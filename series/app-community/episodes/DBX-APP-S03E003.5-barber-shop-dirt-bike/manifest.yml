@@ -1,0 +1,179 @@
+# Episode manifest — source of truth for this episode.
+# Schema notes: docs/production-model.md · naming: docs/naming-conventions.md
+# Validate with: node tools/validate.mjs
+
+# An interstitial: publishes between E003 and E004, takes no episode number of its own, and
+# does not advance the 100-track counter — no new track is visited, it is the same track as
+# E003 seen from a different angle. E003 answers "how do you find a track like this"; this
+# one answers "who is the man who built it". Both stay; neither supersedes the other.
+video_id: "DBX-APP-S03E003.5"
+slug: "barber-shop-dirt-bike"
+series: "app-community"
+# The VO is recorded and cut and the script + beats below are transcribed off it, but the
+# packaging pass (cover) hasn't run and the stage gates are ordered, so this stays at topic
+# rather than claiming scripting. Moving it up needs a cover, not more audio.
+status: topic
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+variants:
+  zh-CN:
+    script: script.zh-CN.md
+    cover: null
+    subtitles: subtitles/zh-CN.srt
+    remotion_props: null
+    voiceover_asset_id: VO_ZH_006
+    platforms: [rednote, douyin, bilibili]
+
+# zh-CN only. There is no en-US take, and per docs/localization.md one would be authored
+# natively rather than translated off the Chinese page, so no en-US variant is declared.
+# The twelve beats sum to the 49.00s master, measured off VO_ZH_006 at the auto-editor
+# threshold and cut at the midpoint of each pause. Provisional until the subtitle pass.
+beats:
+  - id: hook
+    purpose: open on an identity that has nothing to do with dirt biking
+    visual_intent: the barber working, shot straight; no bike in frame yet
+    overlay: null
+    target_duration_sec:
+      zh-CN: 2.33
+  - id: why-the-bike
+    purpose: the reversal, in one question
+    visual_intent: pull back or cut to the dirt bike parked in the shop
+    overlay: null
+    target_duration_sec:
+      zh-CN: 2.46
+  - id: hold-on
+    purpose: hold the viewer with a promise before delivering anything
+    visual_intent: him locking up / heading out; withhold the track
+    overlay: null
+    target_duration_sec:
+      zh-CN: 3.30
+  - id: haircut-first
+    purpose: a beat of misdirection before the real subject
+    visual_intent: clippers, chair, quick cuts — treat it as a transition
+    overlay: null
+    target_duration_sec:
+      zh-CN: 1.81
+  - id: not-the-bike
+    purpose: the turn the whole episode rests on — the money did not go on the bike
+    visual_intent: founder to camera, then the first wide of the dirt
+    overlay: null
+    target_duration_sec:
+      zh-CN: 4.79
+  - id: a-million-for-dirt
+    purpose: land the punchline; "土堆" gets its own breath
+    visual_intent: hold on the mound; let the cut land on the word
+    overlay: null
+    target_duration_sec:
+      zh-CN: 4.93
+  - id: the-track
+    purpose: hand over to the pictures
+    visual_intent: the track end to end, riders in it
+    overlay: null
+    target_duration_sec:
+      zh-CN: 4.60
+  - id: three-storeys
+    purpose: translate the scale into something a viewer feels in the body
+    visual_intent: the first drop shot from below, then a rider taking it
+    overlay: null
+    target_duration_sec:
+      zh-CN: 4.93
+  - id: the-barber-flies
+    purpose: the payoff to the hook — the same man, in the air
+    visual_intent: match the opening framing, then him mid-jump; 53 on screen
+    overlay: null
+    target_duration_sec:
+      zh-CN: 4.10
+  - id: the-big-jump
+    purpose: second scale beat, bigger than the first
+    visual_intent: the 20m table shot long lens; cars for scale if any exist
+    overlay: null
+    target_duration_sec:
+      zh-CN: 4.24
+  - id: this-is-dirt-biking
+    purpose: the landing line
+    visual_intent: the biggest air in the footage, held
+    overlay: null
+    target_duration_sec:
+      zh-CN: 4.17
+  - id: apprentices
+    purpose: widen from one man to a scene that outlives him
+    visual_intent: the apprentices, then the kids riding; end on the youngest
+    overlay: null
+    target_duration_sec:
+      zh-CN: 7.34
+
+assets:
+  raw: []
+  selected: []
+  voiceover:
+    - asset_id: VO_ZH_006
+      locale: zh-CN
+      filename: DBX-APP-S03E003.5_zh-CN_vo_v001.wav
+      external_uri: null
+      notes: >-
+        Take 1 (one continuous read, 69.40s raw) with dead air cut — house settings, same as
+        S03E002 v004 onward. A SINGLE region, the first in S03: no click, no stray breath,
+        no handling noise above the threshold, so nothing had to be stepped over. The
+        -38.7 dB noise at the tail is under threshold and auto-editor drops it unaided.
+        28 speech runs, gaps median 0.200s / p90 0.210s / max 0.280s. The one 0.28s gap
+        (24.07-24.37) is a genuine sentence boundary with a slow-decaying tail, not a stray.
+        No EQ, denoise, gate, compression, limiting, tempo or gain. Verified as a pure
+        splice: gated octave-band spectrum against the raw take is +0.01 dB mean with
+        0.03 dB tilt across 125 Hz-8 kHz, and 1935 gated frames became 1934 — only silence
+        was removed.
+        -31.2 LUFS / -10.2 dBFS / 49.00s. Reproduce with ./vo-process.sh; see edit-notes.md.
+  audio:
+    - asset_id: MUS_001
+      filename: show-me-instrumental.mp3 # lives in media/audio/
+      external_uri: null
+      source: operator-supplied instrumental
+      license: >-
+        NOT CLEARED — commercial recording, no licence on file for social commercial use.
+        Placeholder for the review mix only; must be replaced or licensed before publish.
+        Source file peaks +0.9 dBFS (clipped master); attenuated 28.8 dB in the review mix,
+        so nothing clips there, but do not use it at unity anywhere.
+        The track is not level with itself — a ~20s intro 10 dB down and breakdowns at 40s,
+        100s, 130s, 170s and 190s. Starts at 50s, which begins the flattest 49s window in
+        the file (2.4 dB spread); from 0s the bed would open 10 dB quiet and jump, and from
+        20s it would dip through a breakdown mid-episode.
+        CURRENTLY THE CHOSEN BED — it writes the plain _review-mix.mp3. MUS_002 is rendered
+        alongside it for A/B; both are declared in vo-process.sh's BEDS list.
+    - asset_id: MUS_002
+      filename: playboi-carti-magnolia.mp3 # lives in media/audio/
+      external_uri: null
+      source: operator-supplied
+      license: >-
+        NOT CLEARED — commercial recording, no licence on file for social commercial use.
+        Candidate bed, rendered to _review-mix-magnolia.mp3 for comparison only.
+        Peaks +0.4 dBFS (clipped master); attenuated 32.4 dB in the mix.
+        UNVERIFIED whether this is the instrumental: unlike most beds here its name carries
+        no "-instrumental" marker, and a sampled window transcribes as "(upbeat music)" with
+        no lyrics recovered — suggestive, not proof. Confirm by ear before it can be chosen.
+        CONSTRAINT: the file is only 70.09s. The drop is at 23s, and 21s is the latest start
+        that still covers the 49.00s master (21 + 49 = 70.0), so the bed swells in over ~2s
+        under the hook. If this episode is ever re-cut longer, this file cannot cover it
+        without a loop.
+    - asset_id: MUS_003
+      filename: freek-a-leek-instrumental.mp3 # lives in media/audio/
+      external_uri: null
+      source: operator-supplied instrumental; S03E001's bed
+      license: >-
+        NOT CLEARED — commercial recording, no licence on file for social commercial use.
+        Candidate bed, rendered to _review-mix-freek-a-leek.mp3 for comparison only.
+        Peaks +2.4 dBFS — the most clipped source in media/audio/; attenuated 29.7 dB here.
+        235.94s, and flat from the first bar: 0.6 dB spread across its first 49s, the
+        flattest window of any candidate. Starts at 0 — a measured choice, not a default.
+        Reusing E001's bed ties this episode to the series opener; that is an editorial
+        call, not an audio one.
+
+outputs:
+  overlays: {}
+  covers: {}
+  kdenlive: {}
+  exports: {}
+  published: {}

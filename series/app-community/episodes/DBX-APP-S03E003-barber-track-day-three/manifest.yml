@@ -1,0 +1,214 @@
+# Episode manifest — source of truth for this episode.
+# Schema notes: docs/production-model.md · naming: docs/naming-conventions.md
+# Validate with: node tools/validate.mjs
+
+video_id: "DBX-APP-S03E003"
+slug: "barber-track-day-three"
+series: "app-community"
+# Both VOs are recorded and cut and the scripts + beats below are transcribed off them, but
+# the packaging pass (covers) hasn't run and the stage gates are ordered, so this stays at
+# topic rather than claiming scripting. Moving it up needs covers, not more audio.
+status: topic
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+variants:
+  en-US:
+    script: script.en-US.md
+    cover: null
+    subtitles: subtitles/en-US.srt
+    remotion_props: null
+    voiceover_asset_id: VO_EN_022
+    platforms: [tiktok, ytshorts, reels]
+  zh-CN:
+    script: script.zh-CN.md
+    cover: null
+    subtitles: subtitles/zh-CN.srt
+    remotion_props: null
+    voiceover_asset_id: VO_ZH_005
+    platforms: [rednote, douyin, bilibili]
+
+# S03 runs as a numbered field mission: one real track per episode, counted toward 100.
+# The eleven beats sum to the 40.99s en-US master and the 40.98s zh-CN one, measured off
+# VO_EN_022 / VO_ZH_005 at the auto-editor threshold and cut at the midpoint of each pause.
+# The two reads are sibling variants, so per-beat lengths differ and neither is
+# authoritative: the-barber runs 6.42s in zh against 2.96s in en because the zh keeps
+# "来都来了，两边都去一下不过分吧" inside that beat. Cut the picture per locale, not to a
+# shared timeline. Provisional until the subtitle pass.
+beats:
+  - id: hook
+    purpose: put the viewer in the passenger seat before any premise is explained
+    visual_intent: moving shot out of the city into countryside; no talking head yet
+    overlay: null
+    target_duration_sec:
+      en-US: 2.85
+      zh-CN: 2.50
+  - id: where-we-are
+    purpose: name a real place a viewer can look up
+    visual_intent: road signage, town wide; TONGLU on screen
+    overlay: null
+    target_duration_sec:
+      en-US: 3.19
+      zh-CN: 1.97
+  - id: the-mission
+    purpose: carry the counter forward and make this stop personal, not a checklist entry
+    visual_intent: river/rafting cutaway for the childhood line, then the 3 / 100 counter
+    overlay: null
+    target_duration_sec:
+      en-US: 3.68
+      zh-CN: 3.93
+  - id: but-first
+    purpose: the turn — must read as a non-sequitur for exactly one beat
+    visual_intent: hard cut to a barber's chair; no explanation on screen
+    overlay: null
+    target_duration_sec:
+      en-US: 2.64
+      zh-CN: 2.76
+  - id: the-barber
+    purpose: pay off the turn and land the episode's real premise in one line
+    visual_intent: the barber working, then the same man on a bike; the reveal is the match cut
+    overlay: null
+    target_duration_sec:
+      en-US: 2.96
+      zh-CN: 6.43
+  - id: hook-a-brother-up
+    purpose: the comedy beat
+    visual_intent: founder in the chair, deadpan; hold on the barber's reaction
+    overlay: null
+    target_duration_sec:
+      en-US: 1.97
+      zh-CN: 2.71
+  - id: ten-years
+    purpose: credibility — the track exists because one person kept it going
+    visual_intent: the track, riders, the barber among them; no app on screen
+    overlay: null
+    target_duration_sec:
+      en-US: 8.41
+      zh-CN: 6.99
+  - id: the-whole-setup
+    purpose: undersell it on purpose; the modesty is the point
+    visual_intent: one cutaway per noun — bikes, friends, the track in the mountains
+    overlay: null
+    target_duration_sec:
+      en-US: 6.78
+      zh-CN: 5.98
+  - id: never-know-existed
+    purpose: state the thesis of the whole mission in one line
+    visual_intent: wide that hides the track in the landscape, then push in on it
+    overlay: null
+    target_duration_sec:
+      en-US: 3.96
+      zh-CN: 3.09
+  - id: on-the-map
+    purpose: the only product moment, arriving as a consequence rather than a pitch
+    visual_intent: phone in frame for the first time; the pin drops on the track
+    overlay: null
+    target_duration_sec:
+      en-US: 1.88
+      zh-CN: 1.48
+  - id: that-ll-do
+    purpose: close the haircut loop and pay off the count
+    visual_intent: TRACK 3 / 100 counter card over the finished cut
+    overlay: null
+    target_duration_sec:
+      en-US: 2.67
+      zh-CN: 3.14
+
+assets:
+  raw: []
+  selected: []
+  voiceover:
+    - asset_id: VO_EN_022
+      locale: en-US
+      filename: DBX-APP-S03E003_en-US_vo_v004.wav
+      external_uri: null
+      notes: >-
+        Take 2 (one continuous read, 69.97s raw) with dead air cut — house settings, same as
+        S03E002 v004 onward — plus the barber's own reply. In hook-a-brother-up the founder's
+        read of the barber's line is dropped and VOX_001's "say less" put in its place, match
+        gained -15.94 dB onto this take's speech level; it lands at 18.54-19.43s, 0.15 dB off
+        the founder's preceding line, with a 0.190s beat between them.
+        The rafting line is also gone, with the sentence that leaned on it re-recorded
+        (VOX_002, +/-3 dB match), and "Motomuet" is cut from the tail so the episode ends on
+        "Another track down." Spliced in six take regions around the two grafts.
+        24 speech runs, gaps median 0.190s / p90 0.200s / max 0.220s.
+        No EQ, denoise, gate, compression, limiting or tempo. Founder material verified
+        untouched: gated octave-band spectrum against the raw take, with the barber masked
+        out, is -0.03 dB mean / 0.42 dB tilt across 125 Hz-8 kHz (the tilt is the removed
+        line changing what gets averaged, not processing).
+        -30.6 LUFS / -7.8 dBFS / 40.99s. Reproduce with ./vo-process.sh; see edit-notes.md.
+        Supersedes VO_EN_021 (v003), VO_EN_019 (v002) and VO_EN_018 (take 1, retired).
+    - asset_id: VO_ZH_005
+      locale: zh-CN
+      filename: DBX-APP-S03E003_zh-CN_vo_v004.wav
+      external_uri: null
+      notes: >-
+        Take 2 zh-CN (one continuous read, 63.89s raw), same treatment: the founder's read of
+        来赛 is dropped and VOX_001's 没问题 put in its place, match gained -17.68 dB. It lands
+        at 21.70-22.41s with a 0.190s beat after the ask. The skipped span also swallows the
+        ~10ms click at 33.44s (-29.0 dB) that needed its own region in v001.
+        The 漂流 line is also gone, together with the 但今天不一样，我要走遍… sentence that
+        leaned on it, both replaced by one re-recorded line — VOX_003
+        (继续挑战走遍100个越野摩托车场, +2.77 dB match), which supersedes VOX_002's zh segment.
+        Spliced in four take regions. 20 speech runs, gaps median 0.190s / p90 0.210s /
+        max 0.210s.
+        A separately authored sibling read, not a translation of VO_EN_021. Its first half is
+        delivered ~1.5 LU louder than its second; left alone because it is one continuous
+        take and matching it would be a performance edit. See edit-notes.md.
+        -31.2 LUFS / -9.1 dBFS / 40.98s. Supersedes VO_ZH_004 (v003), VO_ZH_003 (v002) and
+        VO_ZH_002 (v001).
+  audio:
+    - asset_id: VOX_001
+      filename: DBX-APP-S03E003_boss-lines.m4a # lives with the voiceovers
+      external_uri: null
+      source: operator-supplied field recording of the barber
+      license: >-
+        Subject recording — the barber speaking on camera. Not a licensing question, but a
+        RELEASE question: confirm he agreed to be recorded and published before this ships.
+        4.29s clip; quiet off-mic chatter to ~1.4s, then 没问题 (1.68-2.54) and "say less"
+        (2.89-3.96). Both lines peak at or within 1.5 dB of 0 dBFS in the source — clipped —
+        and are attenuated ~16-18 dB into each master, so nothing clips there.
+        Segments were identified by spectral fingerprint, not by ear: "say less" carries 15%
+        of its energy above 4 kHz against 0.1% for 没问题.
+    - asset_id: VOX_002
+      filename: DBX-APP-S03E003_mission-line.m4a # lives with the voiceovers
+      external_uri: null
+      source: operator-supplied pickup, same speaker as the takes
+      license: n/a - founder's own voice
+      # 6.74s, -29.3 LUFS. One segment per locale: en 0.28-2.70 ("and I'm still hunting down
+      # 100 dirt bike tracks"), zh 3.93-6.25 (这次继续走遍我的100个越野摩托车场). Which is which
+      # was settled by transcribing each segment in both languages - one reading is coherent
+      # and the other is noise. Only the en segment is still in use (-2.90 dB match); the zh
+      # one was superseded by VOX_003 before this episode left review.
+    - asset_id: VOX_003
+      filename: DBX-APP-S03E003_mission-line-zh.m4a # lives with the voiceovers
+      external_uri: null
+      source: operator-supplied pickup, same speaker as the takes
+      license: n/a - founder's own voice
+      # 4.01s, -33.8 LUFS, one line at 0.79-3.27: 继续挑战走遍100个越野摩托车场. Replaces
+      # VOX_002's zh segment (这次继续走遍我的100个越野摩托车场) - the operator's call, and it
+      # also drops the 这次...这次 repetition against the 这次是第三个 that follows.
+      # Quieter than the take, so it carries a +2.77 dB match gain.
+    - asset_id: MUS_001
+      filename: usher-yeah-instrumental.mp3 # lives in media/audio/
+      external_uri: null
+      source: operator-supplied instrumental
+      license: >-
+        NOT CLEARED — commercial recording, no licence on file for social commercial use.
+        Placeholder for the review mix only; must be replaced or licensed before publish.
+        Source file peaks +1.0 dBFS (clipped master); it is attenuated ~29 dB in the review
+        mix so nothing clips there, but do not use it at unity anywhere.
+        The review mix ducks it 10 dB under the whole barber exchange — the founder's ask and
+        the barber's reply, 0.15s ramps — so it plays as a conversation; the duck is a mix
+        decision and is not in the VO master.
+
+outputs:
+  overlays: {}
+  covers: {}
+  kdenlive: {}
+  exports: {}
+  published: {}
