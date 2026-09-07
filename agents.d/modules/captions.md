@@ -260,14 +260,25 @@ whatever upstream decided.
 truth that disagrees with the script. **The threshold:** captions wanted for a take that has no
 script.
 
-### Only the band lights in zh; en lights the text too
+### Only the band lights — in both locales. Text lights only for an important word
 
-zh holds **one text colour throughout** — unspoken, spoken and past characters are identical, and
-the band alone carries the state. Chinese characters carry meaning in dense strokes and recolouring
-them mid-line costs legibility for a cue the band already gives. en lights the text as well, since
-Latin words survive it and in streaming mode the newest word must be findable the instant it lands.
+Both locales hold **one text colour throughout**: unspoken, spoken and past words are identical,
+and the band alone carries the state. The first version lit en text as well, on the argument that
+Latin words survive recolouring and a streaming line needs its newest word findable. Watching it
+run, that argument was wrong on the second half — the band already says where the voice is, and a
+line whose every glyph recolours in turn flickers without adding a cue.
 
-Defaults follow `locale`; `litText` overrides and should rarely be set.
+So lit text was demoted from a per-word state to a per-word **decision**. A row marked `*` lights
+its text, in `lit`, while it is spoken. Two or three to a sentence: the ones the sentence is
+actually about. That is what makes lit text mean something when it appears, rather than meaning
+"this word is next".
+
+`litSoft` and `textSpent` fall out of the palette with this — they were the two shades of a
+per-word text state, which is the thing being removed. They stay in `tokens.ts` marked unused, so
+that reaching for one reads as re-proposing the rule rather than as picking a colour.
+
+**Not done:** no `litText` override. The old flag let a composition put the rule back per render,
+which is how the en compositions ended up lighting text nobody had decided to light.
 
 ### The highlight is striped, not flat, and rises behind the character
 
@@ -283,19 +294,47 @@ Palette supplied by the operator; roles assigned in `theme/tokens.ts` § `spoken
 |---|---|
 | `#CFEF17` lit | the spoken word's block |
 | `#708118` litHatch | its stripes |
-| `#D3EE94` litSoft | lit text (en only) |
 | `#231F28` band | the unlit rule |
 | `#3F4560` hatch | its stripes |
 | `#162840` stroke | the text outline |
-| `#CEE7F3` text | unspoken text |
-| `#92B7E1` textSpent | spoken text (en only) |
+| `#CEE7F3` text | all caption text, in both locales |
+| `#CFEF17` lit | *also* the text of a word marked `*`, while spoken |
+| `#D3EE94` litSoft, `#92B7E1` textSpent | unused — see above |
 
-### One line, always — and sentences are the cut
+### One line at one size — and the cut is what absorbs a long sentence
 
-The type is sized to the whole sentence with `fitText` and never wraps, so a long line gets small
-rather than tall; that makes "too long" visible instead of ugly, and the fix is a cut. The fit is
-computed from the complete sentence even while streaming, or the type resizes on every word.
-`SpokenSubtitleTrack` splits on sentences, which puts the cut where the voice already pauses.
+The type never wraps and, as of this pass, never resizes either. `fitText` used to shrink each
+sentence to the safe zone; the result was a frame whose caption changed size at every cut, and the
+sentences that shrank most were the ones carrying the most words — sized down exactly where they
+needed reading. Auto-fit optimises the wrong thing: it keeps the *line* intact at the cost of the
+*type*, when the line is the cheaper of the two to break.
+
+So the size is now fixed per locale (`captionSize`) and `SpokenSubtitleTrack` measures each
+sentence at that size. One that does not fit `captionRoom` is split at the word boundary leaving
+the two halves closest to equal width, recursing until every part fits. Sentence boundaries are
+still preferred cuts — that is where the voice pauses — and the width split is what handles a
+sentence too long to be one.
+
+Balanced rather than greedy: a greedy fill leaves a full line followed by a two-word remainder,
+which reads as an accident. Only a single word wider than the frame is left overflowing; there is
+nothing left to cut, and a silently dropped caption is worse than one that overhangs.
+
+**Not done:** no wrapping to two lines. Half a sentence above the other half makes the eye travel
+back, and in short form it eats the frame.
+
+### en is left-aligned; zh is centred
+
+Streaming and centring are incompatible: each new word re-centres the line and drags the words
+already read sideways, so the reader re-finds their place on every word. Left alignment fixes the
+start of the line and lets growth happen only at the end — and with a fixed size it also makes the
+line's width knowable before the first word is drawn. zh shows the whole sentence from frame one
+and never moves, so it centres.
+
+### Numbers are digits
+
+`12.5%`, `4个核心`, `7天` — not 百分之十二点五, not "twelve point five percent". A digit is taken in
+at a glance in both scripts; a spelled-out number is read as words, costs the line several word
+slots, and in zh pushes a sentence over the width where it has to be cut.
 
 ### Timing comes from measurement, not from feel
 

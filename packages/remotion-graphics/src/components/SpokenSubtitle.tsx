@@ -1,7 +1,6 @@
 import {zTextarea} from '@remotion/zod-types';
-import {fitText} from '@remotion/layout-utils';
 import React, {useMemo} from 'react';
-import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {z} from 'zod';
 import {FPS, localeSchema, localeScale, overlayMetadata, type Locale} from '../shared';
 import {bodyFont} from '../theme/fonts';
@@ -28,19 +27,22 @@ import {SAFE_ZONE, spoken} from '../theme/tokens';
  * band read as "not yet" rather than as a design element, so they are drawn even where no word
  * has landed.
  *
- * ONE LINE, ALWAYS. A caption that wraps puts half the sentence above the other half and the
- * reader's eye has to travel back; in short form it also eats the frame. The type is sized to the
- * WHOLE sentence with fitText and never wraps — so a sentence too long to fit gets small rather
- * than tall, and that is the signal to split it. `SpokenSubtitleTrack` is what splits.
+ * THE BAND LIGHTS; THE TEXT DOES NOT. In both locales the spoken word is marked by its rule
+ * alone. Recolouring the glyphs on every word makes the whole line flicker, and the band already
+ * says where the voice is. A word carrying the point of the sentence is the exception — mark it
+ * `*` in its row and its text lights too, which is why the lit text still means something when
+ * you see it.
  *
- * The fit is computed from the complete sentence even in streaming mode, where only some words are
- * drawn. Fitting what is currently visible would resize the type on every word.
+ * ONE LINE, ALWAYS, AT A FIXED SIZE. The type does not shrink to fit. A caption that resizes per
+ * sentence makes the frame twitch, and a sentence that shrank far enough to fit is one nobody
+ * reads. The size is chosen per locale up front, so the line width the screen allows is known
+ * before a word is drawn, and a sentence too wide for it is CUT rather than compressed —
+ * `SpokenSubtitleTrack` does the cutting.
  *
- * WHAT LIGHTS, PER LOCALE. zh lights only the BAND under the spoken word; the characters stay in
- * the unspoken colour. en lights the text as well. That is not a style split for its own sake:
- * Chinese characters carry their meaning in dense strokes, and recolouring them mid-line costs
- * legibility for a cue the band already gives. Latin words are simple enough shapes to survive it,
- * and in streaming mode the newest word needs to be findable the instant it appears.
+ * EN LEFT, ZH CENTRED. Streaming text cannot be centred: every new word re-centres the line and
+ * drags the words already read sideways, so the reader re-finds their place on every word. Left
+ * alignment nails the start of the line down and lets the growth happen only at the end. zh has
+ * the whole sentence from frame one and never moves, so it centres.
  *
  * A WORD IS WHATEVER A ROW IS. whisper.cpp emits zh timings per CHARACTER, and highlighting per
  * character is wrong — 核心 is one word and lights as one. The component does not segment; it
@@ -49,36 +51,56 @@ import {SAFE_ZONE, spoken} from '../theme/tokens';
  */
 export const spokenSubtitleSchema = z.object({
   locale: localeSchema,
-  /** One line, as `text|startMs|endMs` per row — the Caption[] shape tools/transcribe.mjs writes. */
+  /**
+   * One line, as `text|startMs|endMs` per row — the Caption[] shape tools/transcribe.mjs writes.
+   * A fourth field of `*` marks the word as important, which is the only thing that lights text.
+   */
   words: zTextarea(),
   durationSec: z.number(),
   fontSize: z.number().optional(),
-  /**
-   * Light the spoken text as well as its band. Defaults per locale and should rarely be set:
-   * zh lights ONLY the band, en lights both. See the note in the component header.
-   */
-  litText: z.boolean().optional(),
 });
 
 export type SpokenSubtitleProps = z.infer<typeof spokenSubtitleSchema>;
 
-type Word = {text: string; startMs: number; endMs: number};
+export type Word = {
+  text: string;
+  startMs: number;
+  endMs: number;
+  important: boolean;
+};
 
-const parseWords = (raw: string): Word[] =>
+export const parseWords = (raw: string): Word[] =>
   raw
     .split('\n')
     .map((l) => l.trim())
     .filter(Boolean)
     .map((l) => {
-      const [text, a, b] = l.split('|');
-      return {text: text ?? '', startMs: Number(a ?? 0), endMs: Number(b ?? 0)};
+      const [text, a, b, flag] = l.split('|');
+      return {
+        text: text ?? '',
+        startMs: Number(a ?? 0),
+        endMs: Number(b ?? 0),
+        important: (flag ?? '').trim() === '*',
+      };
     })
     .filter((w) => w.text.length > 0);
+
+/** The one size for this locale. Fixed by definition — nothing measures its way out of it. */
+export const captionSize = (locale: Locale, fontSize?: number): number =>
+  (fontSize ?? 68) * localeScale(locale);
+
+/** Gap between Latin words, as a fraction of the size. zh sets no gap. */
+export const wordGap = (locale: Locale, size: number): number =>
+  locale === 'zh-CN' ? 0 : size * 0.26;
+
+/** How wide the line may be before the track has to cut it. */
+export const captionRoom = (width: number): number =>
+  width - SAFE_ZONE.left - SAFE_ZONE.right;
 
 /**
  * The hatch. A repeating-linear-gradient rather than an SVG pattern so it costs one paint, and
  * sized FROM the type rather than in fixed pixels — a 40px caption and a 90px one otherwise get
- * dashes of different apparent weight. 20deg leans them the way the reference does.
+ * dashes of different apparent weight.
  */
 const stripes = (size: number, line: string, ground: string): string => {
   const dash = Math.max(2, size * 0.055);
@@ -89,44 +111,23 @@ export const SpokenSubtitle: React.FC<SpokenSubtitleProps> = ({
   locale,
   words,
   fontSize,
-  litText,
 }) => {
   const frame = useCurrentFrame();
-  const {width} = useVideoConfig();
   const ms = (frame / FPS) * 1000;
   const parsed = useMemo(() => parseWords(words), [words]);
   const karaoke = locale === 'zh-CN';
-  // zh: band only. en: text too. An explicit prop still wins.
-  const lightText = litText ?? !karaoke;
   const family = bodyFont(locale as Locale);
-  const asked = (fontSize ?? 68) * localeScale(locale as Locale);
-  const room = width - SAFE_ZONE.left - SAFE_ZONE.right;
+  const size = captionSize(locale as Locale, fontSize);
 
-  // the whole sentence, spaced as it will be drawn, so the fit holds for every frame
-  const full = useMemo(
-    () => parsed.map((w) => w.text).join(karaoke ? '' : ' '),
-    [parsed, karaoke],
-  );
-  const size = useMemo(() => {
-    if (!full) return asked;
-    const {fontSize: fits} = fitText({
-      text: full,
-      withinWidth: room,
-      fontFamily: family,
-      fontWeight: '800',
-    });
-    return Math.min(asked, fits);
-  }, [full, room, family, asked]);
-
-  // zh: every word is laid out from frame 0 and only its colour changes.
-  // en: a word that has not started is not rendered at all, so the line grows.
+  // zh: every word is laid out from frame 0 and only its band changes.
+  // en: a word that has not started is not rendered at all, so the line grows to the right.
   const visible = karaoke ? parsed : parsed.filter((w) => ms >= w.startMs);
 
   return (
     <AbsoluteFill
       style={{
         justifyContent: 'flex-end',
-        alignItems: 'center',
+        alignItems: karaoke ? 'center' : 'flex-start',
         paddingBottom: SAFE_ZONE.bottom,
         paddingLeft: SAFE_ZONE.left,
         paddingRight: SAFE_ZONE.right,
@@ -137,37 +138,26 @@ export const SpokenSubtitle: React.FC<SpokenSubtitleProps> = ({
           display: 'flex',
           flexWrap: 'nowrap',
           whiteSpace: 'nowrap',
-          justifyContent: 'center',
-          maxWidth: room,
           fontFamily: family,
           fontWeight: 800,
           fontSize: size,
           lineHeight: 1.18,
-          // zh has no spaces; Latin needs them between words
-          columnGap: karaoke ? 0 : size * 0.26,
+          columnGap: wordGap(locale as Locale, size),
         }}
       >
         {visible.map((w, i) => {
           const lit = ms >= w.startMs && ms < w.endMs;
-          const done = ms >= w.endMs;
           return (
             <span
               key={`${i}-${w.text}`}
               style={{
                 position: 'relative',
                 zIndex: 0,
-                // zh (lightText false) holds ONE text colour throughout — the band alone
-                // carries the state. Recolouring spoken characters is still highlighting them,
-                // and dense strokes lose legibility for a cue the band already gives.
-                color: !lightText
-                  ? spoken.text
-                  : lit
-                    ? spoken.litSoft
-                    : done
-                      ? spoken.textSpent
-                      : spoken.text,
+                // ONE text colour throughout — the band alone carries the state. The exception
+                // is a word marked important, and only while it is being spoken.
+                color: w.important && lit ? spoken.lit : spoken.text,
                 paddingBottom: size * 0.16,
-                // the stroke is what keeps white text legible over any footage
+                // the stroke is what keeps the text legible over any footage
                 WebkitTextStroke: `${Math.max(2, size * 0.045)}px ${spoken.stroke}`,
                 paintOrder: 'stroke fill',
               }}
@@ -179,18 +169,15 @@ export const SpokenSubtitle: React.FC<SpokenSubtitleProps> = ({
                   left: karaoke ? 0 : -size * 0.08,
                   right: karaoke ? 0 : -size * 0.08,
                   bottom: 0,
-                  // the lit block sits slightly proud of the hatched rule, as it does in the
-                  // reference — the eye finds the spoken word by its weight before its colour
                   // the lit block is much taller and rises BEHIND the character; the unlit rule
                   // sits at the baseline. Both are bottom-aligned so the block grows upward.
-                  height: size * (lit ? 0.40 : 0.26),
+                  height: size * (lit ? 0.4 : 0.26),
                   // behind the text, or a tall block hides the glyph it is marking
                   zIndex: -1,
-                  // lit: flat fluorescent. otherwise: black crossed by grey dashes.
                   // BOTH states carry the stripes — the highlight is not a flat fill. Lit is the
                   // fluorescent ground under its own darker stripes; unlit is near-black under
                   // grey ones. A flat highlight next to a striped band reads as two unrelated
-                  // objects rather than one rule lighting up.
+                  // objects rather than as one rule lighting up.
                   background: lit
                     ? stripes(size, spoken.litHatch, spoken.lit)
                     : stripes(size, spoken.hatch, spoken.band),

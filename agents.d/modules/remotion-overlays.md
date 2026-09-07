@@ -105,6 +105,45 @@ exact pixel format goes red on an ffmpeg upgrade and teaches nobody anything:
 ffprobe -v error -show_entries stream=pix_fmt -of csv=p=0 <overlay>.mov   # expect yuva444p*
 ```
 
+### The masters are big, and that is the codec, not a defect
+
+ProRes is **intra-frame**: every frame is stored whole, with no reference to its neighbours. A 19s
+1080×1920 caption master is ~95 MB (~40 Mbit/s) even though 98.3% of every frame is fully
+transparent, because no ProRes frame is allowed to know that the frame before it was identical.
+Nothing is wrong; that is what a mezzanine codec is for, and it is the same property that makes it
+scrub instantly in the edit.
+
+Measured 2026-09-07 on `captions-zh.mov` (575 frames, 1080×1920, video only, source 94.7 MB),
+losslessness verified by comparing `framemd5` of the decoded **RGBA** — colour and alpha both:
+
+| Encode | Size | Lossless vs source | Decode |
+|---|---|---|---|
+| ProRes 4444 (re-encode) | 93.2 MB | **no** — 546/575 frames differ | 475 fps |
+| QuickTime RLE (`qtrle`) | **9.3 MB** | **yes**, bit-identical | **2848 fps** |
+| PNG-in-MOV (`-c:v png`) | 31.5 MB | yes, bit-identical | 232 fps |
+| FFV1 (`-level 3`, rgba) | 29.5 MB | yes, bit-identical | 361 fps |
+| VP9 `-lossless 1` (yuva420p) | 1.5 MB | no — chroma subsampled, all frames differ | 1670 fps |
+| VP9 `-lossless 1` (yuva444p) | 1.5 MB | no — all frames differ | — |
+
+Two things fall out of that table. **ProRes → ProRes is itself lossy**, so "keep it in ProRes to
+avoid a generation loss" is backwards. And **`qtrle` wins on every axis measured** — a tenth of the
+size, bit-identical RGBA, six times the decode speed — because run-length coding is exactly right
+for flat colour over a mostly-empty frame, which is what a caption overlay is.
+
+`-lossless 1` on VP9 is lossless *in its own colour space*; the conversion into `yuva420p` on the
+way in is where the loss happens. The flag does not make the pipeline lossless.
+
+**The delivery default is unchanged.** WebM was rejected here on MLT's alpha handling, not on
+size, and `qtrle` has not been through that same check — nobody has yet composited one in
+Kdenlive. Until someone does, `qtrle` is the **review-copy** format:
+
+```bash
+ffmpeg -i out/captions-zh.mov -c:v qtrle -an out/review-zh.mov
+```
+
+If it does composite correctly, `qtrle` should replace ProRes 4444 as the master, and this section
+is the evidence for that change.
+
 ## Steps
 
 1. Fill `remotion-props/<locale>.json` from the script's on-screen text. One props file
