@@ -17,14 +17,12 @@ hard sell. This is where the season's audience, promise and positioning live, re
 
 ## Why they belong together
 
-A ladder of audiences, and the briefs say so. E002 argues the app to riders; E003 is the first
+A ladder of audiences. E002 argues the app to riders; E003 is the first
 episode aimed at track owners; E004 sells reach to that same buyer; E005 sells belonging back to
-riders, assuming E004 was watched. Each brief records the duplicate check that keeps them from
-repeating each other.
+riders, assuming E004 was watched. The manifests record the audience each one is aimed at.
 
 ## Where it stands
 
-- All four are `editing`. Nothing is published, and `outputs.covers` is empty in all four.
+- All four are `editing`. Nothing is published.
 - **Music and SFX are not cleared** — the same bed across all four, `source` and `license` still
   `DECIDE:`. This blocks the season, not an episode.
-- E002's brief is stale where its manifest is current. Trust the manifest.

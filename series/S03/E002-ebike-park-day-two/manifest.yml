@@ -15,7 +15,7 @@ formats:
 variants:
   en-US:
     script: script.en-US.md
-    cover: cover.en-US.md
+    cover: null
     subtitles: subtitles/en-US.srt
     remotion_props: null
     voiceover_asset_id: VO_EN_016
@@ -130,8 +130,6 @@ assets:
 
 outputs:
   overlays: {}
-  covers: {}
-  kdenlive: {}
   exports:
     # Burned-in bilingual captions over the zh-CN grade (footage/S03E002-cn-2.MP4).
     # Rebuild: tools/burn-subtitles.py <this dir> --render (config: subtitles.yml).

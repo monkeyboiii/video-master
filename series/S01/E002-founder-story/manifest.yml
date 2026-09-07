@@ -20,7 +20,7 @@ formats:
 variants:
   en-US:
     script: script.en-US.md
-    cover: cover.en-US.md
+    cover: null
     subtitles: subtitles/en-US.srt
     # No single locale props file: this episode renders per-comp props
     # (remotion-props/captions.all.json, photo-reveal.json, brand-title.json, ...).
@@ -31,7 +31,7 @@ variants:
   # (English line + Chinese line) and every timing is identical to en-US.
   zh-CN:
     script: script.zh-CN.md
-    cover: cover.zh-CN.md
+    cover: null
     subtitles: subtitles/zh-CN.srt
     # Same per-comp props layout as en-US, with .zh-CN.json siblings
     # (remotion-props/captions.all.zh-CN.json, brand-title.zh-CN.json, ...).

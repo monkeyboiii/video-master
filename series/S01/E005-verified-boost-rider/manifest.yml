@@ -24,7 +24,7 @@ formats:
 variants:
   en-US:
     script: script.en-US.md
-    cover: cover.en-US.md
+    cover: null
     subtitles: subtitles/en-US.srt
     # No single locale props file: this episode renders per-comp props
     # (remotion-props/captions.all.json, feature-fan.json, side-screen.*.json, ...).
@@ -33,7 +33,7 @@ variants:
     platforms: [tiktok, ytshorts, reels]
   zh-CN:
     script: script.zh-CN.md
-    cover: cover.zh-CN.md
+    cover: null
     subtitles: subtitles/zh-CN.srt # bilingual: the English line, then the Chinese one
     # Per-comp props as above, with the Chinese display text:
     # remotion-props/captions.all.zh-CN.json, feature-fan.zh-CN.json.
@@ -188,7 +188,6 @@ outputs:
     # feature-fan.zh-CN.json exists for a later full-localization round but is NOT part of this cut.
     zh-CN:
       - DBX-APP-S01E005_zh-CN_9x16_kinetic-captions_v001.mov
-  covers: {}
   kdenlive:
     en-US: media/S01E005/verified-boost-rider.kdenlive
     zh-CN: media/S01E005/DBX-APP-S01E005_zh-CN_v001.kdenlive

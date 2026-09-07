@@ -20,6 +20,6 @@ stay in the tree, and `tools/vm tree` prints the edge between them.
 
 ## Where it stands
 
-- `topic`, not published. Held by a missing cover.
+- `topic`, not published.
 - The subject speaks on camera and is the episode. Confirm he agreed to be published before this
   ships — the same release question S03E003 carries, and the more pointed one here.

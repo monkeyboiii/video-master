@@ -15,7 +15,7 @@ formats:
 variants:
   en-US:
     script: script.en-US.md
-    cover: cover.en-US.md
+    cover: null
     subtitles: subtitles/en-US.srt
     remotion_props: null
     voiceover_asset_id: null # music-synced montage; no spoken VO

@@ -207,7 +207,5 @@ assets:
 
 outputs:
   overlays: {}
-  covers: {}
-  kdenlive: {}
   exports: {}
   published: {}

@@ -76,7 +76,7 @@ Patterns learned on S01E003:
 
 - `manifest.yml` — beats with `overlay` fields, formats (resolution/fps)
 - `remotion-props/<locale>.json` in the episode dir (start from
-  `templates/remotion-props/*.json`)
+  `props/<name>/base.json`)
 - `script.<locale>.md` — exact on-screen wording (never retype from memory; copy)
 - `packages/remotion-graphics/README.md` — available compositions and their props
 

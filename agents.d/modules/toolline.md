@@ -213,7 +213,7 @@ soundcn.xyz; ElevenLabs for generated effects. **The threshold:** a commissioned
 - `packages/remotion-graphics` — 20 components and the alpha defaults are the visual language.
   The restructure did not touch a component.
 - `series/` and `media/` — shipped episodes are history, not inputs. Media stays outside git.
-- `templates/` — `remotion-props` is the contract a beat renders from.
+- `props/` — a promoted prop set is the contract a beat renders from; `vm props index` lists them.
 - The three surviving docs were **renamed, not rewritten**. Their rules and scars — the
   `backdrop-filter` trap, the width-budget rule, the safe-box warning, the `--props` flat-object
   trap — cost real renders to learn and are carried whole.

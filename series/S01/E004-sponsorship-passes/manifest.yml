@@ -19,7 +19,7 @@ formats:
 variants:
   en-US:
     script: script.en-US.md
-    cover: cover.en-US.md
+    cover: null
     subtitles: subtitles/en-US.srt
     # No single locale props file: this episode renders per-comp props
     # (remotion-props/captions.all.json, brand-drop.json, side-screen.*.json, ...).
@@ -28,7 +28,7 @@ variants:
     platforms: [tiktok, ytshorts, reels]
   zh-CN:
     script: script.zh-CN.md
-    cover: cover.zh-CN.md
+    cover: null
     subtitles: subtitles/zh-CN.srt
     # Same per-comp layout as en-US; localized only where props carry display text
     # (remotion-props/captions.all.zh-CN.json, side-screen.{chat,filter,search}.zh-CN.json).
@@ -201,7 +201,6 @@ outputs:
     # side-screen .zh-CN.json props exist for a later full-localization round but are NOT in this cut.
     zh-CN:
       - DBX-APP-S01E004_zh-CN_9x16_kinetic-captions_v001.mov
-  covers: {}
   kdenlive:
     en-US: media/S01E004/sponsorship-passes.kdenlive
     zh-CN: media/S01E004/DBX-APP-S01E004_zh-CN_v001.kdenlive

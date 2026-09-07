@@ -29,7 +29,7 @@ if (!variant) {
 }
 const propsPath = path.join(epDir, variant.remotion_props ?? `remotion-props/${locale}.json`);
 if (!fs.existsSync(propsPath)) {
-  console.error(`Props file missing: ${propsPath}\nCopy templates/remotion-props/locale-props.template.json and fill it from the script.`);
+  console.error(`Props file missing: ${propsPath}\nWrite it from the script, or reference a catalogue entry: {"$ref": "<name>"} — see tools/vm props index.`);
   process.exit(1);
 }
 let allProps;
@@ -101,7 +101,7 @@ for (const [comp, beats] of byComp) {
 if (missingProps.length) {
   console.error(
     `No props for ${missingProps.map((c) => `"${c}"`).join(', ')} in ${path.basename(propsPath)}.\n` +
-    'Rendering would burn placeholder text into production overlays. Add the missing keys (see templates/remotion-props/locale-props.template.json) with the exact script wording, then rerun.',
+    'Rendering would burn placeholder text into production overlays. Add the missing keys with the exact script wording, then rerun.',
   );
   process.exit(1);
 }

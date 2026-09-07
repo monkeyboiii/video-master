@@ -18,7 +18,7 @@ formats:
 variants:
   en-US:
     script: script.en-US.md
-    cover: cover.en-US.md
+    cover: null
     subtitles: subtitles/en-US.srt
     # No single locale props file: this episode renders per-comp / per-beat props
     # (remotion-props/captions.all.json, side-screen.{flair,create,rsvp}.json, ...).
@@ -30,7 +30,7 @@ variants:
   # subtitles/zh-CN.srt is bilingual (English line + Chinese line per cue).
   zh-CN:
     script: script.zh-CN.md
-    cover: cover.zh-CN.md
+    cover: null
     subtitles: subtitles/zh-CN.srt
     # Same per-comp convention as en-US: remotion-props/*.zh-CN.json
     # (captions.all.zh-CN.json, brand-title.zh-CN.json — the rest carry no display text).
@@ -142,7 +142,6 @@ outputs:
     # brand-title.zh-CN.json exists for a later full-localization round but is NOT part of this cut.
     zh-CN:
       - DBX-APP-S01E003_zh-CN_9x16_kinetic-captions_v001.mov
-  covers: {}
   kdenlive:
     en-US: media/S01E003/track-owners.kdenlive
     zh-CN: media/S01E003/DBX-APP-S01E003_zh-CN_v001.kdenlive

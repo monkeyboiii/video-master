@@ -56,21 +56,26 @@ export function validateEpisode(ep, report) {
 
   // Variants
   const variants = Object.entries(m.variants ?? {});
-  if (variants.length === 0) report.error(ctx, 'no variants defined');
+  // A freshly scaffolded episode legitimately has none yet; by scripting it must.
+  if (variants.length === 0) {
+    const msg = 'no variants defined';
+    if (stageAtLeast(m.status, 'scripting')) report.error(ctx, msg);
+    else report.warn(ctx, msg);
+  }
   for (const [loc, v] of variants) {
     if (!RE.locale.test(loc)) report.error(ctx, `variant locale "${loc}" invalid`);
     for (const p of v?.platforms ?? []) if (!PLATFORMS.includes(p)) report.error(ctx, `variant ${loc}: unknown platform "${p}"`);
   }
 
   // Stage gates: status = that stage's artifacts are complete.
-  if (stageAtLeast(m.status, 'topic')) {
-    if (!exists('brief.md')) report.error(ctx, 'status>=topic requires brief.md');
-  }
-  if (stageAtLeast(m.status, 'packaging')) {
-    for (const [loc, v] of variants) {
-      if (!v?.cover || !exists(v.cover)) report.error(ctx, `status>=packaging requires cover for ${loc}`);
-    }
-  }
+  //
+  // The topic, packaging, shooting and retro gates are GONE, with the artifacts they demanded.
+  // This repo makes parts of a video: it splices voice, writes captions, renders overlays and QCs
+  // a render. Briefs, covers, storyboards and retrospectives are written by a human elsewhere
+  // (AGENTS.md § Not this repo's job), so requiring them here made the checker enforce a pipeline
+  // the repo had already stopped owning. The status values stay — manifests use them, and they
+  // still say how far along an episode is — but only the stages this repo can actually deliver
+  // have a gate.
   if (stageAtLeast(m.status, 'scripting')) {
     for (const [loc, v] of variants) {
       if (!v?.script || !exists(v.script)) report.error(ctx, `status>=scripting requires script for ${loc}`);
@@ -93,7 +98,6 @@ export function validateEpisode(ep, report) {
     }
   }
   if (stageAtLeast(m.status, 'shooting')) {
-    if (!exists('storyboard.md')) report.error(ctx, 'status>=shooting requires storyboard.md');
     const raw = m.assets?.raw ?? [];
     if (raw.length === 0) report.error(ctx, 'status>=shooting requires assets.raw entries');
     for (const a of raw) {
@@ -139,8 +143,8 @@ export function validateEpisode(ep, report) {
     for (const [loc] of variants) {
       if (!(m.outputs?.exports?.[loc]?.length > 0)) report.error(ctx, `status>=qc requires outputs.exports.${loc}`);
     }
-    if (exists('edit-notes.md') && !/^## QC /m.test(fs.readFileSync(path.join(ep.dir, 'edit-notes.md'), 'utf8'))) {
-      report.error(ctx, 'status>=qc requires a "## QC <filename>" block in edit-notes.md');
+    if (exists('edit-notes.md') && !/^## QC/m.test(fs.readFileSync(path.join(ep.dir, 'edit-notes.md'), 'utf8'))) {
+      report.error(ctx, 'status>=qc requires a "## QC" block in edit-notes.md');
     }
   }
   if (stageAtLeast(m.status, 'published')) {
@@ -161,29 +165,15 @@ export function validateEpisode(ep, report) {
       }
     }
   }
-  if (stageAtLeast(m.status, 'retro')) {
-    if (!exists('review.md')) report.error(ctx, 'status=retro requires review.md');
-  }
-
   // Output naming
   for (const [loc, files] of Object.entries(m.outputs?.overlays ?? {})) {
     for (const f of files ?? []) {
       if (!RE.overlayFile(m.video_id, loc).test(f)) report.error(ctx, `overlay "${f}" doesn't match naming pattern`);
     }
   }
-  for (const [loc, files] of Object.entries(m.outputs?.covers ?? {})) {
-    for (const f of files ?? []) {
-      if (!RE.coverFile(m.video_id, loc).test(f)) report.error(ctx, `cover "${f}" doesn't match naming pattern`);
-    }
-  }
   for (const [loc, files] of Object.entries(m.outputs?.exports ?? {})) {
     for (const f of files ?? []) {
       if (!RE.exportFile(m.video_id, loc).test(f)) report.error(ctx, `export "${f}" doesn't match naming pattern`);
-    }
-  }
-  for (const [loc, f] of Object.entries(m.outputs?.kdenlive ?? {})) {
-    if (f && !RE.timelineFile(m.video_id, loc).test(path.basename(f))) {
-      report.error(ctx, `timeline "${f}" doesn't match naming pattern`);
     }
   }
 

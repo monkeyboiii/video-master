@@ -16,7 +16,7 @@ Manifest files connect the two.
 |------|----------|
 | `docs/` | Production model, golden rules, naming, localization, platform specs |
 | `skills/` | Step-by-step task instructions for AI agents (and humans) |
-| `templates/` | Blank episode artifacts, series manifest, Remotion prop presets |
+| `props/` | Shared Remotion prop sets, referenced by episodes with `$ref` |
 | `packages/remotion-graphics/` | Reusable branded motion graphics (React + Remotion) |
 | `tools/` | Node scripts: scaffold episodes, validate, probe media, render overlays |
 | `series/` | The actual content: series → episodes → language variants |

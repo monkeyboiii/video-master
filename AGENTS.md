@@ -33,7 +33,6 @@ agents.d/skills/    auto-editor — cutting silence out of a raw take
 packages/remotion-graphics/   the engine: Remotion 4.0.484, 20 components, alpha defaults
 tools/              the verbs: vm (the series tree), render-overlays, render-captions,
                     burn-subtitles, retime-subtitles, probe-media, validate
-templates/          blank artifacts — never edit in place
 props/              shared Remotion props, referenced by episodes with $ref
 series/             S0N/E0NN-slug — shipped episodes; read-only history
 media/              outside git (~3 GB)

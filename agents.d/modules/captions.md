@@ -47,7 +47,7 @@ merely transcribe it), and audit variant pairs for localization quality.
    `target_duration_sec` and record `timing source: provisional (no VO yet)` under
    `## Subtitle notes` in `edit-notes.md` — never put comment lines inside the `.srt`
    itself (they break SRT parsing). If `edit-notes.md` doesn't exist yet, copy it from
-   `templates/episode/edit-notes.md` and fill the `{{...}}` tokens.
+   the `edit-notes.md` that `vm new` scaffolds.
 4. Keep emphasis words (from the script) in the line even when compressing around them.
 5. Write valid SRT: sequential indices, `HH:MM:SS,mmm` times, no overlaps, UTF-8.
 6. **Localization audit** (once both locales' subtitle files exist — scripts alone

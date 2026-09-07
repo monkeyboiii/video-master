@@ -21,6 +21,7 @@ const USAGE = `vm — the series tree
 
   vm check [--json]              shape, naming, manifests, lineage, props refs
   vm tree [--json]               seasons and episodes, with status and lineage
+  vm season S0N "Name"           scaffold a season README
   vm new S0N slug [--parent ID] [--relation R] [--follows ID]
   vm link E-ID --parent ID --relation R [--reason "..."] | --clear
   vm props where NAME            every episode using it
@@ -137,6 +138,90 @@ function cmdLink() {
   console.log(`${id}: ${lines.slice(1).join(', ').replace(/\s+/g, ' ')}`);
 }
 
+// The scaffolds live HERE, not in templates/. A template directory that a script copies and then
+// overwrites is two sources of truth for one shape, and this one had already drifted: its manifest
+// still showed the retired DBX- id form and a `series:` key, and its edit-notes pointed at two
+// files deleted in the toolline restructure. A scaffold nobody can run is a scaffold nobody
+// notices going stale.
+const manifestScaffold = (id, slug, lineage) =>
+  `# Episode manifest — source of truth for this episode.
+# Naming: agents.d/modules/naming-conventions.md · validate: tools/vm check
+
+video_id: "${id}"
+slug: "${slug}"
+status: topic # topic|packaging|scripting|shooting|editing|qc|published|retro
+${lineage.length ? `\nlineage:\n${lineage.join('\n')}\n` : `
+# Optional. \`follows\` = where this published; \`parent\` = the episode it ANSWERS, if any;
+# \`relation\` = ${RELATIONS.join(' | ')}, and needs a parent. Write it with \`tools/vm link\`.
+`}
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+variants: {}
+beats: []
+assets:
+  raw: []
+  selected: []
+  voiceover: []
+  audio: []
+outputs:
+  overlays: {}
+  exports: {}
+  published: {}
+`;
+
+const editNotesScaffold = (id) =>
+  `# Edit notes — ${id}
+
+What this repo actually did to the material, in enough detail to reproduce it. Clips by asset id
+and timecode, never "the good take". Open questions are explicit \`DECIDE:\` lines.
+
+## Voice
+
+The splice: which takes, which grafts, what gain match, measured gaps. Reproduce with vo-process.sh.
+
+## Captions
+
+Where the timings came from — a transcription, or \`/auto-narrate\` reading them off the voice.
+
+## QC
+
+Measured, not eyeballed: loudness, peak, duration against the manifest's beats.
+`;
+
+const seasonScaffold = (id, name) =>
+  `# ${id} — ${name}
+
+One paragraph: what this season is, and what every episode in it repeats.
+
+## Episodes
+
+| ID | Slug | What it is | Status |
+|---|---|---|---|
+
+## Where it stands
+
+Two to four bullets — what has shipped, and what a producer must not walk past.
+
+<!-- Keep this to one screen. Production quirks (TTS, translation, splices, codecs, per-beat
+     timings) belong in the episode's edit-notes.md or in agents.d/modules/, not here. tools/vm
+     check warns past ~4000 chars. -->
+`;
+
+function cmdSeason() {
+  const [id, ...name] = pos;
+  if (!RE.seasonDir.test(id ?? '')) { console.error(USAGE); process.exit(2); }
+  const dir = path.join(REPO_ROOT, 'series', id);
+  const readme = path.join(dir, 'README.md');
+  if (fs.existsSync(readme)) { console.error(`vm season: ${id}/README.md already exists`); process.exit(1); }
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(readme, seasonScaffold(id, name.join(' ') || '{Season name}'));
+  console.log(path.relative(REPO_ROOT, readme));
+}
+
 function cmdNew() {
   const [season, slug] = pos;
   if (!RE.seasonDir.test(season ?? '') || !RE.slug.test(slug ?? '')) { console.error(USAGE); process.exit(2); }
@@ -149,18 +234,14 @@ function cmdNew() {
   const n = String((nums.length ? Math.max(...nums) : 0) + 1).padStart(3, '0');
   const id = `${season}E${n}`;
   const dir = path.join(s.dir, `E${n}-${slug}`);
-  const tpl = path.join(REPO_ROOT, 'templates', 'episode');
-  fs.mkdirSync(dir, { recursive: true });
-  if (fs.existsSync(tpl)) for (const f of fs.readdirSync(tpl)) fs.copyFileSync(path.join(tpl, f), path.join(dir, f));
+  fs.mkdirSync(path.join(dir, 'remotion-props'), { recursive: true });
+  fs.mkdirSync(path.join(dir, 'subtitles'), { recursive: true });
   const lineage = [];
   if (val('follows')) lineage.push(`  follows: ${val('follows')}`);
   if (val('parent')) lineage.push(`  parent: ${val('parent')}`);
   if (val('relation')) lineage.push(`  relation: ${val('relation')}`);
-  fs.writeFileSync(path.join(dir, 'manifest.yml'),
-    `video_id: "${id}"\nslug: "${slug}"\nstatus: topic\n` +
-    (lineage.length ? `\nlineage:\n${lineage.join('\n')}\n` : '') +
-    `\nformats:\n  primary: short_vertical\n  aspect: 9x16\n  resolution: 1080x1920\n  fps: 30\n\nvariants: {}\nbeats: []\nassets:\n  raw: []\n  selected: []\noutputs:\n  overlays: {}\n  covers: {}\n  kdenlive: {}\n  exports: {}\n  published: {}\n`);
-  fs.mkdirSync(path.join(dir, 'remotion-props'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'manifest.yml'), manifestScaffold(id, slug, lineage));
+  fs.writeFileSync(path.join(dir, 'edit-notes.md'), editNotesScaffold(id));
   console.log(`${path.relative(REPO_ROOT, dir)}  (${id})`);
 }
 
@@ -169,6 +250,7 @@ switch (verb) {
   case 'tree': cmdTree(); break;
   case 'props': cmdProps(); break;
   case 'link': cmdLink(); break;
+  case 'season': cmdSeason(); break;
   case 'new': cmdNew(); break;
   case 'selftest': process.exit(selftest() ? 0 : 1); break;
   default: console.log(USAGE); process.exit(verb ? 2 : 0);

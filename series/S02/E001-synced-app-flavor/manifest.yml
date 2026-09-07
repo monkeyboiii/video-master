@@ -15,7 +15,7 @@ formats:
 variants:
   en-US:
     script: script.en-US.md
-    cover: cover.en-US.md
+    cover: null
     subtitles: subtitles/en-US.srt
     remotion_props: null
     voiceover_asset_id: null # music-synced montage; no spoken VO
@@ -105,8 +105,6 @@ outputs:
     en-US:
       - DBX-APP-S02E001_en-US_9x16_feature-phones-built-it_v001.mov
       - DBX-APP-S02E001_en-US_9x16_profile-card_v001.mov
-  covers: {}
-  kdenlive: {}
   exports:
     en-US:
       - DBX-APP-S02E001_en-US_tiktok_9x16_v001_review.mp4

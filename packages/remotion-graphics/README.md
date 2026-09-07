@@ -26,7 +26,7 @@ derive from `durationSec` in props (via `calculateMetadata`).
 
 `locale` is always a full BCP-47 tag: `en-US` or `zh-CN`. zh-CN automatically
 switches to Noto Sans SC and slightly smaller type. Text content comes from
-per-episode props files (`templates/remotion-props/locale-props.template.json`),
+per-episode props files, or a `$ref` into `props/`,
 never hardcoded in components.
 
 \* `stage-cards` is the one dual-mode overlay: capsules pop in along a line and

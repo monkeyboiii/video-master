@@ -30,7 +30,7 @@ edges.
 
 ## Where it stands
 
-- Nothing is published. E003 and E004 are held at `topic` by a missing cover, not by missing audio.
+- Nothing is published. E003 and E004 sit at `topic`; their voice and scripts are done, the packaging that would move them up is not this repo's stage.
 - Music clearance is unresolved across the season.
 - The barber speaks on camera in E003 and his lines are grafted into both masters — a release
   question, recorded in that episode's `edit-notes.md`.

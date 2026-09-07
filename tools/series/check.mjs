@@ -33,7 +33,7 @@ export function checkTree(root) {
       // too long and it stops being read, which costs more than the detail was worth. The upper
       // bound exists because the first drafts ran to 5-10 KB each and had absorbed TTS quirks,
       // splice notes and per-beat timings — all true, none of it a season-level fact. That
-      // material belongs in edit-notes.md and the module docs; see templates/season/README.md.
+      // material belongs in edit-notes.md and the module docs; see `vm season` for the scaffold.
       const n = fs.readFileSync(s.readmePath, 'utf8').trim().length;
       if (n < 200) report.warn(`series/${s.id}`, 'README.md is under 200 chars — "what is this season" needs a paragraph');
       else if (n > 4000) report.warn(`series/${s.id}`, `README.md is ${n} chars — over ~4000 it is a production log, not a season doc`);
