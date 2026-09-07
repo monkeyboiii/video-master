@@ -31,10 +31,11 @@ the cut and the sync happen outside; this repo never owns the timeline. Removed 
 agents.d/modules/   the why: one doc per job, plus toolline.md
 agents.d/skills/    auto-editor — cutting silence out of a raw take
 packages/remotion-graphics/   the engine: Remotion 4.0.484, 20 components, alpha defaults
-tools/              the verbs: render-overlays, burn-subtitles, retime-subtitles,
-                    probe-media, validate, new-episode
+tools/              the verbs: vm (the series tree), render-overlays, render-captions,
+                    burn-subtitles, retime-subtitles, probe-media, validate
 templates/          blank artifacts — never edit in place
-series/             shipped episodes; read-only history
+props/              shared Remotion props, referenced by episodes with $ref
+series/             S0N/E0NN-slug — shipped episodes; read-only history
 media/              outside git (~3 GB)
 ```
 
@@ -46,4 +47,6 @@ media/              outside git (~3 GB)
   `npx remotion render <CompId>` is already correct. Never deliver WebM to the edit.
 - **`--props` takes the flat per-composition object**, not the whole locale file. The whole file
   renders placeholder defaults and says nothing.
-- **Measure, don't eyeball.** `tools/validate.mjs` and `ffprobe` decide whether a render shipped.
+- **Measure, don't eyeball.** `tools/vm check` and `ffprobe` decide whether a render shipped.
+- **The season number is the category.** `S03E003` — S03 *is* the 100-track challenge. Each season's
+  `README.md` says what it is; that file is what makes the number mean anything.

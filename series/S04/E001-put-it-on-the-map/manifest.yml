@@ -1,0 +1,134 @@
+# Episode manifest — source of truth for this episode.
+# Schema notes and naming: agents.d/modules/naming-conventions.md
+# Validate with: tools/vm check
+
+# Was an interstitial with a one-decimal id (see brief.md for how it was produced).
+# The decimal form is retired: it said WHERE a piece published and never said what it
+# was, so these moved into seasons of their own and `lineage:` below carries both
+# facts separately. It still does not advance the 100-track counter.
+video_id: "S04E001"
+slug: "put-it-on-the-map"
+# Both VOs are recorded and cut and the scripts + beats below are transcribed off them, but
+# the packaging pass (covers) hasn't run and the stage gates are ordered, so this stays at
+# topic rather than claiming scripting. Moving it up needs covers, not more audio.
+status: topic
+
+lineage:
+  follows: S03E002
+  parent: S03E002
+  relation: inspired-by
+  reason: >-
+    the app-ecosystem build-up this episode grew out of; S03E002 is what prompted it
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+variants:
+  en-US:
+    script: script.en-US.md
+    cover: null
+    subtitles: subtitles/en-US.srt
+    remotion_props: null
+    voiceover_asset_id: VO_EN_020
+    platforms: [tiktok, ytshorts, reels]
+  zh-CN:
+    script: script.zh-CN.md
+    cover: null
+    subtitles: subtitles/zh-CN.srt
+    remotion_props: null
+    voiceover_asset_id: VO_ZH_001
+    platforms: [rednote, douyin, bilibili]
+
+# Five beats, shared across both locales. Durations are measured off VO_EN_020 / VO_ZH_001
+# at the auto-editor threshold and cut at the midpoint of each pause; the two reads are
+# sibling variants, so their per-beat lengths differ and neither is authoritative over the
+# other. Both run longer than the 19s the scripts were written to — see edit-notes.md.
+# Provisional until the subtitle pass.
+beats:
+  - id: built-the-map
+    purpose: state the finished thing first; the whole episode is the story behind it
+    visual_intent: the map itself, full screen, already populated — no build-up
+    overlay: null
+    target_duration_sec:
+      en-US: 2.26
+      zh-CN: 2.52
+  - id: the-gpx
+    purpose: credit the rider whose file started it, in his own words
+    visual_intent: the received GPX / the message; a real screen, not a mock
+    overlay: null
+    target_duration_sec:
+      en-US: 6.67
+      zh-CN: 6.00
+  - id: nerd-skills
+    purpose: the founder beat — self-deprecating, one line, no product detail
+    visual_intent: code/editor over the map build; keep it short enough to be a joke
+    overlay: null
+    target_duration_sec:
+      en-US: 1.87
+      zh-CN: 2.16
+  - id: on-the-map
+    purpose: show the payoff and tie it back to the 100-track mission
+    visual_intent: the trail on the map with the uploader credit visible, then the track pins
+    overlay: null
+    target_duration_sec:
+      en-US: 6.24
+      zh-CN: 5.10
+  - id: your-turn
+    purpose: the CTA — the only ask in the episode
+    visual_intent: upload flow in the app, ending on the pin dropping
+    overlay: null
+    target_duration_sec:
+      en-US: 3.49
+      zh-CN: 5.59
+
+assets:
+  raw: []
+  selected: []
+  voiceover:
+    - asset_id: VO_EN_020
+      locale: en-US
+      filename: S03E002.5_en-US_vo_v001.wav
+      external_uri: null
+      notes: >-
+        Take 1 (one continuous read, 35.56s raw) with dead air cut — house settings, same as
+        S03E002 v004 onward. Single region; it stops at 35.20s to drop a -33.3 dB handling
+        noise at 35.45s after the last word. Gaps measure median 0.200s / p90 0.210s /
+        max 0.210s.
+        No EQ, denoise, gate, compression, limiting, tempo or gain. Verified as a pure
+        splice: gated octave-band spectrum against the raw take is +0.02 dB mean with
+        0.07 dB tilt across 125 Hz-8 kHz.
+        -29.9 LUFS / -7.2 dBFS / 20.53s. Reproduce with ./vo-process.sh; see edit-notes.md.
+    - asset_id: VO_ZH_001
+      locale: zh-CN
+      filename: S03E002.5_zh-CN_vo_v001.wav
+      external_uri: null
+      notes: >-
+        Take 1 (one continuous read, 30.85s raw), same settings, single region, no strays to
+        step over. Gaps measure median 0.195s / p90 0.210s / max 0.210s. Verified as a pure
+        splice: -0.04 dB mean with 0.03 dB tilt.
+        A separately authored sibling read, not a translation of VO_EN_020 — and it is
+        SHORTER IN CONTENT: the "with him as the uploader" clause in the en-US on-the-map
+        beat has no counterpart in the delivered zh-CN. See script.zh-CN.md.
+        -32.5 LUFS / -11.7 dBFS / 21.37s.
+  audio:
+    - asset_id: MUS_001
+      filename: california-love.mp3 # lives in media/audio/
+      external_uri: null
+      source: operator-supplied
+      license: >-
+        NOT CLEARED — commercial recording, no licence on file for social commercial use.
+        Placeholder for the review mix only; must be replaced or licensed before publish.
+        UNVERIFIED whether this file is the instrumental: unlike every other bed in
+        media/audio/ its name carries no "-instrumental" marker. Two sampled windows
+        (20-65s, 45-95s) transcribe as [Music] with no lyrics, which is suggestive but not
+        proof. Confirm by ear before this leaves review — a vocal bed under a VO is unusable.
+
+outputs:
+  overlays: {}
+  covers: {}
+  kdenlive: {}
+  exports: {}
+  published: {}

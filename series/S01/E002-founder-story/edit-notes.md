@@ -1,0 +1,193 @@
+# Edit Notes — S01E002 "founder-story" · en-US
+
+Rough cut assembled programmatically via `kdenlive-build.repl` (cli-anything-kdenlive)
+→ `media/S01E002/founder-story.kdenlive` (portable, relative paths).
+Human polishes zoom keyframes + final timing in Kdenlive on Mac, then renders.
+
+Skill followed: `skills/06-kdenlive-editing.md` (+ `skills/05-remotion-graphics.md`).
+
+## v4 revision (current cut) — what changed from v3
+
+- **Scattered apps → a phone card over the founder (31.45–36.45).** A real screen recording of
+  three apps searching for a dirt-bike community — a dead Discourse search ("No sites found"),
+  a member list, and ThumperTalk. The member names/locations/avatars are **per-row blurred**
+  (full-width bands, covered through the app's slide-in) and the ThumperTalk **red logo is
+  blurred** (`broll-process.sh` → 884×1920 **ProRes 4444 with rounded corners + alpha**).
+  It is presented **exactly like the invite card**: scaled to **500px wide**, **top y=196**
+  (bottom 1282 — 90px clear of the caption panel at y1372), with a soft drop shadow, on
+  **blurred V1** (blur only). It **rises 70px from below** (ease-out, 0.45s) while its alpha
+  fades in (0.35s), and the **blur behind it fades in/out** (0.40s) exactly like the logo's —
+  a hard `enable` snap read as a glitch. Shutter SFX @31.45 marks the entrance.
+  The last scene (ThumperTalk, logo blurred) is **freeze-extended 0.94s to 1.54s** so the rival
+  forum registers; the clip is 5.00s (31.45-36.45). Rounded corners + upper-centre placement are
+  what make it read as a card, not a screenshot pasted on. "No sites found" lands under
+  "scattered,". Captions read over it.
+- **Logo & QR blur the ACTUAL footage (Route B), not a baked backdrop.** The v3 cut baked a
+  separate `bg-brand.mp4` behind the logo; it never matched the real frame. Now `brand-title`
+  and `invite-card` are transparent and **V1 itself is blurred** in their windows, ramped
+  in/out with a 0.35s fade — so the background is, exactly, the footage. brand-title dropped its
+  `bgSrc`; invite-card gained `yPct`.
+- **No dimming.** Blur only, everywhere (logo / QR / phone). Darkening the footage dropped the
+  mood of the shot; the blur alone gives enough separation.
+- **QR moved onto the face.** `invite-card` is no longer in the lower third (on the subtitle
+  line) — it is centred at `yPct: 42` over the founder's face, on the blurred footage, clear of
+  the captions.
+
+## v3 revision — what changed from v2
+
+- **Enhanced footage**: V1 now uses the face-retouched renders (`Raw/vidE002/*.MP4`,
+  already SDR Rec.709 with rotation baked). The **audio still comes from the original
+  `.MOV`** — verified frame-synced (identical frame counts, RMS-envelope xcorr lag 0 ms).
+  Do **not** re-apply the HDR tone-map to these; they are already SDR.
+  Each `.MOV` carries a second, undecodable 4.0 `apac` spatial track — the mux takes
+  `[1:a]` (the 48 kHz stereo AAC), never `-map 0:a`.
+- **Captions are now ONE continuous track** (`kinetic-captions`, 0–63.8s), driven by
+  `caption-map.mjs` → `remotion-props/captions.all.json` (195 words). The six per-beat
+  caption overlays are **deleted** — subtitles no longer fade out between beats.
+  Word selection is by **width budget**, not word count, so the just-spoken emphasis word
+  can never clip out of the bounded panel.
+- **Photo reveal** (`photo-reveal`, 9.95–14.15s): `first-ride.jpg` **zooms out** (scale
+  1.32→1.00, ease-out cubic) right after "…first ride was **brutal**". The outer **fifth at each
+  end** is a blurred, dimmed fill of the same photo — the short-form "blurred letterbox" — and
+  the middle three fifths carries it sharp. The sharp band cover-fits, cropping 384 photo rows;
+  `objectPositionY: 92` throws 353 of those off the **top**, because the photo's top 30% is empty
+  underpass deck. The blurred fill uses `object-fit: fill` (not `cover`) so its horizontal mapping
+  matches the sharp band and the subject doesn't slide sideways across the seam.
+  It sits on V2 (below the captions) — the captions read **over** the photo.
+- **Logo backdrop** (`brand-title` @41.5s): the frame behind the logo is now blurred like
+  an ultra-thin material (8px, −14% brightness). A Remotion overlay renders against
+  transparency, so `backdrop-filter` is a no-op — the backdrop is **baked** by feeding a
+  footage segment (`public/e002/bg-brand.mp4`) into the comp. That makes the overlay
+  **opaque**, so it lives on V2, *under* the caption track.
+- **No suspense whoosh.** A 2.78s pitched-down whoosh bed under the photo reveal was tried and
+  cut: it smeared the line rather than lifting it. The photo entrance is marked by the existing
+  0.31s `simple-whoosh-2`, moved from 8.90 → **9.95** so it lands on the cut instead of dead air.
+  Music is back at **0.00s, full length, flat 10%** — no `adelay` push-back, no duck.
+
+## Track layout
+
+| Track | Content |
+|-------|---------|
+| V1 | Enhanced footage `footage/NN_*_sdr.mp4` — carries the narration |
+| V2 · Backdrop | `photo-reveal` @9.95 (4.2s) · `07_scattered-apps` @31.45 (5.0s, rounded phone card, 500w, top y=196, rises in over blurred V1) · `brand-title` @41.5 (2.0s, transparent) — below captions |
+| V3 · Captions | `kinetic-captions` — one clip, 0→63.8s |
+| V4 · Overlays | `feature-phones-built-it` @47.5 · `feature-phones-cta` @54.5 · `invite-card` @59.5 · `profile-card` @63.8 |
+| A1 · Music | `bgm-vampire-heart.mp3` from 0.0s, full length, flat ~10% under the VO |
+| A2 · SFX | see map below — incl. `shutter` @31.45 (phone card rises in) |
+
+Cuts are **hard cuts only**. Zoom (punch-in / pull-out) is **not baked** — add it as
+Transform keyframes on the V1 clips on the Mac (the `Zoom:` lines below are the intent).
+
+Track order is load-bearing: the captions must stay on top. `photo-reveal` is opaque, so it
+goes **below** the caption track. `brand-title`, `invite-card` and the phone card are all
+transparent now — the softness behind them comes from blurring V1 (Route B), not from a baked
+backdrop.
+
+## Footage
+
+The enhanced `.MP4` renders are **already SDR Rec.709** (the enhancer tone-mapped the HLG
+and baked the rotation). Import those, not the raw `.MOV`. Re-running the HDR chain on
+them double-maps and washes the image out — the same failure E001 shipped with.
+
+## Assembly — en-US (timeline seconds, as built)
+
+Beat boundaries = speech-end trims (`silencedetect -32dB`, cut ≈0.15s after the last
+`silence_start`), so the click/pause between takes is gone. Total **65.75s**.
+
+### hook · 0.00–7.90
+V1 clip0. Zoom: open mid-push, snap-in on "gets it".
+SFX: `hit-1` @6.90. Captions: "Nobody" harsh, "gets it" brand.
+
+### first-ride · 7.90–18.90
+V1 clip1. V2: **photo-reveal 9.95–14.15**.
+SFX: `simple-whoosh-2` @9.95 (0.31s, on the cut to the photo).
+Zoom: escalating push-ins per hardship. Captions: "brutal / 100 / degrees" harsh
+("brutal," @9.57 — the photo lands just after it).
+
+### addictive · 18.90–29.80
+V1 clip2. Zoom: pull-out on "couldn't stop", punch-in on "addictive".
+SFX: `simple-whoosh-1` @25.00. Captions: "crazy / addictive / share" brand.
+
+### problem · 29.80–36.85
+V1 clip3, **blurred 31.45–36.45** (0.40s fade in/out) with the **scattered-apps phone card
+rising in over it** (V2, 70px ease-out + 0.35s alpha fade). Its last scene (ThumperTalk) is
+freeze-extended to 1.54s. **`shutter` @31.45** marks the entrance; `radio-static` @32.80.
+Captions: "scattered / outdated" harsh, over the card. The card clears by 36.45, before he
+says "built."
+
+### built-it · 36.85–52.90
+V1 clip4. V2: **brand-title 41.5–43.5** (logo lands on "DirtBikeX" @41.85). Route B: V1 is
+**blurred** (no dim) across 41.5–43.5 (0.35s fade in/out) so the logo sits on the real,
+softened footage — not a baked backdrop. V4: `feature-phones-built-it` 47.5–53.5 (language picker →
+pull-to-refresh → freeze; holds past "21 languages").
+SFX: `simple-whoosh-1` @41.50 (logo) · `shutter` @47.50 (phones pop in).
+Captions: "DirtBikeX / bloat / twice / 21 / languages" brand.
+
+### cta · 52.90–65.75
+V1 clip5. V4: `feature-phones-cta` 54.5–59.0 (sponsorship, freezes on the rendered embed) ·
+`invite-card` 59.5–63.0 (real card, "Instagram people welcome!" patched to "New riders
+welcome", QR scannable) — now **over the face** (`yPct: 42`), with V1 **blurred** (no dim)
+across the window (0.35s fade) so the QR is off the subtitle line · `profile-card` 63.8–65.8.
+Captions **stop at "…description." (@62.35)** — nothing over "My name is Rubio".
+SFX: `shutter` @54.50 · `hit-1` @59.50 (invite card).
+
+## Regenerating
+
+`broll-process.sh` bakes the scattered-apps cutaway (username redaction + ThumperTalk logo
+blur + side-fill) from `_source/scatter-outdated.mov` — run it from inside the media bundle.
+
+`caption-map.mjs` is the sync artifact — it owns per-beat `start` / `trimIn` / `dur` and
+the emphasis word lists, scales each SRT's word times by `dur / (srtEnd − trimIn)` (cue
+ends overshoot real speech), and **throws** if a word would land past the track end. Run it
+before rendering captions; never hand-edit `captions.all.json` or `subtitles/en-US.srt`.
+
+Rebuild the timeline with `tools/kdenlive-run.sh <episode>/kdenlive-build.repl`, run from
+inside the media bundle — **never** by piping the repl into `cli-anything-kdenlive`, which
+refuses non-TTY stdin, runs nothing, and exits 0, leaving the old `.kdenlive` untouched.
+Then run `tools/kdenlive-nativize.py <file> --vertical`: it repoints the root producer at
+`maintractor`, adds a numeric `kdenlive:id` to every producer, renames `clipN`→`producerN`,
+fixes the 9:16 profile, and validates every `producer=` ref resolves. Kdenlive reports the
+raw CLI export as corrupt without it.
+
+## DECIDE (human, on the Mac)
+- **Route B blur is baked only in the preview, not the .kdenlive.** On the Mac, add a **Blur**
+  (no brightness change — blur only) to the V1 clip during **31.45–36.45** (behind the phone
+  card, ~0.40s fade in/out), **41.5–43.5** (behind the logo, ~0.35s fade), and
+  **59.5–63.0** (behind the QR, ~0.35s fade). The `brand-title` / `invite-card` overlays and the
+  `07_scattered-apps` phone clip are transparent/native, so without this the footage stays sharp.
+- **The phone card is not baked to size or motion.** On the Mac, give `07_scattered-apps` (V2)
+  a Transform: scale to **500px wide (~57%)**, top at **y=196**, and keyframe a **70px rise from
+  below over 0.45s** with an opacity fade-in (0.35s) and fade-out (0.40s at 36.05). Its rounded
+  corners + alpha are baked into the ProRes, so no masking is needed; add a soft drop shadow if
+  Kdenlive offers one.
+- Add punch-in/pull-out Transform keyframes per the `Zoom:` lines (not baked).
+- Balance SFX levels; music is a flat 10% bed with no ducking, so watch the two `hit-1`s.
+- `brief.md` still names E001 as this episode's teaser sibling — E001 was deleted (quality).
+  Re-point or drop that line before publish.
+
+## Preview
+Rough-cut flatten (no zooms):
+`media/S01E002/exports/DBX-APP-S01E002_en-US_tiktok_9x16_v001_review.mp4` — 65.79s.
+Review only; the final render happens on the Mac from `founder-story.kdenlive`.
+
+## Retention checklist (fill after final cut)
+1. First-frame grab? hook opens on face + "Nobody" — TBD confirm on final.
+2–10. TBD after the Mac polish + render.
+
+## Assembly plan — zh-CN (caption-only, round 1)
+
+Same as en-US in every respect — same selects, cuts, timeline seconds, **original English audio**,
+SFX, music, and every overlay — with exactly ONE substitution: the caption clip on **V3-Captions**
+is the Chinese (bilingual EN+ZH) render `DBX-APP-S01E002_zh-CN_9x16_kinetic-captions_v001.mov`
+(from `subtitles/zh-CN.srt` via `remotion-props/captions.all.zh-CN.json`) in place of the en-US
+one. No soundtrack change; nothing else moved.
+
+Build: `bash build-zh-CN.sh` — renders that one overlay (ProRes 4444 alpha; Noto Sans SC is
+tracked in `public/fonts`) then assembles `DBX-APP-S01E002_zh-CN_v001.kdenlive` from
+`kdenlive-build.zh-CN.repl` (kdenlive-run → nativize → verify). The timeline logic is identical to
+`kdenlive-build.repl`; `diff` the two and only the caption import and the export name differ.
+
+Deferred (out of scope this round): re-rendering the other text overlays in Chinese
+(`brand-title`, `feature-phones`, `invite-card` — their `.zh-CN.json` props already exist), and the
+two-language "split" subtitle presentation. Open translation-term calls (hashtags Latin vs
+translated; 骑手 vs 车友 for "rider") remain the user's to rule on before a full-localization pass.

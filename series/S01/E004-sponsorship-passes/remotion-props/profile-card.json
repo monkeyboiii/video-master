@@ -1,0 +1,5 @@
+{
+  "$ref": "profile-card",
+  "bottomInset": 190,
+  "durationSec": 2.8
+}

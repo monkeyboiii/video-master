@@ -10,6 +10,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { REPO_ROOT, RE, loadYamlFile } from './lib.mjs';
+import { resolveProps } from './series/props.mjs';
 
 const [epDirArg, locale] = process.argv.slice(2);
 const compFilter = process.argv.find((a) => a.startsWith('--comp='))?.slice(7);
@@ -33,7 +34,10 @@ if (!fs.existsSync(propsPath)) {
 }
 let allProps;
 try {
-  allProps = JSON.parse(fs.readFileSync(propsPath, 'utf8'));
+  // A props file may be a catalogue reference — {"$ref": "<name>", ...overrides} — so resolve
+  // before anything reads a key off it. An unresolved $ref renders placeholder defaults and says
+  // nothing, which is the silent failure remotion-overlays.md calls out.
+  allProps = resolveProps(JSON.parse(fs.readFileSync(propsPath, 'utf8')), REPO_ROOT);
 } catch (e) {
   console.error(`Props file is not valid JSON: ${propsPath}\n  ${e.message}`);
   process.exit(1);

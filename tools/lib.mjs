@@ -18,10 +18,20 @@ export const COVER_COMPS = ['cover-9x16', 'cover-3x4'];
 // carries a literal dot — escape before interpolating so it can't match any character.
 const esc = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
+// Lineage relations. `follows` (where it published) is a separate field and always allowed;
+// `relation` describes what an episode does to its PARENT, and only exists when a parent does.
+export const RELATIONS = ['remedy', 'inspired-by', 'followup'];
+
 export const RE = {
-  // E### is a numbered episode. E###.# is an interstitial that publishes between two of
-  // them without taking a number of its own (docs/naming-conventions.md).
-  videoId: /^DBX-[A-Z]{3,4}-S\d{2}E\d{3}(?:\.\d)?$/,
+  // S{season}E{episode}. The season number IS the category — S03 is the 100-track challenge —
+  // so nothing else needs to be in the id. The retired form was DBX-{CODE}-S..E.., whose
+  // prefix discriminated nothing once one series existed; see naming-conventions.md.
+  videoId: /^S\d{2}E\d{3}$/,
+  // The retired form, recognised ONLY so the checker can say "this is the old id" instead of
+  // "this is not an id". Nothing accepts it.
+  legacyVideoId: /^DBX-[A-Z]{3,4}-S\d{2}E\d{3}(?:\.\d)?$/,
+  seasonDir: /^S\d{2}$/,
+  episodeDir: /^E\d{3}-[a-z0-9]+(-[a-z0-9]+)*$/,
   slug: /^[a-z0-9]+(-[a-z0-9]+)*$/,
   seriesCode: /^[A-Z]{3,4}$/,
   locale: /^[a-z]{2}-[A-Z]{2}$/,
@@ -30,24 +40,30 @@ export const RE = {
   //  - per-beat narration:  NN_{beat}.ext  (optionally {videoId}_NN_{beat}.ext)
   // The narration form matches how founder talking-head episodes are shot/renamed
   // for easy pickup (one clip per beat), e.g. 01_hook.MOV.
-  shotFile: (videoId) =>
+  shotFile: () =>
     new RegExp(
-      `^(?:${esc(videoId)}_SH\\d{3}_TK\\d{2}_[a-z0-9]+(?:-[a-z0-9]+)*` +
-        `|(?:${esc(videoId)}_)?\\d{2}_[a-z0-9]+(?:-[a-z0-9]+)*)\\.[A-Za-z0-9]+$`,
+      `^(?:(?:.+_)?SH\\d{3}_TK\\d{2}_[a-z0-9]+(?:-[a-z0-9]+)*` +
+        `|(?:.+_)?\\d{2}_[a-z0-9]+(?:-[a-z0-9]+)*)\\.[A-Za-z0-9]+$`,
     ),
-  voFile: (videoId) => new RegExp(`^${esc(videoId)}_(${LOCALES.join('|')})_vo(-[a-z0-9]+)?_v\\d{3}\\.\\w+$`),
+  // MEDIA FILENAMES ARE RECORDED, NOT DERIVED. manifest.yml carries every asset's `filename:`,
+  // so the id and the filename were never actually coupled — the old patterns only made them
+  // look coupled, and enforcing that coupling is what would have forced renaming every file on
+  // the MacBook during the S0N migration. What still carries meaning is the locale and the
+  // version, so that is what these assert; the optional leading `{anything}_` accepts both the
+  // legacy `DBX-APP-S03E003_en-US_vo_v004.wav` already on disk and a short `en-US_vo_v004.wav`.
+  voFile: () => new RegExp(`^(?:.+_)?(${LOCALES.join('|')})_vo(-[a-z0-9]+)?_v\\d{3}\\.\\w+$`),
   // Optional `-<variant>` after the comp name for per-beat instances of one
   // composition, e.g. ..._kinetic-captions-hook_v001.mov
-  overlayFile: (videoId, locale) =>
-    new RegExp(`^${esc(videoId)}_${locale}_(${ASPECTS.join('|')})_(${OVERLAY_COMPS.join('|')})(-[a-z0-9]+(-[a-z0-9]+)*)?_v\\d{3}\\.mov$`),
-  coverFile: (videoId, locale) =>
-    new RegExp(`^${esc(videoId)}_${locale}_(${PLATFORMS.join('|')})_(${ASPECTS.join('|')})_cover_v\\d{3}\\.(png|jpg)$`),
-  exportFile: (videoId, locale) =>
-    new RegExp(`^${esc(videoId)}_${locale}_(${PLATFORMS.join('|')})_(${ASPECTS.join('|')})_v\\d{3}_(review|final)\\.mp4$`),
+  overlayFile: (_videoId, locale) =>
+    new RegExp(`^(?:.+_)?${locale}_(${ASPECTS.join('|')})_(${OVERLAY_COMPS.join('|')})(-[a-z0-9]+(-[a-z0-9]+)*)?_v\\d{3}\\.mov$`),
+  coverFile: (_videoId, locale) =>
+    new RegExp(`^(?:.+_)?${locale}_(${PLATFORMS.join('|')})_(${ASPECTS.join('|')})_cover_v\\d{3}\\.(png|jpg)$`),
+  exportFile: (_videoId, locale) =>
+    new RegExp(`^(?:.+_)?${locale}_(${PLATFORMS.join('|')})_(${ASPECTS.join('|')})_v\\d{3}_(review|final)\\.mp4$`),
   // Canonical `{videoId}_{locale}_v###.kdenlive`, or a friendly slug name (e.g.
   // founder-story.kdenlive) when the project lives inside the episode media bundle.
-  timelineFile: (videoId, locale) =>
-    new RegExp(`^(${esc(videoId)}_${locale}_v\\d{3}|[a-z0-9]+(-[a-z0-9]+)*)\\.kdenlive$`),
+  timelineFile: (_videoId, locale) =>
+    new RegExp(`^((?:.+_)?${locale}_v\\d{3}|[a-z0-9]+(-[a-z0-9]+)*)\\.kdenlive$`),
   timecode: /^\d{2}:\d{2}:\d{2}\.\d{3}$/,
 };
 
@@ -72,32 +88,57 @@ export function timecodeToMs(tc) {
   return ((+h * 60 + +m) * 60 + +s) * 1000 + +ms;
 }
 
-export function listSeries() {
-  const seriesRoot = path.join(REPO_ROOT, 'series');
-  if (!fs.existsSync(seriesRoot)) return [];
+// The season IS the top level and the season number IS the category: series/S03/E003-slug/.
+// `root` exists so selftest can point the whole model at a fixture tree.
+export function seriesRoot(root = REPO_ROOT) {
+  return path.join(root, 'series');
+}
+
+export function listSeasons(root = REPO_ROOT) {
+  const base = seriesRoot(root);
+  if (!fs.existsSync(base)) return [];
   return fs
-    .readdirSync(seriesRoot, { withFileTypes: true })
-    .filter((d) => d.isDirectory())
+    .readdirSync(base, { withFileTypes: true })
+    .filter((d) => d.isDirectory() && RE.seasonDir.test(d.name))
+    .sort((a, b) => a.name.localeCompare(b.name))
     .map((d) => {
-      const dir = path.join(seriesRoot, d.name);
-      const manifestPath = path.join(dir, 'series.yml');
-      const manifest = fs.existsSync(manifestPath) ? tryLoadYamlFile(manifestPath) : null;
-      return { slug: d.name, dir, manifestPath, manifest };
+      const dir = path.join(base, d.name);
+      const readmePath = path.join(dir, 'README.md');
+      return {
+        id: d.name,
+        n: Number(d.name.slice(1)),
+        dir,
+        readmePath,
+        hasReadme: fs.existsSync(readmePath),
+      };
     });
 }
 
-export function listEpisodes(seriesEntry) {
-  const epRoot = path.join(seriesEntry.dir, 'episodes');
-  if (!fs.existsSync(epRoot)) return [];
+export function listEpisodes(season) {
   return fs
-    .readdirSync(epRoot, { withFileTypes: true })
+    .readdirSync(season.dir, { withFileTypes: true })
     .filter((d) => d.isDirectory())
+    .sort((a, b) => a.name.localeCompare(b.name))
     .map((d) => {
-      const dir = path.join(epRoot, d.name);
+      const dir = path.join(season.dir, d.name);
       const manifestPath = path.join(dir, 'manifest.yml');
       const manifest = fs.existsSync(manifestPath) ? tryLoadYamlFile(manifestPath) : null;
-      return { dirName: d.name, dir, manifestPath, manifest, series: seriesEntry };
+      return { dirName: d.name, dir, manifestPath, manifest, season };
     });
+}
+
+// Every episode across every season, plus an id -> episode index. One call, because almost every
+// cross-episode question (lineage, props reuse, duplicate ids) needs both.
+export function loadTree(root = REPO_ROOT) {
+  const seasons = listSeasons(root);
+  const episodes = [];
+  for (const s of seasons) for (const ep of listEpisodes(s)) episodes.push(ep);
+  const byId = new Map();
+  for (const ep of episodes) {
+    const id = ep.manifest?.video_id;
+    if (id) byId.set(id, ep);
+  }
+  return { seasons, episodes, byId, root };
 }
 
 export class Report {

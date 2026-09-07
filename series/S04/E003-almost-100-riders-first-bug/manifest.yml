@@ -1,0 +1,226 @@
+# Episode manifest — source of truth for this episode.
+# Schema notes and naming: agents.d/modules/naming-conventions.md
+# Validate with: tools/vm check
+
+# Was an interstitial with a one-decimal id (see brief.md for how it was produced).
+# The decimal form is retired: it said WHERE a piece published and never said what it
+# was, so these moved into seasons of their own and `lineage:` below carries both
+# facts separately. It still does not advance the 100-track counter.
+video_id: "S04E003"
+slug: "almost-100-riders-first-bug"
+# The VO is recorded and cut and the script + beats below are TRANSCRIBED off it, but no
+# script was supplied and the packaging pass (cover) hasn't run. The stage gates are ordered,
+# so this stays at topic rather than claiming scripting. Moving it up needs a cover and one
+# listen against the four uncertain lines in each script, not more audio.
+status: topic
+
+lineage:
+  follows: S03E004
+  reason: >-
+    product update; published between S03E004 and what came next
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+variants:
+  en-US:
+    script: script.en-US.md
+    cover: null
+    subtitles: subtitles/en-US.srt
+    remotion_props: null
+    voiceover_asset_id: VO_EN_026
+    platforms: [tiktok, ytshorts, reels]
+  zh-CN:
+    script: script.zh-CN.md
+    cover: null
+    subtitles: subtitles/zh-CN.srt
+    remotion_props: null
+    voiceover_asset_id: VO_ZH_010
+    platforms: [rednote, douyin, bilibili]
+
+# Two locales, SIBLING VARIANTS, not translations (agents.d/modules/localization.md). Same eleven beats
+# in the same order, but they were read separately and they split differently: en-US uses 15
+# sentences to zh-CN's 12. and-also-sorry is two lines in en-US and one in zh-CN, met-a-rider
+# is two and one, bug-number-one is three and one, and stay-tuned is one and two. The en-US
+# read is 1.20s longer overall.
+#
+# The eleven beats sum to the 27.23s en-US master and the 26.03s zh-CN one. They are NOT
+# guesses: each beat boundary is a real splice join in the master, recovered by aligning the
+# cut back against its own take, so the durations are exact to the sample and then rounded to
+# 2dp. Provisional only in the sense that the subtitle pass may want to split the two longest
+# beats.
+beats:
+  - id: hook
+    purpose: put the milestone up front, as a number, before anything is asked for
+    visual_intent: the map or the roster filling in; no founder yet. The bed is silent here
+      by design — this beat plays completely dry
+    overlay: null
+    target_duration_sec:
+      en-US: 2.09
+      zh-CN: 1.95
+  - id: thank-you
+    purpose: turn the milestone into a reason to give something away
+    visual_intent: founder to camera. The music enters on this beat's first word — cut here
+      if the picture cuts with the bed
+    overlay: null
+    target_duration_sec:
+      en-US: 1.16
+      zh-CN: 1.07
+  - id: the-giveaway
+    purpose: the only ask in the episode — state the terms once, clearly
+    visual_intent: the airtime card itself on screen with the count; assume the viewer has
+      never seen one
+    overlay: null
+    target_duration_sec:
+      en-US: 2.64
+      zh-CN: 2.37
+  - id: and-also-sorry
+    purpose: the pivot — an apology before the viewer knows what for
+    visual_intent: en-US holds a beat between "And also..." and "Sorry." (0.17s) and the
+      pause is the joke; zh-CN reads it as one line and should not be split in the edit
+    overlay: null
+    target_duration_sec:
+      en-US: 1.64
+      zh-CN: 1.47
+  - id: met-a-rider
+    purpose: hand the episode's premise to a user, not the founder
+    visual_intent: the track, then the phone. Longest beat in the first half of the en-US cut
+    overlay: null
+    target_duration_sec:
+      en-US: 5.10
+      zh-CN: 3.37
+  - id: he-opened-it
+    purpose: the setup frame — hold before the payoff
+    visual_intent: the app opening on someone else's phone. Shortest beat in the en-US cut
+      at 0.70s; do not decorate it
+    overlay: null
+    target_duration_sec:
+      en-US: 0.70
+      zh-CN: 1.43
+  - id: wrong-language
+    purpose: the bug, in the rider's own words rather than the founder's
+    visual_intent: quoted speech on screen; the wrong-language state visible behind it
+    overlay: null
+    target_duration_sec:
+      en-US: 2.47
+      zh-CN: 1.83
+  - id: bug-number-one
+    purpose: own it on camera, immediately, with no hedge
+    visual_intent: founder to camera. en-US builds it over three lines 0.14s apart — one
+      card that builds, not three cuts
+    overlay: null
+    target_duration_sec:
+      en-US: 2.36
+      zh-CN: 1.93
+  - id: the-workaround
+    purpose: the only instruction in the episode — the fix the viewer can do now
+    visual_intent: real screen recording. Profile settings, the yellow triangle, the tap.
+      Longest beat in both cuts; reading it out is not enough
+    overlay: null
+    target_duration_sec:
+      en-US: 4.74
+      zh-CN: 4.31
+  - id: build-it-together
+    purpose: close the bracket the hook opened — the count is the community
+    visual_intent: back to the map or the roster from the hook
+    overlay: null
+    target_duration_sec:
+      en-US: 2.26
+      zh-CN: 2.56
+  - id: stay-tuned
+    purpose: hold the door open for the next episode
+    visual_intent: en-US closes on one line, zh-CN on two (3.74s, with a 0.22s pause) — the
+      last cards are not interchangeable between the locales
+    overlay: null
+    target_duration_sec:
+      en-US: 2.08
+      zh-CN: 3.74
+
+assets:
+  raw: []
+  selected: []
+  voiceover:
+    - asset_id: VO_EN_026
+      locale: en-US
+      filename: S03E004.5_en-US_vo_v001.wav
+      external_uri: null
+      notes: >-
+        Take 1 (one continuous read, 46.78s raw, mono, -31.1 LUFS / -11.3 dBTP) with dead air
+        cut — house settings, unchanged since S03E002 v004. A PLAIN SILENCE CUT: one region,
+        no inserts, no grafts, nothing stepped over. Region 0.30-45.90s of the take; 0.30
+        clears the encoder lead-in (junk to 0.192s) and 45.90 sits 0.27s past the last word,
+        leaving room for the 0.12s tail margin.
+        15 spliced regions, one per script sentence, recovered by aligning the master back
+        against its own take. 46.78s -> 27.23s: 41.8% of the recording was dead air.
+        13 audible speech blocks, pauses median 0.189s / min 0.134s / max 0.234s.
+        THE SOURCE FILE CONTAINS 7 DIGITAL DROPOUTS of 5-44 ms (0.00, 0.136, 0.149, 5.98,
+        33.81, 33.83, 43.45s) — the same lossy-transfer signature as every take since
+        S03E003.8, and the count is finally down: 10 -> 16 -> 19 -> 7. All seven fall in room
+        tone at -46 to -93 dB, none inside a word, none inside a retained margin (the closest
+        clears by 0.23s), and all seven are removed by the cut. The master contains no run of
+        zero samples at all.
+        No EQ, denoise, gate, compression, limiting or tempo. VERIFIED AS A PURE SPLICE by
+        residual: every one of the 15 regions aligns to an integer sample offset in the take
+        with a residual of -81 to -95 dB, 52-65 dB under signal, and the residual does not
+        track signal level. The per-region least-squares gain against the take is 9.7000 dB
+        with a spread of 0.0001 dB across all 15 — one constant scalar, which is exactly what
+        the delivery stage claims to be.
+        DELIVERY GAIN +9.70 dB, the only gain in the chain (S03E004 introduced this). Derived,
+        not chosen: DELIVERY_TP(-1.0) minus the higher of the voice and mix true peaks. The
+        review mix peaked higher here, so the voice master lands at -1.6 dBTP.
+        -21.2 LUFS / -1.6 dBTP / 27.23s. Reproduce with ./vo-process.sh; see edit-notes.md.
+    - asset_id: VO_ZH_010
+      locale: zh-CN
+      filename: S03E004.5_zh-CN_vo_v001.wav
+      external_uri: null
+      notes: >-
+        Take 1 (one continuous read, 42.30s raw, mono, -32.1 LUFS / -10.4 dBTP) with dead air
+        cut — house settings, unchanged since S03E002 v004. A PLAIN SILENCE CUT, same as the
+        en-US master: one region, no inserts, no grafts. Region 0.30-42.15s of the take; 0.30
+        clears the encoder lead-in and 42.15 stops before a -39 dB blip at 42.20s and the
+        encoder tail behind it (both below the -34 dB gate, so the cut would have dropped them
+        anyway — the region bound just makes it explicit).
+        12 spliced regions, one per script sentence. 42.30s -> 26.03s: 38.5% dead air.
+        13 audible speech blocks, pauses median 0.176s / min 0.132s / max 0.248s.
+        THE SOURCE FILE CONTAINS 18 DIGITAL DROPOUTS of 5-48 ms. Same signature as en-US and
+        as every take since S03E003.8, but more than twice as many in a shorter file — the two
+        halves of this batch did not travel equally well. All 18 fall in room tone at -54 to
+        -88 dB, none inside a word, none inside a retained margin (the closest clears by
+        0.23s), and all 18 are removed by the cut. The master contains no run of zero samples.
+        No EQ, denoise, gate, compression, limiting or tempo. VERIFIED AS A PURE SPLICE by
+        residual: all 12 regions align to integer sample offsets with residuals of -82 to
+        -95 dB, 49-62 dB under signal, flat against a 5.9 dB signal range. Per-region
+        least-squares gain 9.4000 dB, spread 0.0002 dB across all 12.
+        DELIVERY GAIN +9.40 dB, derived the same way. Here the voice peaked higher than the
+        mix, so the voice master lands exactly on -1.0 dBTP.
+        -22.6 LUFS / -1.0 dBTP / 26.03s. Reproduce with ./vo-process.sh; see edit-notes.md.
+  audio:
+    - asset_id: MUS_001
+      filename: 50-cent-disco-inferno.mp3 # lives in media/audio/
+      external_uri: null
+      source: operator-supplied
+      license: >-
+        NOT CLEARED — commercial recording, no licence on file for social commercial use.
+        Placeholder for the review mix only; must be replaced or licensed before publish.
+        NOT MARKED AS AN INSTRUMENTAL, unlike eight of the twelve beds in media/audio/. The filename carries no
+        "-instrumental" suffix, and whisper returns [Music] for all twelve windows across the
+        full 214s — the same signal the cleared instrumentals give, but that is weak evidence
+        for a rap track with a hook. NEEDS ONE LISTEN before it goes any further. It joins
+        gunna-who-you-foolin (S03E004), california-love and playboi-carti-magnolia in the
+        same unconfirmed state.
+        214.39s, -10.2 LUFS, +2.3 dBTP with 954 samples at digital full scale — a CLIPPED
+        MASTER, and the loudest bed in the library by 6.9 LU. Attenuated 29.6 dB (en-US) /
+        30.7 dB (zh-CN) in the review mixes, so the clipping does not reach the delivered
+        file.
+        THE WINDOW USED IS THE FLATTEST PART OF THE TRACK: 5s RMS runs -10.3 to -11.3 dB
+        across the first 30s, a 1.0 dB spread, against 12.8 dB across the whole piece — it has
+        three breakdowns (40-50s, 90-110s, 150-160s) at -14.3 to -14.9 dB and starts fading at
+        195s. None of them fall inside the 27.2s used.
+        BED ENTRY 0.442s: 0.43s of dither floor at -85 dB, a 7 ms pickup at -27.7 dB from
+        0.435s, then -19.4 to -9.3 dB inside one 1 ms block at 0.442s and full level three
+        milliseconds later. The track has essentially no runway, so the bed is DELAYED into
+        place (1764 ms en-US / 1675 ms zh-CN) rather than seeked into, and the hook plays
+        against literal digital silence.

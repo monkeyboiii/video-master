@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# The series tree's verbs. See tools/series/cli.mjs; `vm` with no verb prints usage.
+#
+# A bash shim rather than a node shebang so the AC rows and CI can call it without sourcing nvm
+# first — this box's node lives under nvm and is not on a non-login PATH.
+set -euo pipefail
+HERE="$(cd "$(dirname "$0")" && pwd -P)"
+if ! command -v node >/dev/null 2>&1; then
+  export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+  # shellcheck disable=SC1091
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" >/dev/null 2>&1 || true
+fi
+command -v node >/dev/null 2>&1 || { echo "vm: node not found (nvm not installed?)" >&2; exit 127; }
+exec node "$HERE/series/cli.mjs" "$@"

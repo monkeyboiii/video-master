@@ -48,10 +48,12 @@ and out of order, it only ever encoded which stage someone last remembered to bu
 |---|---|---|
 | the four jobs, in detail | [remotion-overlays.md](remotion-overlays.md), [captions.md](captions.md), [voice-and-render-qc.md](voice-and-render-qc.md) | one doc per job family; the overlay doc carries the render contract |
 | the engine | `packages/remotion-graphics` | Remotion **4.0.484**, 20 components, alpha defaults in `calculateMetadata` |
-| the verbs | `tools/` | `render-overlays.mjs`, `burn-subtitles.py`, `retime-subtitles.py`, `probe-media.mjs`, `validate.mjs`, `new-episode.mjs` |
+| the verbs | `tools/` | `vm` (the series tree), `render-overlays.mjs`, `render-captions.sh`, `burn-subtitles.py`, `retime-subtitles.py`, `probe-media.mjs`, `validate.mjs` |
 | cutting silence | [`agents.d/skills/auto-editor`](../skills/auto-editor/SKILL.md) | the voice job's tool |
 | narrating a cut | [`agents.d/skills/auto-narrate`](../skills/auto-narrate/SKILL.md) | Kokoro-82M; the caption rows come out of the same pass |
 | naming, locales, flow | [naming-conventions.md](naming-conventions.md), [localization.md](localization.md), [toolline.md](toolline.md) | every tool joins on the names |
+| the series tree | `series/S0N/E0NN-slug/` | one folder per season; each season's `README.md` says what it is |
+| shared props | `props/<name>/base.json` | promoted from episodes, referenced by `$ref`; `vm props` moves them either way |
 | episode history | `series/` | read-only; what was actually shipped |
 
 ## Architecture decisions
@@ -118,6 +120,58 @@ the harness would start syncing skills it does not own.
 **Not done:** the CLI was not used to install them. `remotion skills add` prompts for a selection
 and its `--yes`/`-y` flags did not take in a non-interactive shell, so the set was copied from the
 upstream repository instead. `update` still manages them.
+
+### `vm` is this repo's `dbx`
+
+The series tree grew facts that no per-episode validator could see. Season shape, two episodes
+claiming one id, a lineage edge pointing at nothing, a props `$ref` with no catalogue entry — all
+cross-episode, all invisible from inside one directory, and `tools/validate.mjs` is structurally
+unable to check any of them because it is handed one episode at a time.
+
+`tools/vm` is the entry point that can. It is shaped after `dbx` on purpose — a bare verb prints
+what it found, `--json` is for machines, a non-zero exit is a real error — because that is the
+muscle memory in this estate and a second dialect would cost more than it bought.
+
+| Verb | Answers |
+|---|---|
+| `vm check [--json]` | is the tree correct — shape, naming, manifests, lineage, props refs |
+| `vm tree` | what exists, at what status, linked to what |
+| `vm new S0N slug` | scaffold an episode in a season, `--parent`/`--follows` for a companion |
+| `vm link ID --parent … --relation …` | write a lineage edge, both ends verified, or `--clear` |
+| `vm props where NAME` | every episode using a prop set — the question that had no answer |
+| `vm props index` | every prop set, most-used first, catalogued ones marked |
+| `vm props promote\|demote NAME` | move a prop set into or out of the catalogue. **Reversible** |
+| `vm selftest` | run `vm` against fixture trees that are each wrong in one specific way |
+
+**`repos.toml` declares `verify = "tools/vm check"`**, so this is what `dbx check` runs for this
+repo. That one line is the whole integration: the plumbing already existed and was pointed at the
+narrower command.
+
+**`vm selftest` exists because `vm check` cannot grade itself.** Running the checker against the
+real repo answers "is the repo right" and can never answer "is the checker right" — a checker that
+passes everything looks exactly like a clean tree. Each fixture is wrong in one way (a dangling
+`lineage.parent`, a cycle, a `$ref` with no entry, two episodes claiming one id) and asserts the
+checker says so. Without it the migration had no way to tell green-because-correct from
+green-because-blind.
+
+### Props are promoted, not migrated
+
+Before the catalogue: 48 props files, 34 distinct names, 8 names used by more than one episode
+(`profile-card` in four, `captions.all` in four), 2 byte-identical. Changing a shared card meant
+`find`, then N edits, and nothing answered "where is this used".
+
+A promoted prop set lives at `props/<name>/base.json` and each episode keeps a
+`{"$ref": "<name>", …overrides}` file. Overrides are shallow-merged, deliberately: a deep merge
+makes it impossible to see from the episode file alone what the rendered object will be.
+
+**Promote never invents a base.** Keys the episodes agree on become the base; keys they disagree on
+stay as per-episode overrides. Silently picking one of four values for a disputed key is how a
+catalogue quietly changes four videos at once.
+
+**Demote is what makes promote safe to try.** It writes each reference back out as the object it
+resolved to and drops the entry — byte-for-byte what the renderer was already seeing. Because the
+operation is reversible, the decision is not load-bearing, which is the point: whether two episodes
+*should* share a prop set is an editorial judgement, and it should be cheap to change your mind.
 
 ### The cut comes from outside, so this repo has no timeline
 

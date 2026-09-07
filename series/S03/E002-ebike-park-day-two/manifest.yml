@@ -1,0 +1,140 @@
+# Episode manifest — source of truth for this episode.
+# Schema notes and naming: agents.d/modules/naming-conventions.md
+# Validate with: tools/vm check
+
+video_id: "S03E002"
+slug: "ebike-park-day-two"
+status: scripting # script rev 2 locked, VO spliced; storyboard + shoot are the next gates
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+variants:
+  en-US:
+    script: script.en-US.md
+    cover: cover.en-US.md
+    subtitles: subtitles/en-US.srt
+    remotion_props: null
+    voiceover_asset_id: VO_EN_016
+    platforms: [tiktok, ytshorts, reels]
+
+# S03 runs as a numbered field mission: one real track per episode, counted toward 100.
+# The nine beats sum to the 49.94s English master. On the Chinese-hook cut the hook beat is
+# 4.29s instead of 4.79s, so every later cue sits 0.50s earlier — see edit-notes.md.
+# Boundaries are measured off VO_EN_016 but stay provisional until the subtitle pass.
+beats:
+  - id: hook
+    purpose: carry the E001 counter forward and make day two personal in one line
+    visual_intent: arrival wide on the hometown park; the 100-track counter carries over from E001
+    overlay: null
+    target_duration_sec:
+      en-US: 4.79
+  - id: hometown-knowledge
+    purpose: establish authority so the e-bike reversal has something to land against
+    visual_intent: mountain/trail wides; old downhill lines pointed out on camera
+    overlay: null
+    target_duration_sec:
+      en-US: 5.04
+  - id: all-electric
+    purpose: the reversal — the place changed while he was away
+    visual_intent: rack of e-bikes, battery close-ups, deadpan to camera on "Fantastic"
+    overlay: null
+    target_duration_sec:
+      en-US: 6.79
+  - id: why-it-matters
+    purpose: the positioning line — the app follows what riders actually ride
+    visual_intent: riders on e-bikes mid-session; no phone on screen yet
+    overlay: null
+    target_duration_sec:
+      en-US: 5.48
+  - id: same-dirt
+    purpose: argue that this still counts as a dirt bike track
+    visual_intent: one cutaway per noun — dirt, jumps, berms — then riders
+    overlay: null
+    target_duration_sec:
+      en-US: 5.99
+  - id: no-more-pushing
+    purpose: the relatable pain, told against himself
+    visual_intent: e-bike climbing effortlessly, intercut with the stairs he used to push up
+    overlay: null
+    target_duration_sec:
+      en-US: 5.78
+  - id: find-the-boss
+    purpose: the confident setup the record scratch knocks over
+    visual_intent: handheld approach to the boss, over-the-shoulder on the app; hard stop on the scratch
+    overlay: null
+    target_duration_sec:
+      en-US: 5.30
+  - id: not-quite
+    purpose: the rejection, played straight — and the advice that came with it
+    visual_intent: founder to camera, no cutaway to hide behind; GPX / live tracking called out on screen
+    overlay: null
+    target_duration_sec:
+      en-US: 7.66
+  - id: learning
+    purpose: pay off the count without pretending the deal happened
+    visual_intent: E-BIKE PARK 2 / 100 counter card over a wide of the park
+    overlay: null
+    target_duration_sec:
+      en-US: 3.11
+
+assets:
+  raw: []
+  selected: []
+  voiceover:
+    - asset_id: VO_EN_016
+      locale: en-US
+      filename: DBX-APP-S03E002_en-US_vo_v007.wav
+      external_uri: null
+      notes: >-
+        Take 2 (hook + body, unchanged from v004) + the rev-2 ending take, joined at the line
+        boundary after "Oh man, the flashbacks!". Every region spliced with v004's auto-editor
+        settings, then concatenated; joins measure 0.20-0.24s, the same as the internal
+        pacing. A 1.25s hole is left where the record scratch goes — the SFX is not in this
+        master.
+        v007 closes the one join that should not read as a pause: "...solid advice:" to "for
+        enduro riders" is mid-sentence and held 0.245s, now 0.065s. Only those two edges were
+        trimmed — pacing everywhere else is unchanged from v006 (identical median and p90).
+        No EQ, denoise, gate, compression, limiting or tempo; the rev-2 ending carries a flat
+        +0.80 dB match gain (verified flat to 0.45 dB across 125 Hz-8 kHz).
+        -30.0 LUFS / -8.7 dBFS / 49.94s. Reproduce with ./vo-process.sh; see edit-notes.md.
+    - asset_id: VO_EN_017
+      locale: en-US
+      filename: DBX-APP-S03E002_en-US_vo-cnhook_v007.wav
+      external_uri: null
+      notes: >-
+        Same cut with the recorded Chinese (Hangzhou dialect) hook replacing the English one —
+        for the Chinese-language platforms. Hook carries a flat -0.30 dB match gain.
+        -30.0 LUFS / -8.7 dBFS / 49.44s.
+  audio:
+    - asset_id: MUS_001
+      filename: 50-cent-just-a-lil-bit-instrumental.mp3 # lives in media/audio/
+      external_uri: null
+      source: operator-supplied instrumental rip (KLICKAUD)
+      license: >-
+        NOT CLEARED — commercial recording, no licence on file for social commercial use.
+        Placeholder for the review mix only; must be replaced or licensed before publish.
+    - asset_id: SFX_001
+      filename: record-scratch.mp3 # lives in media/sfx/
+      external_uri: null
+      source: operator-supplied
+      license: >-
+        UNKNOWN — no licence on file. Clear or replace before publish.
+        Lands at 38.01s on VO_EN_016 / 37.51s on VO_EN_017, in the hole left after
+        "show him my gorgeous app and". A2 only; never mixed into the VO master.
+        Needs its own treatment on A2, not a straight drop-in: trim to the onset at 0.183,
+        a 0.06s quadratic fade in, and peak it 14 dB under the voice — see edit-notes.md.
+
+outputs:
+  overlays: {}
+  covers: {}
+  kdenlive: {}
+  exports:
+    # Burned-in bilingual captions over the zh-CN grade (footage/S03E002-cn-2.MP4).
+    # Rebuild: tools/burn-subtitles.py <this dir> --render (config: subtitles.yml).
+    zh-CN:
+      - DBX-APP-S03E002_zh-CN_douyin_9x16_v003_review.mp4
+  published: {}

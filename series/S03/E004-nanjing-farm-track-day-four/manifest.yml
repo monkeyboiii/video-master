@@ -1,0 +1,347 @@
+# Episode manifest — source of truth for this episode.
+# Schema notes and naming: agents.d/modules/naming-conventions.md
+# Validate with: tools/vm check
+
+video_id: "S03E004"
+slug: "nanjing-farm-track-day-four"
+# Both VOs are recorded and cut. The zh-CN script + beats were transcribed off the take; the
+# en-US script was supplied by the operator and checked against its take. The packaging pass
+# (cover) still hasn't run and the stage gates are ordered, so this stays at topic rather
+# than claiming scripting. Moving it up needs a cover, not more audio.
+status: topic
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+# BOTH LOCALES NOW EXIST, and this is the episode where "sibling variants, not translations"
+# (agents.d/modules/localization.md) stops being a formality. The zh-CN spine is a Li Bai couplet and a
+# discontinued 白鹿 motorcycle; the en-US spine is a childhood empty field that somebody
+# actually turned into a track. Same fifteen beats, same order, 0.13s apart in length,
+# completely different device — and neither script could have been produced by translating
+# the other. They also use different beds and different bed placement (see edit-notes.md).
+variants:
+  en-US:
+    script: script.en-US.md
+    cover: null
+    subtitles: subtitles/en-US.srt
+    remotion_props: null
+    voiceover_asset_id: VO_EN_027
+    platforms: [tiktok, ytshorts, reels]
+  zh-CN:
+    script: script.zh-CN.md
+    cover: null
+    subtitles: subtitles/zh-CN.srt
+    remotion_props: null
+    voiceover_asset_id: VO_ZH_009
+    platforms: [rednote, douyin, bilibili]
+
+# S03 runs as a numbered field mission: one real track per episode, counted toward 100. This
+# is TRACK 4 — 所以这次第四条赛道找到了 — following the barber's track in E003.
+#
+# The fifteen beats sum to the 52.07s zh-CN master and the 51.93s en-US one. The zh-CN
+# durations were measured at the auto-editor threshold and cut at the midpoint of each pause;
+# the en-US ones are cut at the actual splice joins, recovered by aligning the master back
+# against its own take, so they are exact to the sample before rounding to 2dp.
+#
+# BEAT IDS NAME THE ZH-CN DEVICE, NOT THE BEAT'S WORDING — they were fixed before the en-US
+# read existed and ids are stable (agents.d/modules/naming-conventions.md). Three of them read oddly
+# against the en-US script and are worth spelling out:
+#   li-bai-quote            = the framing device. Li Bai in zh-CN; "every empty field looked
+#                             like it needed a dirt bike track" in en-US.
+#   white-deer-discontinued = the beat that pays the frame off. The discontinued white-deer
+#                             gag in zh-CN; "Yeah. This guy actually did it." in en-US.
+#   li-bai-callback         = the closing callback. 天姥山十八趟 in zh-CN; "New trick
+#                             acquired. Beautiful." in en-US. Both close on a joke, not a CTA.
+# owner-restocked-the-herd is the one that converges by itself: 又放了一群 and "No crops, no
+# herds" are the same idea in both reads.
+#
+# 52s is the longest master in S03 by 7.5s (E003.8 zh-CN was 44.51s, E003 40.98s). That is
+# the read, not the edit: the cut already takes the take from 72.94s to 52.07s and every
+# remaining gap is between 0.135s and 0.320s. If it has to come down it comes down in the
+# WRITING — the technique section (beats 9-12) is 16.9s, a third of the episode. The en-US
+# read lands in the same place from a longer take (83.86s -> 51.93s, 38.1% dead air).
+beats:
+  - id: hook
+    purpose: claim the superlative in one line so the rest of the episode has to earn it
+    visual_intent: the farm from the air or the gate, wide; no talking head yet. The bed is
+      silent here by design
+    overlay: null
+    target_duration_sec:
+      en-US: 2.28
+      zh-CN: 2.29
+  - id: li-bai-quote
+    purpose: set the frame — this is a poetry joke before it is a track review
+    visual_intent: the quote on screen, vertical, unhurried; let it read as sincere for one
+      beat before beat 3 undercuts it. The bed enters on this beat's first word
+    overlay: null
+    target_duration_sec:
+      en-US: 3.96
+      zh-CN: 3.49
+  - id: white-deer-discontinued
+    purpose: land the joke — 白鹿 as a discontinued bike brand
+    visual_intent: mock spec-sheet or a "discontinued" stamp; the gag is verbal, so the
+      picture should be deadpan and quick
+    overlay: null
+    target_duration_sec:
+      en-US: 1.74
+      zh-CN: 3.05
+  - id: owner-restocked-the-herd
+    purpose: turn the joke into the location — a herd of them, at the foot of Niushou Mountain
+    visual_intent: bikes lined up at the farm; NANJING / 牛首山 on screen so a viewer can
+      look the place up
+    overlay: null
+    target_duration_sec:
+      en-US: 1.60
+      zh-CN: 3.31
+  - id: the-farm
+    purpose: sell the site in one sentence — hills on two sides, water on the third
+    visual_intent: the wide that pays off 两面环山，一面抱水; this is the establishing shot
+      the hook promised
+    overlay: null
+    target_duration_sec:
+      en-US: 3.73
+      zh-CN: 3.69
+  - id: ride-then-paddle
+    purpose: make it a day out, not a session — riding and then the water
+    visual_intent: riders dropping in, then a hard cut to paddleboards. The tonal turn is
+      the cut
+    overlay: null
+    target_duration_sec:
+      en-US: 5.17
+      zh-CN: 3.74
+  - id: thought-it-was-a-day-off
+    purpose: the pivot — set up the expectation the rest of the episode breaks
+    visual_intent: founder to camera, or a lazy shot of the water; this is the last easy
+      moment in the cut
+    overlay: null
+    target_duration_sec:
+      en-US: 3.53
+      zh-CN: 3.07
+  - id: what-i-learned
+    purpose: promise the payload — something a beginner could not have worked out alone
+    visual_intent: hold; the line is a colon, so the picture should not resolve yet
+    overlay: null
+    target_duration_sec:
+      en-US: 3.67
+      zh-CN: 2.42
+  - id: the-jump-i-thought-i-knew
+    purpose: state the wrong model out loud so the correction has something to hit
+    visual_intent: a jump in the air, held long; ideally the founder's own, so the mistake
+      is his
+    overlay: null
+    target_duration_sec:
+      en-US: 5.43
+      zh-CN: 4.47
+  - id: what-the-owner-said
+    purpose: the correction, and the episode's actual thesis — the good ones are already
+      landing while they're still in the air
+    visual_intent: the owner saying it, if it is on camera. If not, this is the beat that
+      most wants a slow-motion frame
+    overlay: null
+    target_duration_sec:
+      en-US: 4.67
+      zh-CN: 4.49
+  - id: downshift-midair
+    purpose: the mechanic, part one — pick the gear before the wheels are down
+    visual_intent: this beat needs a diagram or an on-screen gear indicator; it is the one
+      instruction in the episode a viewer might actually try
+    overlay: null
+    target_duration_sec:
+      en-US: 3.23
+      zh-CN: 2.95
+  - id: land-in-gear-and-go
+    purpose: the mechanic, part two — land already correct, straight into the corner
+    visual_intent: one unbroken shot of the landing into the turn, real time, no speed-up.
+      Longest beat in the cut
+    overlay: null
+    target_duration_sec:
+      en-US: 3.73
+      zh-CN: 4.97
+  - id: the-half-second
+    purpose: name the gap between a beginner and a veteran, and make it small enough to want
+    visual_intent: back to the founder; this is the line the episode gets quoted on
+    overlay: null
+    target_duration_sec:
+      en-US: 5.17
+      zh-CN: 3.63
+  - id: track-four-found
+    purpose: advance the counter and admit what he actually came away with
+    visual_intent: TRACK 4 / 100 counter card
+    overlay: null
+    target_duration_sec:
+      en-US: 2.00
+      zh-CN: 2.94
+  - id: li-bai-callback
+    purpose: close the bracket opened at beat 2 — the poem, returned as a punchline
+    visual_intent: the quote again, or 天姥山 on screen; end on the joke, not on a CTA
+    overlay: null
+    target_duration_sec:
+      en-US: 2.02
+      zh-CN: 3.56
+
+assets:
+  raw: []
+  selected: []
+  voiceover:
+    - asset_id: VO_EN_027
+      locale: en-US
+      filename: DBX-APP-S03E004_en-US_vo_v001.wav
+      external_uri: null
+      notes: >-
+        Take 1 (one continuous read, 83.86s raw, mono, -29.8 LUFS / -5.4 dBTP) with dead air
+        cut — house settings, same as S03E002 v004 onward. A PLAIN SILENCE CUT like its
+        zh-CN sibling: one region, no grafts, no inserts, no pickups. Region 0.30-83.40s;
+        0.30 clears the encoder lead-in (junk to 0.192s) and 83.40 sits 0.37s past the last
+        word, before a -37 dB blip at 83.82s and the encoder tail behind it.
+        83.86s -> 51.93s: 38.1% of the recording was dead air, against 28.6% in the zh-CN
+        take. The en-US read is the more spacious of the two and ends up 0.13s shorter.
+        33 SPLICED REGIONS, recovered by aligning the master back against its own take.
+        Thirty-two of them are speech, one per script segment. THE THIRTY-THIRD IS NOT: a
+        0.23s island of room tone from take 32.73-32.97s, kept because a 10 ms mouth click at
+        take 32.81s peaks at -32.1 dB and crosses the -34 dB gate by 1.9 dB. In the master it
+        sits at 21.91s at -27.8 dB — 27 dB under the loudest speech, inside the cut's longest
+        pause, and at roughly the level of the music bed there, so it is masked in the review
+        mix and faintly audible in the voice-only master. It is NOT removed, because removing
+        it would also shorten that pause from 0.49s to 0.26s, and that pause is the episode's
+        turn (peacefully -> Turns out I also learned something). That is an editorial call,
+        not an audio one — see edit-notes.md.
+        34 audible speech blocks, pauses median 0.226s / min 0.135s / max 0.490s. Apart from
+        the 0.490s turn, no gap exceeds 0.37s.
+        THE SOURCE FILE CONTAINS 14 DIGITAL DROPOUTS of 5-43 ms (0.000, 0.149, 10.063, 10.101,
+        18.447, 18.453, 28.809, 28.826, 33.217, 33.376, 33.387, 33.530, 33.686, 71.962s).
+        Same lossy-transfer signature as every take since S03E003.8. All 14 fall in room tone
+        at -44 to -89 dB, none inside a word, none inside a kept region (the closest clears by
+        0.25s), and all 14 are removed by the cut. The master contains no run of zero samples
+        at all.
+        No EQ, denoise, gate, compression, limiting or tempo. VERIFIED AS A PURE SPLICE by
+        residual: all 32 speech regions align to integer sample offsets with a residual of
+        exactly -95.1 dB — auto-editor's 16-bit output floor — 62.7 to 68.2 dB under signal,
+        flat against a 5.5 dB signal range. The per-region least-squares gain against the take
+        is 4.3000 dB with a spread of 0.0001 dB across all 32: a single constant scalar, which
+        is what the delivery stage claims to be and simultaneously rules out anything
+        frequency- or level-dependent.
+        DELIVERY GAIN +4.30 dB, derived the same way as the zh-CN master: DELIVERY_TP(-1.0)
+        minus the higher of the voice and mix true peaks. IT IS ONLY +4.30 WHERE ZH-CN GOT
+        +10.10, AND THE WHOLE DIFFERENCE IS ONE MOMENT. The take's absolute peak is a 0.2 ms
+        transient at 77.986s — eight samples, inside "So track number four" — and it is the
+        only thing in 83.86s above -6 dBFS. Blank 0.5s around it and the next peak is 2.2 dB
+        lower. The read's peak-to-loudness ratio is 24.2 LU against the zh-CN read's 20.5.
+        -25.3 LUFS / -1.1 dBTP / 51.93s as a mono master; the stereo review renders read -22.6
+        (voice) and -22.4 LUFS (mix). THAT LEAVES THE TWO SIBLINGS 3.8 LU APART, and no gain
+        can close it — only limiting, or a re-read with less peak spread, both of which are
+        decisions rather than measurements. See edit-notes.md.
+        Reproduce with ./vo-process.sh; setting DELIVERY_TP empty reproduces an ungained cut.
+    - asset_id: VO_ZH_009
+      locale: zh-CN
+      filename: DBX-APP-S03E004_zh-CN_vo_v002.wav
+      external_uri: null
+      notes: >-
+        Take 1 (one continuous read, 72.94s raw, mono) with dead air cut — house settings,
+        same as S03E002 v004 onward. A PLAIN SILENCE CUT: one region, no grafts, no inserts,
+        no pickups. The first episode in S03 that needed no structural edit at all.
+        The read is clean end to end — nothing above the threshold had to be stepped over.
+        Loudest thing before the speech body is -43.3 dB and after it -40.4 dB, and the one
+        transient that is not speech (a 10 ms tick at 63.94s, -39.8 dB peak) sits 5.8 dB
+        under the threshold and falls out on its own.
+        THE SOURCE FILE CONTAINS 19 DIGITAL DROPOUTS of 3-82 ms (0.000, 7.849, 8.179, 12.086,
+        12.094, 12.475, 21.599, 21.607, 21.678, 37.021, 37.029, 56.205, 59.917, 64.090,
+        64.097, 67.593, 67.883, 72.906, 72.913s). Every one falls inside a pause, none inside
+        a word, and all nineteen are removed by the cut — the master's longest run of
+        near-zero samples is 0.42 ms. Same signature as the E003.8 takes, so the whole batch
+        has been through a lossy transfer path; still worth chasing before one lands inside a
+        word. The region bounds (0.20 / 72.60) are set to clear the head and tail ones.
+        auto-editor also pads its own output up to a whole video frame with digital silence;
+        vo-process.sh trims that off before writing the master.
+        30 speech runs, gaps median 0.225s / p90 0.255s / max 0.320s / min 0.135s. The raw
+        read is unusually spacious — its own gaps run to a 0.970s median and a 1.610s max —
+        so the cut removes 20.87s, more than a quarter of the recording.
+        No EQ, denoise, gate, compression, limiting, tempo or gain. VERIFIED BY RESIDUAL, not
+        by spectrum: each of the 30 master speech runs aligns to an exact integer-sample
+        offset in the raw take, and master-minus-source is a FLAT -95.1 dBFS on every one of
+        them (aggregate 65.3 dB under the signal). A flat floor at that level is auto-editor's
+        16-bit output stage and nothing else — any filter, gain or time change would leave a
+        residual that tracks the signal instead. See edit-notes.md; this test supersedes the
+        gated octave-band comparison used through E003.8, which on this cut reads +0.12 dB
+        mean / 0.48 dB tilt purely because 17 low-level frames near the gate fall on
+        different sides of it.
+        ONE CONSTANT GAIN OF +10.10 dB is then applied to the finished cut — the only gain in
+        the chain, and a new documented exception to the no-gain rule. The splice underneath
+        it is still the pure one verified above. Provable: v002 minus (v001 x +10.10 dB) is
+        -143.5 dBFS, 122.2 dB under the signal and flat to 1.9 dB across 125 Hz-8 kHz, which
+        is 24-bit quantization and nothing else. A limiter or a level ride would not survive
+        that test.
+        The figure is derived, not chosen: +10.10 dB is what puts the louder of the voice
+        master and the review mix exactly on -1.0 dBTP. Nothing clips — the master's sample
+        peak is -1.003 dBFS with zero samples at full scale.
+        -21.5 LUFS / -1.0 dBTP / 52.07s as a mono master; the stereo review renders read
+        -18.8 (voice) and -18.6 LUFS (mix) at -1.3 dBTP, since R128 sums channels.
+        THIS IS STILL ~4.6 LU UNDER the ~-14 LUFS the short-form platforms normalise to, and
+        gain alone cannot close that: the read's peak-to-loudness ratio is 20.5 LU and the
+        peaks are real speech, not clicks. See edit-notes.md.
+        Reproduce with ./vo-process.sh; setting DELIVERY_TP empty reproduces the ungained
+        v001 exactly.
+        SUPERSEDES VO_ZH_008 (v001) — same splice, 10.10 dB quieter. Its files are deleted.
+  audio:
+    - asset_id: MUS_002
+      filename: chingy-right-thurr-instrumental.mp3 # lives in media/audio/ — en-US bed
+      external_uri: null
+      source: operator-supplied instrumental
+      license: >-
+        NOT CLEARED — commercial recording, no licence on file for social commercial use.
+        Placeholder for the review mix only; must be replaced or licensed before publish.
+        Named as an instrumental by the operator, and all fifteen whisper windows across the
+        full 241.82s return "[Music]" with no lyrics recovered.
+        241.82s, -15.5 LUFS. THE BEST-BEHAVED BED IN THE LIBRARY: true peak 0.0 dBTP with a
+        sample peak of -0.08 dBFS and ZERO samples at digital full scale — it is the only bed
+        here besides riders-on-the-storm that is not a clipped master, and it is 6.9 LU
+        quieter into the bargain. Attenuated 22.50 dB in the review mix.
+        IT IS ALSO THE FLATTEST: 5s RMS runs -15.5 to -17.1 dB across the whole 225s before
+        the fade, a 1.6 dB spread, against riders-on-the-storm's 3.5 dB over six minutes and
+        who-you-foolin's 6.5 dB. Across the 52s actually used the spread is 0.9 dB. There is
+        no breakdown anywhere in it, so the bed never backs off mid-episode the way
+        who-you-foolin does under the zh-CN cut.
+        BED ENTRY 0.383s, and there is no lead-in at all: digital silence and dither to
+        0.377s, then -30.2 dB to -16.0 dB inside one 1 ms block at 0.383s and full level
+        (-1.9 dB) three milliseconds later.
+        PLACED WITH NO LAG (operator instruction, 2026-09-01): the downbeat lands on the
+        master's very first sample, ahead of the first word, so the bed is seeked 0.383s into
+        the file rather than delayed. Nothing musical is skipped to get there — everything
+        before 0.377s in the track is silence. This is a deliberate departure from the rule
+        used everywhere else in S03, where the bed enters on the second script sentence and
+        the hook plays dry; the zh-CN sibling still does it the old way in the same episode.
+        The track fades from ~225s and is gone by 240s. Irrelevant at 52s, but it means this
+        bed can carry a much longer cut without a hard out.
+    - asset_id: MUS_001
+      filename: gunna-who-you-foolin.mp3 # lives in media/audio/ — zh-CN bed
+      external_uri: null
+      source: operator-supplied
+      license: >-
+        NOT CLEARED — commercial recording, no licence on file for social commercial use.
+        Placeholder for the review mix only; must be replaced or licensed before publish.
+        160.06s, -14.6 LUFS, and a CLIPPED MASTER: true peak +0.8 dBFS, like show-me (+0.9),
+        magnolia (+0.4) and freek-a-leek (+2.4), unlike riders-on-the-storm (-3.2). It is
+        attenuated 26.00 dB in the review mix so nothing clips there; do not use it at unity.
+        UNCONFIRMED AS AN INSTRUMENTAL. Its filename carries no `-instrumental` marker, which
+        eight of the twelve beds in media/audio/ do. Four 25s windows spanning the whole track
+        (0, 20, 55, 95, 130s) transcribe as "[Music]" with no lyrics recovered, so it reads
+        as an instrumental — but that is evidence, not confirmation, and it needs one listen.
+        Same open question as california-love.mp3 and playboi-carti-magnolia.mp3.
+        Less level than riders-on-the-storm: 5s RMS runs -11.3 to -17.8 dB across 0-140s, a
+        6.5 dB spread against riders' 3.5, with audible dips around 20-25s and 30-35s of the
+        track (22-27s and 32-37s of the master). Those are the track breathing, not a fault,
+        but they will be heard as the bed backing off mid-episode.
+        Enters on a hard downbeat at 0.326s (-25 dB to -9.7 dB peak inside one 1 ms block),
+        with only 0.27s of quiet lead-in before it — a quarter of a second, against riders'
+        3.94s. See vo-process.sh for what that changes about the alignment.
+        The track has a real ending: it fades from ~140s and is gone by 158s. Irrelevant here
+        (52s is used) but it means this bed can carry a full-length cut without a hard out.
+
+outputs:
+  overlays: {}
+  covers: {}
+  kdenlive: {}
+  exports: {}
+  published: {}
