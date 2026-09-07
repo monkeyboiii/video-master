@@ -1,0 +1,42 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@remotion/captions':
+        specifier: 4.0.484
+        version: 4.0.484
+      '@remotion/install-whisper-cpp':
+        specifier: 4.0.484
+        version: 4.0.484
+      yaml:
+        specifier: ^2.7.0
+        version: 2.9.0
+
+packages:
+
+  '@remotion/captions@4.0.484':
+    resolution: {integrity: sha512-n/+aVeLN7th+IHBR96qMIn3ixiLPeHaLJblPdKhT5EdJAohALWoKTeObMs9OmC0pKJdCSB8bZ38cY4TN15k3fg==}
+
+  '@remotion/install-whisper-cpp@4.0.484':
+    resolution: {integrity: sha512-zciDiE3b02pbQN6+Qfa4JIdMJXi4jbySFFfTfhilmwOwp2RBjet1u8nukWUdjem/0E/5peZBxFB4tVJ/GVyPzQ==}
+
+  yaml@2.9.0:
+    resolution: {integrity: sha512-2AvhNX3mb8zd6Zy7INTtSpl1F15HW6Wnqj0srWlkKLcpYl/gMIMJiyuGq2KeI2YFxUPjdlB+3Lc10seMLtL4cA==}
+    engines: {node: '>= 14.6'}
+    hasBin: true
+
+snapshots:
+
+  '@remotion/captions@4.0.484': {}
+
+  '@remotion/install-whisper-cpp@4.0.484':
+    dependencies:
+      '@remotion/captions': 4.0.484
+
+  yaml@2.9.0: {}

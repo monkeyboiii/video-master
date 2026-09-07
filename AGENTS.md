@@ -1,78 +1,49 @@
 # DirtBikeX Video Agent Guide
 
-This repo manages short-form and long-form DirtBikeX video production: a lightweight,
-agent-assisted pipeline, not an editing folder. Humans direct and decide; agents do
-structured production work.
+This repo makes **parts of a video**, not a video. A human writes the script, records the
+narration, shoots and cuts. What arrives here is a file and a request for one of four things.
 
-## Start here
+Read [`agents.d/modules/toolline.md`](agents.d/modules/toolline.md) once — what this repo does,
+what it deliberately does not, and why. Then read only the doc for the job you were asked for.
 
-1. Read `docs/production-model.md` — how videos flow through the six stages.
-2. Read `docs/golden-rules.md` — the content framework and quality bar; the single
-   source of truth every video is judged against.
-3. For the current task, read the matching skill file below. Follow it exactly.
+## The four jobs
 
-## Task routing
+| Asked for | Read | Produces |
+|---|---|---|
+| splice the raw narration, place sound effects | [voice-and-render-qc.md](agents.d/modules/voice-and-render-qc.md) | a spliced VO track; effects on named beats |
+| subtitles for a cut | [captions.md](agents.d/modules/captions.md) | captions as data, sidecar or burned in |
+| an overlay, a segment, a background asset | [remotion-overlays.md](agents.d/modules/remotion-overlays.md) | alpha `.mov` to composite |
+| QC a render before it ships | [voice-and-render-qc.md](agents.d/modules/voice-and-render-qc.md) | measured pass/fail, not an eyeball |
 
-| Task | Skill file |
-|------|-----------|
-| Topic selection / brief | `skills/01-topic-selection.md` |
-| Cover / title packaging | `skills/02-cover-packaging.md` |
-| Reading script (either locale) | `skills/03-script-writing.md` |
-| Storyboard / shooting plan | `skills/04-storyboard.md` |
-| Remotion motion graphics | `skills/05-remotion-graphics.md` |
-| Kdenlive timeline / edit prep | `skills/06-kdenlive-editing.md` |
-| Subtitles / localization / burned-in captions | `skills/07-subtitles-localization.md` |
-| Audio & render QC | `skills/08-audio-render-qc.md` |
-| Review / retrospective | `skills/09-review-retrospective.md` |
+Names, locales and how an episode flows: [naming-conventions.md](agents.d/modules/naming-conventions.md),
+[localization.md](agents.d/modules/localization.md),
+[production-model.md](agents.d/modules/production-model.md).
 
-Supporting references: `docs/naming-conventions.md`, `docs/localization.md`,
-`docs/platforms.md`, `docs/publishing-checklist.md`.
+## Not this repo's job
+
+Topics, scripts, storyboards, covers, retrospectives — written by a human, elsewhere. The shoot,
+the cut and the sync happen outside; this repo never owns the timeline. Removed 2026-09-07;
+`agents.d/modules/.renames.tsv` records what moved and git history holds the rest.
 
 ## Repo map
 
 ```text
-docs/       rules and reference (read, rarely edit)
-skills/     how to do each production task
-templates/  blank artifacts — never edit in place. new-episode.mjs scaffolds
-            manifest.yml + brief.md; each later stage copies its own template
-            from templates/episode/ (the skill file names it)
-packages/remotion-graphics/   the reusable visual language (React/Remotion)
-tools/      node scripts: scaffold, validate, probe, render
-series/     the actual production content — one dir per episode
-media/      heavy files, git-ignored; only names live in git (via manifests)
+agents.d/modules/   the why: one doc per job, plus toolline.md
+agents.d/skills/    auto-editor — cutting silence out of a raw take
+packages/remotion-graphics/   the engine: Remotion 4.0.484, 20 components, alpha defaults
+tools/              the verbs: render-overlays, burn-subtitles, retime-subtitles,
+                    probe-media, validate, new-episode
+templates/          blank artifacts — never edit in place
+series/             shipped episodes; read-only history
+media/              outside git (~3 GB)
 ```
 
-## Key commands
+## Rules
 
-```bash
-node tools/new-episode.mjs <series> <slug>     # scaffold a new episode
-node tools/validate.mjs [episode-dir]          # validate manifests, naming, artifacts
-cd packages/remotion-graphics && npm run studio    # preview graphics (human)
-node tools/render-overlays.mjs <episode-dir> <locale>   # render overlays per manifest
-tools/burn-subtitles.py <episode-dir> --render         # burn in captions (see skills/07)
-```
-
-## Non-negotiable rules
-
-1. Never commit raw footage, proxies, exports, generated overlays, voiceovers, or cache
-   files. `media/**` stays out of git; manifests record names + external locations.
-2. Every episode has a `manifest.yml`. It is the source of truth for what the episode is.
-   If you change an artifact, update the manifest in the same change.
-3. en-US and zh-CN are **sibling variants**, not parent/child copies
-   (`docs/localization.md`). Never produce one by translating the other.
-4. Kdenlive is the human review/assembly layer, not the source of truth. Remotion is the
-   reusable motion-design system, not a full editor.
-5. Generated files must be reproducible from tracked sources. Fix sources, regenerate;
-   never hand-edit generated output.
-6. File names follow `docs/naming-conventions.md` exactly. Run `node tools/validate.mjs`
-   before finishing any task.
-7. Every PR / change references a video ID (or says `repo:` for infrastructure work) and
-   the skill file followed.
-
-## Working style
-
-- State assumptions before producing content; if the brief is ambiguous, say so in the
-  output rather than guessing silently.
-- Minimum artifacts that complete the stage — no speculative extra files.
-- Touch only the episode/files your task names. Don't reformat neighbors.
-- Every skill file ends with **Done criteria** — verify them before declaring a task done.
+- **Remotion's API is at remotion.dev/docs.** This repo records what was *chosen*, never a copy of
+  the API — the workspace is pinned at 4.0.484 and a copy rots against it.
+- **Overlays are ProRes 4444 with alpha (`yuva444p*`).** Set by `calculateMetadata`, so a bare
+  `npx remotion render <CompId>` is already correct. Never deliver WebM to the edit.
+- **`--props` takes the flat per-composition object**, not the whole locale file. The whole file
+  renders placeholder defaults and says nothing.
+- **Measure, don't eyeball.** `tools/validate.mjs` and `ffprobe` decide whether a render shipped.

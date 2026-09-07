@@ -1,0 +1,6 @@
+# pnpm >= 10 refuses a dependency's postinstall unless it is named here, and pnpm 12 spells it
+# `allowBuilds` (not `onlyBuiltDependencies`, and not in package.json). esbuild's postinstall is
+# what fetches its platform binary; Remotion's bundler will not start without it, so a fresh clone
+# cannot render until this is declared.
+allowBuilds:
+  esbuild: true

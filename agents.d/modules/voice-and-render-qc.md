@@ -1,4 +1,10 @@
-# Skill: Audio & Render QC
+---
+kind: why
+status: current
+summary: Splicing the raw narration, placing sound effects, and the measured checks a render must pass before it ships.
+---
+
+# Voice, sound effects and render QC
 
 ## Purpose
 

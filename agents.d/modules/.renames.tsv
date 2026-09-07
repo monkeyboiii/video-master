@@ -1,0 +1,7 @@
+old	new	when	why
+skills/05-remotion-graphics.md	agents.d/modules/remotion-overlays.md	2026-09-07	the nine-stage pipeline became four jobs
+skills/07-subtitles-localization.md	agents.d/modules/captions.md	2026-09-07	same
+skills/08-audio-render-qc.md	agents.d/modules/voice-and-render-qc.md	2026-09-07	same
+docs/naming-conventions.md	agents.d/modules/naming-conventions.md	2026-09-07	docs/ home retired
+docs/localization.md	agents.d/modules/localization.md	2026-09-07	docs/ home retired
+docs/production-model.md	agents.d/modules/production-model.md	2026-09-07	docs/ home retired

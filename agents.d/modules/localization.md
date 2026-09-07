@@ -1,3 +1,9 @@
+---
+kind: note
+status: current
+summary: en-US and zh-CN as sibling variants, not translations of one another.
+---
+
 # Localization Model — en-US / zh-CN as sibling variants
 
 Never this:

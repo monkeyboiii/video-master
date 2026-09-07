@@ -1,11 +1,11 @@
 {
   "version": 1,
   "skills": {
-    "cli-anything-kdenlive": {
-      "source": "hkuds/cli-anything",
+    "auto-editor": {
+      "source": "WyattBlue/auto-editor",
       "sourceType": "github",
-      "skillPath": "skills/cli-anything-kdenlive/SKILL.md",
-      "computedHash": "1e10c3e29b61e77173b5fa8e8cafc5bcef3cfb8ad0218bb99853f95c029b8294"
+      "skillPath": "skills/auto-editor/SKILL.md",
+      "computedHash": "70a42d3cb3a295cbe43517bfff15ebf4895d897cb052750cf4e48c1c8b0fb821"
     }
   }
 }

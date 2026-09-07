@@ -4,6 +4,8 @@
   "type": "module",
   "description": "Pipeline tools: scaffold episodes, validate manifests, probe media, render overlays",
   "dependencies": {
+    "@remotion/captions": "4.0.484",
+    "@remotion/install-whisper-cpp": "4.0.484",
     "yaml": "^2.7.0"
   }
 }

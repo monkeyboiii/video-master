@@ -1,4 +1,10 @@
-# Skill: Subtitles & Localization (字幕/本地化)
+---
+kind: why
+status: current
+summary: Captions for a cut that came back from outside: whisper.cpp transcription, the burned-in standard, and retiming against a re-cut.
+---
+
+# Captions (字幕)
 
 ## Purpose
 
@@ -170,3 +176,45 @@ when its timing is correct.
 when their episodes next come up. They are the deprecated Remotion path
 (`media/DBX-APP-S01E00*/overlays/*kinetic-captions*.mov`); nothing about them is wrong on
 screen, they are just built with a pipeline no longer maintained.
+
+## Transcription: which model, and why per-character is the right target for zh-CN
+
+`tools/transcribe.mjs` runs whisper.cpp locally via `@remotion/install-whisper-cpp` and writes the
+`Caption[]` that `@remotion/captions` consumes. Two decisions are baked in.
+
+### The model is `large-v3`, and never a `.en` one
+
+The `.en` models are English-only, and this repo ships zh-CN as a sibling variant, not a
+translation. Of the multilingual set — `tiny`, `base`, `small`, `medium`, `large-v1`, `large-v2`,
+`large-v3`, `large-v3-turbo` — **Chinese accuracy tracks model size far more steeply than English
+does**: `medium` is the floor, `large-v3` is the target. `--model` overrides for a quick pass.
+
+**Not done:** `large-v3-turbo` is not the default. It is faster for a small quality cost, but it
+postdates the pinned whisper.cpp 1.5.5 in `tools/transcribe.mjs`, so DTW alignment heads for it
+are **UNVERIFIED on that version — bump `WHISPER_VERSION` and confirm before switching.**
+
+### `tokenLevelTimestamps: true` is not optional, and for zh it means per character
+
+It passes `--dtw` to whisper.cpp: timestamps come from Dynamic Time Warping against the audio and
+are returned as `t_dtw`, instead of the decoder's heuristic guess. **That is the accuracy WhisperX
+is usually reached for** — and it is worth being precise, because "whisperx.cpp" is not a thing:
+WhisperX is a separate Python project that bolts wav2vec2 forced alignment onto Whisper, and its
+Chinese alignment is weaker than its English. whisper.cpp does the alignment natively here.
+
+For zh-CN this lands **per character**, and that is the right target rather than a compromise:
+Chinese has no spaces, so "per word" is not something the audio gives you. Whisper's Chinese
+tokens are one or two characters, which is the granularity Chinese karaoke captions highlight at
+anyway. `splitOnWord` is for space-delimited languages — leave it off for zh.
+
+Set `--lang=zh` or `--lang=en` explicitly. On a short clip, auto-detection flips zh to ja or yue
+and the whole take comes back in the wrong script.
+
+### The script is known, so ASR output is a draft
+
+This repo is handed the written script. Transcribing text you already have is strictly worse than
+reconciling against it: keep whisper's **timings**, take the script's **characters**. Homophone
+substitutions are the common failure and are invisible until someone reads the burn-in.
+
+**Not done:** no text-conditioned forced aligner is wired in. whisper.cpp cannot align to supplied
+text, and the Chinese aligners that can (MFA, WhisperX's zh model) are a separate toolchain. The
+threshold: reconciliation by hand stops being cheap.

@@ -1,4 +1,10 @@
-# Skill: Remotion Motion Graphics
+---
+kind: why
+status: current
+summary: Alpha overlays rendered from the Remotion workspace, the ProRes 4444 contract, and the props trap that renders placeholders silently.
+---
+
+# Remotion overlays
 
 ## Purpose
 
@@ -83,11 +89,21 @@ Patterns learned on S01E003:
 
 ## Overlay master format (fixed decision)
 
-**ProRes 4444 `.mov` (pixel format `yuva444p10le`, PNG frame capture).** This is what
+**ProRes 4444 `.mov` with an alpha channel (`yuva444p*`, PNG frame capture).** This is what
 Kdenlive/MLT decodes reliably with alpha. Do not deliver VP9/VP8 WebM to the edit —
 MLT's alpha handling for WebM is unreliable; WebM is acceptable only as a lightweight
 web preview artifact. Compositions in this package set these render defaults via
 `calculateMetadata`, so a bare `npx remotion render <CompId>` produces correct alpha.
+
+**Assert the alpha, not the bit depth.** Measured 2026-09-07 on ffmpeg 8.0.1, `mark-pop` rendered
+`yuva444p12le` where this doc's header had long said `yuva444p10le` — while its own QC section
+said 12-bit was "the expected readback". The doc disagreed with itself; the measurement settles it,
+and ffmpeg picks 12-bit for ProRes 4444. Nothing downstream cared, because what matters is the `yuva` prefix. A check that pins the
+exact pixel format goes red on an ffmpeg upgrade and teaches nobody anything:
+
+```bash
+ffprobe -v error -show_entries stream=pix_fmt -of csv=p=0 <overlay>.mov   # expect yuva444p*
+```
 
 ## Steps
 

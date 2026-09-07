@@ -1,3 +1,9 @@
+---
+kind: note
+status: current
+summary: How episodes, locales, overlays and covers are named. Every tool joins on these.
+---
+
 # Naming Conventions
 
 Boring, systematic names. Creativity belongs in the video, not the file system.

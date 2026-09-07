@@ -1,3 +1,9 @@
+---
+kind: note
+status: current
+summary: How an episode moves through the four jobs, and what happens outside this repo.
+---
+
 # Production Model
 
 How a DirtBikeX video goes from idea to published, and what the repo tracks at each step.
