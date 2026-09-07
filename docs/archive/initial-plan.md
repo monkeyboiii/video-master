@@ -61,7 +61,7 @@ dirtbikex-video/
   AGENTS.md
 
   docs/
-    production-model.md
+    toolline.md
     golden-rules.md
     naming-conventions.md
     localization.md

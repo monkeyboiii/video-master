@@ -50,7 +50,7 @@ and out of order, it only ever encoded which stage someone last remembered to bu
 | the engine | `packages/remotion-graphics` | Remotion **4.0.484**, 20 components, alpha defaults in `calculateMetadata` |
 | the verbs | `tools/` | `render-overlays.mjs`, `burn-subtitles.py`, `retime-subtitles.py`, `probe-media.mjs`, `validate.mjs`, `new-episode.mjs` |
 | cutting silence | [`agents.d/skills/auto-editor`](../skills/auto-editor/SKILL.md) | the voice job's tool |
-| naming, locales, flow | [naming-conventions.md](naming-conventions.md), [localization.md](localization.md), [production-model.md](production-model.md) | every tool joins on the names |
+| naming, locales, flow | [naming-conventions.md](naming-conventions.md), [localization.md](localization.md), [toolline.md](toolline.md) | every tool joins on the names |
 | episode history | `series/` | read-only; what was actually shipped |
 
 ## Architecture decisions
