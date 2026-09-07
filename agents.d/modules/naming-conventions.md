@@ -1,5 +1,5 @@
 ---
-kind: note
+kind: why
 status: current
 summary: How episodes, locales, overlays and covers are named. Every tool joins on these.
 ---

@@ -1,5 +1,5 @@
 ---
-kind: note
+kind: why
 status: current
 summary: en-US and zh-CN as sibling variants, not translations of one another.
 ---
