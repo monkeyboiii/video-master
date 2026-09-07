@@ -82,3 +82,17 @@ export const safeZoneFor = (
  * top of unknown footage; use panels, not text-shadows.
  */
 export const scrim = (alpha = 0.85): string => `rgba(22, 20, 15, ${alpha})`;
+
+/**
+ * Spoken-caption band. Sampled from the reference frames in the harness
+ * (word-underline / phrase-highlight / end-of-sentence), not chosen:
+ * the highlight reads #D6EC4B–#DCEE56 at the centre of a clean block and the
+ * band base reads #060507 between the dashes.
+ */
+export const spoken = {
+  band: '#06050A',      // the black rule under the line
+  hatch: '#54545E',     // the grey slanted dashes across it
+  lit: '#D8EE4A',       // fluorescent yellow-green: the word being spoken
+  text: '#FFFFFF',      // unspoken text
+  stroke: '#06050A',    // the outline that keeps white legible on any footage
+} as const;

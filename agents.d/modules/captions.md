@@ -218,3 +218,50 @@ substitutions are the common failure and are invisible until someone reads the b
 **Not done:** no text-conditioned forced aligner is wired in. whisper.cpp cannot align to supplied
 text, and the Chinese aligners that can (MFA, WhisperX's zh model) are a separate toolchain. The
 threshold: reconciliation by hand stops being cheap.
+
+## The spoken-caption band, and why the two locales stream differently
+
+`packages/remotion-graphics/src/components/SpokenSubtitle.tsx` renders a caption line that follows
+the voice. It takes the `Caption[]` timings `tools/transcribe.mjs` writes, one word per row, and
+draws one band under the line: near-black, crossed by grey slanted dashes, with the spoken span
+switching to fluorescent yellow-green.
+
+### zh-CN shows the whole line and lights words across it; en-US reveals word by word
+
+This is not a style preference, and the two must not be unified.
+
+**zh-CN — karaoke.** The whole line is on screen from its first frame and a highlight streams
+across it. Chinese is read by recognising whole characters at a glance, so a reader takes the line
+in faster than it is spoken; showing all of it costs nothing and lets them read ahead, while the
+highlight keeps them anchored to the voice.
+
+**en-US — streaming.** A word is not rendered until it is spoken, so the line grows. Latin script
+is read left-to-right at roughly speaking pace, so a fully revealed line invites the eye to run to
+the end and then wait — the pause that makes short-form captions feel slow.
+
+The per-character timing zh needs is the same `--dtw` output described above, which is why the two
+decisions belong together: whisper.cpp's token timestamps land per character for Chinese, and per
+character is exactly the granularity this highlight moves at.
+
+**Not done:** no single mode with a flag for "reveal" — the difference is which locale you are in,
+and a flag invites setting it wrong. `locale` decides it. **The threshold:** a Latin locale that
+reads faster than it is spoken (subtitles for a second-language audience) would want karaoke too.
+
+### The band is drawn from the type size, never in fixed pixels
+
+Band height, the gap under the line, the dash width and the text stroke are all fractions of
+`fontSize`. A 40px caption and a 90px one otherwise get dashes and rules of visibly different
+weight, and the component is used at both.
+
+Values sampled from the reference frames rather than chosen — `spoken` in
+`packages/remotion-graphics/src/theme/tokens.ts`: highlight `#D8EE4A` (the clean centre of a lit
+block reads #D6EC4B–#DCEE56), band `#06050A` (between the dashes, #060507). The lit block sits
+slightly proud of the hatched rule, as it does in the reference: the eye finds the spoken word by
+its weight before its colour.
+
+**Not done:** the dashes are not dropped from unlit spans. They are what make an unlit band read as
+"not yet" rather than as a design element, so they are drawn even where no word has landed.
+
+**Known divergence from the reference frames:** they keep the text white throughout and light only
+the band. The instruction was to light the text as well, so `litText` defaults to true; set it
+false to match the frames exactly.

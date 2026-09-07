@@ -23,6 +23,11 @@ import type {HookTitleProps} from './components/HookTitle';
 import {InviteCard, inviteCardSchema} from './components/InviteCard';
 import type {InviteCardProps} from './components/InviteCard';
 import {KineticCaptions, kineticCaptionsSchema} from './components/KineticCaptions';
+import {
+  SpokenSubtitle,
+  spokenSubtitleSchema,
+  type SpokenSubtitleProps,
+} from './components/SpokenSubtitle';
 import type {KineticCaptionsProps} from './components/KineticCaptions';
 import {PhotoReveal, photoRevealSchema} from './components/PhotoReveal';
 import type {PhotoRevealProps} from './components/PhotoReveal';
@@ -316,6 +321,40 @@ export const RemotionRoot: React.FC = () => {
               ],
             },
           ],
+        }}
+      />
+      <Composition
+        id="spoken-subtitle-zh"
+        component={SpokenSubtitle}
+        schema={spokenSubtitleSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(9.0 * FPS)}
+        calculateMetadata={overlayMetadata<SpokenSubtitleProps>(9.0)}
+        defaultProps={{
+          locale: 'zh-CN' as const,
+          durationSec: 9.0,
+          fontSize: 76,
+          litText: true,
+          words: '私|0|500\n信|500|1000\n各|1000|1500\n个|1500|2000\n场|2000|2500\n地|2500|3000\n的|3000|3500\n时|3500|4000\n候|4000|4500\n分|4500|5000\n享|5000|5500\n上|5500|6000\n去|6000|6500\n就|6500|7000\n好|7000|7500\n了|7500|8000',
+        }}
+      />
+      <Composition
+        id="spoken-subtitle-en"
+        component={SpokenSubtitle}
+        schema={spokenSubtitleSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(9.48 * FPS)}
+        calculateMetadata={overlayMetadata<SpokenSubtitleProps>(9.48)}
+        defaultProps={{
+          locale: 'en-US' as const,
+          durationSec: 9.48,
+          fontSize: 68,
+          litText: true,
+          words: 'when|0|530\nyou|530|1060\nmessage|1060|1590\neach|1590|2120\ntrack|2120|2650\njust|2650|3180\nshare|3180|3710\nit|3710|4240\nstraight|4240|4770\nfrom|4770|5300\nthe|5300|5830\napp|5830|6360\nand|6360|6890\nyou|6890|7420\nare|7420|7950\ndone|7950|8480',
         }}
       />
       <Composition

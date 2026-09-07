@@ -77,3 +77,22 @@ Per-episode overrides go in `manifest.yml` under `variants.<locale>.platforms`.
 WeChat Channels is deliberately **not** in the zh-CN defaults: its 6:7 feed crop needs a
 dedicated 3:4-composed master (see `agents.d/modules/platforms.md`), so add `wechat` to a variant's
 platform list only when that extra deliverable is planned.
+
+## Captions stream differently per locale
+
+The two locales do not share a caption behaviour, and this is the clearest case of variants being
+siblings rather than translations:
+
+| | zh-CN | en-US |
+|---|---|---|
+| line visible | the whole line, from its first frame | only the words already spoken |
+| highlight | streams word by word across it | the word just revealed |
+| why | Chinese is read by whole-character recognition, faster than it is spoken; showing the line lets a reader read ahead while the highlight holds them to the voice | Latin script is read at roughly speaking pace; a revealed line makes the eye run ahead and wait |
+| timing needed | per character (whisper `--dtw` tokens are 1–2 characters) | per word |
+
+Implemented in `packages/remotion-graphics/src/components/SpokenSubtitle.tsx`, keyed on `locale`
+with no override; the reasoning and the band's visual spec are in
+[captions.md](captions.md) § The spoken-caption band, and why the two locales stream differently.
+
+**Not done:** the same subtitle burned twice with only the text swapped. That is the translation
+model this repo does not use, and it would make one of the two locales read badly.
