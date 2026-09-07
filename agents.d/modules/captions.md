@@ -362,6 +362,37 @@ just lets a composition put back the version that drags the words.
 at a glance in both scripts; a spelled-out number is read as words, costs the line several word
 slots, and in zh pushes a sentence over the width where it has to be cut.
 
+### Two styles, and `plain` is en-only
+
+`band` is everything else in this document: the striped rule carries the state, the text holds one
+colour, and only a word marked `*` departs from it. `plain` drops the band entirely — white text,
+and the word being spoken turns fluorescent green. It reads lighter over busy footage and is the
+right choice when the bottom of frame already has something in it that a second horizontal rule
+would fight.
+
+`plain` in zh is **ignored, not obeyed**. The band exists in zh precisely because recolouring dense
+character strokes mid-line costs legibility for a cue the band already gives; `plain` is nothing
+but that recolouring, so in zh it is the one thing the design rules out. A prop that silently does
+the wrong thing on one locale is worse than a prop that refuses, and refusing loudly would make
+`captionStyle` unusable on a mixed-locale render — so it clamps.
+
+In `plain`, `*` stops carrying anything extra: every spoken word already lights. The rows stay
+valid, so one script feeds both styles.
+
+**Not done:** no third style, and no per-word style. The two exist because they answer two
+different questions about the footage underneath, not as a palette.
+
+### A line clears when its sentence ends
+
+It used to hold until the next line started, on the argument that a caption vanishing the instant
+it is spoken is unreadable and the gap reads as a dropped frame. Against a real cut that was wrong
+at this rhythm: beats sit ~5s apart and a sentence takes ~2s, so a finished caption sat on screen
+for seconds with nothing left to say, attached to a picture that had already moved on.
+
+A line now clears `tailFrames` after its own last word — long enough for a late reader to finish,
+short enough that the frame goes quiet between beats. The tail is capped at the next line's start,
+so two lines can never overlap however tight the timings get.
+
 ### Timing comes from measurement, not from feel
 
 The first pass used 500 ms per character and read **2.3× too slow**. Measured against the real

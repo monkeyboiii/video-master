@@ -60,7 +60,20 @@ cut budget, not the type size.
 The zone is derived from the canvas via `safeZoneFor`, so the same components serve a 1080x1920
 short and a 1920x1080 landscape cut. `burst-intro-captions-{zh,en}` are the landscape pair.
 
-## What lights
+## Two styles — `captionStyle`
+
+| | `band` (default) | `plain` (en only) |
+|---|---|---|
+| rule under the line | striped, always drawn | none |
+| text | one colour throughout | white, **green on the spoken word** |
+| `*` important | lights that word's text | no extra effect — every spoken word lights |
+
+`plain` is for footage that already has something at the bottom of frame that a second horizontal
+rule would fight. **zh always uses `band`** — asking for `plain` there is clamped, not obeyed,
+because recolouring dense character strokes mid-line is the exact thing the band exists to avoid.
+One script feeds both styles; the rows do not change.
+
+## What lights (`band`)
 
 - **The band always lights** under the word being spoken. In both locales.
 - **The text lights only for a word marked `*`**, and only while it is being spoken. It goes
@@ -82,8 +95,9 @@ If a line still overflows it is a single word wider than the frame — shorten t
 `fontSize` for that composition. Do not reintroduce `fitText`: a per-sentence size makes the frame
 twitch, and a sentence that shrank enough to fit is one nobody reads.
 
-Each part holds until the next one starts (last one plus `tailFrames`), so nothing blinks out on
-its own final word.
+A line clears `tailFrames` after **its own last word**, not when the next one starts — a finished
+caption sitting on screen for seconds while the picture moves on reads worse than a quiet frame.
+The tail is capped at the next line's start, so two lines never overlap.
 
 ## Geometry — all derived from `size`, never fixed px
 

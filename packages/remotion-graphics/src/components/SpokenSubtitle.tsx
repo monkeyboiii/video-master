@@ -61,11 +61,25 @@ import {safeZoneFor, spoken} from '../theme/tokens';
  * The zone is derived from the canvas, so the same component works on a 1080x1920 short and a
  * 1920x1080 landscape cut without a second set of numbers.
  *
+ * TWO STYLES, AND `plain` IS en-ONLY. `band` is everything described above: the striped rule
+ * carries the state and the text holds one colour. `plain` drops the band entirely — white text,
+ * and the word being spoken turns fluorescent green. It reads faster and lighter over busy
+ * footage, and it is the right choice when the cut already has enough going on at the bottom of
+ * frame that another horizontal rule fights it.
+ *
+ * zh always uses `band`, and asking for `plain` there is ignored rather than obeyed. The band
+ * exists in zh precisely BECAUSE recolouring dense character strokes mid-line costs legibility;
+ * `plain` is nothing but that recolouring, so in zh it is the one thing the design rules out.
+ * In `plain`, `*` stops meaning anything extra — every spoken word already lights.
+ *
  * A WORD IS WHATEVER A ROW IS. whisper.cpp emits zh timings per CHARACTER, and highlighting per
  * character is wrong — 核心 is one word and lights as one. The component does not segment; it
  * highlights exactly the units it is given, so grouping happens upstream where the script's own
  * word boundaries are known. `tools/group-words.mjs` does it.
  */
+export const captionStyleSchema = z.enum(['band', 'plain']);
+export type CaptionStyle = z.infer<typeof captionStyleSchema>;
+
 export const spokenSubtitleSchema = z.object({
   locale: localeSchema,
   /**
@@ -75,6 +89,8 @@ export const spokenSubtitleSchema = z.object({
   words: zTextarea(),
   durationSec: z.number(),
   fontSize: z.number().optional(),
+  /** `band` (default) or `plain` — white text, green on the spoken word, no rule. en only. */
+  captionStyle: captionStyleSchema.optional(),
 });
 
 export type SpokenSubtitleProps = z.infer<typeof spokenSubtitleSchema>;
@@ -137,12 +153,15 @@ export const SpokenSubtitle: React.FC<SpokenSubtitleProps> = ({
   locale,
   words,
   fontSize,
+  captionStyle = 'band',
 }) => {
   const frame = useCurrentFrame();
   const {width, height} = useVideoConfig();
   const ms = (frame / FPS) * 1000;
   const parsed = useMemo(() => parseWords(words), [words]);
   const karaoke = locale === 'zh-CN';
+  // zh always keeps the band — see the header; `plain` there is ignored, not obeyed
+  const plain = captionStyle === 'plain' && !karaoke;
   const family = bodyFont(locale as Locale);
   const size = captionSize(locale as Locale, fontSize);
   const inset = captionInset(width, height);
@@ -186,9 +205,10 @@ export const SpokenSubtitle: React.FC<SpokenSubtitleProps> = ({
                 zIndex: 0,
                 // holds its box, draws nothing — neither glyph nor band
                 visibility: held ? 'hidden' : 'visible',
-                // ONE text colour throughout — the band alone carries the state. The exception
-                // is a word marked important, and only while it is being spoken.
-                color: w.important && lit ? spoken.lit : spoken.text,
+                // band: ONE text colour throughout, the band alone carries the state, and only a
+                // word marked important departs from it. plain: there is no band, so the text IS
+                // the state and every spoken word lights.
+                color: (plain ? lit : w.important && lit) ? spoken.lit : spoken.text,
                 paddingBottom: size * 0.16,
                 // the stroke is what keeps the text legible over any footage
                 WebkitTextStroke: `${Math.max(2, size * 0.045)}px ${spoken.stroke}`,
@@ -196,6 +216,7 @@ export const SpokenSubtitle: React.FC<SpokenSubtitleProps> = ({
               }}
             >
               {w.text}
+              {plain ? null : (
               <span
                 style={{
                   position: 'absolute',
@@ -217,6 +238,7 @@ export const SpokenSubtitle: React.FC<SpokenSubtitleProps> = ({
                   transform: 'skewX(-12deg)',
                 }}
               />
+              )}
             </span>
           );
         })}

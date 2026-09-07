@@ -8,6 +8,7 @@ import {bodyFont} from '../theme/fonts';
 import {
   captionRoom,
   captionSize,
+  captionStyleSchema,
   parseWords,
   SpokenSubtitle,
   wordGap,
@@ -31,8 +32,13 @@ import {
  * replacement for shrinking the type to fit: the reader gets the same size on every line and
  * more lines, instead of one line nobody can read.
  *
- * Each part holds until the next one starts rather than vanishing at its own last word: a caption
- * that disappears the instant it is spoken is unreadable, and the gap reads as a dropped frame.
+ * A LINE CLEARS WHEN ITS SENTENCE ENDS. It used to hold until the next line started, on the
+ * argument that a caption vanishing the instant it is spoken is unreadable and the gap reads as a
+ * dropped frame. Watching it against a real cut, that was wrong at this rhythm: beats sit ~5s
+ * apart and a sentence takes ~2s, so a finished caption sat there for seconds with nothing to do,
+ * attached to a picture that had moved on. Now it clears `tailFrames` after its own last word —
+ * long enough for a late reader to finish, short enough that the frame goes quiet between beats.
+ * The tail is still capped at the next line's start, so two lines never overlap.
  */
 export const spokenSubtitleTrackSchema = z.object({
   locale: localeSchema,
@@ -40,8 +46,10 @@ export const spokenSubtitleTrackSchema = z.object({
   script: zTextarea(),
   durationSec: z.number(),
   fontSize: z.number().optional(),
-  /** Frames to keep the last line up after its final word. */
+  /** Frames to keep a line up after its final word. */
   tailFrames: z.number().optional(),
+  /** `band` (default) or `plain` — see SpokenSubtitle. en only. */
+  captionStyle: captionStyleSchema.optional(),
 });
 
 export type SpokenSubtitleTrackProps = z.infer<typeof spokenSubtitleTrackSchema>;
@@ -92,6 +100,7 @@ export const SpokenSubtitleTrack: React.FC<SpokenSubtitleTrackProps> = ({
   script,
   fontSize,
   tailFrames = 12,
+  captionStyle,
 }) => {
   const {width: canvas, height: canvasH} = useVideoConfig();
   const family = bodyFont(locale as Locale);
@@ -122,9 +131,12 @@ export const SpokenSubtitleTrack: React.FC<SpokenSubtitleTrackProps> = ({
         const from = Math.round((fromMs / 1000) * FPS);
         // hold until the next line starts; the last one gets a short tail
         const next = parts[i + 1];
+        const ownEnd =
+          Math.round((ws[ws.length - 1].endMs / 1000) * FPS) + tailFrames;
+        // clear at its own end, but never run into the next line
         const until = next
-          ? Math.round((next[0].startMs / 1000) * FPS)
-          : Math.round((ws[ws.length - 1].endMs / 1000) * FPS) + tailFrames;
+          ? Math.min(ownEnd, Math.round((next[0].startMs / 1000) * FPS))
+          : ownEnd;
         return (
           <Sequence
             key={i}
@@ -137,6 +149,7 @@ export const SpokenSubtitleTrack: React.FC<SpokenSubtitleTrackProps> = ({
               words={toRows(ws, fromMs)}
               durationSec={Math.max(1, until - from) / FPS}
               fontSize={fontSize}
+              captionStyle={captionStyle}
             />
           </Sequence>
         );
