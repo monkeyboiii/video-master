@@ -18,6 +18,30 @@ script + raw narration ──▶ [ voice ]  ──▶ spliced VO
                                     ──▶ [ sfx     ] ──▶ effects placed on named beats
 ```
 
+## How the repo is organized
+
+Not around "one video file" — around the thing that actually varies:
+
+```text
+series → episodes → language variants → platform exports
+```
+
+- A **series** is a positioning decision (`series/<slug>/series.yml`).
+- An **episode** is one topic with one core message
+  (`series/<slug>/episodes/<VIDEO_ID>-<slug>/`).
+- A **variant** is a language edition — `en-US`, `zh-CN` — and they are **siblings, not
+  translations** ([localization.md](localization.md)).
+- An **export** is one rendered deliverable for one platform, recorded in `manifest.yml`, never
+  committed.
+
+Git tracks production logic — manifests, subtitles, props, the design system, review notes.
+External storage holds the heavy media. `manifest.yml` is what connects the two, and
+`tools/validate.mjs` is what says they still agree.
+
+**Not done:** the six-stage lifecycle that used to sit here went with the pipeline. A stage
+counter was meaningful when the repo owned idea→publish; with four jobs that arrive independently
+and out of order, it only ever encoded which stage someone last remembered to bump.
+
 ## Module layout
 
 | Concern | Where | Notes |
