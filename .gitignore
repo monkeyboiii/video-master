@@ -57,3 +57,8 @@ packages/remotion-graphics/out*.zip
 # into the repo. e002's stills are hand-made source and stay tracked.
 packages/remotion-graphics/public/e0*/
 !packages/remotion-graphics/public/e002/
+
+# Remotion's own agent skills — installed and versioned by `npx remotion skills add|update`,
+# not by us. Tracking them would fork upstream's copy on the next update.
+packages/remotion-graphics/.agents/
+packages/remotion-graphics/.claude/

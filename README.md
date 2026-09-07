@@ -26,7 +26,7 @@ Manifest files connect the two.
 
 ```bash
 # one-time setup: the tools need their deps
-npm install --prefix tools
+pnpm install --dir tools
 
 # scaffold a new episode
 node tools/new-episode.mjs BEG my-topic-slug
@@ -35,16 +35,19 @@ node tools/new-episode.mjs BEG my-topic-slug
 node tools/validate.mjs
 
 # preview / develop motion graphics
-cd packages/remotion-graphics && npm install && npm run studio
+cd packages/remotion-graphics && pnpm install && pnpm studio
 ```
 
 ## Toolchain
 
-- **Node ≥ 20** — tools and Remotion. Run `npm install --prefix tools` once per clone.
-- **Remotion** — programmatic overlays, subtitles burns, cover stills. Bundles its own
-  ffmpeg (`npx remotion ffmpeg`), so no system ffmpeg is required.
-- **Kdenlive** — human editing surface (installed on the editing machine, not required
-  here).
+- **Node ≥ 20 and pnpm** — tools and Remotion. `pnpm install --dir tools` once per clone, and
+  `pnpm install` in `packages/remotion-graphics`. pnpm ≥ 10 refuses esbuild's postinstall unless
+  `allowBuilds` names it (`pnpm-workspace.yaml`); without it the Remotion bundler will not start.
+- **Remotion** — programmatic overlays, subtitle burn-ins, cover stills. Bundles its own
+  ffmpeg (`npx remotion ffmpeg`) for rendering — but **a system ffmpeg with libass IS required**:
+  `tools/burn-subtitles.py` shells out to it for the burn-in, and `tools/transcribe.mjs` needs it
+  to make the 16 kHz mono WAV whisper.cpp reads. `apt install ffmpeg` covers both.
+
 
 New here? Read `AGENTS.md` first — it routes every task. Humans and agents follow the
 same rules.

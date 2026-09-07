@@ -51,6 +51,29 @@ this:** scripts start being written here again.
 **Not done:** no `docs/remotion/` mirror, no copied signatures. A doc here that quotes an API
 quotes it as a link.
 
+### Remotion's own agent skills are installed, and they are why "link, don't vendor" works
+
+`npx remotion skills add` installs 12 skills from `remotion-dev/skills` into
+`packages/remotion-graphics/.agents/skills`. Seven bear on the four jobs — `remotion-captions`,
+`remotion-render`, `remotion-markup`, `remotion-studio`, `remotion-docs`, `remotion-upgrade` and
+the `remotion-best-practices` router; the rest (`create`, `saas`, `maps`, `interactivity`,
+`multimedia`) are for building apps, not videos, and cost nothing because a skill is only read when
+its description is chosen.
+
+They carry a `version:` that tracks Remotion itself — currently **4.0.521 against a workspace
+pinned at 4.0.484**, so they run slightly ahead. `npx remotion skills update` is what moves them,
+and that is exactly the argument against vendoring API docs here: upstream ships and versions this
+knowledge, so a copy in this repo would be a second one nobody updates.
+
+**Two skill homes, different owners.** `agents.d/skills/` is ours and the harness links it
+(`dbx skills sync`); `packages/remotion-graphics/.agents/skills/` is Remotion's and its CLI
+maintains it. Do not merge them — `remotion skills update` would lose anything hand-written, and
+the harness would start syncing skills it does not own.
+
+**Not done:** the CLI was not used to install them. `remotion skills add` prompts for a selection
+and its `--yes`/`-y` flags did not take in a non-interactive shell, so the set was copied from the
+upstream repository instead. `update` still manages them.
+
 ### The cut comes from outside, so this repo has no timeline
 
 Kdenlive editing lived here and does not any more: the shoot is cut and synced elsewhere and

@@ -48,6 +48,29 @@ const out = outArg ?? src.replace(/\.[^.]+$/, '') + '.captions.json';
 // Kept beside the repo, not inside it: the binary and the models are per-box and large.
 const whisperPath = process.env.DBX_WHISPER_DIR ?? path.join(os.homedir(), '.cache', 'whisper.cpp');
 
+// whisper.cpp emits BYTE-level tokens, so a multi-byte character arrives split across two of them
+// and its bytes are ALREADY LOST — whisper.cpp's own JSON contains U+FFFD, before any JavaScript
+// touches it. Measured on a 26 s zh-CN take with large-v3: 50 of 170 raw tokens (30%). Nothing
+// downstream can recover them; concatenating two replacement characters yields two replacement
+// characters, not the glyph.
+//
+// So the fragments are dropped and their TIME is folded into the previous caption, which keeps the
+// timeline continuous and never ships half a glyph into a burn-in. What it means for zh-CN is that
+// this file produces trustworthy TIMINGS and untrustworthy TEXT, which is why the text has to come
+// from the script — see agents.d/modules/captions.md § The script is known, so ASR output is a
+// draft. English is unaffected: its tokens are whole.
+function dropSplitCharacters(captions) {
+  const broken = (t) => t.includes('\uFFFD');
+  const out = [];
+  let dropped = 0;
+  for (const c of captions) {
+    if (!broken(c.text)) { out.push({ ...c }); continue; }
+    dropped++;
+    if (out.length) out[out.length - 1].endMs = c.endMs;   // keep the span, lose the fragment
+  }
+  return { captions: out, dropped };
+}
+
 const wav = path.join(os.tmpdir(), `dbx-16k-${process.pid}.wav`);
 const conv = spawnSync('ffmpeg', ['-y', '-v', 'error', '-i', src, '-ar', '16000', '-ac', '1', wav]);
 if (conv.status !== 0) {
@@ -65,7 +88,13 @@ const whisperCppOutput = await transcribe({
   ...(lang === 'auto' ? {} : { language: lang }),
 });
 
-const { captions } = toCaptions({ whisperCppOutput });
+const raw = toCaptions({ whisperCppOutput }).captions;
+const { captions, dropped } = dropSplitCharacters(raw);
+if (dropped) {
+  const pct = Math.round((100 * dropped) / raw.length);
+  console.warn(`transcribe: dropped ${dropped}/${raw.length} (${pct}%) byte-split tokens — normal for zh/ja/ko.`);
+  console.warn('transcribe: TIMINGS are usable, TEXT is not. Reconcile against the script.');
+}
 fs.writeFileSync(out, JSON.stringify(captions, null, 2));
 fs.rmSync(wav, { force: true });
 console.log(`${out}: ${captions.length} caption(s) from ${path.basename(src)} [model=${model}]`);
