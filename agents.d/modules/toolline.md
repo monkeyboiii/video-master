@@ -23,12 +23,16 @@ script + raw narration ──▶ [ voice ]  ──▶ spliced VO
 Not around "one video file" — around the thing that actually varies:
 
 ```text
-series → episodes → language variants → platform exports
+seasons → episodes → language variants → platform exports
 ```
 
-- A **series** is a positioning decision (`series/<slug>/series.yml`).
-- An **episode** is one topic with one core message
-  (`series/<slug>/episodes/<VIDEO_ID>-<slug>/`).
+- A **season** is the category (`series/S03/`), and its `README.md` is what makes the number mean
+  anything — `S03E003` reads as "the third episode of the 100-track challenge" only because that
+  file says what S03 is. **Not done:** there is no `series.yml` any more. A series-level manifest
+  sitting above three seasons could only ever describe one of them, and its `season:` field was
+  demonstrably wrong on disk — it said `1` while holding S01 through S03.
+- An **episode** is one topic with one core message (`series/S0N/E0NN-<slug>/`), optionally linked
+  to another by `lineage:`.
 - A **variant** is a language edition — `en-US`, `zh-CN` — and they are **siblings, not
   translations** ([localization.md](localization.md)).
 - An **export** is one rendered deliverable for one platform, recorded in `manifest.yml`, never
@@ -36,7 +40,7 @@ series → episodes → language variants → platform exports
 
 Git tracks production logic — manifests, subtitles, props, the design system, review notes.
 External storage holds the heavy media. `manifest.yml` is what connects the two, and
-`tools/validate.mjs` is what says they still agree.
+`tools/vm check` is what says they still agree.
 
 **Not done:** the six-stage lifecycle that used to sit here went with the pipeline. A stage
 counter was meaningful when the repo owned idea→publish; with four jobs that arrive independently

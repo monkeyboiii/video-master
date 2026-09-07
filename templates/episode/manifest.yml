@@ -1,10 +1,19 @@
 # Episode manifest — source of truth for this episode.
-# Schema notes: docs/production-model.md · naming: docs/naming-conventions.md
-# Validate with: node tools/validate.mjs
+# Schema notes and naming: agents.d/modules/naming-conventions.md
+# Validate with: tools/vm check   (scaffold with: tools/vm new S0N slug)
 
-video_id: "{{VIDEO_ID}}" # DBX-{SERIES}-S{ss}E{eee}
+video_id: "{{VIDEO_ID}}" # S{ss}E{eee} — the season number IS the category
 slug: "{{SLUG}}"
-series: "{{SERIES_SLUG}}"
+
+# Optional. `follows` = where this published in the original run; `parent` = the episode it
+# ANSWERS, if it answers one; `relation` = remedy | inspired-by | followup, and needs a parent.
+# `tools/vm link` writes this block so the shape is not hand-typed.
+# lineage:
+#   follows: S03E003
+#   parent: S03E003
+#   relation: remedy
+#   reason: >-
+#     one line on why this episode exists
 status: topic # topic|packaging|scripting|shooting|editing|qc|published|retro
 
 formats:
