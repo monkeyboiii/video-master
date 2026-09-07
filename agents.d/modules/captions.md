@@ -322,13 +322,30 @@ nothing left to cut, and a silently dropped caption is worse than one that overh
 **Not done:** no wrapping to two lines. Half a sentence above the other half makes the eye travel
 back, and in short form it eats the frame.
 
-### en is left-aligned; zh is centred
+### The sentence is centred and the words inside it are not — both, at once
 
-Streaming and centring are incompatible: each new word re-centres the line and drags the words
-already read sideways, so the reader re-finds their place on every word. Left alignment fixes the
-start of the line and lets growth happen only at the end — and with a fixed size it also makes the
-line's width knowable before the first word is drawn. zh shows the whole sentence from frame one
-and never moves, so it centres.
+The first attempt read the requirement as a choice between the two and picked left for en:
+streaming and centring are incompatible, because each new word re-centres the line and drags the
+words already read sideways. That much is true. But left-aligning the *caption* to fix it parks
+every line hard against the safe-zone edge, and a caption with no margin reads as a mistake.
+
+They are not actually in conflict, because they are about different things. The requirement on the
+words is that they not MOVE; the requirement on the sentence is where it SITS. Satisfy both by
+reserving the full sentence's width and centring that, then laying the words out from its left
+edge — so each word's position is decided once, by the complete sentence, and never revised.
+
+The mechanism is `visibility: hidden` rather than not rendering. Every word is in the layout from
+frame 0 in both locales; en hides the ones it has not reached, and a hidden span holds its box
+without drawing its glyph or its band. Nothing has to be measured — the width is reserved because
+the words are really there. (The track still measures, but only to decide where to cut.)
+
+**Centred in the safe zone, not the frame.** `SAFE_ZONE` is asymmetric — left 55, right 145,
+the right inset being the platform action rail — so the caption centres at x=495 of 1080, 45px
+left of true centre. That is the middle of the region the viewer can see, and centring on the
+frame instead would push the line under the rail.
+
+**Not done:** no alignment prop. It is one rule and it is the same in both locales; a knob here
+just lets a composition put back the version that drags the words.
 
 ### Numbers are digits
 

@@ -32,14 +32,28 @@ the track rebases them per line.
 |  | zh-CN | en-US |
 |---|---|---|
 | reveal | **karaoke** — whole line from frame 0 | **streaming** — a word appears when spoken |
-| align | centred | **left** |
 | word gap | 0 | `size * 0.26` |
 | scale | `localeScale` 0.88 | 1 |
+| alignment | the same in both — see below | |
 
-**en is left-aligned because it streams.** Centring re-centres the line on every new word and drags
-the already-read words sideways, so the reader re-finds their place word by word. Left nails the
-start down and lets growth happen only at the end — and it makes the line's width knowable before
-a word is drawn. zh never moves, so it centres.
+## The sentence is centred; the words inside it are not
+
+Both, at once. Every word is laid out from frame 0 in both locales; a word en has not reached yet
+is `visibility: hidden`, so it **holds its box without drawing itself or its band**. The line
+therefore reserves the width of the complete sentence, that width is centred in the safe zone, and
+each word sits from frame one exactly where it will be when it appears.
+
+Do not centre the *visible* words — that re-centres the line on every new word and drags the
+already-read ones sideways, so the reader re-finds their place word by word. Do not left-align the
+*caption* either — that pins the words but parks every line on the safe-zone edge with no margin.
+
+Because the hidden words really are in the layout, nothing measures anything here; the browser
+reserves the width. (The track still measures, but only to decide where to cut.)
+
+Centring is within the **safe zone**, not the frame: `SAFE_ZONE` is asymmetric (left 55, right 145,
+the right inset being the platform action rail), so the caption centre lands at x=495 on a
+1080-wide frame. That is the middle of the space the viewer can actually see, which is the one
+that matters.
 
 ## What lights
 
@@ -129,8 +143,22 @@ lossless (`ffmpeg -c:v qtrle`, bit-identical RGBA, verified by framemd5) costs ~
 until someone confirms MLT composites qtrle alpha correctly in Kdenlive. Do that check before
 switching; do not switch on the numbers alone.
 
-If you only need a review copy, encode one and keep the master:
+## Previews
+
+A preview is for looking at, so it is lossy on purpose — what it has to be is fast and small.
+Measured on the same 19s master:
 
 ```bash
-ffmpeg -i out/captions-zh.mov -c:v qtrle -an out/review-zh.mov   # lossless, ~1/10th
+# keeps alpha — for checking the overlay itself.        0.47 MB, 3.8x realtime
+ffmpeg -i out/captions-zh.mov -an -c:v libvpx-vp9 -pix_fmt yuva420p \
+  -crf 40 -b:v 0 -deadline realtime -cpu-used 8 -row-mt 1 out/preview-zh.webm
+
+# flattened over grey — for reading the captions.       0.18 MB, 7.4x realtime
+ffmpeg -f lavfi -i color=c=0x555555:s=1080x1920:r=30 -i out/captions-zh.mov \
+  -filter_complex "[0][1]overlay=shortest=1" -an -c:v libx264 -preset veryfast \
+  -crf 26 -pix_fmt yuv420p out/preview-zh.mp4
 ```
+
+Both are ~200-500x smaller than the master. Do not reach for VP8 (`-c:v libvpx`): measured 4x
+slower than VP9 and larger. And a preview is never the thing you hand to the edit — that is the
+ProRes master, always.

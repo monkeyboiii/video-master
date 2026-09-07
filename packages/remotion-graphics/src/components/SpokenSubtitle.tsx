@@ -39,10 +39,18 @@ import {SAFE_ZONE, spoken} from '../theme/tokens';
  * before a word is drawn, and a sentence too wide for it is CUT rather than compressed —
  * `SpokenSubtitleTrack` does the cutting.
  *
- * EN LEFT, ZH CENTRED. Streaming text cannot be centred: every new word re-centres the line and
- * drags the words already read sideways, so the reader re-finds their place on every word. Left
- * alignment nails the start of the line down and lets the growth happen only at the end. zh has
- * the whole sentence from frame one and never moves, so it centres.
+ * THE SENTENCE IS CENTRED; THE WORDS INSIDE IT ARE NOT. Both are true at once, and they have to
+ * be. Centring the VISIBLE words re-centres the line on every new one and drags the words already
+ * read sideways, so the reader re-finds their place word by word. Left-aligning the whole caption
+ * instead pins the words down, but parks every line against the safe-zone edge, which reads as a
+ * caption that lost its margin.
+ *
+ * So the line reserves the width of the COMPLETE sentence and centres that, and the words are laid
+ * out from its left edge. A word not yet spoken is still in the layout — `visibility: hidden`, so
+ * it holds its box without drawing itself or its band. Every word therefore occupies, from frame
+ * one, the exact position it will occupy when it appears: nothing moves, and the sentence as a
+ * whole sits in the middle of the frame. That also means no measuring — the browser reserves the
+ * width because the words are really there.
  *
  * A WORD IS WHATEVER A ROW IS. whisper.cpp emits zh timings per CHARACTER, and highlighting per
  * character is wrong — 核心 is one word and lights as one. The component does not segment; it
@@ -119,15 +127,16 @@ export const SpokenSubtitle: React.FC<SpokenSubtitleProps> = ({
   const family = bodyFont(locale as Locale);
   const size = captionSize(locale as Locale, fontSize);
 
-  // zh: every word is laid out from frame 0 and only its band changes.
-  // en: a word that has not started is not rendered at all, so the line grows to the right.
-  const visible = karaoke ? parsed : parsed.filter((w) => ms >= w.startMs);
+  // Every word is laid out from frame 0 in both locales — that is what fixes the positions and
+  // lets the full sentence centre. zh then shows them all; en hides the ones not yet spoken,
+  // which still hold their boxes.
 
   return (
     <AbsoluteFill
       style={{
         justifyContent: 'flex-end',
-        alignItems: karaoke ? 'center' : 'flex-start',
+        // the SENTENCE is centred, in the lower third; its words are not re-centred
+        alignItems: 'center',
         paddingBottom: SAFE_ZONE.bottom,
         paddingLeft: SAFE_ZONE.left,
         paddingRight: SAFE_ZONE.right,
@@ -145,14 +154,17 @@ export const SpokenSubtitle: React.FC<SpokenSubtitleProps> = ({
           columnGap: wordGap(locale as Locale, size),
         }}
       >
-        {visible.map((w, i) => {
+        {parsed.map((w, i) => {
           const lit = ms >= w.startMs && ms < w.endMs;
+          const held = !karaoke && ms < w.startMs;
           return (
             <span
               key={`${i}-${w.text}`}
               style={{
                 position: 'relative',
                 zIndex: 0,
+                // holds its box, draws nothing — neither glyph nor band
+                visibility: held ? 'hidden' : 'visible',
                 // ONE text colour throughout — the band alone carries the state. The exception
                 // is a word marked important, and only while it is being spoken.
                 color: w.important && lit ? spoken.lit : spoken.text,

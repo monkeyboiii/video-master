@@ -135,14 +135,24 @@ way in is where the loss happens. The flag does not make the pipeline lossless.
 
 **The delivery default is unchanged.** WebM was rejected here on MLT's alpha handling, not on
 size, and `qtrle` has not been through that same check — nobody has yet composited one in
-Kdenlive. Until someone does, `qtrle` is the **review-copy** format:
+Kdenlive. If it does composite correctly, `qtrle` should replace ProRes 4444 as the master, and
+this table is the evidence for that change.
 
-```bash
-ffmpeg -i out/captions-zh.mov -c:v qtrle -an out/review-zh.mov
-```
+### Previews are lossy on purpose
 
-If it does composite correctly, `qtrle` should replace ProRes 4444 as the master, and this section
-is the evidence for that change.
+A preview is looked at, not edited, so quality is not the axis — speed and size are. Lossless
+`qtrle` is the wrong tool for it (9.3 MB where 0.5 MB will do). Measured on the same clip:
+
+| Preview | Size | Encode | Alpha |
+|---|---|---|---|
+| VP9 `yuva420p -crf 40 -deadline realtime -cpu-used 8` | 0.47 MB | 3.8x realtime | yes |
+| H.264 flattened over grey, `-preset veryfast -crf 26` | 0.18 MB | 7.4x realtime | no |
+| VP8 `yuva420p -crf 40` | 0.66 MB | 1.0x realtime | yes |
+
+VP9 when the overlay's own alpha is what is being checked; flattened H.264 when the captions are
+what is being read. VP8 is slower **and** bigger — there is no case for it. This is the
+"lightweight web preview artifact" exception above, and it stays an exception: a preview never
+goes to the edit.
 
 ## Steps
 
