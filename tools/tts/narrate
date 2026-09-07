@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Build the narration AND the caption rows for a locale. The one entry point.
+#
+#   tools/tts/narrate --locale zh-CN [--speed 1.15] [--voice zm_yunxi]
+#
+# Ensures the environment first (see ensure.sh — nothing downloads until this runs), then hands
+# off to build-narration.py. Add --write to put the rows straight into Root.tsx.
+set -euo pipefail
+HERE="$(cd "$(dirname "$0")" && pwd -P)"
+TTS_DIR="${DBX_TTS_DIR:-$HOME/.cache/dbx-tts}"
+export HF_HOME="$TTS_DIR/hf"
+export HF_HUB_DISABLE_PROGRESS_BARS=1
+
+WRITE=0
+ARGS=()
+for a in "$@"; do
+  if [ "$a" = "--write" ]; then WRITE=1; else ARGS+=("$a"); fi
+done
+
+VENV="$(bash "$HERE/ensure.sh")"
+"$VENV/bin/python" "$HERE/build-narration.py" "${ARGS[@]}"
+[ "$WRITE" = 1 ] && "$VENV/bin/python" "$HERE/rows-to-root.py"
+exit 0

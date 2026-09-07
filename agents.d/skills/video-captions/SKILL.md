@@ -167,6 +167,32 @@ lossless (`ffmpeg -c:v qtrle`, bit-identical RGBA, verified by framemd5) costs ~
 until someone confirms MLT composites qtrle alpha correctly in Kdenlive. Do that check before
 switching; do not switch on the numbers alone.
 
+## Preview first, then final — this is the working loop
+
+```bash
+tools/render-captions.sh --preview burst-intro-captions-zh          # 27s, look at it
+tools/render-captions.sh --final   burst-intro-captions-{zh,en}     # 69s each, once
+```
+
+Measured on the 38.5s 1920x1080 cut: **69s final vs 27s preview, 2.6x**. Preview halves the scale
+and encodes ultrafast h264; that is enough to see every defect this pipeline actually produces —
+a caption colliding with the picture, a highlight on the wrong word, a line running off frame, an
+overlay that came out blank. None of them need full resolution and none are caught by an exit
+code, which is the whole reason to look before paying.
+
+Two things that look like free speed and are not, both correctly refused by the tools:
+
+- **JPEG frames cannot carry alpha.** Remotion errors rather than handing back a silently opaque
+  overlay: *"Pixel format was set to 'yuva444p10le' but the image format is not PNG"*.
+- **The codec cannot be swapped to VP9 for the preview.** The compositions bake a ProRes profile
+  through `overlayMetadata`, and Remotion rejects a profile against a non-ProRes codec.
+
+The speed comes from `--scale`, which nothing objects to.
+
+`--final` mixes `narration-<locale>.wav` from `${DBX_TTS_DIR:-~/.cache/dbx-tts}/out/` when it is
+there, and ships SFX only when it is not — so a missing narration is a quiet output, not an error.
+Generate it with `/auto-narrate`.
+
 ## Mixing captions onto a finished cut
 
 The picture and the captions are rendered separately and composited, so one picture render serves

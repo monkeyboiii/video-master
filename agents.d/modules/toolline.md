@@ -50,6 +50,7 @@ and out of order, it only ever encoded which stage someone last remembered to bu
 | the engine | `packages/remotion-graphics` | Remotion **4.0.484**, 20 components, alpha defaults in `calculateMetadata` |
 | the verbs | `tools/` | `render-overlays.mjs`, `burn-subtitles.py`, `retime-subtitles.py`, `probe-media.mjs`, `validate.mjs`, `new-episode.mjs` |
 | cutting silence | [`agents.d/skills/auto-editor`](../skills/auto-editor/SKILL.md) | the voice job's tool |
+| narrating a cut | [`agents.d/skills/auto-narrate`](../skills/auto-narrate/SKILL.md) | Kokoro-82M; the caption rows come out of the same pass |
 | naming, locales, flow | [naming-conventions.md](naming-conventions.md), [localization.md](localization.md), [toolline.md](toolline.md) | every tool joins on the names |
 | episode history | `series/` | read-only; what was actually shipped |
 
@@ -74,6 +75,26 @@ this:** scripts start being written here again.
 
 **Not done:** no `docs/remotion/` mirror, no copied signatures. A doc here that quotes an API
 quotes it as a link.
+
+### The TTS stack is a cache, not a dependency
+
+`tools/tts/` is ~48 KB of Python in the repo. Everything it needs to run — a pinned Python 3.12,
+CPU torch, kokoro, misaki, and the checkpoint — is ~1.7 GB and lives in
+`${DBX_TTS_DIR:-~/.cache/dbx-tts}`, **beside the repo and never in it**. That is the same rule
+`tools/transcribe.mjs` already follows for whisper.cpp, for the same reason: per-box, large, and
+reproducible from a lockfile.
+
+`tools/tts/ensure.sh` is the only thing that downloads and every entry point calls it first, so a
+checkout that never narrates never pays for any of it. Deleting the cache directory costs a
+re-download and nothing else.
+
+Python 3.12 is pinned rather than taken from the box: Ubuntu 26.04 ships 3.14 as its only
+interpreter and this stack has no wheels for it. uv fetches a standalone 3.12 without touching
+the system one — which is also why uv is installed on demand and nothing else uses it.
+
+`espeak-ng` is a system package and is **not** installed silently; `ensure.sh` reports it missing
+and prints the apt line. Installing system packages on someone's box is their call, not a
+side effect of asking for a voice.
 
 ### Remotion's own agent skills are installed, and they are why "link, don't vendor" works
 
