@@ -88,7 +88,10 @@ siblings rather than translations:
 | line visible | the whole line, from its first frame | only the words already spoken |
 | highlight | streams word by word across it | the word just revealed |
 | why | Chinese is read by whole-character recognition, faster than it is spoken; showing the line lets a reader read ahead while the highlight holds them to the voice | Latin script is read at roughly speaking pace; a revealed line makes the eye run ahead and wait |
-| timing needed | per character (whisper `--dtw` tokens are 1–2 characters) | per word |
+| unit | a WORD — `核心` lights as one, never per character | a word |
+| text colour | one colour throughout; only the band lights | text lights with the band |
+| timing needed | per character from whisper, grouped to words by `tools/group-words.mjs` against the script | per word |
+| measured rate | 4.58 chars/sec (median 180 ms) | ~335 ms per word |
 
 Implemented in `packages/remotion-graphics/src/components/SpokenSubtitle.tsx`, keyed on `locale`
 with no override; the reasoning and the band's visual spec are in

@@ -221,47 +221,86 @@ threshold: reconciliation by hand stops being cheap.
 
 ## The spoken-caption band, and why the two locales stream differently
 
-`packages/remotion-graphics/src/components/SpokenSubtitle.tsx` renders a caption line that follows
-the voice. It takes the `Caption[]` timings `tools/transcribe.mjs` writes, one word per row, and
-draws one band under the line: near-black, crossed by grey slanted dashes, with the spoken span
-switching to fluorescent yellow-green.
+`packages/remotion-graphics/src/components/SpokenSubtitle.tsx` renders one sentence following the
+voice; `SpokenSubtitleTrack.tsx` cuts between sentences. Both take the `Caption[]` shape
+`tools/transcribe.mjs` writes.
 
 ### zh-CN shows the whole line and lights words across it; en-US reveals word by word
 
-This is not a style preference, and the two must not be unified.
+Not a style preference, and the two must not be unified.
 
 **zh-CN — karaoke.** The whole line is on screen from its first frame and a highlight streams
 across it. Chinese is read by recognising whole characters at a glance, so a reader takes the line
 in faster than it is spoken; showing all of it costs nothing and lets them read ahead, while the
 highlight keeps them anchored to the voice.
 
-**en-US — streaming.** A word is not rendered until it is spoken, so the line grows. Latin script
-is read left-to-right at roughly speaking pace, so a fully revealed line invites the eye to run to
-the end and then wait — the pause that makes short-form captions feel slow.
+**en-US — streaming.** A word is not rendered until spoken, so the line grows. Latin script is read
+at roughly speaking pace, so a fully revealed line invites the eye to run to the end and wait — the
+pause that makes short-form captions feel slow.
 
-The per-character timing zh needs is the same `--dtw` output described above, which is why the two
-decisions belong together: whisper.cpp's token timestamps land per character for Chinese, and per
-character is exactly the granularity this highlight moves at.
+**Not done:** no single mode with a reveal flag. `locale` decides it, because a flag invites setting
+it wrong.
 
-**Not done:** no single mode with a flag for "reveal" — the difference is which locale you are in,
-and a flag invites setting it wrong. `locale` decides it. **The threshold:** a Latin locale that
-reads faster than it is spoken (subtitles for a second-language audience) would want karaoke too.
+### The zh unit is a WORD, never a character — and the script is what defines it
 
-### The band is drawn from the type size, never in fixed pixels
+`核心` is one word and lights as one. whisper.cpp emits zh timings per **character**, so the
+transcription alone cannot say where words end.
 
-Band height, the gap under the line, the dash width and the text stroke are all fractions of
-`fontSize`. A 40px caption and a 90px one otherwise get dashes and rules of visibly different
-weight, and the component is used at both.
+`tools/group-words.mjs` resolves it without a segmenter: this repo is handed the script, and the
+script has the boundaries a segmenter would try to infer, written by whoever chose them. It walks
+the script's words against the transcription's characters and takes each word's span from the
+first and last character it consumed. Text comes from the script, timings from the transcription —
+each used for the half it is good at, which is the same division § The script is known, so ASR
+output is a draft already argues for.
 
-Values sampled from the reference frames rather than chosen — `spoken` in
-`packages/remotion-graphics/src/theme/tokens.ts`: highlight `#D8EE4A` (the clean centre of a lit
-block reads #D6EC4B–#DCEE56), band `#06050A` (between the dashes, #060507). The lit block sits
-slightly proud of the hatched rule, as it does in the reference: the eye finds the spoken word by
-its weight before its colour.
+The component does not segment at all. It highlights exactly the rows it is given, so the unit is
+whatever upstream decided.
 
-**Not done:** the dashes are not dropped from unlit spans. They are what make an unlit band read as
-"not yet" rather than as a design element, so they are drawn even where no word has landed.
+**Not done:** no jieba or other Chinese segmenter. It would be a dependency and a second source of
+truth that disagrees with the script. **The threshold:** captions wanted for a take that has no
+script.
 
-**Known divergence from the reference frames:** they keep the text white throughout and light only
-the band. The instruction was to light the text as well, so `litText` defaults to true; set it
-false to match the frames exactly.
+### Only the band lights in zh; en lights the text too
+
+zh holds **one text colour throughout** — unspoken, spoken and past characters are identical, and
+the band alone carries the state. Chinese characters carry meaning in dense strokes and recolouring
+them mid-line costs legibility for a cue the band already gives. en lights the text as well, since
+Latin words survive it and in streaming mode the newest word must be findable the instant it lands.
+
+Defaults follow `locale`; `litText` overrides and should rarely be set.
+
+### The highlight is striped, not flat, and rises behind the character
+
+Both states carry the same 45° slanted pattern: the lit block is fluorescent under its own darker
+stripes, the unlit rule near-black under grey ones. A flat highlight beside a striped band reads as
+two unrelated objects instead of one rule lighting up. The lit block is also much taller and sits
+**behind** the glyph — which is why it is `zIndex: -1`; painted in source order it covered the
+character it was marking.
+
+Palette supplied by the operator; roles assigned in `theme/tokens.ts` § `spoken`:
+
+| | |
+|---|---|
+| `#CFEF17` lit | the spoken word's block |
+| `#708118` litHatch | its stripes |
+| `#D3EE94` litSoft | lit text (en only) |
+| `#231F28` band | the unlit rule |
+| `#3F4560` hatch | its stripes |
+| `#162840` stroke | the text outline |
+| `#CEE7F3` text | unspoken text |
+| `#92B7E1` textSpent | spoken text (en only) |
+
+### One line, always — and sentences are the cut
+
+The type is sized to the whole sentence with `fitText` and never wraps, so a long line gets small
+rather than tall; that makes "too long" visible instead of ugly, and the fix is a cut. The fit is
+computed from the complete sentence even while streaming, or the type resizes on every word.
+`SpokenSubtitleTrack` splits on sentences, which puts the cut where the voice already pauses.
+
+### Timing comes from measurement, not from feel
+
+The first pass used 500 ms per character and read **2.3× too slow**. Measured against the real
+26 s zh narration transcribed here: **4.58 chars/sec, median 180 ms, mean 218 ms**. The demos use
+185 ms per character, and a word's span is proportional to its characters so `核心` holds twice as
+long as `的`. English runs ~335 ms per word.
+

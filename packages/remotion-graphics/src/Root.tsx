@@ -28,6 +28,11 @@ import {
   spokenSubtitleSchema,
   type SpokenSubtitleProps,
 } from './components/SpokenSubtitle';
+import {
+  SpokenSubtitleTrack,
+  spokenSubtitleTrackSchema,
+  type SpokenSubtitleTrackProps,
+} from './components/SpokenSubtitleTrack';
 import type {KineticCaptionsProps} from './components/KineticCaptions';
 import {PhotoReveal, photoRevealSchema} from './components/PhotoReveal';
 import type {PhotoRevealProps} from './components/PhotoReveal';
@@ -324,6 +329,41 @@ export const RemotionRoot: React.FC = () => {
         }}
       />
       <Composition
+        id="burst-captions-zh"
+        component={SpokenSubtitleTrack}
+        schema={spokenSubtitleTrackSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(19.16 * FPS)}
+        calculateMetadata={overlayMetadata<SpokenSubtitleTrackProps>(19.16)}
+        defaultProps={{
+          locale: 'zh-CN' as const,
+          durationSec: 19.16,
+          fontSize: 72,
+          tailFrames: 14,
+          script: '你的|0|370\n机器|370|740\n是|740|925\n可|925|1110\n突发|1110|1480\n的|1480|1665\n\n四个|2085|2455\n核心|2455|2825\n但|2825|3010\n只有|3010|3380\n百分之|3380|3935\n十二点五|3935|4675\n\n线|5095|5280\n下面|5280|5650\n是|5650|5835\n攒|5835|6020\n线|6020|6205\n上面|6205|6575\n是|6575|6760\n花|6760|6945\n\n多数|7365|7735\n时候|7735|8105\n它|8105|8290\n在|8290|8475\n线|8475|8660\n下面|8660|9030\n\n一|9450|9635\n开始|9635|10005\n渲染|10005|10375\n就|10375|10560\n在|10560|10745\n花|10745|10930\n了|10930|11115\n\n只算|11535|11905\n屏幕上|11905|12460\n看得见|12460|13015\n的|13015|13200\n\n颗粒|13620|13990\n平移|13990|14360\n宽度|14360|14730\n都是|14730|15100\n实时|15100|15470\n的|15470|15655\n\n七天|16075|16445\n的|16445|16630\n证据|16630|17000\n不是|17000|17370\n猜|17370|17555\n的|17555|17740',
+        }}
+      />
+      <Composition
+        id="burst-captions-en"
+        component={SpokenSubtitleTrack}
+        schema={spokenSubtitleTrackSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(23.79 * FPS)}
+        calculateMetadata={overlayMetadata<SpokenSubtitleTrackProps>(23.79)}
+        defaultProps={{
+          locale: 'en-US' as const,
+          durationSec: 23.79,
+          fontSize: 64,
+          litText: true,
+          tailFrames: 14,
+          script: 'your|0|335\nbox|335|670\nis|670|1005\nburstable|1005|1340\n\nfour|1760|2095\nOCPUs|2095|2430\nand|2430|2765\n12.5|2765|3100\npercent|3100|3435\nof|3435|3770\nthem|3770|4105\nsustained|4105|4440\n\nbelow|4860|5195\nthe|5195|5530\nline|5530|5865\nyou|5865|6200\nearn|6200|6535\nabove|6535|6870\nit|6870|7205\nyou|7205|7540\nspend|7540|7875\n\nmost|8295|8630\nof|8630|8965\nthe|8965|9300\ntime|9300|9635\nthis|9635|9970\nbox|9970|10305\nsits|10305|10640\nunder|10640|10975\nit|10975|11310\n\nthen|11730|12065\na|12065|12400\nrender|12400|12735\nstarts|12735|13070\nand|13070|13405\nyou|13405|13740\nare|13740|14075\nspending|14075|14410\n\nit|14830|15165\ncounts|15165|15500\nonly|15500|15835\nwhat|15835|16170\nis|16170|16505\non|16505|16840\nscreen|16840|17175\n\ngrain|17595|17930\npan|17930|18265\nwidth|18265|18600\nall|18600|18935\nlive|18935|19270\n\nseven|19690|20025\ndays|20025|20360\nof|20360|20695\nevidence|20695|21030\ninstead|21030|21365\nof|21365|21700\na|21700|22035\nguess|22035|22370',
+        }}
+      />
+      <Composition
         id="spoken-subtitle-zh"
         component={SpokenSubtitle}
         schema={spokenSubtitleSchema}
@@ -336,8 +376,7 @@ export const RemotionRoot: React.FC = () => {
           locale: 'zh-CN' as const,
           durationSec: 9.0,
           fontSize: 76,
-          litText: true,
-          words: '私|0|500\n信|500|1000\n各|1000|1500\n个|1500|2000\n场|2000|2500\n地|2500|3000\n的|3000|3500\n时|3500|4000\n候|4000|4500\n分|4500|5000\n享|5000|5500\n上|5500|6000\n去|6000|6500\n就|6500|7000\n好|7000|7500\n了|7500|8000',
+          words: 'your|0|335\nbox|335|670\nis|670|1005\nburstable|1005|1340\n\nfour|1760|2095\nOCPUs|2095|2430\nand|2430|2765\n12.5|2765|3100\npercent|3100|3435\nof|3435|3770\nthem|3770|4105\nsustained|4105|4440\n\nbelow|4860|5195\nthe|5195|5530\nline|5530|5865\nyou|5865|6200\nearn|6200|6535\nabove|6535|6870\nit|6870|7205\nyou|7205|7540\nspend|7540|7875\n\nmost|8295|8630\nof|8630|8965\nthe|8965|9300\ntime|9300|9635\nthis|9635|9970\nbox|9970|10305\nsits|10305|10640\nunder|10640|10975\nit|10975|11310\n\nthen|11730|12065\na|12065|12400\nrender|12400|12735\nstarts|12735|13070\nand|13070|13405\nyou|13405|13740\nare|13740|14075\nspending|14075|14410\n\nit|14830|15165\ncounts|15165|15500\nonly|15500|15835\nwhat|15835|16170\nis|16170|16505\non|16505|16840\nscreen|16840|17175\n\ngrain|17595|17930\npan|17930|18265\nwidth|18265|18600\nall|18600|18935\nlive|18935|19270\n\nseven|19690|20025\ndays|20025|20360\nof|20360|20695\nevidence|20695|21030\ninstead|21030|21365\nof|21365|21700\na|21700|22035\nguess|22035|22370',
         }}
       />
       <Composition

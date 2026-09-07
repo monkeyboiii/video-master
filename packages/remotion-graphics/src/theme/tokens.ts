@@ -84,15 +84,27 @@ export const safeZoneFor = (
 export const scrim = (alpha = 0.85): string => `rgba(22, 20, 15, ${alpha})`;
 
 /**
- * Spoken-caption band. Sampled from the reference frames in the harness
- * (word-underline / phrase-highlight / end-of-sentence), not chosen:
- * the highlight reads #D6EC4B–#DCEE56 at the centre of a clean block and the
- * band base reads #060507 between the dashes.
+ * Spoken-caption palette. Supplied by the operator as eight values; the roles below are the
+ * assignment, and are the part to argue with if one looks wrong.
+ *
+ *   #CFEF17  lit        the word being spoken — its band
+ *   #708118  litHatch   the stripes INSIDE the lit block — the highlight is not flat; it carries
+ *                       the same slanted pattern as the unlit band, in a darker tone of its own hue
+ *   #D3EE94  litSoft    pale companion to `lit`; the lit-word text treatment for en, since zh
+ *                       deliberately leaves text unlit
+ *   #231F28  band       the unlit rule
+ *   #3F4560  hatch      the slanted dashes across it
+ *   #162840  stroke     the text outline that keeps captions legible over any footage
+ *   #CEE7F3  text       unspoken text
+ *   #92B7E1  textSpent  text already spoken
  */
 export const spoken = {
-  band: '#06050A',      // the black rule under the line
-  hatch: '#54545E',     // the grey slanted dashes across it
-  lit: '#D8EE4A',       // fluorescent yellow-green: the word being spoken
-  text: '#FFFFFF',      // unspoken text
-  stroke: '#06050A',    // the outline that keeps white legible on any footage
+  lit: '#CFEF17',
+  litSoft: '#D3EE94',
+  litHatch: '#708118',
+  band: '#231F28',
+  hatch: '#3F4560',
+  stroke: '#162840',
+  text: '#CEE7F3',
+  textSpent: '#92B7E1',
 } as const;
