@@ -19,9 +19,10 @@ variants:
   en-US:
     script: script.en-US.md
     cover: null
+    captions: remotion-props/spoken-captions.en-US.json
     subtitles: subtitles/en-US.srt
     # No single locale props file: this episode renders per-comp / per-beat props
-    # (remotion-props/captions.all.json, side-screen.{flair,create,rsvp}.json, ...).
+    # (remotion-props/spoken-captions.en-US.json, side-screen.{flair,create,rsvp}.json, ...).
     remotion_props: null
     voiceover_asset_id: null # narration is diegetic in the talking-head clips
     platforms: [tiktok, ytshorts, reels]
@@ -31,9 +32,10 @@ variants:
   zh-CN:
     script: script.zh-CN.md
     cover: null
+    captions: remotion-props/spoken-captions.zh-CN.json
     subtitles: subtitles/zh-CN.srt
     # Same per-comp convention as en-US: remotion-props/*.zh-CN.json
-    # (captions.all.zh-CN.json, brand-title.zh-CN.json — the rest carry no display text).
+    # (spoken-captions.zh-CN.json, brand-title.zh-CN.json — the rest carry no display text).
     remotion_props: null
     voiceover_asset_id: null # English narration is retained; no zh-CN voiceover exists
     platforms: [rednote, douyin, bilibili]
@@ -44,7 +46,7 @@ beats:
   - id: hook
     purpose: name the discovery gap — you can't attend what you never find out about
     visual_intent: founder to camera; slow punch-in; "never/discover" in harsh red
-    overlay: kinetic-captions
+    overlay: null # captions are a variant-level track, not a beat overlay
     target_duration_sec:
       en-US: 15.48
       zh-CN: 15.48 # timings unchanged — English audio is retained
@@ -131,7 +133,6 @@ outputs:
   # ProRes 4444 alpha overlays in media/S01E003/overlays/
   overlays:
     en-US:
-      - DBX-APP-S01E003_en-US_9x16_kinetic-captions_v001.mov
       - DBX-APP-S01E003_en-US_9x16_side-screen-flair_v001.mov
       - DBX-APP-S01E003_en-US_9x16_side-screen-create_v001.mov
       - DBX-APP-S01E003_en-US_9x16_side-screen-rsvp_v001.mov
@@ -141,7 +142,6 @@ outputs:
     # over the original English audio; every other overlay reuses the en-US .mov above.
     # brand-title.zh-CN.json exists for a later full-localization round but is NOT part of this cut.
     zh-CN:
-      - DBX-APP-S01E003_zh-CN_9x16_kinetic-captions_v001.mov
   kdenlive:
     en-US: media/S01E003/track-owners.kdenlive
     zh-CN: media/S01E003/DBX-APP-S01E003_zh-CN_v001.kdenlive

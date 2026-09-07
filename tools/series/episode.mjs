@@ -132,10 +132,16 @@ export function validateEpisode(ep, report) {
       if (!v?.subtitles || !exists(v.subtitles)) report.error(ctx, `status>=editing requires subtitles for ${loc}`);
       if (!v?.voiceover_asset_id) report.warn(ctx, `status>=editing but no voiceover_asset_id for ${loc} (subtitle timing is provisional)`);
     }
+    // A WARNING, not an error: a variant may legitimately reuse another locale's overlay renders.
+    // S01's zh-CN cut is a literal translation riding the unchanged English audio, so its timings
+    // are identical and every overlay except the caption track is reused from en-US — there is
+    // nothing to render and nothing to record. This was an error until the caption track stopped
+    // being an overlay output, at which point it started failing four episodes for doing the
+    // right thing.
     const needsOverlays = (m.beats ?? []).some((b) => b.overlay);
     for (const [loc] of variants) {
       if (needsOverlays && !(m.outputs?.overlays?.[loc]?.length > 0)) {
-        report.error(ctx, `status>=editing: beats use overlays but outputs.overlays.${loc} is empty`);
+        report.warn(ctx, `beats use overlays but outputs.overlays.${loc} is empty — reused from another locale, or not rendered yet`);
       }
     }
   }
@@ -204,6 +210,12 @@ export function validateEpisode(ep, report) {
         if (stageAtLeast(m.status, 'editing')) report.error(ctx, msg);
         else report.warn(ctx, msg);
       }
+    }
+    // The caption TRACK is a variant-level artifact: one continuous track across the episode,
+    // rendered from `spoken-subtitle-track`. It is deliberately not a beat overlay — a beat
+    // overlay is a thing that appears for one beat, and captions are the opposite of that.
+    if (v?.captions && !exists(v.captions)) {
+      report.error(ctx, `variant ${loc}: captions "${v.captions}" does not exist`);
     }
     if (v?.remotion_props && exists(v.remotion_props)) {
       try {

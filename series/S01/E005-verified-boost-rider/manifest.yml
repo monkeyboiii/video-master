@@ -25,18 +25,20 @@ variants:
   en-US:
     script: script.en-US.md
     cover: null
+    captions: remotion-props/spoken-captions.en-US.json
     subtitles: subtitles/en-US.srt
     # No single locale props file: this episode renders per-comp props
-    # (remotion-props/captions.all.json, feature-fan.json, side-screen.*.json, ...).
+    # (remotion-props/spoken-captions.en-US.json, feature-fan.json, side-screen.*.json, ...).
     remotion_props: null
     voiceover_asset_id: null # narration is diegetic in the talking-head clips
     platforms: [tiktok, ytshorts, reels]
   zh-CN:
     script: script.zh-CN.md
     cover: null
+    captions: remotion-props/spoken-captions.zh-CN.json
     subtitles: subtitles/zh-CN.srt # bilingual: the English line, then the Chinese one
     # Per-comp props as above, with the Chinese display text:
-    # remotion-props/captions.all.zh-CN.json, feature-fan.zh-CN.json.
+    # remotion-props/spoken-captions.zh-CN.json, feature-fan.zh-CN.json.
     remotion_props: null
     voiceover_asset_id: null # the ENGLISH narration is retained; there is no zh-CN voiceover
     platforms: [rednote, douyin, bilibili]
@@ -49,7 +51,7 @@ beats:
   - id: hook
     purpose: speak rider, not product — a gear change as a status metaphor
     visual_intent: founder to camera, mid-push; no overlay. The tier is not named until 9.55s
-    overlay: kinetic-captions
+    overlay: null # captions are a variant-level track, not a beat overlay
     target_duration_sec:
       en-US: 11.00
       zh-CN: 11.00
@@ -174,7 +176,6 @@ outputs:
   # ProRes 4444 alpha overlays in media/S01E005/overlays/
   overlays:
     en-US:
-      - DBX-APP-S01E005_en-US_9x16_kinetic-captions_v001.mov
       - DBX-APP-S01E005_en-US_9x16_brand-drop_v001.mov
       - DBX-APP-S01E005_en-US_9x16_side-screen-membership_v001.mov
       - DBX-APP-S01E005_en-US_9x16_feature-fan_v001.mov
@@ -187,7 +188,6 @@ outputs:
     # over the original English audio; every other overlay reuses the en-US .mov above.
     # feature-fan.zh-CN.json exists for a later full-localization round but is NOT part of this cut.
     zh-CN:
-      - DBX-APP-S01E005_zh-CN_9x16_kinetic-captions_v001.mov
   kdenlive:
     en-US: media/S01E005/verified-boost-rider.kdenlive
     zh-CN: media/S01E005/DBX-APP-S01E005_zh-CN_v001.kdenlive

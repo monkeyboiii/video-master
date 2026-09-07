@@ -20,18 +20,20 @@ variants:
   en-US:
     script: script.en-US.md
     cover: null
+    captions: remotion-props/spoken-captions.en-US.json
     subtitles: subtitles/en-US.srt
     # No single locale props file: this episode renders per-comp props
-    # (remotion-props/captions.all.json, brand-drop.json, side-screen.*.json, ...).
+    # (remotion-props/spoken-captions.en-US.json, brand-drop.json, side-screen.*.json, ...).
     remotion_props: null
     voiceover_asset_id: null # narration is diegetic in the talking-head clips
     platforms: [tiktok, ytshorts, reels]
   zh-CN:
     script: script.zh-CN.md
     cover: null
+    captions: remotion-props/spoken-captions.zh-CN.json
     subtitles: subtitles/zh-CN.srt
     # Same per-comp layout as en-US; localized only where props carry display text
-    # (remotion-props/captions.all.zh-CN.json, side-screen.{chat,filter,search}.zh-CN.json).
+    # (remotion-props/spoken-captions.zh-CN.json, side-screen.{chat,filter,search}.zh-CN.json).
     remotion_props: null
     # The original ENGLISH audio is retained for this variant — there is no zh-CN voiceover,
     # so every timing (beat durations, .srt cues, caption word times) is identical to en-US.
@@ -51,21 +53,21 @@ beats:
   - id: hate-ads
     purpose: earn the hook with a real confession (looking away from ads)
     visual_intent: small push-in; no overlay — the face carries it
-    overlay: kinetic-captions
+    overlay: null # captions are a variant-level track, not a beat overlay
     target_duration_sec:
       en-US: 4.88
       zh-CN: 4.88
   - id: billboard
     purpose: name the thing he refuses to build
     visual_intent: near-static, colder; radio-static on "billboard"
-    overlay: kinetic-captions
+    overlay: null # captions are a variant-level track, not a beat overlay
     target_duration_sec:
       en-US: 4.94
       zh-CN: 4.94
   - id: passes
     purpose: the pivot — limited passes for riders who belong
     visual_intent: slight pull-out; still no UI, let the idea land
-    overlay: kinetic-captions
+    overlay: null # captions are a variant-level track, not a beat overlay
     target_duration_sec:
       en-US: 5.84
       zh-CN: 5.84
@@ -186,7 +188,6 @@ outputs:
   # ProRes 4444 alpha overlays in media/S01E004/overlays/
   overlays:
     en-US:
-      - DBX-APP-S01E004_en-US_9x16_kinetic-captions_v001.mov
       - DBX-APP-S01E004_en-US_9x16_brand-drop_v001.mov
       - DBX-APP-S01E004_en-US_9x16_side-screen-sponsorship_v001.mov
       - DBX-APP-S01E004_en-US_9x16_side-screen-search_v001.mov
@@ -200,7 +201,6 @@ outputs:
     # over the original English audio; every other overlay reuses the en-US .mov above. The
     # side-screen .zh-CN.json props exist for a later full-localization round but are NOT in this cut.
     zh-CN:
-      - DBX-APP-S01E004_zh-CN_9x16_kinetic-captions_v001.mov
   kdenlive:
     en-US: media/S01E004/sponsorship-passes.kdenlive
     zh-CN: media/S01E004/DBX-APP-S01E004_zh-CN_v001.kdenlive

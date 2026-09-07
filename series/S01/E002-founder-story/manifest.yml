@@ -21,9 +21,10 @@ variants:
   en-US:
     script: script.en-US.md
     cover: null
+    captions: remotion-props/spoken-captions.en-US.json
     subtitles: subtitles/en-US.srt
     # No single locale props file: this episode renders per-comp props
-    # (remotion-props/captions.all.json, photo-reveal.json, brand-title.json, ...).
+    # (remotion-props/spoken-captions.en-US.json, photo-reveal.json, brand-title.json, ...).
     remotion_props: null
     voiceover_asset_id: null # narration is diegetic in the talking-head clips (no separate VO file)
     platforms: [tiktok, ytshorts, reels]
@@ -32,9 +33,10 @@ variants:
   zh-CN:
     script: script.zh-CN.md
     cover: null
+    captions: remotion-props/spoken-captions.zh-CN.json
     subtitles: subtitles/zh-CN.srt
     # Same per-comp props layout as en-US, with .zh-CN.json siblings
-    # (remotion-props/captions.all.zh-CN.json, brand-title.zh-CN.json, ...).
+    # (remotion-props/spoken-captions.zh-CN.json, brand-title.zh-CN.json, ...).
     remotion_props: null
     voiceover_asset_id: null # the English audio is retained — there is no zh-CN voiceover
     platforms: [rednote, douyin, bilibili]
@@ -46,7 +48,7 @@ beats:
   - id: hook
     purpose: first-second grab; name the real problem (belonging, not skill)
     visual_intent: founder to camera, open mid-punch-in; snap-in on "gets it"
-    overlay: kinetic-captions
+    overlay: null # captions are a variant-level track, not a beat overlay
     target_duration_sec:
       en-US: 7.90
       zh-CN: 7.90
@@ -60,7 +62,7 @@ beats:
   - id: addictive
     purpose: the turn — hardship to love to the point of sharing
     visual_intent: pull-out on release, punch-in on "addictive" / "share it with"
-    overlay: kinetic-captions
+    overlay: null # captions are a variant-level track, not a beat overlay
     target_duration_sec:
       en-US: 10.90
       zh-CN: 10.90
@@ -69,7 +71,7 @@ beats:
     visual_intent: a real "scattered/outdated apps" phone card (07_scattered-apps) centred over
       the founder on blurred footage — dead search, member list with names redacted, rival forum
       with its logo blurred; rises in from below, last scene freeze-extended
-    overlay: kinetic-captions
+    overlay: null # captions are a variant-level track, not a beat overlay
     target_duration_sec:
       en-US: 7.05
       zh-CN: 7.05
@@ -166,14 +168,12 @@ outputs:
       - DBX-APP-S01E002_en-US_9x16_feature-phones-built-it_v001.mov
       - DBX-APP-S01E002_en-US_9x16_feature-phones-cta_v001.mov
       # One continuous whole-video caption track (replaced the six per-beat overlays).
-      - DBX-APP-S01E002_en-US_9x16_kinetic-captions_v001.mov
       - DBX-APP-S01E002_en-US_9x16_photo-reveal_v001.mov
     # zh-CN round 1 = CAPTIONS ONLY: the caption overlay is the sole re-render (bilingual EN+ZH),
     # over the original English audio; every other overlay reuses the en-US .mov above. Other
     # .zh-CN.json props (brand-title, feature-phones, invite-card) exist for a later
     # full-localization round but are NOT part of this cut.
     zh-CN:
-      - DBX-APP-S01E002_zh-CN_9x16_kinetic-captions_v001.mov
   # Processed b-roll cutaway (not a Remotion overlay): footage/07_scattered-apps.mov
   covers: {} # locale -> [filenames in media/exports/]
   kdenlive:

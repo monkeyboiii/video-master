@@ -94,6 +94,8 @@ def zh_spans(g2p, phonemes, pred_dur, words, t0):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--locale', required=True, choices=sorted(VOICES))
+    p.add_argument('--episode', help='a video_id, e.g. S03E004 — read beats and lines from the repo '
+                                     'instead of the demo script in script.py')
     p.add_argument('--speed', type=float, default=1.15)
     p.add_argument('--voice')
     p.add_argument('--repo', default='hexgrad/Kokoro-82M')
@@ -108,30 +110,43 @@ def main():
 
     lang, default_voice = VOICES[a.locale]
     voice = a.voice or default_voice
-    tag = 'zh' if a.locale == 'zh-CN' else 'en'
+    tag = (a.episode + '_' if a.episode else '') + ('zh' if a.locale == 'zh-CN' else 'en')
     a.outdir.mkdir(parents=True, exist_ok=True)
+
+    # An episode supplies its own beats, anchors and lines; script.py is the demo fallback.
+    plan = None
+    if a.episode:
+        import episode as EPISODE
+        ep_dir, plan = EPISODE.load(a.episode, a.locale)
+        print(f'{ep_dir.relative_to(Path(__file__).resolve().parents[2])}  {len(plan)} beat(s)')
 
     pipe = KPipeline(lang_code=lang, repo_id=a.repo)
     g2p = None
     if lang == 'z':
         from misaki import zh as _zh
         g2p = _zh.ZHG2P()
-    track = np.zeros(int((SC.END / FPS + 2) * SR), dtype=np.float32)
+    # Size the timeline from the JOB, not from the demo's 1155 frames — an episode is as long as
+    # its beats say it is, and this one is 52s against the demo's 38.5s.
     beats, over = [], []
 
-    for i, beat in enumerate(SC.ORDER):
-        text = SC.SPOKEN[a.locale][beat]
-        at_f = SC.ANCHOR[beat]
-        nxt_f = SC.ANCHOR[SC.ORDER[i + 1]] if i + 1 < len(SC.ORDER) else SC.END
-        cap = (nxt_f - at_f) / FPS
-        at_ms = at_f / FPS * 1000
+    jobs = plan if plan else [
+        {'beat': b, 'text': SC.SPOKEN[a.locale][b], 'atMs': SC.ANCHOR[b] / FPS * 1000,
+         'capSec': ((SC.ANCHOR[SC.ORDER[i + 1]] if i + 1 < len(SC.ORDER) else SC.END) - SC.ANCHOR[b]) / FPS}
+        for i, b in enumerate(SC.ORDER)]
+
+    end_sec = (max(j['atMs'] / 1000 + j['capSec'] for j in jobs) + 8) if plan else (SC.END / FPS + 2)
+    track = np.zeros(int(end_sec * SR), dtype=np.float32)
+
+    for job in jobs:
+        beat, text, at_ms, cap = job['beat'], job['text'], job['atMs'], job['capSec']
 
         chunks, toks, zspans = [], [], []
         for r in pipe(text, voice=voice, speed=a.speed):
             base = sum(len(c) for c in chunks) / SR
             chunks.append(r.audio.numpy())
             if lang == 'z' and getattr(r, 'pred_dur', None) is not None:
-                mine = [w.rstrip('*') for w in SC.WORDS_ZH[beat]]
+                mine = ([w.rstrip('*') for w in SC.WORDS_ZH[beat]] if plan is None
+                        else __import__('episode').words_zh(text))
                 # one Result per sentence here; if Kokoro ever splits, spans just continue
                 zspans += zh_spans(g2p, r.phonemes, r.pred_dur, mine[len(zspans):], base)
             if getattr(r, 'tokens', None):
@@ -149,7 +164,7 @@ def main():
             over.append((beat, dur, cap))
         s = int(at_ms / 1000 * SR)
         track[s:s + len(clip)] += clip
-        beats.append({'beat': beat, 'atMs': at_ms, 'durSec': dur, 'capSec': cap,
+        beats.append({'beat': beat, 'atMs': at_ms, 'durSec': dur, 'capSec': cap, 'text': text,
                       'tokens': toks, 'zh_spans': zspans})
         print(f'  {beat:8} {at_ms/1000:6.2f}s  cap {cap:4.2f}s  spoke {dur:4.2f}s'
               f'  {"OVER" if dur > cap else "ok":4}  {text[:46]}')
@@ -170,14 +185,15 @@ def main():
     if a.locale == 'en-US':
         rows = []
         for b in beats:
-            imp = {w.lower() for w in SC.IMPORTANT_EN[b['beat']]}
+            # the demo script marks its own important words; an episode has no such marking yet
+            imp = {w.lower() for w in SC.IMPORTANT_EN.get(b['beat'], [])} if plan is None else set()
             block = []
             for text, s, e in b['tokens']:
                 mark = '|*' if text.lower().strip('.,') in imp else ''
                 block.append(f"{text}|{round(b['atMs']+s*1000)}|{round(b['atMs']+e*1000)}{mark}")
             if block:
                 rows.append('\n'.join(block))
-        out = a.outdir / 'rows-en.txt'
+        out = a.outdir / f'rows-{tag}.txt'
         out.write_text('\n\n'.join(rows), encoding='utf-8')
         n = sum(len(r.splitlines()) for r in rows)
         print(f"{out}: {n} words from the voice's own tokens")
@@ -186,8 +202,10 @@ def main():
     # zh — spans from the model's own phoneme durations, computed during synthesis above
     rows = []
     for b in beats:
-        marks = [w.endswith('*') for w in SC.WORDS_ZH[b['beat']]]
-        words = [w.rstrip('*') for w in SC.WORDS_ZH[b['beat']]]
+        src = (SC.WORDS_ZH[b['beat']] if plan is None
+               else __import__('episode').words_zh(b['text']))
+        marks = [w.endswith('*') for w in src]
+        words = [w.rstrip('*') for w in src]
         spans = b['zh_spans']
         if len(spans) != len(words):
             print(f"  {b['beat']}: {len(spans)} spans for {len(words)} words — check WORDS_ZH",
@@ -195,7 +213,7 @@ def main():
         block = [f"{w}|{round(b['atMs'] + s*1000)}|{round(b['atMs'] + e*1000)}"
                  f"{'|*' if m else ''}" for w, (s, e), m in zip(words, spans, marks)]
         rows.append('\n'.join(block))
-    out = a.outdir / 'rows-zh.txt'
+    out = a.outdir / f'rows-{tag}.txt'
     out.write_text('\n\n'.join(rows), encoding='utf-8')
     print(f"{out}: {sum(len(r.splitlines()) for r in rows)} words from pred_dur")
 

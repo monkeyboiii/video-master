@@ -328,6 +328,23 @@ export const RemotionRoot: React.FC = () => {
           ],
         }}
       />
+      {/* The per-episode caption build source. An episode's remotion-props/spoken-captions.<locale>.json
+          is passed with --props; nothing about a specific episode is baked in here. */}
+      <Composition
+        id="spoken-subtitle-track"
+        component={SpokenSubtitleTrack}
+        schema={spokenSubtitleTrackSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(30 * FPS)}
+        calculateMetadata={overlayMetadata<SpokenSubtitleTrackProps>(30)}
+        defaultProps={{
+          locale: 'en-US' as const,
+          durationSec: 30,
+          script: 'pass|0|600\nthe|600|1200\nepisode|1200|1800|*\nprops|1800|2400',
+        }}
+      />
       <Composition
         id="burst-intro-captions-zh"
         component={SpokenSubtitleTrack}
