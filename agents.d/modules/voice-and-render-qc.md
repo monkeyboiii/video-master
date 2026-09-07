@@ -16,8 +16,9 @@ QC failures go back to the responsible stage — QC never "fixes" content itself
 
 - The export under test in `media/exports/` (review or final)
 - `manifest.yml` — formats, variant, target platform
-- `docs/platforms.md` — per-platform delivery specs
-- `docs/golden-rules.md` — subtitle/hook rules being spot-checked
+- `agents.d/modules/platforms.md` — per-platform delivery specs
+- the episode script — the hook and subtitle intent being spot-checked. The content framework
+  that used to live here left with the idea→script stages; QC measures against the script.
 
 ## Outputs
 
@@ -35,7 +36,7 @@ Probe with `node tools/probe-media.mjs <file>` (uses Remotion's bundled ffprobe)
    (e.g. 1080x1920 for `9x16`).
 3. **Frame rate** — matches manifest `fps`, constant frame rate.
 4. **Duration** — within the platform's limit and ±10% of the summed beat targets for
-   that locale; hard-check anything over the platform max in `docs/platforms.md`.
+   that locale; hard-check anything over the platform max in `agents.d/modules/platforms.md`.
 5. **Bitrate** — ≥ 8 Mbps video for 1080p vertical (survives platform recompression).
 6. **Audio** — 48 kHz, stereo, no clipping (true peak ≤ −1 dBTP), target loudness
    −14 LUFS integrated (±1). Measure with Remotion's bundled ffmpeg (run from
@@ -52,7 +53,7 @@ Probe with `node tools/probe-media.mjs <file>` (uses Remotion's bundled ffprobe)
 
 7. **Hook timing** — first meaningful frame + first subtitle land within 2 seconds.
 8. **Safe zones** — subtitles and overlay text inside the platform safe region
-   (`docs/platforms.md`); nothing under the action rail or caption zone.
+   (`agents.d/modules/platforms.md`); nothing under the action rail or caption zone.
 9. **Subtitle sync** — spot-check start, one mid-beat transition, and the CTA;
    emphasis words present, no truncated lines.
 10. **Variant integrity** — locale of VO, subtitles, and overlays all match the
@@ -67,7 +68,7 @@ Probe with `node tools/probe-media.mjs <file>` (uses Remotion's bundled ffprobe)
 13. **Muted test + SFX punctuation** — video understandable with sound off; key
     subtitle/reversal/checklist moments have light SFX feedback, not wall-to-wall
     noise. Cross-check the retention checklist answers recorded in `edit-notes.md`
-    (`skills/06`, `docs/golden-rules.md` Edit section).
+    (the cut is made outside this repo; QC reports, it does not re-edit).
 
 ## Steps
 

@@ -15,16 +15,16 @@ editor.
 
 > **Captions are no longer a Remotion job.** `subtitle-track` and `kinetic-captions` are
 > deprecated in favour of burned-in captions driven by `subtitles.yml`
-> (`skills/07-subtitles-localization.md`). Do not reach for them for new work; they stay in
+> (the corresponding job doc). Do not reach for them for new work; they stay in
 > the registry only so the S01/S02 overlays that already shipped can be rebuilt.
 
-In retention terms (`docs/golden-rules.md`, Edit 剪辑 section), each composition is an
+In retention terms (the episode script, Edit 剪辑 section), each composition is an
 attention device the edit deploys:
 
 | Composition | Retention role |
 |-------------|----------------|
 | `hook-title` | First-frame grab — big hook text at 0.0s |
-| ~~`subtitle-track`~~ | **DEPRECATED** — captions are burned in now, see `skills/07` |
+| ~~`subtitle-track`~~ | **DEPRECATED** — captions are burned in now, see the corresponding job doc |
 | ~~`kinetic-captions`~~ | **DEPRECATED** — as above; kept only to rebuild S01/S02 |
 | `checklist-card` | Save-worthy value; each tick is a pattern-interrupt beat (pair with dings) |
 | `stage-cards` | Segment reset / pattern interrupt between chapters |
@@ -211,7 +211,7 @@ ffprobe -v error -show_entries stream=pix_fmt -of csv=p=0 <overlay>.mov   # expe
   never let a crop silently redefine it.
 - Text content comes from tracked props files, not hardcoded into components. Components
   are reusable across episodes; props are per-episode.
-- Respect platform safe zones (`docs/platforms.md`): overlay text stays inside the
+- Respect platform safe zones (`agents.d/modules/platforms.md`): overlay text stays inside the
   central safe region baked into the components' layout constants — don't override
   positioning props to escape it.
 - All `remotion` / `@remotion/*` packages stay pinned to one identical exact version.

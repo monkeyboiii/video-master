@@ -61,12 +61,12 @@ Each stage has required artifacts. A stage is "done" when its artifacts exist an
 
 | # | Stage | Skill file | Required artifacts |
 |---|-------|-----------|--------------------|
-| 1 | 选题 Topic | `skills/01-topic-selection.md` | `brief.md`, `manifest.yml` initialized |
-| 2 | 封面 Packaging | `skills/02-cover-packaging.md` | `cover.en-US.md`, `cover.zh-CN.md` (title/hook/cover hypotheses) |
-| 3 | 脚本 Script | `skills/03-script-writing.md` | Reading scripts `script.en-US.md`, `script.zh-CN.md`, beats in `manifest.yml` |
-| 4 | 拍摄 Shoot | `skills/04-storyboard.md` | `storyboard.md` (shot plan), raw asset IDs recorded in `manifest.yml` |
-| 5 | 剪辑 Edit | `skills/05-remotion-graphics.md`, `skills/06-kdenlive-editing.md`, `skills/07-subtitles-localization.md`, `skills/08-audio-render-qc.md` | Remotion props, overlays rendered, `subtitles/*.srt`, Kdenlive timeline, review export |
-| 6 | 复盘 Review | `skills/09-review-retrospective.md` | `review.md` with metrics and next-episode decisions |
+| 1 | 选题 Topic | the corresponding job doc | `brief.md`, `manifest.yml` initialized |
+| 2 | 封面 Packaging | the corresponding job doc | `cover.en-US.md`, `cover.zh-CN.md` (title/hook/cover hypotheses) |
+| 3 | 脚本 Script | the corresponding job doc | Reading scripts `script.en-US.md`, `script.zh-CN.md`, beats in `manifest.yml` |
+| 4 | 拍摄 Shoot | the corresponding job doc | `storyboard.md` (shot plan), raw asset IDs recorded in `manifest.yml` |
+| 5 | 剪辑 Edit | the corresponding job doc, the corresponding job doc, the corresponding job doc, the corresponding job doc | Remotion props, overlays rendered, `subtitles/*.srt`, Kdenlive timeline, review export |
+| 6 | 复盘 Review | the corresponding job doc | `review.md` with metrics and next-episode decisions |
 
 Two intentional overlaps:
 
@@ -97,7 +97,7 @@ produced ahead of its stage is flagged as provisional in `edit-notes.md`.
 
 - **Human** — project manager, creative reviewer, final decision-maker. Owns: topic
   approval, shoot, **voiceover recording** (per locale, after the script locks — specs in
-  `skills/04-storyboard.md`), Kdenlive polish, publish, metric collection.
+  the corresponding job doc), Kdenlive polish, publish, metric collection.
 - **Agent** (Claude Code / Codex) — structured production work. Owns: briefs, scripts,
   localization, subtitle prep, Remotion props and renders, manifest bookkeeping, QA
   reports, retrospective drafting.

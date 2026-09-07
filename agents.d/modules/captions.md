@@ -17,7 +17,7 @@ merely transcribe it), and audit variant pairs for localization quality.
 - Voiceover timing: the VO file recorded in the manifest
   (`variants.<locale>.voiceover_asset_id`), or beat `target_duration_sec` as a first
   approximation before VO exists
-- `docs/localization.md`, `docs/golden-rules.md` subtitle rules, `docs/platforms.md`
+- `agents.d/modules/localization.md`, `agents.d/modules/platforms.md` (safe zones)
   safe zones
 
 ## Outputs
@@ -28,7 +28,7 @@ merely transcribe it), and audit variant pairs for localization quality.
   by distributing words across each cue and tagging emphasis from the script (worked-example
   generator: the episode's `caption-map.mjs`). This is the
   pre-edit sync artifact the editing agent works off — captions, SFX hits, zoom, and
-  overlay in/out points all key to it (see `skills/06-kdenlive-editing.md`). **Line up the
+  overlay in/out points all key to it (the cut is made outside this repo). **Line up the
   subtitles with the timeline before editing starts; editing before it's locked is guessing.**
 - **Burned-in captions** — `<episode-dir>/subtitles.yml` plus the export it produces.
   This is the standard; see **Burned-in captions** below. The Remotion `subtitle-track`
@@ -52,7 +52,7 @@ merely transcribe it), and audit variant pairs for localization quality.
 5. Write valid SRT: sequential indices, `HH:MM:SS,mmm` times, no overlaps, UTF-8.
 6. **Localization audit** (once both locales' subtitle files exist — scripts alone
    don't trigger it): check the variant pair against the review bar in
-   `docs/localization.md` — shared beats/message/CTA, native phrasing, local examples.
+   `agents.d/modules/localization.md` — shared beats/message/CTA, native phrasing, local examples.
    Record pass/fail per criterion in `edit-notes.md`.
 7. If a beat's script content is a `HUMAN: verify/replace` placeholder, subtitle it
    provisionally and flag it next to the timing note — it re-times when the real
@@ -144,18 +144,18 @@ continuations**, which have no pause at their start by design. Filter those out 
 trusting it, or you will "fix" cues that were already right.
 
 If the delivery diverges from the written line, **the subtitle follows the delivery**
-(`docs/golden-rules.md`). A line that is missing spoken words reads as out of sync even
+. A line that is missing spoken words reads as out of sync even
 when its timing is correct.
 
 ## Rules
 
-- The division of labor is fixed (`docs/golden-rules.md`, Subtitles 字幕 section):
+- The division of labor is fixed:
   **voiceover explains, subtitles highlight, visuals reinforce.** Subtitles compress
   each passage into its keywords — if a line adds nothing over the audio, compress or
   drop it.
 - Never generate one locale's SRT by translating the other's — work from that locale's
   script.
-- Subtitle position must respect vertical-video safe zones (`docs/platforms.md`):
+- Subtitle position must respect vertical-video safe zones (`agents.d/modules/platforms.md`):
   keep clear of the bottom caption zone and right action rail.
 - Numbers, prices, units are localized (mph vs km/h stays as the locale's script chose).
 

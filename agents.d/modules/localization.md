@@ -53,7 +53,7 @@ cover text          re-designed per locale, not re-typeset
 
 1. Beats are defined once in `manifest.yml` (IDs, purpose, visual intent) — locale-neutral.
 2. Each locale's script is written **against the beats**, natively, by following
-   `skills/03-script-writing.md` in that language.
+   the script written in that language.
 3. Per-beat `target_duration_sec` is set per locale (zh-CN typically runs 10–20% shorter).
 4. Voiceover, subtitles, Remotion props, captions, and covers are produced per locale.
 
@@ -75,5 +75,5 @@ A variant fails review if:
 
 Per-episode overrides go in `manifest.yml` under `variants.<locale>.platforms`.
 WeChat Channels is deliberately **not** in the zh-CN defaults: its 6:7 feed crop needs a
-dedicated 3:4-composed master (see `docs/platforms.md`), so add `wechat` to a variant's
+dedicated 3:4-composed master (see `agents.d/modules/platforms.md`), so add `wechat` to a variant's
 platform list only when that extra deliverable is planned.
