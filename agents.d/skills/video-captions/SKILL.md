@@ -148,6 +148,31 @@ lossless (`ffmpeg -c:v qtrle`, bit-identical RGBA, verified by framemd5) costs ~
 until someone confirms MLT composites qtrle alpha correctly in Kdenlive. Do that check before
 switching; do not switch on the numbers alone.
 
+## Mixing captions onto a finished cut
+
+The picture and the captions are rendered separately and composited, so one picture render serves
+every locale:
+
+```bash
+# 1. the picture must have NO caption layer of its own, or you get two sets stacked
+npx remotion render burst-intro-bare out/burst-intro-bare.mp4       # in the burst-intro project
+
+# 2. the caption track, with alpha
+npx remotion render burst-intro-captions-zh /tmp/cap-zh.mov         # here
+
+# 3. overlay; the picture's audio is copied through untouched
+ffmpeg -i out/burst-intro-bare.mp4 -i /tmp/cap-zh.mov \
+  -filter_complex "[0][1]overlay=format=auto:shortest=1" \
+  -map 0:a? -c:a copy -c:v libx264 -preset veryfast -crf 23 -pix_fmt yuv420p \
+  out/burst-intro-captions-zh.mp4
+```
+
+**Check the base for burned-in captions before compositing.** A cut that already carries its own
+subtitle layer produces two stacked sets, and it is not obvious from the filename which one you
+have — look at a frame. Timings for a mix come from the picture composition's own scene table, not
+from the storyboard: transitions consume frames from the series total, so a storyboard's planned
+seconds and the rendered cut disagree (42s planned, 38.5s rendered, in this piece).
+
 ## Previews
 
 A preview is for looking at, so it is lossy on purpose — what it has to be is fast and small.
