@@ -329,6 +329,40 @@ export const RemotionRoot: React.FC = () => {
         }}
       />
       <Composition
+        id="burst-intro-captions-zh"
+        component={SpokenSubtitleTrack}
+        schema={spokenSubtitleTrackSchema}
+        width={1920}
+        height={1080}
+        fps={FPS}
+        durationInFrames={1155}
+        calculateMetadata={overlayMetadata<SpokenSubtitleTrackProps>(38.5)}
+        defaultProps={{
+          locale: 'zh-CN' as const,
+          durationSec: 38.5,
+          fontSize: 62,
+          tailFrames: 20,
+          script: '你的|1333|1703\n机器|1703|2073\n是|2073|2258\n可突发|2258|2813|*\n的|2813|2998\n\n4个|3833|4203\n核心|4203|4573|*\n但|4573|4758\n只有|4758|5128\n12.5%|5128|6053|*\n\n线|8333|8518\n下面|8518|8888\n是|8888|9073\n攒|9073|9258|*\n线|9258|9443\n上面|9443|9813\n是|9813|9998\n花|9998|10183|*\n\n多数|13333|13703\n时候|13703|14073\n它|14073|14258\n在|14258|14443\n线|14443|14628\n下面|14628|14998|*\n\n一|18667|18852\n开始|18852|19222\n渲染|19222|19592\n就|19592|19777\n在|19777|19962\n花|19962|20147|*\n了|20147|20332\n\n只算|24833|25203\n屏幕上|25203|25758\n看得见|25758|26313|*\n的|26313|26498\n\n颗粒|30833|31203\n平移|31203|31573\n宽度|31573|31943\n都是|31943|32313\n实时|32313|32683|*\n的|32683|32868\n\n7天|35167|35537\n的|35537|35722\n证据|35722|36092|*\n不是|36092|36462\n猜|36462|36647\n的|36647|36832',
+        }}
+      />
+      <Composition
+        id="burst-intro-captions-en"
+        component={SpokenSubtitleTrack}
+        schema={spokenSubtitleTrackSchema}
+        width={1920}
+        height={1080}
+        fps={FPS}
+        durationInFrames={1155}
+        calculateMetadata={overlayMetadata<SpokenSubtitleTrackProps>(38.5)}
+        defaultProps={{
+          locale: 'en-US' as const,
+          durationSec: 38.5,
+          fontSize: 56,
+          tailFrames: 20,
+          script: 'your|1333|1668\nbox|1668|2003\nis|2003|2338\nburstable|2338|2673|*\n\n4|3833|4168|*\nOCPUs|4168|4503\nand|4503|4838\n12.5%|4838|5173|*\nof|5173|5508\nthem|5508|5843\nsustained|5843|6178\n\nbelow|8333|8668\nthe|8668|9003\nline|9003|9338\nyou|9338|9673\nearn|9673|10008|*\nabove|10008|10343\nit|10343|10678\nyou|10678|11013\nspend|11013|11348|*\n\nmost|13333|13668\nof|13668|14003\nthe|14003|14338\ntime|14338|14673\nthis|14673|15008\nbox|15008|15343\nsits|15343|15678\nunder|15678|16013|*\nit|16013|16348\n\nthen|18667|19002\na|19002|19337\nrender|19337|19672\nstarts|19672|20007\nand|20007|20342\nyou|20342|20677\nare|20677|21012\nspending|21012|21347|*\n\nit|24833|25168\ncounts|25168|25503\nonly|25503|25838\nwhat|25838|26173\nis|26173|26508\non|26508|26843\nscreen|26843|27178|*\n\ngrain|30833|31168\npan|31168|31503\nwidth|31503|31838\nall|31838|32173\nlive|32173|32508|*\n\n7 days|35167|35502|*\nof|35502|35837\nevidence|35837|36172|*\ninstead|36172|36507\nof|36507|36842\na|36842|37177\nguess|37177|37512',
+        }}
+      />
+      <Composition
         id="burst-captions-zh"
         component={SpokenSubtitleTrack}
         schema={spokenSubtitleTrackSchema}

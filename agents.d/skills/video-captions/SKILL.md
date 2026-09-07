@@ -11,7 +11,8 @@ description: "Build spoken-word caption overlays for a DirtBikeX short — the t
 | `packages/remotion-graphics/src/components/SpokenSubtitleTrack.tsx` | a whole narration — measures, cuts, sequences |
 | `packages/remotion-graphics/src/theme/tokens.ts` | the palette (`spoken`) and `SAFE_ZONE` |
 
-Registered as `burst-captions-zh` / `burst-captions-en` in `packages/remotion-graphics/src/Root.tsx`.
+Registered in `packages/remotion-graphics/src/Root.tsx`: `burst-captions-{zh,en}` (1080x1920
+short) and `burst-intro-captions-{zh,en}` (1920x1080, timed to `burst-intro`'s scene table).
 The reasoning behind every rule below is `agents.d/modules/captions.md`; this file is how to apply it.
 
 ## The input format
@@ -50,10 +51,14 @@ already-read ones sideways, so the reader re-finds their place word by word. Do 
 Because the hidden words really are in the layout, nothing measures anything here; the browser
 reserves the width. (The track still measures, but only to decide where to cut.)
 
-Centring is within the **safe zone**, not the frame: `SAFE_ZONE` is asymmetric (left 55, right 145,
-the right inset being the platform action rail), so the caption centre lands at x=495 on a
-1080-wide frame. That is the middle of the space the viewer can actually see, which is the one
-that matters.
+Centring is on the **true frame centre**. `SAFE_ZONE` is asymmetric (left 55, right 145 — the
+right inset is the platform action rail), so captions take a **symmetric** inset of
+`max(left, right)` instead: `captionInset(width, height)`. The midpoint is the frame's own and the
+rail is still cleared. It costs width — 790px rather than 880 at 1080 — which comes out of the
+cut budget, not the type size.
+
+The zone is derived from the canvas via `safeZoneFor`, so the same components serve a 1080x1920
+short and a 1920x1080 landscape cut. `burst-intro-captions-{zh,en}` are the landscape pair.
 
 ## What lights
 

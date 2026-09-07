@@ -339,10 +339,19 @@ frame 0 in both locales; en hides the ones it has not reached, and a hidden span
 without drawing its glyph or its band. Nothing has to be measured — the width is reserved because
 the words are really there. (The track still measures, but only to decide where to cut.)
 
-**Centred in the safe zone, not the frame.** `SAFE_ZONE` is asymmetric — left 55, right 145,
-the right inset being the platform action rail — so the caption centres at x=495 of 1080, 45px
-left of true centre. That is the middle of the region the viewer can see, and centring on the
-frame instead would push the line under the rail.
+**Centred on the frame, which costs width.** Centring inside the safe zone was the first answer
+and it is visibly wrong: `SAFE_ZONE` is asymmetric — left 55, right 145, the right inset being the
+platform action rail — so the caption landed at x=495 of 1080, 45px off the frame's real centre.
+Nobody reads a caption against the safe zone; they read it against the frame edges, and 45px of
+offset shows.
+
+Captions therefore take a **symmetric** inset of `max(left, right)` on both sides. The midpoint is
+then the frame's own, and the larger inset still clears the rail on the side that has one. The
+price is width — 790px rather than 880 at 1080 — paid in more sentence cuts, which the track
+already handles and which is much the cheaper of the two.
+
+The zone is derived from the canvas with `safeZoneFor`, so one component serves a 1080x1920 short
+and a 1920x1080 landscape cut without a second set of numbers.
 
 **Not done:** no alignment prop. It is one rule and it is the same in both locales; a knob here
 just lets a composition put back the version that drags the words.

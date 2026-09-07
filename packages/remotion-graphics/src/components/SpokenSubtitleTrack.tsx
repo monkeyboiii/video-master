@@ -93,11 +93,11 @@ export const SpokenSubtitleTrack: React.FC<SpokenSubtitleTrackProps> = ({
   fontSize,
   tailFrames = 12,
 }) => {
-  const {width: canvas} = useVideoConfig();
+  const {width: canvas, height: canvasH} = useVideoConfig();
   const family = bodyFont(locale as Locale);
   const size = captionSize(locale as Locale, fontSize);
   const gap = wordGap(locale as Locale, size);
-  const room = captionRoom(canvas);
+  const room = captionRoom(canvas, canvasH);
 
   const parts = useMemo(() => {
     const lineWidth = (ws: Word[]) =>

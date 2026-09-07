@@ -1,10 +1,10 @@
 import {zTextarea} from '@remotion/zod-types';
 import React, {useMemo} from 'react';
-import {AbsoluteFill, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 import {FPS, localeSchema, localeScale, overlayMetadata, type Locale} from '../shared';
 import {bodyFont} from '../theme/fonts';
-import {SAFE_ZONE, spoken} from '../theme/tokens';
+import {safeZoneFor, spoken} from '../theme/tokens';
 
 /**
  * A caption line that follows the voice, in the two ways the two locales need.
@@ -51,6 +51,15 @@ import {SAFE_ZONE, spoken} from '../theme/tokens';
  * one, the exact position it will occupy when it appears: nothing moves, and the sentence as a
  * whole sits in the middle of the frame. That also means no measuring — the browser reserves the
  * width because the words are really there.
+ *
+ * TRUE FRAME CENTRE, WHICH COSTS WIDTH. The safe zone is asymmetric — the right inset is larger,
+ * for the platform action rail — so centring inside it lands the caption off the frame's real
+ * centre, which is visible. Captions therefore use a SYMMETRIC inset of `max(left, right)` on both
+ * sides: the midpoint is the frame's own, and the line still clears the rail. The price is width
+ * (790px rather than 880 at 1080), paid in more sentence cuts, which is the cheaper of the two.
+ *
+ * The zone is derived from the canvas, so the same component works on a 1080x1920 short and a
+ * 1920x1080 landscape cut without a second set of numbers.
  *
  * A WORD IS WHATEVER A ROW IS. whisper.cpp emits zh timings per CHARACTER, and highlighting per
  * character is wrong — 核心 is one word and lights as one. The component does not segment; it
@@ -101,9 +110,18 @@ export const captionSize = (locale: Locale, fontSize?: number): number =>
 export const wordGap = (locale: Locale, size: number): number =>
   locale === 'zh-CN' ? 0 : size * 0.26;
 
+/**
+ * The symmetric inset that puts the caption's midpoint on the frame's midpoint. `max` of the two
+ * safe-zone insets, so the wider one (the action rail) is still cleared on the side that needs it.
+ */
+export const captionInset = (width: number, height: number): number => {
+  const z = safeZoneFor(width, height);
+  return Math.max(z.left, z.right);
+};
+
 /** How wide the line may be before the track has to cut it. */
-export const captionRoom = (width: number): number =>
-  width - SAFE_ZONE.left - SAFE_ZONE.right;
+export const captionRoom = (width: number, height: number): number =>
+  width - 2 * captionInset(width, height);
 
 /**
  * The hatch. A repeating-linear-gradient rather than an SVG pattern so it costs one paint, and
@@ -121,11 +139,13 @@ export const SpokenSubtitle: React.FC<SpokenSubtitleProps> = ({
   fontSize,
 }) => {
   const frame = useCurrentFrame();
+  const {width, height} = useVideoConfig();
   const ms = (frame / FPS) * 1000;
   const parsed = useMemo(() => parseWords(words), [words]);
   const karaoke = locale === 'zh-CN';
   const family = bodyFont(locale as Locale);
   const size = captionSize(locale as Locale, fontSize);
+  const inset = captionInset(width, height);
 
   // Every word is laid out from frame 0 in both locales — that is what fixes the positions and
   // lets the full sentence centre. zh then shows them all; en hides the ones not yet spoken,
@@ -137,9 +157,10 @@ export const SpokenSubtitle: React.FC<SpokenSubtitleProps> = ({
         justifyContent: 'flex-end',
         // the SENTENCE is centred, in the lower third; its words are not re-centred
         alignItems: 'center',
-        paddingBottom: SAFE_ZONE.bottom,
-        paddingLeft: SAFE_ZONE.left,
-        paddingRight: SAFE_ZONE.right,
+        paddingBottom: safeZoneFor(width, height).bottom,
+        // symmetric, so the midpoint is the FRAME's midpoint — see the header
+        paddingLeft: inset,
+        paddingRight: inset,
       }}
     >
       <div
