@@ -62,3 +62,7 @@ packages/remotion-graphics/public/e0*/
 # not by us. Tracking them would fork upstream's copy on the next update.
 packages/remotion-graphics/.agents/
 packages/remotion-graphics/.claude/
+
+# ── Python bytecode from tools/ ──
+__pycache__/
+*.pyc
