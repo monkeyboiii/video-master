@@ -93,7 +93,7 @@ Probe with `node tools/probe-media.mjs <file>` (uses Remotion's bundled ffprobe)
 ## SDR graphics over HDR footage: convert, never grade
 
 Overlaying an sRGB graphic onto an HLG/BT.2020 timeline without a colour conversion does not
-make it "a bit contrasty" — it **destroys colour**. Stamped raw, DBX-APP-S02E001's whole orange
+make it "a bit contrasty" — it **destroys colour**. Stamped raw, S02E001's whole orange
 gradient (`#ff4a16`, `#ff3a08`, `#df2100`) collapsed to the same flat `(255,0,0)`. White
 survives unchanged, so the damage looks selective and invites the wrong diagnosis.
 

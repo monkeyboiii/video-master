@@ -13,19 +13,26 @@ thirds, subtitle burns) and cover stills for an episode, from per-locale prop fi
 `packages/remotion-graphics/`. Remotion is the reusable visual language — not a full
 editor.
 
-> **Captions are no longer a Remotion job.** `subtitle-track` and `kinetic-captions` are
-> deprecated in favour of burned-in captions driven by `subtitles.yml`
-> (the corresponding job doc). Do not reach for them for new work; they stay in
-> the registry only so the S01/S02 overlays that already shipped can be rebuilt.
+> **Captions ARE a Remotion job — through `spoken-subtitle-track`.** This note previously said the
+> opposite, and pointed at a `subtitles.yml` that exists in exactly one episode. Both halves were
+> stale: captions came back into Remotion as `SpokenSubtitleTrack`, whose source is an episode's
+> `remotion-props/spoken-captions.<locale>.json` and whose design is [captions.md](captions.md).
+>
+> `subtitle-track` and `kinetic-captions` are the retired ones. `kinetic-captions` was kept "only
+> so the S01/S02 overlays that already shipped can be rebuilt" — that reason is gone: S01 was
+> converted by `tools/captions-import.mjs` and S02 never used it. **No episode references either
+> composition.** They stay registered because deleting a composition is a separate decision from
+> retiring it, and the components are what a rebuild of a pre-2026-09 render would need.
 
 In retention terms (the episode script, Edit 剪辑 section), each composition is an
 attention device the edit deploys:
 
 | Composition | Retention role |
 |-------------|----------------|
+| `spoken-subtitle-track` | The caption track: word-timed, locale-differentiated, one per variant |
 | `hook-title` | First-frame grab — big hook text at 0.0s |
-| ~~`subtitle-track`~~ | **DEPRECATED** — captions are burned in now, see the corresponding job doc |
-| ~~`kinetic-captions`~~ | **DEPRECATED** — as above; kept only to rebuild S01/S02 |
+| ~~`subtitle-track`~~ | **RETIRED** — superseded by `spoken-subtitle-track`, see [captions.md](captions.md) |
+| ~~`kinetic-captions`~~ | **RETIRED** — no episode uses it; S01 was converted, S02 never did |
 | `checklist-card` | Save-worthy value; each tick is a pattern-interrupt beat (pair with dings) |
 | `stage-cards` | Segment reset / pattern interrupt between chapters |
 | `lower-third` | Context without stopping the flow |
