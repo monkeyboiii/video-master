@@ -95,9 +95,14 @@ If a line still overflows it is a single word wider than the frame — shorten t
 `fontSize` for that composition. Do not reintroduce `fitText`: a per-sentence size makes the frame
 twitch, and a sentence that shrank enough to fit is one nobody reads.
 
-A line clears `tailFrames` after **its own last word**, not when the next one starts — a finished
-caption sitting on screen for seconds while the picture moves on reads worse than a quiet frame.
-The tail is capped at the next line's start, so two lines never overlap.
+A line clears **on the frame its last highlight goes out**, not a moment after. There is no tail
+knob: any tail is a visible beat with the line present and nothing lit, which reads as forgotten
+rather than ended. The end is capped at the next line's start, so two lines never overlap.
+
+Caption rate is not speaking rate. 280 ms/word (en) and 155 ms/char (zh) are tuned for a SILENT
+cut. Measured against Kokoro at speed 1.0 they overrun — 4 of 8 cues in en, 8 of 8 in zh. For a
+narrated cut, take the timings from the audio (`tools/transcribe.mjs` then `tools/group-words.mjs`)
+rather than tuning these numbers.
 
 ## Geometry — all derived from `size`, never fixed px
 

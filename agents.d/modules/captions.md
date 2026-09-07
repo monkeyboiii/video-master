@@ -382,16 +382,45 @@ valid, so one script feeds both styles.
 **Not done:** no third style, and no per-word style. The two exist because they answer two
 different questions about the footage underneath, not as a palette.
 
-### A line clears when its sentence ends
+### A line clears on the frame its last highlight does
 
-It used to hold until the next line started, on the argument that a caption vanishing the instant
-it is spoken is unreadable and the gap reads as a dropped frame. Against a real cut that was wrong
-at this rhythm: beats sit ~5s apart and a sentence takes ~2s, so a finished caption sat on screen
-for seconds with nothing left to say, attached to a picture that had already moved on.
+Two wrong answers first. The line originally held until the NEXT line started, on the argument
+that a caption vanishing the instant it is spoken is unreadable and the gap reads as a dropped
+frame. At this rhythm that is simply false — beats sit ~5s apart and a sentence takes ~2s, so a
+finished caption sat for seconds over a picture that had moved on.
 
-A line now clears `tailFrames` after its own last word — long enough for a late reader to finish,
-short enough that the frame goes quiet between beats. The tail is capped at the next line's start,
-so two lines can never overlap however tight the timings get.
+The second answer was a short tail past the last word. That is worse than it sounds: the tail is
+a distinct, visible beat in which the line is still there with nothing lit, and it reads as the
+caption having been forgotten rather than ended. No tail length fixes it, because any tail at all
+IS the artefact — so the knob was removed rather than defaulted to zero.
+
+The highlight is the caption's clock. The last word's `endMs` ends the word, the highlight and the
+line on the same frame. Verified: at frame 626 the final word is lit (4832 fluorescent pixels);
+frame 628 is 100.00% transparent. Nothing is ever on screen not doing something. The end is still
+capped at the next line's start, so two lines cannot overlap however tight the timings get.
+
+### The caption rate and the speaking rate are not the same number
+
+Captions with no audio can run faster than speech, and should: the reader is reading, not
+listening, and a line that lingers past its point is what makes short form feel slow. The pacing
+here is 280 ms/word (en) and 155 ms/char (zh), tightened from 335/185 for exactly that reason.
+
+Measured against Kokoro-82M reading the same lines at speed 1.0, those numbers do not survive
+contact with a voice:
+
+| | caption rate | Kokoro at 1.0 | cues overrunning |
+|---|---|---|---|
+| en-US | 280 ms/word | ~325 ms/word | 4 of 8 |
+| zh-CN | 155 ms/char | ~330 ms/char | **8 of 8**, by 1.2–1.6s each |
+
+zh is the sharp one: the captions are laid out about **2.1x faster than the voice speaks them**.
+So the rate is a property of whether there IS narration, not a constant. Silent cut — keep it
+tight. Narrated cut — the timings come from the audio, by transcribing the rendered narration and
+feeding it back (`tools/transcribe.mjs`, then `tools/group-words.mjs`), which is the loop that
+exists precisely so nobody hand-tunes a millisecond figure against a waveform.
+
+Raising `--speed` on the voice is the other lever and it is the worse one past about 1.3x, where
+it stops sounding like a person. Recorded so the next person does not rediscover it by ear.
 
 ### Timing comes from measurement, not from feel
 

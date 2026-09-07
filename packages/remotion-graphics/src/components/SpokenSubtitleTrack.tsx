@@ -32,13 +32,17 @@ import {
  * replacement for shrinking the type to fit: the reader gets the same size on every line and
  * more lines, instead of one line nobody can read.
  *
- * A LINE CLEARS WHEN ITS SENTENCE ENDS. It used to hold until the next line started, on the
- * argument that a caption vanishing the instant it is spoken is unreadable and the gap reads as a
- * dropped frame. Watching it against a real cut, that was wrong at this rhythm: beats sit ~5s
- * apart and a sentence takes ~2s, so a finished caption sat there for seconds with nothing to do,
- * attached to a picture that had moved on. Now it clears `tailFrames` after its own last word —
- * long enough for a late reader to finish, short enough that the frame goes quiet between beats.
- * The tail is still capped at the next line's start, so two lines never overlap.
+ * A LINE CLEARS ON THE FRAME ITS LAST HIGHLIGHT DOES. Not a moment after.
+ *
+ * This went through two wrong answers. First the line held until the NEXT line started, so a
+ * finished caption sat for seconds over a picture that had moved on. Then it held a short tail
+ * past its last word — and that tail is visible as a distinct beat where the line is still there
+ * with nothing lit, which reads as the caption having been forgotten rather than ended.
+ *
+ * The highlight IS the caption's clock. The last word's `endMs` ends the word, the highlight and
+ * the line on the same frame, and there is nothing left on screen that is not doing something.
+ * A tail cannot be tuned to fix this, because any tail at all is the artefact — which is why the
+ * knob is gone rather than defaulted to zero.
  */
 export const spokenSubtitleTrackSchema = z.object({
   locale: localeSchema,
@@ -46,8 +50,6 @@ export const spokenSubtitleTrackSchema = z.object({
   script: zTextarea(),
   durationSec: z.number(),
   fontSize: z.number().optional(),
-  /** Frames to keep a line up after its final word. */
-  tailFrames: z.number().optional(),
   /** `band` (default) or `plain` — see SpokenSubtitle. en only. */
   captionStyle: captionStyleSchema.optional(),
 });
@@ -99,7 +101,6 @@ export const SpokenSubtitleTrack: React.FC<SpokenSubtitleTrackProps> = ({
   locale,
   script,
   fontSize,
-  tailFrames = 12,
   captionStyle,
 }) => {
   const {width: canvas, height: canvasH} = useVideoConfig();
@@ -130,10 +131,9 @@ export const SpokenSubtitleTrack: React.FC<SpokenSubtitleTrackProps> = ({
         const fromMs = ws[0].startMs;
         const from = Math.round((fromMs / 1000) * FPS);
         // hold until the next line starts; the last one gets a short tail
+        // the frame the last highlight goes out on — no tail, see the header
+        const ownEnd = Math.round((ws[ws.length - 1].endMs / 1000) * FPS);
         const next = parts[i + 1];
-        const ownEnd =
-          Math.round((ws[ws.length - 1].endMs / 1000) * FPS) + tailFrames;
-        // clear at its own end, but never run into the next line
         const until = next
           ? Math.min(ownEnd, Math.round((next[0].startMs / 1000) * FPS))
           : ownEnd;
