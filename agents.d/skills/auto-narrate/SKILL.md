@@ -100,6 +100,10 @@ any of the 54; `zf_*`/`zm_*` are zh, `af_*`/`am_*`/`bf_*`/`bm_*` are en.
 `DBX_TTS_REPO` takes a mirror (`NobodyWho/Kokoro-82M` is the same v1.0 weights with voices as
 `.safetensors`), or `hexgrad/Kokoro-82M-v1.1-zh` for a much larger zh voice set.
 
+**Both defaults were picked from the v1.0 roster, not chosen by listening** — nobody has compared
+them. If a voice sounds wrong that is an open question, not a regression. Whether v1.1-zh's larger
+zh set is worth a second download is the other one.
+
 ## When the script is fixed and the slots are not
 
 `tools/tts/srt-to-narration.py` takes an SRT instead and makes each cue fit its slot, in two
