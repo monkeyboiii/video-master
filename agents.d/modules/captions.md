@@ -362,13 +362,15 @@ just lets a composition put back the version that drags the words.
 at a glance in both scripts; a spelled-out number is read as words, costs the line several word
 slots, and in zh pushes a sentence over the width where it has to be cut.
 
-### Two styles, and `plain` is en-only
+### Two styles, and the default differs by locale
 
 `band` is everything else in this document: the striped rule carries the state, the text holds one
 colour, and only a word marked `*` departs from it. `plain` drops the band entirely — white text,
-and the word being spoken turns fluorescent green. It reads lighter over busy footage and is the
-right choice when the bottom of frame already has something in it that a second horizontal rule
-would fight.
+and the word being spoken turns fluorescent green.
+
+**en defaults to `plain`, zh to `band`.** Latin words are simple enough shapes to carry the state
+in their own colour, so the rule buys en nothing it does not already have and costs it weight at
+the bottom of frame. `band` remains available to en explicitly, for a cut with room for it.
 
 `plain` in zh is **ignored, not obeyed**. The band exists in zh precisely because recolouring dense
 character strokes mid-line costs legibility for a cue the band already gives; `plain` is nothing

@@ -62,16 +62,18 @@ short and a 1920x1080 landscape cut. `burst-intro-captions-{zh,en}` are the land
 
 ## Two styles — `captionStyle`
 
-| | `band` (default) | `plain` (en only) |
+| | `band` | `plain` |
 |---|---|---|
 | rule under the line | striped, always drawn | none |
 | text | one colour throughout | white, **green on the spoken word** |
 | `*` important | lights that word's text | no extra effect — every spoken word lights |
 
-`plain` is for footage that already has something at the bottom of frame that a second horizontal
-rule would fight. **zh always uses `band`** — asking for `plain` there is clamped, not obeyed,
-because recolouring dense character strokes mid-line is the exact thing the band exists to avoid.
-One script feeds both styles; the rows do not change.
+**The default is per locale: en `plain`, zh `band`.** Latin words are simple enough shapes to carry
+the state in their own colour, so en needs no rule and sits lighter over busy footage. zh **clamps**
+to `band` — asking for `plain` there is ignored, not obeyed, because recolouring dense character
+strokes mid-line is the exact thing the band exists to avoid. `band` stays available to en
+explicitly, for a cut whose bottom third is empty enough that the rule reads as structure. One
+script feeds both styles; the rows do not change.
 
 ## What lights (`band`)
 

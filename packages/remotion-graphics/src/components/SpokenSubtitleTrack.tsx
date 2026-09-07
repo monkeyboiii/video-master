@@ -50,7 +50,7 @@ export const spokenSubtitleTrackSchema = z.object({
   script: zTextarea(),
   durationSec: z.number(),
   fontSize: z.number().optional(),
-  /** `band` (default) or `plain` — see SpokenSubtitle. en only. */
+  /** Defaults per locale: en `plain`, zh `band`. See SpokenSubtitle. */
   captionStyle: captionStyleSchema.optional(),
 });
 

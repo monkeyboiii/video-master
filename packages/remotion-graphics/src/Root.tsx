@@ -378,7 +378,7 @@ export const RemotionRoot: React.FC = () => {
         }}
       />
       <Composition
-        id="burst-intro-captions-en-plain"
+        id="burst-intro-captions-en-band"
         component={SpokenSubtitleTrack}
         schema={spokenSubtitleTrackSchema}
         width={1920}
@@ -390,7 +390,7 @@ export const RemotionRoot: React.FC = () => {
           locale: 'en-US' as const,
           durationSec: 38.5,
           fontSize: 56,
-          captionStyle: 'plain' as const,
+          captionStyle: 'band' as const,
           script: 'your|592|717\nbox|717|1029\nis|1029|1179\nburstable|1179|1767|*\nnot|1842|2004\nthe|2004|2092\nsame|2092|2329\nas|2329|2479\nfast|2479|3117\n\n4|4050|4300\nOCPUs|4300|5012\non|5012|5150\npaper|5150|5700\nbaseline|5825|6350\n12.5%|6350|7925|*\n\nbelow|8500|8775\nthat|8775|9000\nline|9000|9350\nyou|9350|9475\nare|9475|9625\nearning|9625|9950|*\nallowance|9950|10675\nabove|10812|11175\nit|11175|11325\nyou|11325|11475\nare|11475|11575\nspending|11575|12050|*\nit|12050|12450\n\nmost|13525|13738\nof|13738|13812\nthe|13812|13900\ntime|13900|14225\nthis|14225|14438\nbox|14438|14800\nsits|14800|15050\nquietly|15050|15562\nunder|15562|15738|*\nthe|15738|15850\nline|15850|16425\nbanking|16538|16950\ncredit|16950|17600\n\nthen|18500|18612\na|18612|18700\nrender|18700|19100\nstarts|19100|19700\nevery|19800|20100\ncore|20100|20375\ngoes|20375|20650\nto|20650|20738\nthe|20738|20862\nceiling|20862|21325|*\nand|21375|21500\nnow|21500|21800\nyou|21800|21950\nare|21950|22050\nspending|22050|22875|*\n\nit|25025|25125\ncounts|25125|25450\nonly|25450|25750\nthe|25750|25875\nwindow|25875|26200\non|26200|26412\nscreen|26412|27100|*\nso|27238|27438\npan|27438|27725\naway|27725|28150\nand|28150|28262\nthe|28262|28350\nnumbers|28350|28762\nfollow|28762|29500|*\n\ngrain|31025|31350\npan|31400|31675\nwidth|31725|32150\nall|32250|32412\nof|32412|32488\nit|32488|32625\nlive|32625|32838|*\nwhile|32838|32975\nyou|32975|33125\nwatch|33125|33750\n\n7|35550|35875|*\ndays|35875|36212|*\nof|36212|36338\nevidence|36338|36962|*\ninstead|36962|37288\nof|37288|37362\na|37362|37450\nguess|37450|38125',
         }}
       />

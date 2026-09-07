@@ -61,15 +61,20 @@ import {safeZoneFor, spoken} from '../theme/tokens';
  * The zone is derived from the canvas, so the same component works on a 1080x1920 short and a
  * 1920x1080 landscape cut without a second set of numbers.
  *
- * TWO STYLES, AND `plain` IS en-ONLY. `band` is everything described above: the striped rule
- * carries the state and the text holds one colour. `plain` drops the band entirely — white text,
- * and the word being spoken turns fluorescent green. It reads faster and lighter over busy
- * footage, and it is the right choice when the cut already has enough going on at the bottom of
- * frame that another horizontal rule fights it.
+ * TWO STYLES, AND THE DEFAULT DIFFERS BY LOCALE. `band` is everything described above: the striped
+ * rule carries the state and the text holds one colour. `plain` drops the band entirely — white
+ * text, and the word being spoken turns fluorescent green.
  *
- * zh always uses `band`, and asking for `plain` there is ignored rather than obeyed. The band
- * exists in zh precisely BECAUSE recolouring dense character strokes mid-line costs legibility;
- * `plain` is nothing but that recolouring, so in zh it is the one thing the design rules out.
+ *   en-US  `plain` by default. Latin words are simple enough shapes to carry the state in their
+ *          own colour, and without the rule the caption sits lighter over busy footage.
+ *   zh-CN  `band`, always. Asking for `plain` there is ignored rather than obeyed: the band exists
+ *          in zh precisely BECAUSE recolouring dense character strokes mid-line costs legibility,
+ *          so `plain` is the one thing the design rules out. A prop that silently does the wrong
+ *          thing on one locale is worse than one that clamps.
+ *
+ * `band` is still available to en explicitly, for a cut whose bottom third is empty enough that
+ * the rule reads as structure rather than as clutter.
+ *
  * In `plain`, `*` stops meaning anything extra — every spoken word already lights.
  *
  * A WORD IS WHATEVER A ROW IS. whisper.cpp emits zh timings per CHARACTER, and highlighting per
@@ -89,7 +94,7 @@ export const spokenSubtitleSchema = z.object({
   words: zTextarea(),
   durationSec: z.number(),
   fontSize: z.number().optional(),
-  /** `band` (default) or `plain` — white text, green on the spoken word, no rule. en only. */
+  /** Defaults per locale: en `plain`, zh `band` (and zh clamps to `band`). */
   captionStyle: captionStyleSchema.optional(),
 });
 
@@ -153,15 +158,15 @@ export const SpokenSubtitle: React.FC<SpokenSubtitleProps> = ({
   locale,
   words,
   fontSize,
-  captionStyle = 'band',
+  captionStyle,
 }) => {
   const frame = useCurrentFrame();
   const {width, height} = useVideoConfig();
   const ms = (frame / FPS) * 1000;
   const parsed = useMemo(() => parseWords(words), [words]);
   const karaoke = locale === 'zh-CN';
-  // zh always keeps the band — see the header; `plain` there is ignored, not obeyed
-  const plain = captionStyle === 'plain' && !karaoke;
+  // en defaults to plain, zh clamps to band — see the header
+  const plain = !karaoke && (captionStyle ?? 'plain') === 'plain';
   const family = bodyFont(locale as Locale);
   const size = captionSize(locale as Locale, fontSize);
   const inset = captionInset(width, height);
