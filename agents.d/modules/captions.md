@@ -413,14 +413,28 @@ contact with a voice:
 | en-US | 280 ms/word | ~325 ms/word | 4 of 8 |
 | zh-CN | 155 ms/char | ~330 ms/char | **8 of 8**, by 1.2–1.6s each |
 
-zh is the sharp one: the captions are laid out about **2.1x faster than the voice speaks them**.
-So the rate is a property of whether there IS narration, not a constant. Silent cut — keep it
-tight. Narrated cut — the timings come from the audio, by transcribing the rendered narration and
-feeding it back (`tools/transcribe.mjs`, then `tools/group-words.mjs`), which is the loop that
-exists precisely so nobody hand-tunes a millisecond figure against a waveform.
+zh was the sharp one: the captions were laid out about **2.1x faster than the voice speaks them**.
 
-Raising `--speed` on the voice is the other lever and it is the worse one past about 1.3x, where
-it stops sounding like a person. Recorded so the next person does not rediscover it by ear.
+So the burst-intro captions are no longer hand-timed at all. The narration is synthesised first
+and the rows are read off it, in one step, so the two cannot disagree — which is the only way this
+stays true when a line changes. The generator lives in the Kokoro spike worktree
+(`tools/tts/build-narration.py`, branch `spike/kokoro-tts`) and writes straight into the
+compositions here.
+
+Where the word timings come from differs per locale, because the voice offers different things.
+en gets per-word `start_ts`/`end_ts` from the synthesiser's own tokens — exact, free, and
+punctuation-filtered so a lone `,` never becomes a caption unit that lights. zh gets no tokens but
+does get `pred_dur`, one duration per phoneme at exactly 25 ms a unit, which is better than any
+alignment because it is what the model actually did rather than what a recogniser thinks it heard.
+
+**The transcribe → group-words loop is still correct, and it is for a HUMAN take.** It was tried
+here first and it fails on synthetic zh: whisper drops ~35% of zh tokens as byte-split U+FFFD, 100
+of 107 characters failed to match, and the rows came out with words whose start exceeded their end
+and a sentence ending at 0.00s. Do not read that as the loop being wrong — read it as never asking
+a recogniser what the synthesiser already knows.
+
+The rate a silent cut wants is still faster than speech; that half of this section stands. What
+changed is that a narrated cut no longer negotiates with it.
 
 ### Timing comes from measurement, not from feel
 
