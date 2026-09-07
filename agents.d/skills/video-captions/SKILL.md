@@ -162,3 +162,11 @@ ffmpeg -f lavfi -i color=c=0x555555:s=1080x1920:r=30 -i out/captions-zh.mov \
 Both are ~200-500x smaller than the master. Do not reach for VP8 (`-c:v libvpx`): measured 4x
 slower than VP9 and larger. And a preview is never the thing you hand to the edit — that is the
 ProRes master, always.
+
+**Reading a WebM preview back: name the decoder.** VP9 alpha lives in Matroska BlockAdditions, so
+`ffprobe` says `pix_fmt=yuv420p` and ffmpeg's default decoder drops the layer silently — which
+looks identical to an encoder that never wrote it.
+
+```bash
+ffmpeg -c:v libvpx-vp9 -i preview-zh.webm -vf alphaextract -frames:v 1 -update 1 /tmp/a.pgm
+```

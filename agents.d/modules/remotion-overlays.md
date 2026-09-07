@@ -122,8 +122,8 @@ losslessness verified by comparing `framemd5` of the decoded **RGBA** — colour
 | QuickTime RLE (`qtrle`) | **9.3 MB** | **yes**, bit-identical | **2848 fps** |
 | PNG-in-MOV (`-c:v png`) | 31.5 MB | yes, bit-identical | 232 fps |
 | FFV1 (`-level 3`, rgba) | 29.5 MB | yes, bit-identical | 361 fps |
-| VP9 `-lossless 1` (yuva420p) | 1.5 MB | no — chroma subsampled, all frames differ | 1670 fps |
-| VP9 `-lossless 1` (yuva444p) | 1.5 MB | no — all frames differ | — |
+| VP9 `-lossless 1` (yuva420p) | 1.5 MB | no — 575/575 frames differ | 1670 fps |
+| VP9 `-lossless 1` (yuva444p) | 1.5 MB | no — 575/575 frames differ | — |
 
 Two things fall out of that table. **ProRes → ProRes is itself lossy**, so "keep it in ProRes to
 avoid a generation loss" is backwards. And **`qtrle` wins on every axis measured** — a tenth of the
@@ -131,7 +131,8 @@ size, bit-identical RGBA, six times the decode speed — because run-length codi
 for flat colour over a mostly-empty frame, which is what a caption overlay is.
 
 `-lossless 1` on VP9 is lossless *in its own colour space*; the conversion into `yuva420p` on the
-way in is where the loss happens. The flag does not make the pipeline lossless.
+way in is where the loss happens. The flag does not make the pipeline lossless — and `yuva444p`
+does not rescue it either, so the loss is not only chroma subsampling.
 
 **The delivery default is unchanged.** WebM was rejected here on MLT's alpha handling, not on
 size, and `qtrle` has not been through that same check — nobody has yet composited one in
@@ -153,6 +154,20 @@ VP9 when the overlay's own alpha is what is being checked; flattened H.264 when 
 what is being read. VP8 is slower **and** bigger — there is no case for it. This is the
 "lightweight web preview artifact" exception above, and it stays an exception: a preview never
 goes to the edit.
+
+**Name the decoder when you read a WebM alpha preview back, or the alpha vanishes silently.**
+VP9 alpha rides in Matroska BlockAdditions, not in the video stream's pixel format: `ffprobe`
+reports `pix_fmt=yuv420p` and `tags.alpha_mode=1`, and ffmpeg's *default* decoder selection drops
+the layer without a word — `alphaextract` then fails with "Requested planes not available", which
+reads exactly like an encode that never wrote alpha. It is not.
+
+```bash
+ffprobe -v error -show_entries stream_tags=alpha_mode -of csv=p=0 preview.webm   # expect 1
+ffmpeg -c:v libvpx-vp9 -i preview.webm -vf alphaextract -frames:v 1 -update 1 a.pgm
+```
+
+Measured 2026-09-07: with the decoder named, the same file reads back 98.0% fully transparent;
+with it omitted, no alpha plane at all. Costs one wrong conclusion about the encoder each time.
 
 ## Steps
 
