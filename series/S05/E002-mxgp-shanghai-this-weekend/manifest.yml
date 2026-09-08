@@ -61,10 +61,15 @@ variants:
 beats:
   - id: hook
     purpose: an accusation, not a greeting — the viewer is already behind
+    # 1.95s for 1.19s of speech, and the 0.76s of air is doing a job. The music has to be低 under
+    # this line — it was burying it — and it cannot swell while the line is still being spoken.
+    # So the swell happens AFTER the hook finishes and reaches normal about 0.25s before
+    # 中国人能飞. The gap here is a music cue, not slack: tightening it puts the bed back on top
+    # of the voice.
     visual_intent: straight to camera, no establishing shot
     overlay: null
     target_duration_sec:
-      zh-CN: 1.27
+      zh-CN: 1.95
   - id: chinese-can-fly
     purpose: land the line in a real voice, not the narrator's — and carry the jump under it
     # The silent `the-jump` beat is GONE. It was the only thing between the first two lines, so

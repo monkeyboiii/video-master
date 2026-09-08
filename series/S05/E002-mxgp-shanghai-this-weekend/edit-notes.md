@@ -24,16 +24,33 @@ as the bed for the rest of the piece.
 
 `media/previz/S05E002-previz.mp4` carries a real mix so the pacing can be judged by ear.
 
-**The music runs from frame 0, with a quadratic fade up.** Two earlier versions cut it in — first
-on the clap at 42.99s, then on the vocal at 43.15s — and both sounded wrong, for the same reason:
-the phrase arrived out of silence with no bar of groove ahead of it, so it read as a sound effect
-rather than as a song. The bed now starts at the top and the source is entered at **00:00:41.88**,
-which puts the 43.15s vocal at 1.27s exactly as before. Nothing about the picture or the caption
-moved; only the run-up exists now.
+**The music runs from frame 0, and the swell happens after the first line.** Two versions cut the
+bed in — on the clap at 42.99s, then on the vocal at 43.15s — and both sounded wrong for the same
+reason: the phrase arrived out of silence with no bar of groove ahead of it, so it read as a sound
+effect rather than as a song. Laying it from the top fixed that but introduced the opposite fault:
+the fade reached normal at 0.8s, which is still inside the hook, and the bed buried the line.
 
-The fade is a quadratic ease-out — fast first, settling into normal — not a linear ramp and not the
-cubic ease-in used in an earlier version, which crept. Measured in isolation: **−26 dB** at 0.05s,
-−20.4 dB at 0.2s, −17.5 dB at 0.4s, **normal by 0.8s**, well before the line.
+So the bed sits **low under the hook** and only swells once that line has finished. The source is
+entered at **00:00:41.88 → 00:00:41.20**, which puts the 43.15s vocal at 1.95s. Measured in
+isolation:
+
+| Where | Bed level |
+|---|---|
+| 0.30s — under the hook | **−40.5 dB** |
+| 1.10s — still under it | −36.1 dB |
+| 1.19s | hook speech ends; the swell starts here, not before |
+| 1.30 / 1.50s — swelling | −20.6 / −17.0 dB |
+| **1.70s — normal reached** | **−15.5 dB** |
+| 1.95s — 中 lands | −15.7 dB, so **0.25s of normal ahead of the vocal** |
+| to 7.20s — the hold | ≈ −16 dB |
+| after | **−38 dB** |
+
+The curve is a quadratic ease-out, fast first and settling in, not the cubic ease-in an earlier
+version used, which crept.
+
+**The hook beat is 1.95s for 1.19s of speech, and that 0.76s of air is a music cue, not slack.**
+The bed cannot swell while the line is still being spoken, so tightening this gap puts it back on
+top of the voice. This is the one place in the piece where the gap is deliberately not minimal.
 
 **It holds at source volume for three repetitions.** The song sings the line three times on a clap
 grid measured dead regular at **1.75s** (transients at 42.99, 44.74, 46.49, 48.25, 49.99, 51.75s
