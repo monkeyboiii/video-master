@@ -21,10 +21,15 @@
 # vocabularies below are what it would standardise.
 #
 # shot    ECU CU MCU MS WS EWS POV AERIAL INSERT
-# camera  static push pull snap-zoom pan-l pan-r tilt-up tilt-down handheld whip orbit freeze ramp
+# camera  static push pull snap-zoom pan-l pan-r tilt-up tilt-down handheld orbit freeze ramp
 # bg      dirt night sky asphalt crowd grade neutral mall
-# motion  none punch-in zoom-punch slide-up drop-in pop whip-cut rise fade-through freeze-flash
-#         text-pop shake glitch
+# motion  none punch-in zoom-punch slide-up drop-in pop rise freeze-flash text-pop shake glitch
+#
+# STRAIGHT CUTS, NO TRANSITIONS. `whip-cut`, `fade-through` and `camera: whip` are gone from the
+# vocabulary, not just unused — a transition between two shots is a thing this piece does not do,
+# and a word still in the list is a word someone will reach for. Every motion left is something
+# that happens INSIDE a shot. storyboard-check rejects the removed ones, so the rule holds without
+# anyone having to remember it.
 # sfx     none whoosh impact riser sub-drop click shutter scratch ding swoosh-rev
 #
 # SFX ARE CUES, NOT ASSETS. The names below are what the edit should place; nothing here fetches
@@ -36,8 +41,8 @@ video_id: "S05E002"
 
 cuts:
   # hook (2.55s) — 2 cuts. Open inside the face, then let the accusation land. Not three.
-  - {beat: hook, shot: ECU, camera: snap-zoom, bg: neutral, motion: zoom-punch, share: 4, sfx: riser,
-     subject: eyes only, hard in — the riser starts here and resolves on the jump}
+  - {beat: hook, shot: ECU, camera: snap-zoom, bg: neutral, motion: zoom-punch, share: 4, sfx: whoosh,
+     subject: eyes only, hard in}
   - {beat: hook, shot: MCU, camera: static, bg: neutral, motion: text-pop, share: 6, sfx: click,
      subject: narrator to camera, accusation delivered, held}
 
@@ -60,8 +65,8 @@ cuts:
      text: MXGP, subject: MXGP title drops on the word F1}
 
   # this-weekend (2.20s) — ONE whip. The turn from spectacle to appointment is a single move.
-  - {beat: this-weekend, shot: MS, camera: whip, bg: asphalt, motion: whip-cut, share: 1, sfx: swoosh-rev,
-     subject: whip off the track into the city}
+  - {beat: this-weekend, shot: MS, camera: static, bg: asphalt, motion: pop, share: 1, sfx: swoosh-rev,
+     subject: hard cut off the track into the city}
 
   # in-shanghai (2.20s) — ONE shot, alone on screen. Resist a montage; the word is the payoff.
   - {beat: in-shanghai, shot: EWS, camera: static, bg: night, motion: slide-up, share: 1, sfx: riser,
@@ -69,7 +74,7 @@ cuts:
 
   # only-on-tv (4.65s) — 2 cuts, and they DRAG on purpose. This is the viewer's old assumption
   # and the next beat corrects it; the contrast only works if this one is slow.
-  - {beat: only-on-tv, shot: INSERT, camera: static, bg: grade, motion: fade-through, share: 5, sfx: scratch,
+  - {beat: only-on-tv, shot: INSERT, camera: static, bg: grade, motion: none, share: 5, sfx: scratch,
      subject: archive broadcast look, degrade if too clean}
   - {beat: only-on-tv, shot: CU, camera: push, bg: grade, motion: punch-in, share: 5, sfx: none,
      subject: slow push — the assumption held for years}
@@ -77,14 +82,14 @@ cuts:
   # now-here (4.15s) — 4 cuts. The correction, handheld, against the locked-off drag above.
   - {beat: now-here, shot: MS, camera: handheld, bg: crowd, motion: pop, share: 3, sfx: impact,
      subject: riders arriving, paddock}
-  - {beat: now-here, shot: CU, camera: handheld, bg: crowd, motion: whip-cut, share: 3, sfx: whoosh,
+  - {beat: now-here, shot: CU, camera: handheld, bg: crowd, motion: pop, share: 3, sfx: whoosh,
      subject: two faces, one cut — the pack shot and the orbit carry the rest}
   - {beat: now-here, shot: MS, camera: orbit, bg: crowd, motion: zoom-punch, share: 3, sfx: sub-drop,
      subject: orbit a bike being unloaded}
 
   # or-the-mall (3.90s) — 3 cuts, and it needs all three: setup, freeze, snap back. The joke dies
   # at two and turns into a scene at four.
-  - {beat: or-the-mall, shot: WS, camera: static, bg: mall, motion: whip-cut, share: 3, sfx: scratch,
+  - {beat: or-the-mall, shot: WS, camera: static, bg: mall, motion: pop, share: 3, sfx: scratch,
      subject: hard cut to escalators, fluorescent, dead}
   - {beat: or-the-mall, shot: MCU, camera: static, bg: mall, motion: freeze-flash, share: 2, sfx: click,
      subject: someone holding a paper bag, frozen}
@@ -111,5 +116,5 @@ cuts:
      text: "100", subject: the counter, as a number on screen}
 
   # see-you-in-shanghai (2.80s) — ONE shot. Ride out and hold the empty frame. Not a logo.
-  - {beat: see-you-in-shanghai, shot: WS, camera: pan-l, bg: dirt, motion: fade-through, share: 1, sfx: riser,
+  - {beat: see-you-in-shanghai, shot: WS, camera: pan-l, bg: dirt, motion: none, share: 1, sfx: riser,
      subject: ride out of frame, hold on the dust}

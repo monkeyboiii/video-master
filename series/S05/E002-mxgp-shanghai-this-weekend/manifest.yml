@@ -67,10 +67,13 @@ beats:
       zh-CN: 1.27
   - id: the-jump
     purpose: the promise, delivered before any claim is made about it
-    visual_intent: one jump, held, no caption over it — the picture is the beat
+    # 0.40s, not 1.10s. This beat is the ONLY thing between the hook and the source line, so its
+    # length IS the gap between the first two lines — and at 1.10s of silence the two stopped
+    # reading as one thought. Short enough to register as a picture, not long enough to be a pause.
+    visual_intent: one jump, no caption over it — the picture is the beat
     overlay: null
     target_duration_sec:
-      zh-CN: 1.10
+      zh-CN: 0.40
   - id: chinese-can-fly
     purpose: land the line in a real voice, not the narrator's
     visual_intent: stay on the air; let the source line carry it

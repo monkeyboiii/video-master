@@ -1,6 +1,6 @@
 {
   "locale": "zh-CN",
-  "durationSec": 24.6,
+  "durationSec": 23.9,
   "cuts": [
     {
       "beat": "hook",
@@ -9,9 +9,9 @@
       "bg": "neutral",
       "motion": "zoom-punch",
       "share": 4,
-      "sfx": "riser",
+      "sfx": "whoosh",
       "subject": "eyes only",
-      "hard in — the riser starts here and resolves on the jump": null,
+      "hard in": null,
       "atSec": 0,
       "durSec": 0.508
     },
@@ -42,7 +42,7 @@
       "held against sky": null,
       "no caption": null,
       "atSec": 1.27,
-      "durSec": 1.1
+      "durSec": 0.4
     },
     {
       "beat": "chinese-can-fly",
@@ -54,7 +54,7 @@
       "sfx": "sub-drop",
       "subject": "hold the air",
       "speed ramp under the source line 中国人能飞": null,
-      "atSec": 2.37,
+      "atSec": 1.67,
       "durSec": 1.3
     },
     {
@@ -67,7 +67,7 @@
       "sfx": "whoosh",
       "subject": "widest track shot",
       "riders in it": null,
-      "atSec": 3.67,
+      "atSec": 2.97,
       "durSec": 0.949
     },
     {
@@ -80,7 +80,7 @@
       "sfx": "impact",
       "subject": "roost off the rear wheel",
       "frame shake": null,
-      "atSec": 4.619,
+      "atSec": 3.919,
       "durSec": 0.632
     },
     {
@@ -93,19 +93,19 @@
       "sfx": "sub-drop",
       "text": "MXGP",
       "subject": "MXGP title drops on the word F1",
-      "atSec": 5.251,
+      "atSec": 4.551,
       "durSec": 0.949
     },
     {
       "beat": "this-weekend",
       "shot": "MS",
-      "camera": "whip",
+      "camera": "static",
       "bg": "asphalt",
-      "motion": "whip-cut",
+      "motion": "pop",
       "share": 1,
       "sfx": "swoosh-rev",
-      "subject": "whip off the track into the city",
-      "atSec": 6.2,
+      "subject": "hard cut off the track into the city",
+      "atSec": 5.5,
       "durSec": 0.89
     },
     {
@@ -120,7 +120,7 @@
       "subject": "Shanghai skyline",
       "title slides up": null,
       "held": null,
-      "atSec": 7.09,
+      "atSec": 6.39,
       "durSec": 0.96
     },
     {
@@ -128,12 +128,12 @@
       "shot": "INSERT",
       "camera": "static",
       "bg": "grade",
-      "motion": "fade-through",
+      "motion": "none",
       "share": 5,
       "sfx": "scratch",
       "subject": "archive broadcast look",
       "degrade if too clean": null,
-      "atSec": 8.05,
+      "atSec": 7.35,
       "durSec": 1.685
     },
     {
@@ -145,7 +145,7 @@
       "share": 5,
       "sfx": "none",
       "subject": "slow push — the assumption held for years",
-      "atSec": 9.735,
+      "atSec": 9.035,
       "durSec": 1.685
     },
     {
@@ -158,7 +158,7 @@
       "sfx": "impact",
       "subject": "riders arriving",
       "paddock": null,
-      "atSec": 11.42,
+      "atSec": 10.72,
       "durSec": 0.943
     },
     {
@@ -166,12 +166,12 @@
       "shot": "CU",
       "camera": "handheld",
       "bg": "crowd",
-      "motion": "whip-cut",
+      "motion": "pop",
       "share": 3,
       "sfx": "whoosh",
       "subject": "two faces",
       "one cut — the pack shot and the orbit carry the rest": null,
-      "atSec": 12.363,
+      "atSec": 11.663,
       "durSec": 0.943
     },
     {
@@ -183,7 +183,7 @@
       "share": 3,
       "sfx": "sub-drop",
       "subject": "orbit a bike being unloaded",
-      "atSec": 13.307,
+      "atSec": 12.607,
       "durSec": 0.943
     },
     {
@@ -191,13 +191,13 @@
       "shot": "WS",
       "camera": "static",
       "bg": "mall",
-      "motion": "whip-cut",
+      "motion": "pop",
       "share": 3,
       "sfx": "scratch",
       "subject": "hard cut to escalators",
       "fluorescent": null,
       "dead": null,
-      "atSec": 14.25,
+      "atSec": 13.55,
       "durSec": 0.816
     },
     {
@@ -210,7 +210,7 @@
       "sfx": "click",
       "subject": "someone holding a paper bag",
       "frozen": null,
-      "atSec": 15.066,
+      "atSec": 14.366,
       "durSec": 0.544
     },
     {
@@ -223,7 +223,7 @@
       "sfx": "sub-drop",
       "subject": "snap straight back to the track",
       "full volume": null,
-      "atSec": 15.61,
+      "atSec": 14.91,
       "durSec": 1.36
     },
     {
@@ -237,7 +237,7 @@
       "subject": "to camera",
       "plain": null,
       "no cut": null,
-      "atSec": 16.97,
+      "atSec": 16.27,
       "durSec": 1.21
     },
     {
@@ -250,7 +250,7 @@
       "sfx": "riser",
       "subject": "takeoff",
       "camera follows up": null,
-      "atSec": 18.18,
+      "atSec": 17.48,
       "durSec": 0.477
     },
     {
@@ -264,7 +264,7 @@
       "text": "希望别摔",
       "subject": "apex freeze",
       "bubble pops on the frozen frame": null,
-      "atSec": 18.657,
+      "atSec": 17.957,
       "durSec": 0.477
     },
     {
@@ -278,7 +278,7 @@
       "subject": "landing",
       "frame shake": null,
       "he does not crash": null,
-      "atSec": 19.134,
+      "atSec": 18.434,
       "durSec": 0.636
     },
     {
@@ -291,7 +291,7 @@
       "sfx": "whoosh",
       "subject": "the narrator's own bike",
       "or a track from S03 the audience has seen": null,
-      "atSec": 19.77,
+      "atSec": 19.07,
       "durSec": 2.022
     },
     {
@@ -305,7 +305,7 @@
       "text": "100",
       "subject": "the counter",
       "as a number on screen": null,
-      "atSec": 21.792,
+      "atSec": 21.092,
       "durSec": 1.348
     },
     {
@@ -313,14 +313,14 @@
       "shot": "WS",
       "camera": "pan-l",
       "bg": "dirt",
-      "motion": "fade-through",
+      "motion": "none",
       "share": 1,
       "sfx": "riser",
       "subject": "ride out of frame",
       "hold on the dust": null,
-      "atSec": 23.14,
+      "atSec": 22.44,
       "durSec": 1.46
     }
   ],
-  "script": "我|19|144\n不|144|269|*\n允许|269|594|*\n你们|594|769\n不|769|894\n晓得|894|2044\n\n中国|2370|2803\n人能|2803|3237|*\n飞|3237|3670|*\n\n这|3708|3858\n不是|3858|4058\n特效|4058|4633|*\n这是|4633|4958\n越野|4958|5233\n摩托|5233|5533\n世界|5533|5783\n里|5783|5883\n的|5883|5958\nF1|5958|7058|*\n\n而|6270|6420\n这个|6420|6695\n周末|6695|7920|*\n\n它|7111|7311\n就|7311|7461\n在|7461|7611\n上海|7611|8861|*\n\n我|8072|8197\n以前|8197|8572\n一直|8572|8897\n以为|8897|9122\n这种|9122|9422\n画面|9422|9997\n只能|9997|10222\n在|10222|10347\n国外|10347|10647|*\n电视|10647|10947\n里|10947|11047\n看到|11047|12247\n\n但|11433|11633\n现在|11633|12008\n世界|12008|12283|*\n顶级|12283|12558|*\n车手|12558|12933\n直接|12933|13233\n来到|13233|13633\n我们|13633|13833\n身边|13833|15108|*\n\n如果|14275|14575\n你|14575|14675\n周末|14675|15125\n还|15125|15275\n只是|15275|15550\n逛逛|15550|15850|*\n商场|15850|16350|*\n那|16350|16500\n就|16500|16650\n捞|16650|16775|*\n了|16775|16850\n啊|16850|17625\n\n不|16990|17165|*\n需要|17165|17490|*\n你|17490|17640\n懂|17640|17765\n摩托|17765|18990\n\n你|18208|18383\n只|18383|18533\n需要|18533|18733\n看|18733|19058\n他们|19058|19308\n飞|19308|19433|*\n起来|19433|20608|*\n\n而|19815|19915\n我|19915|20015\n来|20015|20165\n这里|20165|20565\n是因为|20565|21015\n我|21015|21115\n的|21115|21190\n100|21190|21490\n条|21490|21665\n赛道|21665|21915|*\n挑战|21915|22315|*\n还|22315|22590\n在|22590|22715\n继续|22715|23965\n\n下|23222|23422\n一条|23422|23797\n咱们|23797|24022\n上海|24022|24347|*\n见|24347|25447|*"
+  "script": "我|20|145\n不|145|270|*\n允许|270|595|*\n你们|595|770\n不|770|895\n晓得|895|1195\n\n中国|1670|2103\n人能|2103|2537|*\n飞|2537|2970|*\n\n这|3016|3166\n不是|3166|3366\n特效|3366|3941|*\n这是|3941|4266\n越野|4266|4541\n摩托|4541|4841\n世界|4841|5091\n里|5091|5191\n的|5191|5266\nF1|5266|5416|*\n\n而|5570|5720\n这个|5720|5995\n周末|5995|6309|*\n\n它|6411|6611\n就|6611|6761\n在|6761|6911\n上海|6911|7284|*\n\n我|7372|7497\n以前|7497|7872\n一直|7872|8197\n以为|8197|8422\n这种|8422|8722\n画面|8722|9297\n只能|9297|9522\n在|9522|9647\n国外|9647|9947|*\n电视|9947|10247\n里|10247|10347\n看到|10347|10644\n\n但|10733|10933\n现在|10933|11308\n世界|11308|11583|*\n顶级|11583|11858|*\n车手|11858|12233\n直接|12233|12533\n来到|12533|12933\n我们|12933|13133\n身边|13133|13476|*\n\n如果|13575|13875\n你|13875|13975\n周末|13975|14425\n还|14425|14575\n只是|14575|14850\n逛逛|14850|15150|*\n商场|15150|15650|*\n那|15650|15800\n就|15800|15950\n捞|15950|16075|*\n了|16075|16150\n啊|16150|16192\n\n不|16290|16465|*\n需要|16465|16790|*\n你|16790|16940\n懂|16940|17065\n摩托|17065|17401\n\n你|17508|17683\n只|17683|17833\n需要|17833|18033\n看|18033|18358\n他们|18358|18608\n飞|18608|18733|*\n起来|18733|18992|*\n\n而|19115|19215\n我|19215|19315\n来|19315|19465\n这里|19465|19865\n是因为|19865|20315\n我|20315|20415\n的|20415|20490\n100|20490|20790\n条|20790|20965\n赛道|20965|21215|*\n挑战|21215|21615|*\n还|21615|21890\n在|21890|22015\n继续|22015|22362\n\n下|22522|22722\n一条|22722|23097\n咱们|23097|23322\n上海|23322|23647|*\n见|23647|23819|*"
 }

@@ -219,10 +219,17 @@ def main():
         clip = np.concatenate(chunks).astype(np.float32)
         if not a.keep_padding:
             clip, lead = trim_silence(clip)
-            # Every span was measured against the untrimmed clip, so shift them all back by the
-            # lead that just came off. Miss this and the captions sit ~0.4s late on every beat.
-            toks = [(w, s - lead, e - lead) for w, s, e in toks]
-            zspans = [(s - lead, e - lead) for s, e in zspans]
+            dur = len(clip) / SR
+            # Every span was measured against the untrimmed clip, so shift them back by the lead
+            # that came off — miss this and the captions sit ~0.4s late on every beat.
+            #
+            # AND CLAMP THE TAIL. zh_spans gives the LAST word "the tail, including the trailing
+            # pad", which is ~1.0s of silence that the trim has just removed from the audio. Left
+            # unclamped, the final word of every beat lingers a second past the voice and runs
+            # into the next beat's block: 继续 ended at 23.26s while the next beat started at
+            # 22.44s. Shifting alone is not enough; the spans have to fit the clip that remains.
+            toks = [(w, max(0.0, s - lead), min(dur, e - lead)) for w, s, e in toks]
+            zspans = [(max(0.0, s - lead), min(dur, e - lead)) for s, e in zspans]
         dur = len(clip) / SR
         if dur > cap:
             over.append((beat, dur, cap))

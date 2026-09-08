@@ -63,7 +63,13 @@ const BG: Record<string, {from: string; to: string; light: string; dark: boolean
   mall:    {from: '#B9BCC2', to: '#E6E8EC', light: '#FFFFFF',       dark: false},
 };
 
-/** A camera move is a transform on the whole frame; `t` is 0..1 across the cut. */
+/**
+ * A camera move is a transform on the whole frame; `t` is 0..1 across the cut.
+ *
+ * There is no `whip` and no `whip-cut`/`fade-through` motion: the piece cuts straight, so a
+ * transition between two shots is not in the vocabulary storyboard-check accepts. The branches
+ * were removed rather than left unreachable.
+ */
 const cameraTransform = (camera: string, t: number, frame: number): string => {
   const jitter = (seed: string, amp: number) =>
     (random(seed + Math.floor(frame / 2)) - 0.5) * amp;
@@ -77,7 +83,6 @@ const cameraTransform = (camera: string, t: number, frame: number): string => {
     case 'tilt-up':   return `scale(1.14) translateY(${interpolate(t, [0, 1], [4, -4])}%)`;
     case 'tilt-down': return `scale(1.14) translateY(${interpolate(t, [0, 1], [-4, 4])}%)`;
     case 'handheld':  return `scale(1.08) translate(${jitter('x', 1.6)}%, ${jitter('y', 1.6)}%) rotate(${jitter('r', 0.7)}deg)`;
-    case 'whip':      return `scale(1.3) translateX(${interpolate(t, [0, 0.5, 1], [-26, 0, 26])}%)`;
     case 'orbit':     return `scale(1.16) translateX(${Math.sin(t * Math.PI) * 5}%) rotate(${Math.sin(t * Math.PI) * 1.6}deg)`;
     case 'ramp':      return `scale(${1.02 + Math.pow(t, 2.2) * 0.20})`;
     case 'freeze':    return 'scale(1.12)';
@@ -96,9 +101,7 @@ const motionStyle = (motion: string, frame: number, dur: number, fps: number): R
     case 'slide-up':     return {opacity: out, transform: `translateY(${(1 - s) * 90}px)`};
     case 'drop-in':      return {opacity: out, transform: `translateY(${(1 - s) * -110}px) rotate(${(1 - s) * -3}deg)`};
     case 'pop':          return {opacity: out, transform: `scale(${0.7 + s * 0.3})`};
-    case 'whip-cut':     return {opacity: out * interpolate(frame, [0, 3], [0, 1], {extrapolateRight: 'clamp'}), transform: `translateX(${(1 - s) * 140}px)`};
     case 'rise':         return {opacity: out * interpolate(t, [0, 0.3], [0, 1], {extrapolateRight: 'clamp'}), transform: `translateY(${(1 - t) * 40}px) scale(${0.98 + t * 0.02})`};
-    case 'fade-through': return {opacity: interpolate(t, [0, 0.25, 0.75, 1], [0, 1, 1, 0])};
     case 'freeze-flash': return {opacity: out, transform: `scale(${interpolate(frame, [0, 2, 5], [1.1, 1.02, 1], {extrapolateRight: 'clamp'})})`};
     case 'text-pop':     return {opacity: out, transform: `scale(${0.86 + s * 0.14})`};
     case 'shake':        return {opacity: out, transform: `translate(${(random('sx' + frame) - 0.5) * 14}px, ${(random('sy' + frame) - 0.5) * 14}px)`};

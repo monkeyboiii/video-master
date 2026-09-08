@@ -31,11 +31,15 @@ const REPO = join(fileURLToPath(new URL('.', import.meta.url)), '..');
 // The previz renderer implements exactly these. Keep in step with PrevizStoryboard.tsx.
 export const VOCAB = {
   shot: ['ECU', 'CU', 'MCU', 'MS', 'WS', 'EWS', 'POV', 'AERIAL', 'INSERT'],
+  // No `whip`: a whip pan is a transition device, and this piece cuts straight.
   camera: ['static', 'push', 'pull', 'snap-zoom', 'pan-l', 'pan-r', 'tilt-up', 'tilt-down',
-           'handheld', 'whip', 'orbit', 'freeze', 'ramp'],
+           'handheld', 'orbit', 'freeze', 'ramp'],
   bg: ['dirt', 'night', 'sky', 'asphalt', 'crowd', 'grade', 'neutral', 'mall'],
-  motion: ['none', 'punch-in', 'zoom-punch', 'slide-up', 'drop-in', 'pop', 'whip-cut', 'rise',
-           'fade-through', 'freeze-flash', 'text-pop', 'shake', 'glitch'],
+  // No `whip-cut` or `fade-through`: both are transitions BETWEEN shots, and every motion here
+  // must be something that happens inside one. Removed from the vocabulary rather than merely
+  // unused, so reaching for one is an error instead of a habit.
+  motion: ['none', 'punch-in', 'zoom-punch', 'slide-up', 'drop-in', 'pop', 'rise',
+           'freeze-flash', 'text-pop', 'shake', 'glitch'],
   sfx: ['none', 'whoosh', 'impact', 'riser', 'sub-drop', 'click', 'shutter', 'scratch', 'ding',
         'swoosh-rev'],
 };
