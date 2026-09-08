@@ -98,6 +98,12 @@ enforce — so holding it longer would be the 2.1x-too-fast defect in reverse. *
 carries the emphasis instead:** `you-missed-out` is now its own beat, and the snap back to the
 track lands on the punchline rather than somewhere inside the setup. 15 beats.
 
+Splitting that beat out introduced a gap of its own: it was set to 1.10s by hand for 0.74s of
+speech, leaving **0.36s** where every other spoken beat carries 0.08s, and it read as a hole right
+after the punchline. Now 0.82s. **Every spoken beat in the piece is speech + 0.07–0.10s, and `hook`
+is the single deliberate exception at 0.76s** — its air is the music cue, and that is why it is
+called out in the manifest rather than left to look like an oversight.
+
 ## Beats
 
 **Timing source: synthesised, not a take.** And the gaps were never the beat lengths. Two passes

@@ -134,6 +134,10 @@ beats:
       zh-CN: 2.09
   - id: you-missed-out
     purpose: the punchline, on its own beat
+    # 0.82s = 0.74s of speech + 0.08s, the same trailing air every other spoken beat gets. It was
+    # 1.10s when this beat was split out, which left 0.36s and read as a hole after the punchline.
+    # The hook is the ONLY beat that deliberately carries more, because its air is a music cue.
+    #
     # The voice speaks 捞了 in about 0.27s and rewording does not change it — measured against
     # Kokoro's own pred_dur, in the sentence and as its own utterance alike. A caption highlight
     # is read off the voice by design, so five frames of lit text is all the caption can give it.
@@ -142,7 +146,7 @@ beats:
     visual_intent: snap back to the track, full frame, held on the word
     overlay: null
     target_duration_sec:
-      zh-CN: 1.10
+      zh-CN: 0.82
   - id: no-need-to-know
     purpose: remove the last excuse
     visual_intent: to camera again, plain
