@@ -129,17 +129,27 @@ assets:
   voiceover: []
   audio:
     - asset_id: VOX_002
-      filename: chinese-man-can-fly.mp4 # lives in media/ — NOT on the dev box, it is on the Mac
+      filename: The Chinese Can Fly.mp3 # lives in media/audio/
       external_uri: null
-      source: operator-supplied source clip, "The Chinese man can fly"
+      source: operator-supplied source clip, "The Chinese Can Fly"
       license: >-
-        NOT CLEARED — third-party clip, no licence on file. Placeholder for the preview only;
-        must be cleared or replaced before publish.
+        NOT CLEARED — third-party recording, no licence on file. Placeholder for the preview
+        only; must be cleared or replaced before publish.
         USED TWO WAYS, both from the same file. (1) The `chinese-can-fly` beat takes the
-        speaker's own line 中国人能飞 at roughly 00:00:43-00:00:44 in this clip, at full level
-        and NOT re-synthesised — that beat carries no `**口播:**` marker for exactly this
-        reason. The in/out points are approximate until someone scrubs the file: it is on the
-        Mac, not on this box, so nothing here has measured it. (2) From `not-vfx` onward the
-        same source is ducked under the narration as the bed.
-        UNVERIFIED — read the file on the Mac to confirm the 43-44s window and the exact
-        phrase boundaries before cutting.
+        speaker's own line 中国人能飞 at roughly 00:00:43-00:00:44, at full level and NOT
+        re-synthesised — that beat carries `**原声:**` instead of `**口播:**` for exactly this
+        reason. (2) From `not-vfx` onward the same source is ducked under the narration as the
+        bed.
+        MEASURED 2026-09-08 on the dev box, at 320 kbps 44.1 kHz stereo: 117.45s,
+        integrated -6.4 LUFS, true peak +3.8 dBFS, LRA 13.9 LU. It is a CLIPPED master and the
+        hottest source in this repo — every bed in S05E001 peaked lower (+0.9, +0.4, +2.4) and
+        those were attenuated 28.8-32.4 dB to sit under a voice. Do not use it at unity anywhere,
+        and expect a similar attenuation for the bed.
+        THE PHRASE CANNOT BE CUT ON SILENCE. Level is flat at about -6 dB mean across 40-47s and
+        `silencedetect` at -32 dB / 0.15s finds no gap anywhere in that window — it is a
+        continuous music bed with the line over it. So the in/out points have to be set by ear or
+        by transcription, not by a threshold.
+        UNVERIFIED — the 43-44s window is the operator's, and nothing on this box has confirmed
+        the phrase boundaries. `tools/transcribe.mjs` is the documented loop for a human take but
+        only whisper.cpp's dummy test models (575 KB) are present; a real model is a ~3 GB
+        download that nobody has asked for.

@@ -18,8 +18,15 @@ captions are built from.
 plan so it still gets a caption. The audio is the speaker's own line from VOX_002 at roughly
 00:00:43–00:00:44.
 
-DECIDE: the VOX_002 in/out points are approximate. The file is on the Mac and nothing on the dev
-box has scrubbed it — confirm the phrase boundaries before cutting.
+VOX_002 is now on this box, at `media/audio/The Chinese Can Fly.mp3`, and measured: 117.45s,
+**-6.4 LUFS integrated, true peak +3.8 dBFS** — a clipped master, the hottest source in the repo.
+Every bed in S05E001 peaked lower and was pulled down 28.8-32.4 dB to sit under a voice.
+
+DECIDE: the 43-44s window is still the operator's and unconfirmed. The phrase **cannot be cut on
+silence** — level is flat at about -6 dB mean across 40-47s and `silencedetect` at -32 dB finds no
+gap in that window, because it is a continuous music bed with the line over it. Setting the in/out
+needs an ear or a transcription; only whisper.cpp's 575 KB dummy test models are installed, and a
+real one is a ~3 GB download nobody has asked for.
 DECIDE: VOX_002 has no licence on file. It is a third-party clip used two ways (the line at full
 level, then ducked as the bed from `not-vfx` onward). Clear it or replace it before publish.
 
