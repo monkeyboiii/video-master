@@ -55,10 +55,12 @@ and out of order, it only ever encoded which stage someone last remembered to bu
 | the verbs | `tools/` | `vm` (the series tree), `render-overlays.mjs`, `render-captions.sh`, `burn-subtitles.py`, `retime-subtitles.py`, `probe-media.mjs`, `validate.mjs` |
 | cutting silence | [`agents.d/skills/auto-editor`](../skills/auto-editor/SKILL.md) | the voice job's tool |
 | narrating a cut | [`agents.d/skills/auto-narrate`](../skills/auto-narrate/SKILL.md) | Kokoro-82M; the caption rows come out of the same pass |
+| styling captions | [`agents.d/skills/video-captions`](../skills/video-captions/SKILL.md) | the two locale modes, the striped band, the transparent delivery master |
 | naming, locales, flow | [naming-conventions.md](naming-conventions.md), [localization.md](localization.md), [toolline.md](toolline.md) | every tool joins on the names |
 | the series tree | `series/S0N/E0NN-slug/` | one folder per season; each season's `README.md` says what it is |
 | shared props | `props/<name>/base.json` | promoted from episodes, referenced by `$ref`; `vm props` moves them either way |
 | episode history | `series/` | read-only; what was actually shipped |
+| the heavy media | `media/` | outside git, ~3 GB; `manifest.yml` is what connects it to the tree |
 
 ## Architecture decisions
 
