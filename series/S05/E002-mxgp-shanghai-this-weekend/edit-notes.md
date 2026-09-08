@@ -22,61 +22,62 @@ as the bed for the rest of the piece.
 
 ## Preview mix
 
-`media/previz/S05E002-previz.mp4` carries a real mix so the pacing can be judged by ear:
-narration, plus VOX_002 from 43.0s placed at the beat (timeline 3.45s), at **−10 dB** for the
-1.30s line and ducking over 0.3s to **−26 dB** underneath. Those attenuations are not taste — the
-source is −6.4 LUFS with a +3.8 dBFS true peak, so it is never used at unity.
+`media/previz/S05E002-previz.mp4` carries a real mix so the pacing can be judged by ear.
 
-**Measured: −15.8 LUFS integrated, −1.5 dBTP.** That is 1.8 LU under the −14 LUFS the QC
-checklist asks for, and it is peak-limited rather than wrong: two-pass `loudnorm` at a −1.5 dBTP
-ceiling cannot lift this material further, because sparse speech over a quiet bed has a high
-peak-to-loudness ratio. Reaching −14 needs either a higher ceiling or real compression, and
-neither belongs in a previz. The shipping render is where that gets decided.
+**The bed is one continuous use and it now starts at frame 0.** The source is entered at
+**00:00:40.63** so that the 43.0s line lands exactly on the `chinese-can-fly` beat (2.37s), and
+it fades in on a cubic underneath the hook rather than appearing from nowhere. Measured in
+isolation:
 
-VOX_002 is now on this box, at `media/audio/The Chinese Can Fly.mp3`, and measured: 117.45s,
-**-6.4 LUFS integrated, true peak +3.8 dBFS** — a clipped master, the hottest source in the repo.
-Every bed in S05E001 peaked lower and was pulled down 28.8-32.4 dB to sit under a voice.
+| Where | Bed level |
+|---|---|
+| 0.3s — under the hook | **−44.5 dB**, very faint |
+| 1.2s — swelling | −29.9 dB |
+| 2.6s — the source line 中国人能飞 | **−15.9 dB**, full |
+| 4.6s onward — ducked under the narration | **−38.0 dB** |
 
-DECIDE: the 43-44s window is still the operator's and unconfirmed. The phrase **cannot be cut on
-silence** — level is flat at about -6 dB mean across 40-47s and `silencedetect` at -32 dB finds no
-gap in that window, because it is a continuous music bed with the line over it. Setting the in/out
-needs an ear or a transcription; only whisper.cpp's 575 KB dummy test models are installed, and a
-real one is a ~3 GB download nobody has asked for.
-DECIDE: VOX_002 has no licence on file. It is a third-party clip used two ways (the line at full
-level, then ducked as the bed from `not-vfx` onward). Clear it or replace it before publish.
+The duck was −26 dB and sat too high behind the voice; it is −32 dB in the envelope now, which
+measures −38 dB on this material. Those attenuations are not taste — the source is −6.4 LUFS with
+a +3.8 dBFS true peak and is never used at unity.
 
-## Captions
+**The riser on the hook is synthesised here**, not a library asset: a 140→920 Hz sweep plus
+high-passed pink noise, swelling on a cubic across the hook and cut on the jump. The storyboard's
+`sfx: riser` cue is what the edit replaces it with.
 
-From `/auto-narrate`, read off the synthesised voice — not hand-timed. 91 rows, 42.02s, written
-to `remotion-props/spoken-captions.zh-CN.json`.
-
-**Highlights are automatic.** The bold spans in `script.zh-CN.md`'s `**口播:**` lines are the
-`*` marks in the rows; there is no second list of important words to keep in step. 22 of 91 rows
-carry a mark.
-
-`chinese-can-fly`'s four caption rows are **evenly spaced across its 1.80s slot**, because there
-is no synthesised voice to read timings off and the source clip is not on this box. The narrate
-run says so on every run. Re-time them off VOX_002 with `tools/transcribe.mjs` +
-`tools/group-words.mjs` before this is cut — that is the documented loop for a human take.
+Mix measures **−15.1 LUFS / −1.5 dBTP**, 1.1 LU under the −14 the QC checklist asks for and
+peak-limited rather than wrong — sparse speech over a quiet bed has a high peak-to-loudness ratio,
+and two-pass `loudnorm` cannot lift it further at that ceiling. The shipping render is where a
+higher ceiling or real compression gets decided.
 
 ## Beats
 
-**Timing source: synthesised, not a take.** The `target_duration_sec` values were first estimated
-from character count and eleven of twelve beats came back OVER on the first narrate run. They are
-now what Kokoro actually took at speed 1.15 **plus 0.05s** — two frames, not nine. The first pass
-left 0.30s after every line and it read as sentences with gaps, which is the opposite of this
-format. Total 38.50s, down from 41.85s. A recorded read re-times all of them.
+**Timing source: synthesised, not a take.** And the gaps were never the beat lengths. Two passes
+shortened the beats — 0.30s of air, then 0.05s — and it still read as sentences with pauses,
+because `silencedetect` at −45 dB showed the real gaps between spoken words were **1.31–1.45s**
+the whole time. Kokoro pads every clip with roughly 0.37s of lead and 1.0s of tail, and the
+reported `spoke` was that padded length.
+
+`build-narration.py` now trims it (`trim_silence`; `--keep-padding` opts out), so the beats are
+speech lengths plus 0.08s. The hook went 2.48s → **1.19s of actual voice**. Total **24.60s**, down
+from 38.50s, with nothing said faster and no word clipped.
+
+**Caption alignment was verified after the trim, not assumed.** Every word span is measured against
+the untrimmed clip, so all of them shift back by the lead that came off; miss that and the captions
+sit ~0.4s late on every beat. Checked against `silencedetect` onsets: 10 of 12 blocks land within
+**±0.06s**. Block 1 has no matching onset because the track now *starts* with speech (−18.2 dB in
+the first 0.3s), which is the trim working; block 2 is the source beat and has no synthesised
+audio.
 
 ## Storyboard
 
-`storyboard.yml` — 26 cuts over 13 beats, median 1.25s. **Pacing is semantic, not uniform.** The
-first pass cut 36 times and gave every beat the same treatment, including the jump the whole piece
-is a claim about. Six beats now hold on one shot; the four that cut fast are the ones that earn it
-(the not-vfx montage, the now-here faces against only-on-tv's drag, the mall gag, and
-takeoff/apex/landing). Checked with
-`node tools/storyboard-check.mjs S05E002 --cuts`. The previz renders from
-`remotion-props/previz.zh-CN.json` (`tools/previz-props.mjs`). See
-`agents.d/modules/storyboard-previz.md` — this is the repo's first one and is not yet a convention.
+`storyboard.yml` — **24 cuts** over 13 beats, median 0.95s. Pacing is semantic, not uniform: six
+beats hold on one shot, and the fast runs are the four that earn them (the not-vfx montage, the
+now-here faces against only-on-tv's deliberate drag, the mall gag, and takeoff/apex/landing).
+
+**Cut counts are not independent of beat length.** When the trim took the piece from 38.50s to
+24.60s, every cut got 36% shorter for free and the montage beats fell to 0.42s — faster than the
+pace that had already been called too aggressive. not-vfx and now-here dropped from 4 cuts to 3.
+Re-read `storyboard-check --cuts` after any retime.
 
 DECIDE: the sfx names are cues, not assets. Nothing maps them to `remotion.media` files yet.
 

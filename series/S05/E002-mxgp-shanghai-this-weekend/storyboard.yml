@@ -36,8 +36,8 @@ video_id: "S05E002"
 
 cuts:
   # hook (2.55s) — 2 cuts. Open inside the face, then let the accusation land. Not three.
-  - {beat: hook, shot: ECU, camera: snap-zoom, bg: neutral, motion: zoom-punch, share: 4, sfx: whoosh,
-     subject: eyes only, hard in}
+  - {beat: hook, shot: ECU, camera: snap-zoom, bg: neutral, motion: zoom-punch, share: 4, sfx: riser,
+     subject: eyes only, hard in — the riser starts here and resolves on the jump}
   - {beat: hook, shot: MCU, camera: static, bg: neutral, motion: text-pop, share: 6, sfx: click,
      subject: narrator to camera, accusation delivered, held}
 
@@ -54,8 +54,6 @@ cuts:
   # not-vfx (3.80s) — 4 cuts. The montage that earns the F1 comparison. Fast is the content here.
   - {beat: not-vfx, shot: EWS, camera: pull, bg: dirt, motion: pop, share: 3, sfx: whoosh,
      subject: widest track shot, riders in it}
-  - {beat: not-vfx, shot: MS, camera: pan-r, bg: dirt, motion: whip-cut, share: 2, sfx: whoosh,
-     subject: pack through a rutted corner}
   - {beat: not-vfx, shot: ECU, camera: static, bg: dirt, motion: shake, share: 2, sfx: impact,
      subject: roost off the rear wheel, frame shake}
   - {beat: not-vfx, shot: WS, camera: static, bg: dirt, motion: drop-in, share: 3, sfx: sub-drop,
@@ -79,10 +77,8 @@ cuts:
   # now-here (4.15s) — 4 cuts. The correction, handheld, against the locked-off drag above.
   - {beat: now-here, shot: MS, camera: handheld, bg: crowd, motion: pop, share: 3, sfx: impact,
      subject: riders arriving, paddock}
-  - {beat: now-here, shot: CU, camera: handheld, bg: crowd, motion: whip-cut, share: 2, sfx: whoosh,
-     subject: face one}
-  - {beat: now-here, shot: CU, camera: handheld, bg: crowd, motion: whip-cut, share: 2, sfx: whoosh,
-     subject: face two}
+  - {beat: now-here, shot: CU, camera: handheld, bg: crowd, motion: whip-cut, share: 3, sfx: whoosh,
+     subject: two faces, one cut — the pack shot and the orbit carry the rest}
   - {beat: now-here, shot: MS, camera: orbit, bg: crowd, motion: zoom-punch, share: 3, sfx: sub-drop,
      subject: orbit a bike being unloaded}
 

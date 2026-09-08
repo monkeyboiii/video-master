@@ -91,6 +91,36 @@ def zh_spans(g2p, phonemes, pred_dur, words, t0):
     return spans
 
 
+def trim_silence(x, thresh_db=-45.0, keep=0.02):
+    """Drop the lead-in and tail silence Kokoro pads every clip with.
+
+    MEASURED, and it is the whole reason the piece read as sentences with pauses. The synthesiser
+    returns a clip whose SPEECH is a fraction of its length — about 0.37s of lead and 1.0s of tail
+    on this script — and `dur` was that padded length, so sizing a beat to it left ~1.4s of actual
+    silence between words no matter how tight the beat looked. `silencedetect` at -45 dB on the
+    assembled track showed gaps of 1.31-1.45s between every pair of sentences while the manifest
+    said the beats butted up within 0.05s.
+
+    Trimming here rather than shortening beats is the difference between sentences catching up and
+    words colliding: the speech is untouched, only the padding goes. It is the same thing
+    `agents.d/skills/auto-editor` does to a human take, for the same reason.
+
+    `keep` leaves 20ms either side so a plosive or a trailing vowel is not clipped off.
+
+    Returns (clip, lead_sec) — lead_sec is what came off the FRONT, because every word span was
+    measured against the untrimmed clip and has to shift back by exactly that much.
+    """
+    import numpy as np
+    amp = 10.0 ** (thresh_db / 20.0)
+    loud = np.abs(x) > amp
+    if not loud.any():
+        return x, 0.0
+    pad = int(keep * SR)
+    i = max(0, int(np.argmax(loud)) - pad)
+    j = min(len(x), len(x) - int(np.argmax(loud[::-1])) + pad)
+    return x[i:j], i / SR
+
+
 def flat_spans(n, t0, dur):
     """Even spans across a beat's slot — the fallback for a beat with no voice to read.
 
@@ -114,6 +144,8 @@ def main():
                                      'instead of the demo script in script.py')
     p.add_argument('--speed', type=float, default=1.15)
     p.add_argument('--voice')
+    p.add_argument('--keep-padding', action='store_true',
+                   help="do not trim Kokoro's lead-in/tail silence from each clip")
     p.add_argument('--repo', default='hexgrad/Kokoro-82M')
     p.add_argument('--outdir', type=Path,
                    default=Path(os.environ.get('DBX_TTS_DIR',
@@ -185,6 +217,12 @@ def main():
                         continue
                     toks.append((txt, base + t.start_ts, base + t.end_ts))
         clip = np.concatenate(chunks).astype(np.float32)
+        if not a.keep_padding:
+            clip, lead = trim_silence(clip)
+            # Every span was measured against the untrimmed clip, so shift them all back by the
+            # lead that just came off. Miss this and the captions sit ~0.4s late on every beat.
+            toks = [(w, s - lead, e - lead) for w, s, e in toks]
+            zspans = [(s - lead, e - lead) for s, e in zspans]
         dur = len(clip) / SR
         if dur > cap:
             over.append((beat, dur, cap))

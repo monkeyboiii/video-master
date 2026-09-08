@@ -40,9 +40,16 @@ variants:
 # which is a real measurement of the voice that plays in the PREVIEW and still not a measurement
 # of a human read.
 #
-# THE 0.05s IS THE FORMAT. The first pass left 0.30s of air after every line and it read as a
-# series of sentences with gaps between them, which is the opposite of what this piece is. Rapid
-# fire means the next line starts on the tail of the last one; the gap is two frames, not nine.
+# THE GAP WAS NEVER THE BEAT LENGTH. Two passes shortened the beats — 0.30s of air, then 0.05s —
+# and the piece still read as sentences with pauses, because `silencedetect` at -45 dB showed the
+# real gaps between spoken words were 1.31-1.45s the whole time. Kokoro pads every clip with about
+# 0.37s of lead and 1.0s of tail, and `spoke` was that padded length, so a beat sized to it was
+# mostly silence no matter how tight the number looked.
+#
+# build-narration.py now trims that padding (`trim_silence`, and `--keep-padding` to opt out), so
+# these are SPEECH lengths plus 0.08s. hook went 2.48s -> 1.19s of actual voice. Total 24.60s,
+# down from 38.50s, with nothing said any faster and no word clipped.
+#
 # `the-jump` and `chinese-can-fly` carry no synthesised voice, so their lengths are set by hand:
 # one held jump, and one spoken line from the source clip.
 #
@@ -57,13 +64,13 @@ beats:
     visual_intent: straight to camera, no establishing shot
     overlay: null
     target_duration_sec:
-      zh-CN: 2.55
+      zh-CN: 1.27
   - id: the-jump
     purpose: the promise, delivered before any claim is made about it
     visual_intent: one jump, held, no caption over it — the picture is the beat
     overlay: null
     target_duration_sec:
-      zh-CN: 0.90
+      zh-CN: 1.10
   - id: chinese-can-fly
     purpose: land the line in a real voice, not the narrator's
     visual_intent: stay on the air; let the source line carry it
@@ -75,61 +82,61 @@ beats:
     visual_intent: MXGP title card over the widest track shot available
     overlay: null
     target_duration_sec:
-      zh-CN: 3.80
+      zh-CN: 2.53
   - id: this-weekend
     purpose: the turn from spectacle to appointment
     visual_intent: cut rhythm tightens here; short beat, short shot
     overlay: null
     target_duration_sec:
-      zh-CN: 2.20
+      zh-CN: 0.89
   - id: in-shanghai
     purpose: the payoff of the previous beat, alone on screen
     visual_intent: Shanghai plate or skyline, one beat only
     overlay: null
     target_duration_sec:
-      zh-CN: 2.20
+      zh-CN: 0.96
   - id: only-on-tv
     purpose: the narrator admits the audience's own assumption before correcting it
     visual_intent: archive-feeling footage, foreign broadcast look
     overlay: null
     target_duration_sec:
-      zh-CN: 4.65
+      zh-CN: 3.37
   - id: now-here
     purpose: the correction
     visual_intent: riders arriving, paddock, faces
     overlay: null
     target_duration_sec:
-      zh-CN: 4.15
+      zh-CN: 2.83
   - id: or-the-mall
     purpose: the needle — the alternative weekend, named
     visual_intent: hard cut to something mundane, then back
     overlay: null
     target_duration_sec:
-      zh-CN: 3.90
+      zh-CN: 2.72
   - id: no-need-to-know
     purpose: remove the last excuse
     visual_intent: to camera again, plain
     overlay: null
     target_duration_sec:
-      zh-CN: 2.50
+      zh-CN: 1.21
   - id: just-watch-them-fly
     purpose: restate the promise as an instruction
     visual_intent: the biggest air in the footage; 希望别摔 bubble on the landing
     overlay: null
     target_duration_sec:
-      zh-CN: 2.90
+      zh-CN: 1.59
   - id: hundred-tracks
     purpose: tie the piece back to the season it spins off from
     visual_intent: the narrator's own bike, or a previous track from S03
     overlay: null
     target_duration_sec:
-      zh-CN: 4.65
+      zh-CN: 3.37
   - id: see-you-in-shanghai
     purpose: the sign-off doubles as the next episode's hook
     visual_intent: ride out of frame
     overlay: null
     target_duration_sec:
-      zh-CN: 2.80
+      zh-CN: 1.46
 
 assets:
   raw: []
