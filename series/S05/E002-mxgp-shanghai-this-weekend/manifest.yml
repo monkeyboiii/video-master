@@ -34,11 +34,19 @@ variants:
 # zh-CN only. Per agents.d/modules/localization.md an en-US edition would be authored
 # natively rather than translated, so no en-US variant is declared.
 #
-# TIMING SOURCE: SYNTHESISED, not a take. These thirteen numbers were first estimated from
-# character count, and every one of them was wrong — eleven of twelve beats came back OVER on the
-# first /auto-narrate run. They are now the duration Kokoro actually took at speed 1.15 plus about
-# 0.3s of air, which is a real measurement of the voice that plays in the PREVIEW and still not a
-# measurement of a human read. A recorded take re-times all of them. agents.d/modules/captions.md
+# TIMING SOURCE: SYNTHESISED, not a take. These numbers were first estimated from character
+# count and every one was wrong — eleven of twelve beats came back OVER on the first
+# /auto-narrate run. They are now the duration Kokoro actually took at speed 1.15 plus 0.05s,
+# which is a real measurement of the voice that plays in the PREVIEW and still not a measurement
+# of a human read.
+#
+# THE 0.05s IS THE FORMAT. The first pass left 0.30s of air after every line and it read as a
+# series of sentences with gaps between them, which is the opposite of what this piece is. Rapid
+# fire means the next line starts on the tail of the last one; the gap is two frames, not nine.
+# `the-jump` and `chinese-can-fly` carry no synthesised voice, so their lengths are set by hand:
+# one held jump, and one spoken line from the source clip.
+#
+# A recorded take re-times all of them. agents.d/modules/captions.md
 # § Timing comes from measurement, not from feel is explicit that this is the weaker kind of
 # number; it is declared here so nothing downstream mistakes it for a measurement. The
 # /auto-narrate run prints spoke-vs-cap per beat and any beat marked OVER is a line to
@@ -49,79 +57,79 @@ beats:
     visual_intent: straight to camera, no establishing shot
     overlay: null
     target_duration_sec:
-      zh-CN: 2.80
+      zh-CN: 2.55
   - id: the-jump
     purpose: the promise, delivered before any claim is made about it
     visual_intent: one jump, held, no caption over it — the picture is the beat
     overlay: null
     target_duration_sec:
-      zh-CN: 1.20
+      zh-CN: 0.90
   - id: chinese-can-fly
     purpose: land the line in a real voice, not the narrator's
     visual_intent: stay on the air; let the source line carry it
     overlay: null
     target_duration_sec:
-      zh-CN: 1.80
+      zh-CN: 1.30
   - id: not-vfx
     purpose: name the thing, and borrow a frame the audience already has (F1)
     visual_intent: MXGP title card over the widest track shot available
     overlay: null
     target_duration_sec:
-      zh-CN: 4.05
+      zh-CN: 3.80
   - id: this-weekend
     purpose: the turn from spectacle to appointment
     visual_intent: cut rhythm tightens here; short beat, short shot
     overlay: null
     target_duration_sec:
-      zh-CN: 2.40
+      zh-CN: 2.20
   - id: in-shanghai
     purpose: the payoff of the previous beat, alone on screen
     visual_intent: Shanghai plate or skyline, one beat only
     overlay: null
     target_duration_sec:
-      zh-CN: 2.45
+      zh-CN: 2.20
   - id: only-on-tv
     purpose: the narrator admits the audience's own assumption before correcting it
     visual_intent: archive-feeling footage, foreign broadcast look
     overlay: null
     target_duration_sec:
-      zh-CN: 4.90
+      zh-CN: 4.65
   - id: now-here
     purpose: the correction
     visual_intent: riders arriving, paddock, faces
     overlay: null
     target_duration_sec:
-      zh-CN: 4.40
+      zh-CN: 4.15
   - id: or-the-mall
     purpose: the needle — the alternative weekend, named
     visual_intent: hard cut to something mundane, then back
     overlay: null
     target_duration_sec:
-      zh-CN: 4.15
+      zh-CN: 3.90
   - id: no-need-to-know
     purpose: remove the last excuse
     visual_intent: to camera again, plain
     overlay: null
     target_duration_sec:
-      zh-CN: 2.70
+      zh-CN: 2.50
   - id: just-watch-them-fly
     purpose: restate the promise as an instruction
     visual_intent: the biggest air in the footage; 希望别摔 bubble on the landing
     overlay: null
     target_duration_sec:
-      zh-CN: 3.10
+      zh-CN: 2.90
   - id: hundred-tracks
     purpose: tie the piece back to the season it spins off from
     visual_intent: the narrator's own bike, or a previous track from S03
     overlay: null
     target_duration_sec:
-      zh-CN: 4.90
+      zh-CN: 4.65
   - id: see-you-in-shanghai
     purpose: the sign-off doubles as the next episode's hook
     visual_intent: ride out of frame
     overlay: null
     target_duration_sec:
-      zh-CN: 3.00
+      zh-CN: 2.80
 
 assets:
   raw: []
@@ -135,11 +143,11 @@ assets:
       license: >-
         NOT CLEARED — third-party recording, no licence on file. Placeholder for the preview
         only; must be cleared or replaced before publish.
-        USED TWO WAYS, both from the same file. (1) The `chinese-can-fly` beat takes the
-        speaker's own line 中国人能飞 at roughly 00:00:43-00:00:44, at full level and NOT
-        re-synthesised — that beat carries `**原声:**` instead of `**口播:**` for exactly this
-        reason. (2) From `not-vfx` onward the same source is ducked under the narration as the
-        bed.
+        ONE CONTINUOUS USE, not two. The source is entered at 00:00:43 for the
+        speaker's own line 中国人能飞, which lands on the `chinese-can-fly` beat, and it is then
+        NOT cut — the same take runs on underneath as the bed for the rest of the piece. That is
+        why the beat carries `**原声:**` instead of `**口播:**`: nothing is synthesised for it.
+        In the preview mix the line sits at -10 dB and ducks over 0.3s to -26 dB for the bed.
         MEASURED 2026-09-08 on the dev box, at 320 kbps 44.1 kHz stereo: 117.45s,
         integrated -6.4 LUFS, true peak +3.8 dBFS, LRA 13.9 LU. It is a CLIPPED master and the
         hottest source in this repo — every bed in S05E001 peaked lower (+0.9, +0.4, +2.4) and

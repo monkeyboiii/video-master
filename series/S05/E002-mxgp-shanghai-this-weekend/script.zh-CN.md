@@ -24,11 +24,12 @@
 
 ## chinese-can-fly
 
-**原声:** 中国人真的**能飞**。
+**原声:** 中国人**能飞**。
 
-<!-- 不合成。用 media/audio/The Chinese Can Fly.mp3 第 43-44 秒左右他说"中国人能飞"
-     那一句的原声，整句直接落在这一拍上。从下一拍开始这条源声压低成 BGM 垫在口播底下。
-     素材、实测响度和"为什么不能按静音切"都在 manifest.yml 的 assets.audio (VOX_002)。 -->
+<!-- 不合成。从 media/audio/The Chinese Can Fly.mp3 的 43-44 秒进，他说"中国人能飞"
+     那一句原声落在这一拍上，然后这条源声**不切断**，直接往下走成 BGM 垫在后面的口播底下。
+     所以它是一次连续使用，不是两段。素材、实测响度和"为什么不能按静音切"见
+     manifest.yml 的 assets.audio (VOX_002)。 -->
 
 ## not-vfx
 
