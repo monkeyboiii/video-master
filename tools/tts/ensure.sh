@@ -49,6 +49,16 @@ VIRTUAL_ENV="$VENV" uv pip install --quiet torch --index-url https://download.py
 say "installing kokoro + misaki[zh]"
 VIRTUAL_ENV="$VENV" uv pip install --quiet "kokoro>=0.9.4" "misaki[zh]" soundfile numpy
 
+# en_core_web_sm is misaki's ENGLISH tokenizer model, and without it en-US synthesis dies on the
+# first call. misaki does try to fetch it itself — `G2P.__init__` calls `spacy.cli.download()` —
+# but that shells out to `uv pip install` with no VIRTUAL_ENV set and fails with "No virtual
+# environment found", which surfaces at synthesis time as a wall of unrelated torch warnings and
+# no audio. It is pinned by URL rather than by `spacy download` for the same reason: that command
+# is the one that does not work here. Match the wheel to spacy's own major.minor.
+say "installing en_core_web_sm (misaki's en tokenizer — en-US synthesis fails without it)"
+VIRTUAL_ENV="$VENV" uv pip install --quiet \
+  "en_core_web_sm@https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl"
+
 say "fetching $REPO_ID into $HF_HOME"
 "$VENV/bin/python" - "$REPO_ID" <<'PYEOF'
 import sys

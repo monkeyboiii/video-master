@@ -20,7 +20,12 @@ import re
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
-VO_MARKERS = ('**VO:**', '**口播:**', '**Read:**')
+# `**Spoken:**` is not a synonym anyone invented here — it is what SEVEN of the ten en-US scripts
+# in series/ actually use, against three using `**VO:**`. Leaving it out meant `load()` raised
+# "no beat in the manifest has a line in the script" for all seven, so most of the repo's English
+# could not be narrated at all. Recognised rather than migrated: rewriting seven shipped scripts
+# to satisfy a parser is the wrong direction.
+VO_MARKERS = ('**VO:**', '**Spoken:**', '**口播:**', '**Read:**')
 # A beat whose audio is LIFTED, not synthesised — a person saying the line on camera. It still
 # needs a caption, so it stays in the plan; the synthesiser is what skips it. A beat with NO
 # marker at all is different and is still dropped entirely: that is a picture beat, which wants

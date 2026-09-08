@@ -53,9 +53,17 @@ if (existsSync(capPath)) {
               `Generate it with: tools/tts/narrate --locale ${locale} --episode ${videoId} --write`);
 }
 
+// `timeline()` spreads every cut field, so `src` and `text` ride along with no work here. Said
+// out loud because it looks like an omission.
 const durationSec = Number(cuts.reduce((n, c) => Math.max(n, c.atSec + c.durSec), 0).toFixed(2));
 const out = join(dir, 'remotion-props', `previz.${locale}.json`);
 mkdirSync(dirname(out), {recursive: true});
-writeFileSync(out, JSON.stringify({locale, durationSec, cuts, script}, null, 2) + '\n', 'utf8');
+// `caption_style` is declared on the storyboard because it is a judgement about the PICTURE:
+// en defaults to `plain` (white text, green on the spoken word), which the caption spec chose for
+// sitting light over busy footage — and which disappears entirely over white line art. An episode
+// whose panels are white gets `band`. Omitted, the component keeps its per-locale default.
+const captionStyle = sb.caption_style;
+writeFileSync(out, JSON.stringify(
+  {locale, durationSec, cuts, script, ...(captionStyle ? {captionStyle} : {})}, null, 2) + '\n', 'utf8');
 console.log(`${relative(REPO, out)}: ${cuts.length} cuts, ${durationSec}s` +
             (script ? `, ${script.split('\n').filter(Boolean).length} caption rows` : ', no captions'));

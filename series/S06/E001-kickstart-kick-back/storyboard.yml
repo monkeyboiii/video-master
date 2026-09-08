@@ -1,0 +1,69 @@
+# 分镜设计 — S06E001 · shot design
+#
+# PARSABLE ON PURPOSE. `tools/storyboard-check.mjs` asserts that this file, manifest.yml and the
+# scripts name the same beats in the same order, that every vocabulary word is one the previz
+# implements, and — new here — that every `src` is actually published under Remotion's public/.
+# That last check exists because a missing src renders as an empty box and reports nothing.
+#
+# IT CARRIES NO DURATIONS. A beat's length is in manifest.yml, per locale; a cut has a relative
+# `share`. This episode is one cut per beat, so every share is 1.
+#
+# EIGHT PANELS, ONE PER BEAT. The source art is a single 940x1672 sheet of eight drawings, chopped
+# and published by `panel-chop.sh` — which measures the gutters rather than assuming eighths,
+# because the sheet's four rows are 372, 412, 411 and 426 px tall.
+#
+# THE PANELS DRIVE THEIR OWN LOOK. A cut with `src` renders the S01E002 photo-reveal treatment:
+# sharp in the middle three fifths, a blurred dimmed copy of itself in the top and bottom fifths.
+# `bg` and `motion` are inert on those cuts and are set to the honest no-op values; `camera` is
+# NOT inert — push zooms in 7%, pull zooms out 7%, static holds. 7% and not photo-reveal's own 32%
+# because the viewer is reading a diagram and a big zoom drags the lines while they follow an arrow.
+#
+# THE SCREEN TEXT LIVES IN THE TOP BLURRED BAND, never over the drawing. That band is what makes
+# room for type on a picture that is the whole point of the shot.
+#
+# shot    ECU CU MCU MS WS EWS POV AERIAL INSERT
+# camera  static push pull snap-zoom pan-l pan-r tilt-up tilt-down handheld orbit freeze ramp
+# bg      dirt night sky asphalt crowd grade neutral mall
+# motion  none punch-in zoom-punch slide-up drop-in pop rise freeze-flash text-pop shake glitch
+# sfx     none whoosh impact riser sub-drop click shutter scratch ding swoosh-rev
+
+video_id: "S06E001"
+
+# The panels are white line art, and en-US captions default to `plain` — white text, green only on
+# the word being spoken — which the caption spec chose for sitting light over busy FOOTAGE. Over
+# white drawings the unspoken words vanish completely. `band` puts the striped rule back under the
+# line, and the spec keeps it available to en for exactly this. zh already clamps to band.
+caption_style: band
+
+cuts:
+  - {beat: why-kickback, src: s06e001/p1.png, shot: MCU, camera: push, bg: neutral, motion: none,
+     share: 1, sfx: impact, text: "WHY DOES IT KICK BACK?",
+     subject: boot on the lever, frozen — red arrow foreshadows the lever coming back}
+
+  - {beat: foot-to-piston, src: s06e001/p2.png, shot: WS, camera: pull, bg: neutral, motion: none,
+     share: 1, sfx: whoosh, text: "YOUR FOOT → CRANK → PISTON",
+     subject: engine section — foot, lever, gears, crank, piston rising, lit in order}
+
+  - {beat: spark-before-tdc, src: s06e001/p3.png, shot: MCU, camera: push, bg: neutral, motion: none,
+     share: 1, sfx: click, text: "SPARK BEFORE TDC = NORMAL",
+     subject: crank pin before TDC, piston still rising, spark and the green inertia arrow}
+
+  - {beat: pressure-after-tdc, src: s06e001/p4.png, shot: MCU, camera: pull, bg: neutral, motion: none,
+     share: 1, sfx: sub-drop, text: "PRESSURE PEAKS AFTER TDC",
+     subject: crank crosses TDC — blue pressure down, green carrying it forward}
+
+  - {beat: too-early, src: s06e001/p5.png, shot: MCU, camera: push, bg: neutral, motion: none,
+     share: 1, sfx: impact, text: "TOO MUCH PRESSURE, TOO EARLY",
+     subject: back before TDC — blue down the rod into the offset pin, red tangential out of it}
+
+  - {beat: forward-stop-reverse, src: s06e001/p6.png, shot: WS, camera: static, bg: neutral, motion: none,
+     share: 1, sfx: click, text: "FORWARD → STOP → REVERSE",
+     subject: three ghosted cranks — decelerating, stopped, reversed a few degrees in red}
+
+  - {beat: force-travels-back, src: s06e001/p7.png, shot: WS, camera: pull, bg: neutral, motion: none,
+     share: 1, sfx: riser, text: "THE FORCE TRAVELS BACK",
+     subject: red travelling crank → meshed gears → kickshaft → lever → boot}
+
+  - {beat: brief-reverse, src: s06e001/p8.png, shot: MS, camera: push, bg: neutral, motion: none,
+     share: 1, sfx: impact, text: "BRIEF REVERSE ≠ RUNNING BACKWARD",
+     subject: lever flung up; inset shows the crank reversing a little and stopping}

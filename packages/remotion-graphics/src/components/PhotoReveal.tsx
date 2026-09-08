@@ -66,30 +66,29 @@ export type PhotoRevealProps = z.infer<typeof photoRevealSchema>;
  *   backdrop    1080x1920  — photo stretched to the frame, so its horizontal mapping matches
  *                            the sharp band exactly and the seam does not slide sideways.
  */
-export const PhotoReveal: React.FC<PhotoRevealProps> = ({
-  src,
-  startScale,
-  endScale,
-  objectPositionX,
-  objectPositionY,
-  bandFrac,
-  blurPx,
-  bandDim,
-}) => {
-  const frame = useCurrentFrame();
-  const {durationInFrames} = useVideoConfig();
-
-  const scale = interpolate(frame, [0, durationInFrames - 1], [startScale, endScale], {
-    extrapolateRight: 'clamp',
-    easing: Easing.out(Easing.cubic),
-  });
-  const opacity =
-    interpolate(frame, [0, 8], [0, 1], {extrapolateRight: 'clamp'}) *
-    exitFade(frame, durationInFrames, 10);
-
+/**
+ * The look itself, with the animation taken OUT: given a scale and an opacity it paints the three
+ * layers and nothing else.
+ *
+ * Split out because a second consumer needs the same picture on a different clock. `PhotoReveal`
+ * animates across a whole composition and reads `useVideoConfig().durationInFrames`; a panel
+ * inside a `<Sequence>` has to animate across the SEQUENCE, and useVideoConfig would hand it the
+ * composition's length instead — the zoom would take the whole reel to finish. Passing the two
+ * animated values in is what makes the look reusable without copying it, which is the only way
+ * the two stay identical when one is adjusted.
+ */
+export const PhotoRevealFrame: React.FC<{
+  src: string;
+  scale: number;
+  opacity: number;
+  objectPositionX: number;
+  objectPositionY: number;
+  bandFrac: number;
+  blurPx: number;
+  bandDim: number;
+}> = ({src, scale, opacity, objectPositionX, objectPositionY, bandFrac, blurPx, bandDim}) => {
   // The backdrop drifts with the photo, but damped — it reads as depth, not a second zoom.
   const backdropScale = 1 + (scale - 1) * 0.35;
-
   const bandPct = bandFrac * 100;
 
   return (
@@ -151,5 +150,40 @@ export const PhotoReveal: React.FC<PhotoRevealProps> = ({
         />
       </div>
     </AbsoluteFill>
+  );
+};
+
+export const PhotoReveal: React.FC<PhotoRevealProps> = ({
+  src,
+  startScale,
+  endScale,
+  objectPositionX,
+  objectPositionY,
+  bandFrac,
+  blurPx,
+  bandDim,
+}) => {
+  const frame = useCurrentFrame();
+  const {durationInFrames} = useVideoConfig();
+
+  const scale = interpolate(frame, [0, durationInFrames - 1], [startScale, endScale], {
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
+  });
+  const opacity =
+    interpolate(frame, [0, 8], [0, 1], {extrapolateRight: 'clamp'}) *
+    exitFade(frame, durationInFrames, 10);
+
+  return (
+    <PhotoRevealFrame
+      src={src}
+      scale={scale}
+      opacity={opacity}
+      objectPositionX={objectPositionX}
+      objectPositionY={objectPositionY}
+      bandFrac={bandFrac}
+      blurPx={blurPx}
+      bandDim={bandDim}
+    />
   );
 };

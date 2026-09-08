@@ -57,6 +57,11 @@ packages/remotion-graphics/out*.zip
 # into the repo. e002's stills are hand-made source and stay tracked.
 packages/remotion-graphics/public/e0*/
 !packages/remotion-graphics/public/e002/
+# The rule above is keyed on `e0*`, which only ever matched because every episode that published
+# assets happened to be in S01. It does not cover s06e001/ or any other season, so the next one
+# would have been committed silently. This is keyed on the ID SHAPE instead, so a new season is
+# covered by construction rather than by remembering to add a line.
+packages/remotion-graphics/public/s[0-9][0-9]e[0-9][0-9][0-9]/
 
 # Remotion's own agent skills — installed and versioned by `npx remotion skills add|update`,
 # not by us. Tracking them would fork upstream's copy on the next update.

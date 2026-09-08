@@ -15,3 +15,17 @@
 相不相信 2000
 越野摩托 2000
 赛道挑战 1000
+
+# S06E001 — engine terms. jieba splits most of these into characters, and a caption unit is a
+# WORD: 上止点 lighting as 上|止|点 is three highlights for one concept.
+上止点 3000
+曲柄销 3000
+反向扭矩 3000
+点火正时 3000
+启动杆 3000
+启动齿轮 3000
+混合气 2000
+减压机构 2000
+连杆 2000
+回踢 3000
+踹回 2000

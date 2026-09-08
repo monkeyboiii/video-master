@@ -32,6 +32,7 @@ run spins off. That is the whole reason the id needs nothing else in it, and why
 | S03 | the 100-track challenge — counted field missions |
 | S04 | product & feature introductions |
 | S05 | spin-offs from the 100-track challenge — pieces it throws off that do not advance the counter |
+| S06 | the machine, explained — one mechanical question per episode, answered in drawn diagrams |
 
 - Season and episode are zero-padded: `S03`, `E003`. Episode numbers are per-season and start at
   `E001` (S03 starts at `E000`, which is deliberate — see that season's README).

@@ -22,6 +22,7 @@ import {z} from 'zod';
 import {FPS, localeSchema, type Locale} from '../shared';
 import {bone, dirt, moto, track as trackColor} from '../theme/tokens';
 import {SpokenSubtitleTrack} from './SpokenSubtitleTrack';
+import {PhotoRevealFrame} from './PhotoReveal';
 
 export const previzCutSchema = z.object({
   beat: z.string(),
@@ -34,6 +35,10 @@ export const previzCutSchema = z.object({
   sfx: z.string().optional(),
   subject: z.string().optional(),
   text: z.string().optional(),
+  // A published image under public/. When present the cut renders the photo-reveal look — sharp
+  // band, blurred top and bottom — instead of a generated field. storyboard-check verifies it
+  // exists, because Remotion renders a missing src as an empty box and reports nothing.
+  src: z.string().optional(),
 });
 
 export const previzStoryboardSchema = z.object({
@@ -41,6 +46,8 @@ export const previzStoryboardSchema = z.object({
   durationSec: z.number(),
   cuts: z.array(previzCutSchema),
   script: z.string(),
+  // Passed through to the caption track. See tools/previz-props.mjs for why an episode declares it.
+  captionStyle: z.enum(['band', 'plain']).optional(),
 });
 export type PrevizStoryboardProps = z.infer<typeof previzStoryboardSchema>;
 
@@ -124,6 +131,48 @@ const Cut: React.FC<{cut: PrevizStoryboardProps['cuts'][number]; index: number}>
   // A white flash on the first two frames of a freeze — the beat the edit will actually cut on.
   const flash = cut.motion === 'freeze-flash' ? interpolate(frame, [0, 3], [0.85, 0], {extrapolateRight: 'clamp'}) : 0;
 
+  // A cut carrying a published image is a PANEL: the S01E002 photo-reveal look, sharp in the
+  // middle with a blurred copy of itself top and bottom. The zoom is deliberately small — 7%, and
+  // alternating direction by cut so a run of panels does not pulse in unison — because the subject
+  // here is a technical diagram the viewer is reading, and photo-reveal's own 32% zoom-out drags
+  // the lines around while they are trying to follow an arrow.
+  if (cut.src) {
+    // The storyboard's own `camera` drives it, so the direction is an editorial choice in the
+    // file rather than a function of the cut's index: push = in, pull = out, static = hold.
+    // Anything else alternates, so a run of panels does not pulse in unison.
+    const Z = 0.07;
+    const range: [number, number] =
+      cut.camera === 'push' ? [1, 1 + Z] :
+      cut.camera === 'pull' ? [1 + Z, 1] :
+      cut.camera === 'static' ? [1, 1] :
+      index % 2 === 1 ? [1, 1 + Z] : [1 + Z, 1];
+    const s = interpolate(t, [0, 1], range, {extrapolateRight: 'clamp'});
+    const op =
+      interpolate(frame, [0, 4], [0, 1], {extrapolateRight: 'clamp'}) *
+      interpolate(frame, [dur - 4, dur - 1], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+    return (
+      <AbsoluteFill style={{backgroundColor: '#0A0A0C'}}>
+        <PhotoRevealFrame src={cut.src} scale={s} opacity={op}
+          objectPositionX={50} objectPositionY={50} bandFrac={0.2} blurPx={40} bandDim={0.22} />
+        {/* Screen text goes in the TOP blurred band, not over the diagram. That band exists
+            precisely so there is somewhere to put type without covering the picture, and on this
+            episode the picture is the thing being explained. */}
+        {cut.text ? (
+          <div style={{position: 'absolute', left: 0, right: 0, top: 0, height: '20%',
+                       display: 'flex', alignItems: 'center', justifyContent: 'center',
+                       padding: `0 ${width * 0.07}px`, opacity: op}}>
+            <div style={{color: '#fff', fontWeight: 900, fontSize: width * 0.052, textAlign: 'center',
+                         lineHeight: 1.15, textShadow: '0 2px 18px #000C'}}>{cut.text}</div>
+          </div>
+        ) : null}
+        <div style={{position: 'absolute', left: width * 0.05, bottom: height * 0.035, opacity: 0.8 * op,
+                     color: bone[300], fontSize: width * 0.024, fontWeight: 600}}>
+          #{index + 1} · {cut.beat} · {String(cut.shot)} {String(cut.camera)} · {cut.atSec.toFixed(2)}s
+        </div>
+      </AbsoluteFill>
+    );
+  }
+
   return (
     <AbsoluteFill style={{overflow: 'hidden', backgroundColor: bg.to}}>
       <AbsoluteFill style={{transform: cameraTransform(cut.camera, t, frame), transformOrigin: '50% 45%'}}>
@@ -187,7 +236,7 @@ const Cut: React.FC<{cut: PrevizStoryboardProps['cuts'][number]; index: number}>
   );
 };
 
-export const PrevizStoryboard: React.FC<PrevizStoryboardProps> = ({locale, durationSec, cuts, script}) => {
+export const PrevizStoryboard: React.FC<PrevizStoryboardProps> = ({locale, durationSec, cuts, script, captionStyle}) => {
   const {fps} = useVideoConfig();
   return (
     <AbsoluteFill style={{backgroundColor: bone[950], fontFamily: 'Inter, "Noto Sans SC", system-ui, sans-serif'}}>
@@ -197,7 +246,8 @@ export const PrevizStoryboard: React.FC<PrevizStoryboardProps> = ({locale, durat
         </Sequence>
       ))}
       {/* the real caption track, over the placeholder picture — the point is to cut against both */}
-      {script ? <SpokenSubtitleTrack locale={locale as Locale} script={script} durationSec={durationSec} /> : null}
+      {script ? <SpokenSubtitleTrack locale={locale as Locale} script={script} durationSec={durationSec}
+        {...(captionStyle ? {captionStyle} : {})} /> : null}
     </AbsoluteFill>
   );
 };

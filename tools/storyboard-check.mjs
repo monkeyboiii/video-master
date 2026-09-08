@@ -142,6 +142,17 @@ const main = () => {
       }
     }
     if (!(Number(c.share) > 0)) errs.push(`${where}: share must be a positive number`);
+    // A cut may name a published image instead of a generated field. It is checked HERE because
+    // the failure is otherwise invisible: Remotion resolves an `src` against public/ and a missing
+    // file renders as an empty box with no error, so a typo looks like a design choice. Nothing
+    // else in the repo verifies that a component's src exists.
+    if (c.src) {
+      const pub = join(REPO, 'packages/remotion-graphics/public', c.src);
+      if (!existsSync(pub)) {
+        errs.push(`${where}: src "${c.src}" is not published — run the episode's chop script ` +
+                  `(it writes into packages/remotion-graphics/public/)`);
+      }
+    }
     if (!c.subject) warns.push(`${where}: no subject — the previz renders an empty slate`);
   }
 

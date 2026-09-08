@@ -1,0 +1,115 @@
+# Episode manifest — source of truth for this episode.
+# Naming: agents.d/modules/naming-conventions.md · validate: tools/vm check
+
+video_id: "S06E001"
+slug: "kickstart-kick-back"
+# The panels are source art and the explanation is written, but nothing is shot, there is no take
+# in either language, and there is no cover. The voice in the previz is synthesised.
+status: topic
+
+# No lineage. This answers no other episode; it opens a season.
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+variants:
+  en-US:
+    script: script.en-US.md
+    cover: null
+    subtitles: null
+    captions: remotion-props/spoken-captions.en-US.json
+    remotion_props: null
+    voiceover_asset_id: null
+    platforms: [tiktok, ytshorts, reels]
+  zh-CN:
+    script: script.zh-CN.md
+    cover: null
+    subtitles: null
+    captions: remotion-props/spoken-captions.zh-CN.json
+    remotion_props: null
+    voiceover_asset_id: null
+    platforms: [rednote, douyin, bilibili]
+
+# BOTH EDITIONS, AUTHORED NOT TRANSLATED. Per agents.d/modules/localization.md the variants are
+# siblings; the review bar fails a page that reads like a translation in either direction. A
+# mechanism is the same in every language, so these two say the same things in the same order —
+# that is the subject matter, not a calque. Each page was written idiomatically from the brief.
+#
+# TIMING SOURCE: PLANNED, then replaced by measurement. The seconds below started as the brief's
+# eight-shot plan (3, 6, 8, 6, 11, 5, 7, 9 = 55s), and five of the eight en-US beats came back OVER
+# on the first /auto-narrate run — the plan had allowed 3s for a beat the voice takes 11s to say.
+# They are now what Kokoro actually took, plus 0.25s. Not a human read; a recorded take re-times
+# everything.
+#
+# THE TWO LOCALES RUN AT DIFFERENT SPEEDS, ON PURPOSE. zh-CN at 1.15 speaks the whole piece in
+# 50.8s; en-US at 1.15 took 61.1s, past the brief's 50-60s
+# band. en-US is therefore narrated at **1.25** (55.9s), which
+# keeps the copy intact rather than cutting it to fit. localization.md predicts exactly this gap —
+# zh-CN runs 10-20% shorter than an en-US page saying the same thing — so a shared speed would have
+# meant one edition padded or the other rushed.
+beats:
+  - id: why-kickback
+    purpose: the question, asked in the viewer's own words before any mechanism
+    visual_intent: boot on the lever, frozen; red arrow foreshadowing the lever coming back
+    overlay: null
+    target_duration_sec:
+      en-US: 10.59
+      zh-CN: 9.64
+  - id: foot-to-piston
+    purpose: the forward chain, so the reversal later has something to reverse
+    visual_intent: engine section — foot, lever, gears, crank, piston rising, lit in order
+    overlay: null
+    target_duration_sec:
+      en-US: 5.89
+      zh-CN: 5.45
+  - id: spark-before-tdc
+    purpose: defuse the obvious wrong answer — early spark is not the fault
+    visual_intent: crank pin before TDC, piston still rising, spark plus the green inertia arrow
+    overlay: null
+    target_duration_sec:
+      en-US: 4.44
+      zh-CN: 4.12
+  - id: pressure-after-tdc
+    purpose: the normal case, so the failure is a deviation from something shown
+    visual_intent: crank crosses TDC; blue pressure down, green arrow carrying it forward
+    overlay: null
+    target_duration_sec:
+      en-US: 5.87
+      zh-CN: 5.65
+  - id: too-early
+    purpose: the actual mechanism — the longest beat because it is the whole episode
+    visual_intent: back before TDC; blue force down the rod into the offset pin, red tangential
+    overlay: null
+    target_duration_sec:
+      en-US: 10.71
+      zh-CN: 8.55
+  - id: forward-stop-reverse
+    purpose: name the three states, in order, so the reversal is bounded
+    visual_intent: three ghosted cranks — decelerating, stopped, reversed a few degrees in red
+    overlay: null
+    target_duration_sec:
+      en-US: 3.04
+      zh-CN: 2.89
+  - id: force-travels-back
+    purpose: connect the engine's reversal to the thing the viewer actually feels
+    visual_intent: red travelling crank → meshed gears → kickshaft → lever → boot
+    overlay: null
+    target_duration_sec:
+      en-US: 6.04
+      zh-CN: 6.31
+  - id: brief-reverse
+    purpose: correct the myth, then give the three things worth checking
+    visual_intent: lever flung up; inset shows the crank reversing a little and stopping
+    overlay: null
+    target_duration_sec:
+      en-US: 11.33
+      zh-CN: 10.14
+
+assets:
+  raw: []
+  selected: []
+  voiceover: []
+  audio: []
