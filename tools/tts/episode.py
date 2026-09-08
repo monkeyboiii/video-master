@@ -53,7 +53,7 @@ def beats(ep_dir, locale):
 
 
 def lines(ep_dir, locale):
-    """{beat_id: (text, emphasis spans, is_spoken)}. A marker takes the following paragraph."""
+    """{beat_id: (text, spans, is_spoken, offset_sec)}. A marker takes the following paragraph."""
     f = ep_dir / f'script.{locale}.md'
     if not f.exists():
         raise SystemExit(f'{f.relative_to(REPO)}: no script for this locale')
@@ -82,9 +82,20 @@ def lines(ep_dir, locale):
                 parts.append(re.sub(r'^[-*]\s+', '', nxt))
                 j += 1
             text = join(p for p in parts if p)
+            # `**原声:** (+0.14) 中国人能飞。` — a sourced line does not necessarily start on the
+            # beat. Here the bed is cut in on a clap at 42.99s in the source and the voice comes
+            # 0.14s behind it (measured by centre-channel energy: the clap is a broadband HF
+            # transient, the vocal is sustained mid). Without this the caption lands on the clap
+            # and reads early against the voice. It sits beside the line rather than in the
+            # manifest because it is a fact about THIS line in THIS take.
+            off = 0.0
+            mo = re.match(r'^\(\+([0-9.]+)\)\s*', text)
+            if mo:
+                off = float(mo.group(1))
+                text = text[mo.end():]
             if text:
                 cleaned, spans = emphasis(clean(text))
-                out[beat] = (cleaned, spans, mk in VO_MARKERS)
+                out[beat] = (cleaned, spans, mk in VO_MARKERS, off)
             break
     return out
 
@@ -142,12 +153,20 @@ def words_zh(text, spans=()):
     """
     import jieba
     punct = '，。！？、；：（）“”‘’"\'()!?,.:;…—～·《》【】 \t'
+    # CUT AT EVERY EMPHASIS BOUNDARY FIRST. The bold is a boundary the writer declared, and jieba
+    # crosses it: 中国人**能飞** segments as 中国|人能|飞 — it invents 人能, which is not a word, and
+    # splits the emphasis across two units so the highlight lands on half of each. Segmenting
+    # 中国人 and 能飞 separately gives 中国|人|能飞: the emphasis is one unit and nothing is
+    # invented. captions.md is explicit that a segmenter must not be a second source of truth
+    # wherever the script declares its own boundaries — the bold is the one place it does.
+    edges = sorted({0, len(text)} | {x for lo, hi in spans for x in (lo, hi)})
     out = []
-    for w, s, e in jieba.tokenize(text):
-        if not w.strip() or all(c in punct for c in w):
-            continue
-        hot = any(s < hi and e > lo for lo, hi in spans)
-        out.append(w + '*' if hot else w)
+    for a, b in zip(edges, edges[1:]):
+        hot = any(a >= lo and b <= hi for lo, hi in spans)
+        for w in jieba.cut(text[a:b]):
+            if not w.strip() or all(c in punct for c in w):
+                continue
+            out.append(w + '*' if hot else w)
     return out
 
 
@@ -163,9 +182,9 @@ def load(video_id, locale):
     for bid, start, target in beats(ep, locale):
         if bid not in said:
             continue                      # a picture beat: no marker, no caption, clock unmoved
-        text, spans, spoken = said[bid]
+        text, spans, spoken, off = said[bid]
         plan.append({'beat': bid, 'atMs': start * 1000, 'capSec': target, 'text': text,
-                     'speak': spoken, 'spans': spans})
+                     'speak': spoken, 'spans': spans, 'offset': off})
     if not plan:
         raise SystemExit(f'{video_id}/{locale}: no beat in the manifest has a line in the script')
     return ep, plan

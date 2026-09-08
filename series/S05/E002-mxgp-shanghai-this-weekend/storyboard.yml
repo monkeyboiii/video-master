@@ -46,16 +46,11 @@ cuts:
   - {beat: hook, shot: MCU, camera: static, bg: neutral, motion: text-pop, share: 6, sfx: click,
      subject: narrator to camera, accusation delivered, held}
 
-  # the-jump (0.90s) — ONE shot. This is the picture the whole piece is a claim about, and it is
-  # the only beat with no voice. Cutting inside it would be cutting the argument in half.
-  - {beat: the-jump, shot: WS, camera: static, bg: sky, motion: none, share: 1, sfx: impact,
-     subject: one rider, one jump, held against sky, no caption}
-
-  # chinese-can-fly (1.30s) — ONE shot, same framing as the-jump. The source line is a comment on
-  # the shot the viewer is already watching; a cut here would make it a new scene.
-  - {beat: chinese-can-fly, shot: WS, camera: ramp, bg: sky, motion: rise, share: 1, sfx: sub-drop,
-     subject: hold the air, speed ramp under the source line 中国人能飞}
-
+  # chinese-can-fly (1.50s) — ONE shot, and it now carries the jump too. The silent the-jump beat
+  # is gone: it was the entire gap between the first two lines, and the music has to cut straight
+  # in off the hook. The clap at 42.99s in the source IS the cut; 中 lands 0.14s behind it.
+  - {beat: chinese-can-fly, shot: WS, camera: static, bg: sky, motion: none, share: 1, sfx: impact,
+     subject: the jump held against sky, source line 中国人能飞 over it, music cuts in hard}
   # not-vfx (3.80s) — 4 cuts. The montage that earns the F1 comparison. Fast is the content here.
   - {beat: not-vfx, shot: EWS, camera: pull, bg: dirt, motion: pop, share: 3, sfx: whoosh,
      subject: widest track shot, riders in it}

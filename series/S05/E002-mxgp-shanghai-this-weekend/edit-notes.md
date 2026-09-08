@@ -24,15 +24,21 @@ as the bed for the rest of the piece.
 
 `media/previz/S05E002-previz.mp4` carries a real mix so the pacing can be judged by ear.
 
-**The bed is one continuous use and it starts at frame 0.** The source is entered at
-**00:00:41.33** so that the 43.0s line lands exactly on the `chinese-can-fly` beat (1.67s), and it
-fades in on a cubic underneath the hook rather than appearing from nowhere. Measured in isolation:
-**-44.5 dB** under the hook, -29.9 dB swelling, **-15.9 dB** on the line, **-38.0 dB** ducked. The
-duck was 6 dB higher and sat too loud behind the narration. Those attenuations are not taste — the
-source is -6.4 LUFS with a +3.8 dBFS true peak and is never used at unity.
+**The bed is one continuous use and it cuts in hard — no fade.** The source is entered at
+**00:00:42.99**, which is a clap, so the music arrives on a transient rather than swelling from
+nothing, and that entry sits on the `chinese-can-fly` beat (1.27s). Full through the line, then
+ducked over 0.4s to **-32 dB**. Those attenuations are not taste — the source is -6.4 LUFS with a
++3.8 dBFS true peak and is never used at unity.
 
-**No riser.** One was synthesised as a placeholder on the hook and removed; the storyboard's `sfx`
-cues stay as instructions for the edit, and nothing is synthesised into the preview mix.
+**中 is 0.14s behind the clap, and the caption follows the voice.** Measured by centre-channel
+energy: a clap is a broadband HF transient (clean peaks at 42.99s and 44.74s under a 4 kHz
+highpass), a lead vocal is sustained mid energy in the centre, and the centre band lifts again at
+~43.13s after the clap decays. So the cut lands on the clap, which is musically right, and the
+caption is offset to the voice. The offset is declared in the script as `**原声:** (+0.14)`,
+beside the line rather than in the manifest, because it is a fact about this line in this take.
+
+**No riser.** Nothing is synthesised into the preview mix; the storyboard's `sfx` entries stay as
+instructions for the edit.
 
 Mix measures **−15.1 LUFS / −1.5 dBTP**, 1.1 LU under the −14 the QC checklist asks for and
 peak-limited rather than wrong — sparse speech over a quiet bed has a high peak-to-loudness ratio,
@@ -76,9 +82,16 @@ vocabulary rather than merely unused — a word still in the list is a word some
 `storyboard-check` rejects them, so the rule holds without anyone remembering it. Every motion left
 happens inside a shot.
 
-**`the-jump` is 0.40s, not 1.10s.** It is the only thing between the hook and the source line, so
-its length IS the gap between the first two lines. At 1.10s the two stopped reading as one thought;
-the gap is now 0.48s.
+**`the-jump` is gone as a beat.** It was the only thing between the hook and the source line, so
+its length WAS the gap — 1.10s, then 0.40s, and the two still did not read as one thought. The jump
+picture now plays under `chinese-can-fly` instead of owning a beat, so the hook ends and the music
+cuts straight in. **Gap from the hook's last word to 中 is 0.22s.** 12 beats, 23 cuts, 23.70s.
+
+**The emphasis is also a word boundary.** 中国人**能飞** segmented as 中国|人能|飞 — jieba invented
+人能 and split the highlight across two units. Segmenting each bold span separately gives
+中国|人|能飞. `captions.md` is explicit that a segmenter must not be a second source of truth
+wherever the script declares its own boundaries, and the bold is the one place it does. Every other
+block's words are unchanged.
 
 **Cut counts are not independent of beat length.** When the trim took the piece from 38.50s to
 24.60s, every cut got 36% shorter for free and the montage beats fell to 0.42s — faster than the
