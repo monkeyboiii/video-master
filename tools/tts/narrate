@@ -13,11 +13,25 @@ export HF_HUB_DISABLE_PROGRESS_BARS=1
 
 WRITE=0
 ARGS=()
+EPISODE=""
+LOCALE="zh-CN"
+prev=""
 for a in "$@"; do
   if [ "$a" = "--write" ]; then WRITE=1; else ARGS+=("$a"); fi
+  # --write has to know WHICH episode: an episode's rows are named after it, and the demo path
+  # only ever looks for rows-zh.txt. Without this, --write on an episode fails on a missing file.
+  case "$prev" in --episode) EPISODE="$a" ;; --locale) LOCALE="$a" ;; esac
+  case "$a" in --episode=*) EPISODE="${a#*=}" ;; --locale=*) LOCALE="${a#*=}" ;; esac
+  prev="$a"
 done
 
 VENV="$(bash "$HERE/ensure.sh")"
 "$VENV/bin/python" "$HERE/build-narration.py" "${ARGS[@]}"
-[ "$WRITE" = 1 ] && "$VENV/bin/python" "$HERE/rows-to-root.py"
+if [ "$WRITE" = 1 ]; then
+  if [ -n "$EPISODE" ]; then
+    "$VENV/bin/python" "$HERE/rows-to-root.py" --episode "$EPISODE" --locale "$LOCALE"
+  else
+    "$VENV/bin/python" "$HERE/rows-to-root.py"
+  fi
+fi
 exit 0

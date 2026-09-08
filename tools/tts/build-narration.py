@@ -91,6 +91,22 @@ def zh_spans(g2p, phonemes, pred_dur, words, t0):
     return spans
 
 
+def flat_spans(n, t0, dur):
+    """Even spans across a beat's slot — the fallback for a beat with no voice to read.
+
+    PROVISIONAL BY CONSTRUCTION. captions.md § Timing comes from measurement, not from feel is
+    explicit that this is the weaker kind of number, and it is right: a person does not speak in
+    equal-length words. It is used only for a `**原声:**` beat, whose real timing has to come off
+    the source clip with tools/transcribe.mjs + tools/group-words.mjs once that clip is reachable
+    — the documented loop for a HUMAN take. Until then the row exists so the caption is visible
+    in a preview, and the run says so out loud rather than letting it pass for a measurement.
+    """
+    if n <= 0:
+        return []
+    step = dur / n
+    return [(t0 + i * step, t0 + (i + 1) * step) for i in range(n)]
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--locale', required=True, choices=sorted(VOICES))
@@ -140,6 +156,16 @@ def main():
     for job in jobs:
         beat, text, at_ms, cap = job['beat'], job['text'], job['atMs'], job['capSec']
 
+        # A beat marked `**原声:**` is spoken by a person in the footage, not by the model. It
+        # still needs its caption, so it stays in the plan and only the synthesiser skips it —
+        # and skipping it here is also what keeps np.concatenate() below off an empty list.
+        if not job.get('speak', True):
+            beats.append({'beat': beat, 'atMs': at_ms, 'durSec': 0.0, 'capSec': cap,
+                          'text': text, 'tokens': [], 'zh_spans': [], 'sourced': True,
+                          'spans': job.get('spans', [])})
+            print(f'  {beat:8} {at_ms/1000:6.2f}s  cap {cap:4.2f}s  SOURCE          {text[:46]}')
+            continue
+
         chunks, toks, zspans = [], [], []
         for r in pipe(text, voice=voice, speed=a.speed):
             base = sum(len(c) for c in chunks) / SR
@@ -165,7 +191,8 @@ def main():
         s = int(at_ms / 1000 * SR)
         track[s:s + len(clip)] += clip
         beats.append({'beat': beat, 'atMs': at_ms, 'durSec': dur, 'capSec': cap, 'text': text,
-                      'tokens': toks, 'zh_spans': zspans})
+                      'tokens': toks, 'zh_spans': zspans, 'sourced': False,
+                      'spans': job.get('spans', [])})
         print(f'  {beat:8} {at_ms/1000:6.2f}s  cap {cap:4.2f}s  spoke {dur:4.2f}s'
               f'  {"OVER" if dur > cap else "ok":4}  {text[:46]}')
 
@@ -186,9 +213,14 @@ def main():
         rows = []
         for b in beats:
             # the demo script marks its own important words; an episode has no such marking yet
-            imp = {w.lower() for w in SC.IMPORTANT_EN.get(b['beat'], [])} if plan is None else set()
+            imp = ({w.lower() for w in SC.IMPORTANT_EN.get(b['beat'], [])} if plan is None
+                   else __import__('episode').important_en(b['text'], b.get('spans', ())))
             block = []
-            for text, s, e in b['tokens']:
+            toks = b['tokens']
+            if b.get('sourced'):
+                ws = [w for w in b['text'].split() if w.strip()]
+                toks = [(w, s, e) for w, (s, e) in zip(ws, flat_spans(len(ws), 0.0, b['capSec']))]
+            for text, s, e in toks:
                 mark = '|*' if text.lower().strip('.,') in imp else ''
                 block.append(f"{text}|{round(b['atMs']+s*1000)}|{round(b['atMs']+e*1000)}{mark}")
             if block:
@@ -200,13 +232,16 @@ def main():
         return
 
     # zh — spans from the model's own phoneme durations, computed during synthesis above
-    rows = []
+    rows, provisional = [], []
     for b in beats:
         src = (SC.WORDS_ZH[b['beat']] if plan is None
-               else __import__('episode').words_zh(b['text']))
+               else __import__('episode').words_zh(b['text'], b.get('spans', ())))
         marks = [w.endswith('*') for w in src]
         words = [w.rstrip('*') for w in src]
         spans = b['zh_spans']
+        if b.get('sourced'):
+            spans = flat_spans(len(words), 0.0, b['capSec'])
+            provisional.append(b['beat'])
         if len(spans) != len(words):
             print(f"  {b['beat']}: {len(spans)} spans for {len(words)} words — check WORDS_ZH",
                   file=sys.stderr)
@@ -216,6 +251,10 @@ def main():
     out = a.outdir / f'rows-{tag}.txt'
     out.write_text('\n\n'.join(rows), encoding='utf-8')
     print(f"{out}: {sum(len(r.splitlines()) for r in rows)} words from pred_dur")
+    if provisional:
+        print(f"  PROVISIONAL timing on {len(provisional)} sourced beat(s): {', '.join(provisional)}"
+              f" — evenly spaced across the slot, not measured. Re-time off the source clip with"
+              f" tools/transcribe.mjs + tools/group-words.mjs before this is cut.")
 
 
 

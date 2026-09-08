@@ -1,0 +1,145 @@
+# Episode manifest — source of truth for this episode.
+# Naming: agents.d/modules/naming-conventions.md · validate: tools/vm check
+
+video_id: "S05E002"
+slug: "mxgp-shanghai-this-weekend"
+# Nothing is shot and nothing is recorded. The script and the beats exist, the caption
+# preview is synthesised, and the durations below are ESTIMATES rather than measurements —
+# so this stays at topic. Moving it up needs a real take, which re-times every beat.
+status: topic
+
+# No lineage block. `parent`/`follows` point at a single EPISODE, and this one answers no
+# single episode — it spins off the whole S03 run, which is a fact about the season and is
+# recorded in series/S05/README.md. The connection is also in the script: the closing beat
+# says the 100-track challenge is still going.
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+variants:
+  zh-CN:
+    script: script.zh-CN.md
+    cover: null
+    subtitles: null
+    captions: remotion-props/spoken-captions.zh-CN.json
+    remotion_props: null
+    # No human take yet. The caption preview comes from Kokoro via /auto-narrate; the rows
+    # in the captions file above are timed off THAT voice, not off a recording.
+    voiceover_asset_id: null
+    platforms: [rednote, douyin, bilibili]
+
+# zh-CN only. Per agents.d/modules/localization.md an en-US edition would be authored
+# natively rather than translated, so no en-US variant is declared.
+#
+# TIMING SOURCE: SYNTHESISED, not a take. These thirteen numbers were first estimated from
+# character count, and every one of them was wrong — eleven of twelve beats came back OVER on the
+# first /auto-narrate run. They are now the duration Kokoro actually took at speed 1.15 plus about
+# 0.3s of air, which is a real measurement of the voice that plays in the PREVIEW and still not a
+# measurement of a human read. A recorded take re-times all of them. agents.d/modules/captions.md
+# § Timing comes from measurement, not from feel is explicit that this is the weaker kind of
+# number; it is declared here so nothing downstream mistakes it for a measurement. The
+# /auto-narrate run prints spoke-vs-cap per beat and any beat marked OVER is a line to
+# shorten, which is how these get corrected before a take.
+beats:
+  - id: hook
+    purpose: an accusation, not a greeting — the viewer is already behind
+    visual_intent: straight to camera, no establishing shot
+    overlay: null
+    target_duration_sec:
+      zh-CN: 2.80
+  - id: the-jump
+    purpose: the promise, delivered before any claim is made about it
+    visual_intent: one jump, held, no caption over it — the picture is the beat
+    overlay: null
+    target_duration_sec:
+      zh-CN: 1.20
+  - id: chinese-can-fly
+    purpose: land the line in a real voice, not the narrator's
+    visual_intent: stay on the air; let the source line carry it
+    overlay: null
+    target_duration_sec:
+      zh-CN: 1.80
+  - id: not-vfx
+    purpose: name the thing, and borrow a frame the audience already has (F1)
+    visual_intent: MXGP title card over the widest track shot available
+    overlay: null
+    target_duration_sec:
+      zh-CN: 4.05
+  - id: this-weekend
+    purpose: the turn from spectacle to appointment
+    visual_intent: cut rhythm tightens here; short beat, short shot
+    overlay: null
+    target_duration_sec:
+      zh-CN: 2.40
+  - id: in-shanghai
+    purpose: the payoff of the previous beat, alone on screen
+    visual_intent: Shanghai plate or skyline, one beat only
+    overlay: null
+    target_duration_sec:
+      zh-CN: 2.45
+  - id: only-on-tv
+    purpose: the narrator admits the audience's own assumption before correcting it
+    visual_intent: archive-feeling footage, foreign broadcast look
+    overlay: null
+    target_duration_sec:
+      zh-CN: 4.90
+  - id: now-here
+    purpose: the correction
+    visual_intent: riders arriving, paddock, faces
+    overlay: null
+    target_duration_sec:
+      zh-CN: 4.40
+  - id: or-the-mall
+    purpose: the needle — the alternative weekend, named
+    visual_intent: hard cut to something mundane, then back
+    overlay: null
+    target_duration_sec:
+      zh-CN: 4.15
+  - id: no-need-to-know
+    purpose: remove the last excuse
+    visual_intent: to camera again, plain
+    overlay: null
+    target_duration_sec:
+      zh-CN: 2.70
+  - id: just-watch-them-fly
+    purpose: restate the promise as an instruction
+    visual_intent: the biggest air in the footage; 希望别摔 bubble on the landing
+    overlay: null
+    target_duration_sec:
+      zh-CN: 3.10
+  - id: hundred-tracks
+    purpose: tie the piece back to the season it spins off from
+    visual_intent: the narrator's own bike, or a previous track from S03
+    overlay: null
+    target_duration_sec:
+      zh-CN: 4.90
+  - id: see-you-in-shanghai
+    purpose: the sign-off doubles as the next episode's hook
+    visual_intent: ride out of frame
+    overlay: null
+    target_duration_sec:
+      zh-CN: 3.00
+
+assets:
+  raw: []
+  selected: []
+  voiceover: []
+  audio:
+    - asset_id: VOX_002
+      filename: chinese-man-can-fly.mp4 # lives in media/ — NOT on the dev box, it is on the Mac
+      external_uri: null
+      source: operator-supplied source clip, "The Chinese man can fly"
+      license: >-
+        NOT CLEARED — third-party clip, no licence on file. Placeholder for the preview only;
+        must be cleared or replaced before publish.
+        USED TWO WAYS, both from the same file. (1) The `chinese-can-fly` beat takes the
+        speaker's own line 中国人能飞 at roughly 00:00:43-00:00:44 in this clip, at full level
+        and NOT re-synthesised — that beat carries no `**口播:**` marker for exactly this
+        reason. The in/out points are approximate until someone scrubs the file: it is on the
+        Mac, not on this box, so nothing here has measured it. (2) From `not-vfx` onward the
+        same source is ducked under the narration as the bed.
+        UNVERIFIED — read the file on the Mac to confirm the 43-44s window and the exact
+        phrase boundaries before cutting.

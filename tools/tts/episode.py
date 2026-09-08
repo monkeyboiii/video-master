@@ -21,6 +21,12 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 VO_MARKERS = ('**VO:**', '**口播:**', '**Read:**')
+# A beat whose audio is LIFTED, not synthesised — a person saying the line on camera. It still
+# needs a caption, so it stays in the plan; the synthesiser is what skips it. A beat with NO
+# marker at all is different and is still dropped entirely: that is a picture beat, which wants
+# no caption either. Both keep their target_duration_sec, so neither shifts the beats after it.
+SOURCE_MARKERS = ('**原声:**', '**Source:**')
+ALL_MARKERS = VO_MARKERS + SOURCE_MARKERS
 
 
 def find_episode(video_id):
@@ -47,7 +53,7 @@ def beats(ep_dir, locale):
 
 
 def lines(ep_dir, locale):
-    """{beat_id: spoken text}. A marker on its own line takes the following paragraph."""
+    """{beat_id: (text, emphasis spans, is_spoken)}. A marker takes the following paragraph."""
     f = ep_dir / f'script.{locale}.md'
     if not f.exists():
         raise SystemExit(f'{f.relative_to(REPO)}: no script for this locale')
@@ -60,7 +66,7 @@ def lines(ep_dir, locale):
             continue
         if beat is None or beat in out:
             continue
-        for mk in VO_MARKERS:
+        for mk in ALL_MARKERS:
             if not line.startswith(mk):
                 continue
             # The line may be on the marker, or the marker may head a BULLET LIST whose items are
@@ -77,7 +83,8 @@ def lines(ep_dir, locale):
                 j += 1
             text = join(p for p in parts if p)
             if text:
-                out[beat] = clean(text)
+                cleaned, spans = emphasis(clean(text))
+                out[beat] = (cleaned, spans, mk in VO_MARKERS)
             break
     return out
 
@@ -90,20 +97,63 @@ def join(parts):
     return ('' if cjk > len(joined) / 4 else ' ').join(parts)
 
 
+BOLD = re.compile(r'\*\*(.+?)\*\*')
+
+
+def emphasis(s):
+    """(text with the ** removed, [(start, end)] of what was bold) — character ranges.
+
+    THE SCRIPTS ALREADY DECLARE THEIR OWN EMPHASIS. `我**不允许**你们不晓得` says which words the
+    sentence is about, in the sentence, where the writer put it — and `clean()` deleted it. So an
+    episode's captions came out with no important word at all (build-narration.py's zh path found
+    no `*` on a jieba word, and its en path set `imp` to an empty set outright), while the demo
+    script in script.py declared its list by hand in a second table.
+
+    Reading the bold here is the whole of "auto highlight": one statement of emphasis rather than
+    two that drift. Offsets rather than string matching, because a word can repeat in a line —
+    `我不允许你们不晓得` has two 不 and only the first is bold.
+    """
+    out, spans, pos = [], [], 0
+    for m in BOLD.finditer(s):
+        out.append(s[pos:m.start()])
+        start = sum(len(x) for x in out)
+        out.append(m.group(1))
+        spans.append((start, start + len(m.group(1))))
+        pos = m.end()
+    out.append(s[pos:])
+    return ''.join(out), spans
+
+
 def clean(s):
-    """Strip the markdown a voice would otherwise read aloud."""
-    s = re.sub(r'\*\*(.+?)\*\*', r'\1', s)
+    """Strip the markdown a voice would otherwise read aloud. Bold is emphasis()'s, not ours."""
     s = re.sub(r'`([^`]*)`', r'\1', s)
     s = re.sub(r'\[(.+?)\]\([^)]*\)', r'\1', s)
     s = re.sub(r'<!--.*?-->', '', s, flags=re.S)
     return s.strip()
 
 
-def words_zh(text):
-    """Caption units for a line with no declared boundaries. See the module docstring."""
+def words_zh(text, spans=()):
+    """Caption units for a line with no declared boundaries. See the module docstring.
+
+    A word overlapping a bold span comes back with the trailing `*` that build-narration.py
+    already reads as "this one lights its text too" — so the highlight rides the existing row
+    format and nothing downstream changes. `tokenize` is the same segmentation `cut` gives,
+    with the offsets the span test needs.
+    """
     import jieba
-    punct = '，。！？、；：（）“”‘’"\'()!?,.:; \t'
-    return [w for w in jieba.cut(text) if w.strip() and not all(c in punct for c in w)]
+    punct = '，。！？、；：（）“”‘’"\'()!?,.:;…—～·《》【】 \t'
+    out = []
+    for w, s, e in jieba.tokenize(text):
+        if not w.strip() or all(c in punct for c in w):
+            continue
+        hot = any(s < hi and e > lo for lo, hi in spans)
+        out.append(w + '*' if hot else w)
+    return out
+
+
+def important_en(text, spans):
+    """The bold words, lowercased — what build-narration.py matches its own tokens against."""
+    return {w.lower().strip('.,!?') for lo, hi in spans for w in text[lo:hi].split() if w.strip()}
 
 
 def load(video_id, locale):
@@ -111,8 +161,11 @@ def load(video_id, locale):
     said = lines(ep, locale)
     plan = []
     for bid, start, target in beats(ep, locale):
-        if bid in said:
-            plan.append({'beat': bid, 'atMs': start * 1000, 'capSec': target, 'text': said[bid]})
+        if bid not in said:
+            continue                      # a picture beat: no marker, no caption, clock unmoved
+        text, spans, spoken = said[bid]
+        plan.append({'beat': bid, 'atMs': start * 1000, 'capSec': target, 'text': text,
+                     'speak': spoken, 'spans': spans})
     if not plan:
         raise SystemExit(f'{video_id}/{locale}: no beat in the manifest has a line in the script')
     return ep, plan

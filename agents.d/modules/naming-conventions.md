@@ -21,8 +21,8 @@ Directory:
 series/S{season}/E{episode}-{kebab-slug}/      series/S03/E003-barber-track-day-three/
 ```
 
-**The season number is the category.** S03 *is* the 100-track challenge; S05 *is* the remedy
-series. That is the whole reason the id needs nothing else in it, and why each season carries a
+**The season number is the category.** S03 *is* the 100-track challenge; S05 *is* what that
+run spins off. That is the whole reason the id needs nothing else in it, and why each season carries a
 `README.md` saying what it is — the number is only meaningful because that file exists.
 
 | Season | What it is |
@@ -31,7 +31,7 @@ series. That is the whole reason the id needs nothing else in it, and why each s
 | S02 | music-synced identity cuts |
 | S03 | the 100-track challenge — counted field missions |
 | S04 | product & feature introductions |
-| S05 | remedy — a re-cut of an episode that underperformed |
+| S05 | spin-offs from the 100-track challenge — pieces it throws off that do not advance the counter |
 
 - Season and episode are zero-padded: `S03`, `E003`. Episode numbers are per-season and start at
   `E001` (S03 starts at `E000`, which is deliberate — see that season's README).

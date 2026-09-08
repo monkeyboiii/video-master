@@ -1,0 +1,134 @@
+# 分镜设计 — S05E002 · shot design (viral short grammar)
+#
+# PARSABLE ON PURPOSE. `tools/storyboard-check.mjs` asserts that this file, manifest.yml and
+# script.zh-CN.md name the same beats, in the same order, with nothing missing on either side.
+# A storyboard that disagrees with the script is the normal failure and it is silent, because
+# both look fine on their own.
+#
+# IT CARRIES NO DURATIONS. A beat's length lives in manifest.yml's target_duration_sec and
+# nowhere else. A CUT's length is a `share` — a relative weight inside its beat — so retiming a
+# beat retimes its cuts and the two can never disagree. Two statements of one number drift; this
+# is the same argument the Docs-table kind check already makes.
+#
+# THE UNIT IS A CUT, NOT A BEAT. A beat is a sentence; a viral short cuts three or four times
+# inside one. 13 beats, 35 cuts, median well under a second — the pacing IS the format, and a
+# storyboard with one shot per sentence cannot describe it.
+#
+# LOCALE-NEUTRAL. Shots are shared across editions; only caption text differs, and that comes
+# from script.<locale>.md. An edition wanting different shots gets its own storyboard.<locale>.yml.
+#
+# One-shot experiment: 分镜设计 has no skill and no module doc yet. If it earns one, the
+# vocabularies below are what it would standardise.
+#
+# shot    ECU CU MCU MS WS EWS POV AERIAL INSERT
+# camera  static push pull snap-zoom pan-l pan-r tilt-up tilt-down handheld whip orbit freeze ramp
+# bg      dirt night sky asphalt crowd grade neutral mall
+# motion  none punch-in zoom-punch slide-up drop-in pop whip-cut rise fade-through freeze-flash
+#         text-pop shake glitch
+# sfx     none whoosh impact riser sub-drop click shutter scratch ding swoosh-rev
+#
+# SFX ARE CUES, NOT ASSETS. The names below are what the edit should place; nothing here fetches
+# audio and the previz draws them as marks on the timeline. agents.d/modules/toolline.md records
+# that effects come from @remotion/sfx and the remotion.media CC0 CDN — mapping each cue to a
+# file there is the edit's job, and UNVERIFIED until someone does it.
+
+video_id: "S05E002"
+
+cuts:
+  # hook — 3 cuts in 2.8s. Open inside the face, not on it.
+  - {beat: hook, shot: ECU, camera: snap-zoom, bg: neutral, motion: zoom-punch, share: 3, sfx: whoosh,
+     subject: eyes only, hard in}
+  - {beat: hook, shot: MCU, camera: static, bg: neutral, motion: text-pop, share: 5, sfx: click,
+     subject: narrator to camera, accusation delivered}
+  - {beat: hook, shot: CU, camera: whip, bg: neutral, motion: whip-cut, share: 2, sfx: swoosh-rev,
+     subject: whip out of the face into the jump}
+
+  # the-jump — the only silent beat. Two cuts, and the second is the freeze the whole piece rests on.
+  - {beat: the-jump, shot: WS, camera: static, bg: sky, motion: none, share: 6, sfx: none,
+     subject: one rider, one jump, held against sky}
+  - {beat: the-jump, shot: WS, camera: freeze, bg: sky, motion: freeze-flash, share: 4, sfx: impact,
+     subject: freeze at apex, white flash on the frame}
+
+  # chinese-can-fly — the source line lands here. Hold the framing so the voice reads as a comment.
+  - {beat: chinese-can-fly, shot: WS, camera: ramp, bg: sky, motion: rise, share: 6, sfx: riser,
+     subject: speed ramp out of the freeze, still the same air}
+  - {beat: chinese-can-fly, shot: CU, camera: snap-zoom, bg: sky, motion: zoom-punch, share: 4, sfx: sub-drop,
+     subject: punch into the rider mid-air on 能飞}
+
+  # not-vfx — four cuts. This is the montage that earns the F1 comparison.
+  - {beat: not-vfx, shot: EWS, camera: pull, bg: dirt, motion: pop, share: 3, sfx: whoosh,
+     subject: widest track shot, riders in it}
+  - {beat: not-vfx, shot: MS, camera: pan-r, bg: dirt, motion: whip-cut, share: 2, sfx: whoosh,
+     subject: pack through a rutted corner}
+  - {beat: not-vfx, shot: ECU, camera: static, bg: dirt, motion: shake, share: 2, sfx: impact,
+     subject: roost off the rear wheel, frame shake}
+  - {beat: not-vfx, shot: WS, camera: static, bg: dirt, motion: drop-in, share: 3, sfx: sub-drop,
+     text: MXGP, subject: MXGP title drops on the word F1}
+
+  # this-weekend — the turn. Rhythm tightens; three short cuts.
+  - {beat: this-weekend, shot: MS, camera: whip, bg: asphalt, motion: whip-cut, share: 4, sfx: swoosh-rev,
+     subject: whip off the track into the city}
+  - {beat: this-weekend, shot: INSERT, camera: static, bg: asphalt, motion: text-pop, share: 3, sfx: click,
+     subject: calendar or ticket insert, one beat}
+  - {beat: this-weekend, shot: CU, camera: snap-zoom, bg: asphalt, motion: zoom-punch, share: 3, sfx: ding,
+     subject: punch in on the date}
+
+  # in-shanghai — payoff, alone on screen. Resist a montage.
+  - {beat: in-shanghai, shot: EWS, camera: static, bg: night, motion: slide-up, share: 6, sfx: riser,
+     text: 上海, subject: Shanghai skyline, title slides up}
+  - {beat: in-shanghai, shot: INSERT, camera: static, bg: night, motion: glitch, share: 4, sfx: shutter,
+     subject: 沪 plate or street sign, quick}
+
+  # only-on-tv — deliberately the ugliest picture in the piece. It is the viewer's own assumption.
+  - {beat: only-on-tv, shot: INSERT, camera: static, bg: grade, motion: fade-through, share: 4, sfx: scratch,
+     subject: archive broadcast look, degrade if too clean}
+  - {beat: only-on-tv, shot: MS, camera: static, bg: grade, motion: glitch, share: 3, sfx: none,
+     subject: foreign commentary framing, letterboxed}
+  - {beat: only-on-tv, shot: CU, camera: push, bg: grade, motion: punch-in, share: 3, sfx: none,
+     subject: slow push — the assumption held for years}
+
+  # now-here — the correction. Handheld against the locked-off archive. Four faces, fast.
+  - {beat: now-here, shot: MS, camera: handheld, bg: crowd, motion: pop, share: 3, sfx: impact,
+     subject: riders arriving, paddock}
+  - {beat: now-here, shot: CU, camera: handheld, bg: crowd, motion: whip-cut, share: 2, sfx: whoosh,
+     subject: face one}
+  - {beat: now-here, shot: CU, camera: handheld, bg: crowd, motion: whip-cut, share: 2, sfx: whoosh,
+     subject: face two}
+  - {beat: now-here, shot: MS, camera: orbit, bg: crowd, motion: zoom-punch, share: 3, sfx: sub-drop,
+     subject: orbit a bike being unloaded}
+
+  # or-the-mall — the needle. Two shots and a snap back. The joke dies if the mall gets a scene.
+  - {beat: or-the-mall, shot: WS, camera: static, bg: mall, motion: whip-cut, share: 3, sfx: scratch,
+     subject: hard cut to escalators, fluorescent, dead}
+  - {beat: or-the-mall, shot: MCU, camera: static, bg: mall, motion: freeze-flash, share: 2, sfx: click,
+     subject: someone holding a paper bag, frozen}
+  - {beat: or-the-mall, shot: EWS, camera: snap-zoom, bg: dirt, motion: zoom-punch, share: 5, sfx: sub-drop,
+     subject: snap straight back to the track, full volume}
+
+  # no-need-to-know — matches the hook framing. The piece returns to the person making the case.
+  - {beat: no-need-to-know, shot: MCU, camera: static, bg: neutral, motion: none, share: 6, sfx: none,
+     subject: to camera, plain, no cut}
+  - {beat: no-need-to-know, shot: CU, camera: push, bg: neutral, motion: punch-in, share: 4, sfx: click,
+     subject: small push on the last three words}
+
+  # just-watch-them-fly — the biggest air. Takeoff, apex freeze, landing.
+  - {beat: just-watch-them-fly, shot: MS, camera: tilt-up, bg: sky, motion: rise, share: 3, sfx: riser,
+     subject: takeoff, camera follows up}
+  - {beat: just-watch-them-fly, shot: EWS, camera: freeze, bg: sky, motion: freeze-flash, share: 3, sfx: impact,
+     text: 希望别摔, subject: apex freeze, bubble pops on the frozen frame}
+  - {beat: just-watch-them-fly, shot: WS, camera: static, bg: dirt, motion: shake, share: 4, sfx: sub-drop,
+     subject: landing, frame shake, he does not crash}
+
+  # hundred-tracks — the only beat naming the season this spins off from.
+  - {beat: hundred-tracks, shot: MS, camera: pan-r, bg: dirt, motion: slide-up, share: 4, sfx: whoosh,
+     subject: the narrator's own bike}
+  - {beat: hundred-tracks, shot: INSERT, camera: static, bg: dirt, motion: text-pop, share: 3, sfx: ding,
+     text: "100", subject: the counter, as a number on screen}
+  - {beat: hundred-tracks, shot: WS, camera: static, bg: dirt, motion: fade-through, share: 3, sfx: none,
+     subject: a track the audience has already seen from S03}
+
+  # see-you-in-shanghai — the sign-off is the next episode's hook. End on empty frame, not a logo.
+  - {beat: see-you-in-shanghai, shot: WS, camera: pan-l, bg: dirt, motion: none, share: 6, sfx: none,
+     subject: ride out of frame}
+  - {beat: see-you-in-shanghai, shot: EWS, camera: static, bg: dirt, motion: fade-through, share: 4, sfx: riser,
+     subject: empty frame, dust settling}

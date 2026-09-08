@@ -33,6 +33,11 @@ import {
   spokenSubtitleTrackSchema,
   type SpokenSubtitleTrackProps,
 } from './components/SpokenSubtitleTrack';
+import {
+  PrevizStoryboard,
+  previzStoryboardSchema,
+  type PrevizStoryboardProps,
+} from './components/PrevizStoryboard';
 import type {KineticCaptionsProps} from './components/KineticCaptions';
 import {PhotoReveal, photoRevealSchema} from './components/PhotoReveal';
 import type {PhotoRevealProps} from './components/PhotoReveal';
@@ -325,6 +330,31 @@ export const RemotionRoot: React.FC = () => {
                 {src: 'embed-freeze.png', trimSec: 0, seconds: 2.5},
               ],
             },
+          ],
+        }}
+      />
+      {/* The storyboard previz: a cuttable placeholder edit, built from an episode's own
+          storyboard.yml. Props come from tools/previz-props.mjs; nothing episode-specific is
+          baked in here. NOT an overlay — it is an opaque picture, so it does not take
+          overlayMetadata's transparent ProRes defaults. */}
+      <Composition
+        id="previz-storyboard"
+        component={PrevizStoryboard}
+        schema={previzStoryboardSchema}
+        width={1080}
+        height={1920}
+        fps={FPS}
+        durationInFrames={Math.round(30 * FPS)}
+        calculateMetadata={({props}: {props: PrevizStoryboardProps}) => ({
+          durationInFrames: Math.max(1, Math.round((props.durationSec ?? 30) * FPS)),
+        })}
+        defaultProps={{
+          locale: 'zh-CN' as const,
+          durationSec: 3,
+          script: '',
+          cuts: [
+            {beat: 'demo', atSec: 0, durSec: 3, shot: 'MS', camera: 'push', bg: 'dirt',
+             motion: 'punch-in', sfx: 'whoosh', subject: 'pass an episode with --props'},
           ],
         }}
       />
