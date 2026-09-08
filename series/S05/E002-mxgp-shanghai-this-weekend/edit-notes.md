@@ -24,21 +24,27 @@ as the bed for the rest of the piece.
 
 `media/previz/S05E002-previz.mp4` carries a real mix so the pacing can be judged by ear.
 
-**The bed cuts in hard on 中, not on the clap.** The source is entered at **00:00:43.15**. The
-clap at 42.99s is the obvious musical cut and it was the first choice, but cutting there drags a
-moment of noise in ahead of the voice — the clap's own decay. 43.15s is where centre-band energy
-lifts again once that decays, which is the vocal.
+**The music runs from frame 0, with a quadratic fade up.** Two earlier versions cut it in — first
+on the clap at 42.99s, then on the vocal at 43.15s — and both sounded wrong, for the same reason:
+the phrase arrived out of silence with no bar of groove ahead of it, so it read as a sound effect
+rather than as a song. The bed now starts at the top and the source is entered at **00:00:41.88**,
+which puts the 43.15s vocal at 1.27s exactly as before. Nothing about the picture or the caption
+moved; only the run-up exists now.
+
+The fade is a quadratic ease-out — fast first, settling into normal — not a linear ramp and not the
+cubic ease-in used in an earlier version, which crept. Measured in isolation: **−26 dB** at 0.05s,
+−20.4 dB at 0.2s, −17.5 dB at 0.4s, **normal by 0.8s**, well before the line.
 
 **It holds at source volume for three repetitions.** The song sings the line three times on a clap
 grid measured dead regular at **1.75s** (transients at 42.99, 44.74, 46.49, 48.25, 49.99, 51.75s
-under a 4 kHz highpass). So the bed runs full for **5.25s** and the drop lands at 6.52s, which is
-exactly where the narration comes back. Measured: about −13 dB through the hold, −22 to −24 dB
-after. Never at unity — the source is −6.4 LUFS with a +3.8 dBFS true peak.
+under a 4 kHz highpass). The bed holds full to 6.52s and the drop lands exactly where the narration
+comes back — about −16 dB through the hold, **−38 dB** after. Never at unity: the source is
+−6.4 LUFS with a +3.8 dBFS true peak.
 
 **No riser.** Nothing is synthesised into the preview mix.
 
-Mix measures **−15.1 LUFS / −1.5 dBTP**, 1.1 LU under the −14 the QC checklist asks for and
-peak-limited rather than wrong — sparse speech over a quiet bed has a high peak-to-loudness ratio,
+Mix measures **−14.8 LUFS / −1.5 dBTP** — inside the ±1 the QC checklist asks for, which the
+earlier cuts were not: laying the bed from the top raises the average without touching a peak — sparse speech over a quiet bed has a high peak-to-loudness ratio,
 and two-pass `loudnorm` cannot lift it further at that ceiling. The shipping render is where a
 higher ceiling or real compression gets decided.
 
