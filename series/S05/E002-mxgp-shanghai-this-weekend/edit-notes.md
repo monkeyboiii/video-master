@@ -36,21 +36,34 @@ isolation:
 
 | Where | Bed level |
 |---|---|
-| 0.30s — under the hook | **−40.5 dB** |
-| 1.10s — still under it | −36.1 dB |
-| 1.19s | hook speech ends; the swell starts here, not before |
-| 1.30 / 1.50s — swelling | −20.6 / −17.0 dB |
-| **1.70s — normal reached** | **−15.5 dB** |
-| 1.95s — 中 lands | −15.7 dB, so **0.25s of normal ahead of the vocal** |
-| to 7.20s — the hold | ≈ −16 dB |
-| after | **−38 dB** |
+| 0.30s — under the hook | **−40.4 dB** |
+| 1.10s — still under it | −32.1 dB |
+| 1.16s | hook speech ends; the swell starts here, not before |
+| 1.40s — swelling | −17.5 dB |
+| **1.67s — normal reached** | **−15.5 dB** |
+| 1.92s — 中 lands | −15.7 dB, so **0.25s of normal ahead of the vocal** |
+| to 7.10s — the hold | ≈ −16 to −17 dB, all three repetitions |
+| 7.40s — ducking | −28.3 dB |
+| **7.68s — down, settled** | **−39.4 dB** |
+| 7.93s — narration returns | −38.0 dB, so **0.25s settled ahead of the voice** |
+
+**The envelope is symmetric, and both gaps are music cues.** The bed cannot duck while the next
+line is being spoken any more than it could swell while the last one was. So the drop gets the
+mirror of the swell: `flying-broll` is 4.26s = 3.50s of song + a **0.76s reserve**, holding full
+through the third repetition, 0.51s down, then 0.25s settled before `not-vfx`. Tightening either
+gap puts the bed back on top of a voice — which is exactly the fault both were added to fix.
 
 The curve is a quadratic ease-out, fast first and settling in, not the cubic ease-in an earlier
 version used, which crept.
 
-**The hook beat is 1.95s for 1.19s of speech, and that 0.76s of air is a music cue, not slack.**
-The bed cannot swell while the line is still being spoken, so tightening this gap puts it back on
-top of the voice. This is the one place in the piece where the gap is deliberately not minimal.
+**The hook is 你相不相信我说.** It is deliberately half a sentence — it does not stand up alone and
+is completed by the source line that follows, 中国人能飞. That is also why the gap between them is
+not minimal: it carries the swell.
+
+**相不相信 is one caption unit.** The A-not-A question form is a single verb; jieba splits it
+相|不|相信, which would light three units for one word. Added to `tools/tts/zh-words.txt` alongside
+中国人, 越野摩托 and 赛道挑战. A trailing comment on an entry line does NOT work there — jieba parses
+`word freq tag` and eats the `#` as the tag, which is how the first attempt silently did nothing.
 
 **It holds at source volume for three repetitions.** The song sings the line three times on a clap
 grid measured dead regular at **1.75s** (transients at 42.99, 44.74, 46.49, 48.25, 49.99, 51.75s

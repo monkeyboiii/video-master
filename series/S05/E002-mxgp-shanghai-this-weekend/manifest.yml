@@ -69,7 +69,7 @@ beats:
     visual_intent: straight to camera, no establishing shot
     overlay: null
     target_duration_sec:
-      zh-CN: 1.95
+      zh-CN: 1.92
   - id: chinese-can-fly
     purpose: land the line in a real voice, not the narrator's — and carry the jump under it
     # The silent `the-jump` beat is GONE. It was the only thing between the first two lines, so
@@ -85,10 +85,15 @@ beats:
     # The song sings 中国人能飞 THREE times, on a clap grid measured at 1.75s. chinese-can-fly is
     # the first; this beat is the second and third, at the source's own volume, with no narration
     # over it. The third script line is pushed back by exactly this much so the b-roll has frames.
+    #
+    # 4.26s = 3.50s of song + 0.76s RESERVE, and the reserve is the mirror of the hook's. The bed
+    # cannot duck while the next line is being spoken any more than it could swell while the last
+    # one was, so the drop happens in this air: full through the third repetition, 0.51s down,
+    # then 0.25s settled before the narration returns. Both gaps in this piece are music cues.
     visual_intent: dirt bike airborne, end to end — the longest held pictures in the piece
     overlay: null
     target_duration_sec:
-      zh-CN: 3.50
+      zh-CN: 4.26
   - id: not-vfx
     purpose: name the thing, and borrow a frame the audience already has (F1)
     visual_intent: MXGP title card over the widest track shot available

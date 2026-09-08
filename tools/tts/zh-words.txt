@@ -10,5 +10,8 @@
 # wrong reading. This file is where a correction goes once, instead of being worked around per
 # script. Keep it short: only add a word the segmenter demonstrably gets wrong.
 中国人 2000
+# A-not-A question form (相不相信) is one verb, not 相|不|相信. Trailing comments are NOT
+# allowed on an entry line — jieba parses `word freq tag` and eats the # as the tag.
+相不相信 2000
 越野摩托 2000
 赛道挑战 1000
