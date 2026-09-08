@@ -154,6 +154,12 @@ const main = () => {
       }
     }
     if (!c.subject) warns.push(`${where}: no subject — the previz renders an empty slate`);
+    // `text` is burned into the picture, so it is the one field that may differ per edition. A
+    // map missing the locale being checked fails here rather than at render, where it would come
+    // out as a blank band with no error.
+    if (c.text && typeof c.text === 'object' && c.text[locale] === undefined) {
+      errs.push(`${where}: text has no ${locale} — keys are ${Object.keys(c.text).join(', ')}`);
+    }
   }
 
   // Script agreement. A beat with no VO/source marker is a PICTURE beat: legal, but deliberate.

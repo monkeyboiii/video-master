@@ -63,6 +63,20 @@ mkdirSync(dirname(out), {recursive: true});
 // sitting light over busy footage — and which disappears entirely over white line art. An episode
 // whose panels are white gets `band`. Omitted, the component keeps its per-locale default.
 const captionStyle = sb.caption_style;
+// `text` is the words burned INTO the picture, so unlike everything else in the storyboard it is
+// language-dependent. It may be a plain string (same in every edition — a mark like MXGP) or a
+// map keyed by locale. Resolved here rather than in the component so the props file is already
+// the finished per-locale thing, which is what --props expects.
+for (const c of cuts) {
+  if (c.text && typeof c.text === 'object') {
+    const v = c.text[locale];
+    if (v === undefined) {
+      console.error(`cut ${c.beat}: text has no ${locale} — keys are ${Object.keys(c.text).join(', ')}`);
+      process.exit(2);
+    }
+    c.text = v;
+  }
+}
 writeFileSync(out, JSON.stringify(
   {locale, durationSec, cuts, script, ...(captionStyle ? {captionStyle} : {})}, null, 2) + '\n', 'utf8');
 console.log(`${relative(REPO, out)}: ${cuts.length} cuts, ${durationSec}s` +

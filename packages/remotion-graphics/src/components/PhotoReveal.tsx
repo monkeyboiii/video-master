@@ -86,10 +86,23 @@ export const PhotoRevealFrame: React.FC<{
   bandFrac: number;
   blurPx: number;
   bandDim: number;
-}> = ({src, scale, opacity, objectPositionX, objectPositionY, bandFrac, blurPx, bandDim}) => {
+  /**
+   * `cover` fills the band and crops whatever does not fit — right for a photo, wrong for a
+   * diagram: at a 1.24:1 panel in a 0.94:1 band it throws away a quarter of the width, arrows
+   * included. `contain` fits the whole image and lets the blurred backdrop carry the remainder,
+   * which is the same idiom doing the same job.
+   */
+  fit?: 'cover' | 'contain';
+  /** Asymmetric bands. A photo wants the subject centred; a panel wants room for a title above
+   *  it and captions below it, and those are not the same size. Default to bandFrac for both. */
+  bandTopFrac?: number;
+  bandBottomFrac?: number;
+}> = ({src, scale, opacity, objectPositionX, objectPositionY, bandFrac, blurPx, bandDim,
+       fit = 'cover', bandTopFrac, bandBottomFrac}) => {
   // The backdrop drifts with the photo, but damped — it reads as depth, not a second zoom.
   const backdropScale = 1 + (scale - 1) * 0.35;
-  const bandPct = bandFrac * 100;
+  const topPct = (bandTopFrac ?? bandFrac) * 100;
+  const bottomPct = (bandBottomFrac ?? bandFrac) * 100;
 
   return (
     <AbsoluteFill style={{opacity, overflow: 'hidden'}}>
@@ -119,8 +132,8 @@ export const PhotoRevealFrame: React.FC<{
       <AbsoluteFill
         style={{
           background: [
-            `linear-gradient(to bottom, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0) ${bandPct}%)`,
-            `linear-gradient(to top, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0) ${bandPct}%)`,
+            `linear-gradient(to bottom, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0) ${topPct}%)`,
+            `linear-gradient(to top, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0) ${bottomPct}%)`,
           ].join(','),
         }}
       />
@@ -131,8 +144,8 @@ export const PhotoRevealFrame: React.FC<{
           position: 'absolute',
           left: 0,
           right: 0,
-          top: `${bandPct}%`,
-          bottom: `${bandPct}%`,
+          top: `${topPct}%`,
+          bottom: `${bottomPct}%`,
           overflow: 'hidden',
         }}
       >
@@ -143,7 +156,7 @@ export const PhotoRevealFrame: React.FC<{
             inset: 0,
             width: '100%',
             height: '100%',
-            objectFit: 'cover',
+            objectFit: fit,
             objectPosition: `${objectPositionX}% ${objectPositionY}%`,
             transform: `scale(${scale})`,
           }}

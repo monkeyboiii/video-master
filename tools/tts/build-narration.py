@@ -219,10 +219,14 @@ def main():
                 for t in r.tokens:
                     txt = t.text.strip()
                     # a comma is a pause the voice takes, not a word the reader sees; without
-                    # this the caption grows a lone "," that lights like any other unit
+                    # this the caption grows a lone "," that lights like any other unit.
+                    # It still MARKS the word before it: a clause boundary is where the caption
+                    # track should break a line, and the row format cannot carry punctuation.
                     if t.start_ts is None or not any(ch.isalnum() for ch in txt):
+                        if toks and any(c in '.,!?;:\u2014\u2013' for c in txt):
+                            toks[-1] = (*toks[-1][:3], True)
                         continue
-                    toks.append((txt, base + t.start_ts, base + t.end_ts))
+                    toks.append((txt, base + t.start_ts, base + t.end_ts, False))
         clip = np.concatenate(chunks).astype(np.float32)
         if not a.keep_padding:
             clip, lead = trim_silence(clip)
@@ -235,7 +239,7 @@ def main():
             # unclamped, the final word of every beat lingers a second past the voice and runs
             # into the next beat's block: 继续 ended at 23.26s while the next beat started at
             # 22.44s. Shifting alone is not enough; the spans have to fit the clip that remains.
-            toks = [(w, max(0.0, s - lead), min(dur, e - lead)) for w, s, e in toks]
+            toks = [(w, max(0.0, s - lead), min(dur, e - lead), b) for w, s, e, b in toks]
             zspans = [(max(0.0, s - lead), min(dur, e - lead)) for s, e in zspans]
         dur = len(clip) / SR
         if dur > cap:
@@ -267,16 +271,25 @@ def main():
             # the demo script marks its own important words; an episode has no such marking yet
             imp = ({w.lower() for w in SC.IMPORTANT_EN.get(b['beat'], [])} if plan is None
                    else __import__('episode').important_en(b['text'], b.get('spans', ())))
-            block = []
+            block, brks = [], []
             toks = b['tokens']
             if b.get('sourced'):
                 ws = [w for w in b['text'].split() if w.strip()]
-                toks = [(w, s, e) for w, (s, e) in zip(ws, flat_spans(len(ws), 0.0, b['capSec']))]
-            for text, s, e in toks:
+                toks = [(w, s, e, False) for w, (s, e) in zip(ws, flat_spans(len(ws), 0.0, b['capSec']))]
+            for text, s, e, brk in toks:
                 mark = '|*' if text.lower().strip('.,') in imp else ''
                 block.append(f"{text}|{round(b['atMs']+s*1000)}|{round(b['atMs']+e*1000)}{mark}")
-            if block:
-                rows.append('\n'.join(block))
+                brks.append(brk)
+            # One caption block per CLAUSE — the same reason as the zh path below. A 36-word beat
+            # left whole is split by the track at the width-nearest word, which walks straight
+            # across a full stop: "...you're the one" / "kicking it It's not the engine...".
+            part = []
+            for row, brk in zip(block, brks):
+                part.append(row)
+                if brk:
+                    rows.append('\n'.join(part)); part = []
+            if part:
+                rows.append('\n'.join(part))
         out = a.outdir / f'rows-{tag}.txt'
         out.write_text('\n\n'.join(rows), encoding='utf-8')
         n = sum(len(r.splitlines()) for r in rows)
@@ -286,8 +299,13 @@ def main():
     # zh — spans from the model's own phoneme durations, computed during synthesis above
     rows, provisional = [], []
     for b in beats:
-        src = (SC.WORDS_ZH[b['beat']] if plan is None
-               else __import__('episode').words_zh(b['text'], b.get('spans', ())))
+        if plan is None:
+            src = SC.WORDS_ZH[b['beat']]
+            breaks = [False] * len(src)
+        else:
+            seg = __import__('episode').segment(b['text'], b.get('spans', ()))
+            src = [w + ('*' if hot else '') for w, hot, _ in seg]
+            breaks = [brk for _, _, brk in seg]
         marks = [w.endswith('*') for w in src]
         words = [w.rstrip('*') for w in src]
         spans = b['zh_spans']
@@ -301,7 +319,20 @@ def main():
                   file=sys.stderr)
         block = [f"{w}|{round(b['atMs'] + s*1000)}|{round(b['atMs'] + e*1000)}"
                  f"{'|*' if m else ''}" for w, (s, e), m in zip(words, spans, marks)]
-        rows.append('\n'.join(block))
+        # ONE CAPTION BLOCK PER CLAUSE, not per beat. The track splits a too-wide block at the
+        # word boundary nearest the middle BY WIDTH, knowing nothing about sentences — which in a
+        # language written without spaces cuts 压力峰值 into 压力 / 峰值 and ends a line on 这 with
+        # 不是发动机 beginning the next. Breaking where the writer put a comma or a full stop gives
+        # the track lines short enough that it rarely has to split at all, and when it does the
+        # halves are inside one clause.
+        cut, part = [], []
+        for row, brk in zip(block, breaks[:len(block)]):
+            part.append(row)
+            if brk:
+                cut.append(part); part = []
+        if part:
+            cut.append(part)
+        rows.extend('\n'.join(c) for c in cut if c)
     out = a.outdir / f'rows-{tag}.txt'
     out.write_text('\n\n'.join(rows), encoding='utf-8')
     print(f"{out}: {sum(len(r.splitlines()) for r in rows)} words from pred_dur")

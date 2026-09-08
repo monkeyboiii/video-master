@@ -152,8 +152,25 @@ const Cut: React.FC<{cut: PrevizStoryboardProps['cuts'][number]; index: number}>
       interpolate(frame, [dur - 4, dur - 1], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
     return (
       <AbsoluteFill style={{backgroundColor: '#0A0A0C'}}>
+        {/*
+          * `contain`, not `cover`: at a 1.24:1 panel in the default band, cover crops a quarter of
+          * the width — on a technical diagram that is arrows, not margin.
+          *
+          * The bands are asymmetric and the bottom one is deep, because the CAPTIONS live in it.
+          * A caption is bottom-anchored at safeZoneFor().bottom, which puts its top around 71% of
+          * the frame; a 20% bottom band ends at 80% and the line lands on the picture. 0.30 ends
+          * the sharp box at 70%, above the caption, so the type sits on blur instead of on the
+          * drawing.
+          *
+          * bandDim 0.55, not photo-reveal's 0.22, and that is about THIS art: a blurred copy of
+          * WHITE line work is light grey, so the default dimming leaves white type on a near-white
+          * ground. 0.55 takes the bands to about 45% brightness, which is what lets the title and
+          * the captions read without changing the shared caption palette.
+          */}
         <PhotoRevealFrame src={cut.src} scale={s} opacity={op}
-          objectPositionX={50} objectPositionY={50} bandFrac={0.2} blurPx={40} bandDim={0.22} />
+          objectPositionX={50} objectPositionY={50} bandFrac={0.2}
+          bandTopFrac={0.22} bandBottomFrac={0.30} fit="contain"
+          blurPx={40} bandDim={0.55} />
         {/* Screen text goes in the TOP blurred band, not over the diagram. That band exists
             precisely so there is somewhere to put type without covering the picture, and on this
             episode the picture is the thing being explained. */}

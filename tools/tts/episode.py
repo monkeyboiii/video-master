@@ -119,6 +119,19 @@ def join(parts):
 
 BOLD = re.compile(r'\*\*(.+?)\*\*')
 _DICT_LOADED = False
+PUNCT = '，。！？、；：（）“”‘’"\'()!?,.:;…—～·《》【】 \t'
+
+
+def _load_dict():
+    """Corrections for words jieba's default dictionary lacks — see zh-words.txt."""
+    global _DICT_LOADED
+    if _DICT_LOADED:
+        return
+    import jieba
+    d = Path(__file__).resolve().parent / 'zh-words.txt'
+    if d.exists():
+        jieba.load_userdict(str(d))
+    _DICT_LOADED = True
 
 
 def emphasis(s):
@@ -174,38 +187,45 @@ def say(text):
     return text
 
 
-def words_zh(text, spans=()):
-    """Caption units for a line with no declared boundaries. See the module docstring.
+# A clause ends here. The caption track splits a too-wide line at the word boundary that leaves
+# the halves closest to equal WIDTH, and it has no idea where a sentence is — the row format
+# carries no punctuation, deliberately, because a comma is a pause the voice takes and not a word
+# the reader sees. For English the spaces make a mid-clause split survivable; for Chinese, written
+# without spaces, it reads as a different sentence: 压力峰值 split as 压力 / 峰值, or a line ending
+# on 这 with 不是发动机 starting the next. So the boundary is recorded here and becomes a BLOCK
+# break downstream, which is a thing the track already understands.
+BREAK_AFTER = '。！？，、；：…—'
 
-    A word overlapping a bold span comes back with the trailing `*` that build-narration.py
-    already reads as "this one lights its text too" — so the highlight rides the existing row
-    format and nothing downstream changes. `tokenize` is the same segmentation `cut` gives,
-    with the offsets the span test needs.
-    """
+
+def segment(text, spans=()):
+    """[(word, is_emphasised, ends_a_clause)] — the zh caption units for a line."""
     import jieba
-    # Corrections for words jieba's default dictionary lacks — see zh-words.txt for the argument.
-    global _DICT_LOADED
-    if not _DICT_LOADED:
-        d = Path(__file__).resolve().parent / 'zh-words.txt'
-        if d.exists():
-            jieba.load_userdict(str(d))
-        _DICT_LOADED = True
-    punct = '，。！？、；：（）“”‘’"\'()!?,.:;…—～·《》【】 \t'
-    # CUT AT EVERY EMPHASIS BOUNDARY FIRST. The bold is a boundary the writer declared, and jieba
-    # crosses it: 中国人**能飞** segments as 中国|人能|飞 — it invents 人能, which is not a word, and
-    # splits the emphasis across two units so the highlight lands on half of each. Segmenting
-    # 中国人 and 能飞 separately gives 中国|人|能飞: the emphasis is one unit and nothing is
-    # invented. captions.md is explicit that a segmenter must not be a second source of truth
-    # wherever the script declares its own boundaries — the bold is the one place it does.
+    _load_dict()
+    punct = PUNCT
     edges = sorted({0, len(text)} | {x for lo, hi in spans for x in (lo, hi)})
     out = []
     for a, b in zip(edges, edges[1:]):
         hot = any(a >= lo and b <= hi for lo, hi in spans)
+        pos = a
         for w in jieba.cut(text[a:b]):
+            start, pos = pos, pos + len(w)
             if not w.strip() or all(c in punct for c in w):
+                # punctuation is not a caption word, but it does mark the word before it
+                if out and any(c in BREAK_AFTER for c in w):
+                    out[-1] = (out[-1][0], out[-1][1], True)
                 continue
-            out.append(w + '*' if hot else w)
+            nxt = text[pos:pos + 1]
+            out.append((w, hot, nxt in BREAK_AFTER))
     return out
+
+
+def words_zh(text, spans=()):
+    """Caption units for a line with no declared boundaries. See the module docstring.
+
+    A word overlapping a bold span comes back with the trailing `*` that build-narration.py reads
+    as "this one lights its text too", so the highlight rides the existing row format.
+    """
+    return [w + ('*' if hot else '') for w, hot, _ in segment(text, spans)]
 
 
 def important_en(text, spans):

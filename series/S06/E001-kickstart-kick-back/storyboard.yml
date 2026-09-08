@@ -18,6 +18,10 @@
 # NOT inert — push zooms in 7%, pull zooms out 7%, static holds. 7% and not photo-reveal's own 32%
 # because the viewer is reading a diagram and a big zoom drags the lines while they follow an arrow.
 #
+# THE SCREEN TEXT IS PER LOCALE. It is burned into the picture, so it is the one thing in this
+# file that is language-dependent — everything else describes a shot, and a shot is the same in
+# every edition. Both come from the brief's own screen-text column.
+#
 # THE SCREEN TEXT LIVES IN THE TOP BLURRED BAND, never over the drawing. That band is what makes
 # room for type on a picture that is the whole point of the shot.
 #
@@ -29,41 +33,40 @@
 
 video_id: "S06E001"
 
-# The panels are white line art, and en-US captions default to `plain` — white text, green only on
-# the word being spoken — which the caption spec chose for sitting light over busy FOOTAGE. Over
-# white drawings the unspoken words vanish completely. `band` puts the striped rule back under the
-# line, and the spec keeps it available to en for exactly this. zh already clamps to band.
-caption_style: band
+# No `caption_style` — each locale keeps its own default: en `plain`, zh clamped to `band`. An
+# earlier pass forced en to `band` because white `plain` text vanished on white line art; the real
+# fix was the layout, not the style. The captions now sit in the bottom blurred band, dimmed to
+# about 45% brightness, so plain white reads there as the spec intended.
 
 cuts:
   - {beat: why-kickback, src: s06e001/p1.png, shot: MCU, camera: push, bg: neutral, motion: none,
-     share: 1, sfx: impact, text: "WHY DOES IT KICK BACK?",
+     share: 1, sfx: impact, text: {en-US: "WHY DOES IT KICK BACK?", zh-CN: "它为什么会回踢？"},
      subject: boot on the lever, frozen — red arrow foreshadows the lever coming back}
 
   - {beat: foot-to-piston, src: s06e001/p2.png, shot: WS, camera: pull, bg: neutral, motion: none,
-     share: 1, sfx: whoosh, text: "YOUR FOOT → CRANK → PISTON",
+     share: 1, sfx: whoosh, text: {en-US: "YOUR FOOT → CRANK → PISTON", zh-CN: "脚 → 曲轴 → 活塞"},
      subject: engine section — foot, lever, gears, crank, piston rising, lit in order}
 
   - {beat: spark-before-tdc, src: s06e001/p3.png, shot: MCU, camera: push, bg: neutral, motion: none,
-     share: 1, sfx: click, text: "SPARK BEFORE TDC = NORMAL",
+     share: 1, sfx: click, text: {en-US: "SPARK BEFORE TDC = NORMAL", zh-CN: "上止点前点火 ＝ 正常"},
      subject: crank pin before TDC, piston still rising, spark and the green inertia arrow}
 
   - {beat: pressure-after-tdc, src: s06e001/p4.png, shot: MCU, camera: pull, bg: neutral, motion: none,
-     share: 1, sfx: sub-drop, text: "PRESSURE PEAKS AFTER TDC",
+     share: 1, sfx: sub-drop, text: {en-US: "PRESSURE PEAKS AFTER TDC", zh-CN: "峰值压力出现在上止点后"},
      subject: crank crosses TDC — blue pressure down, green carrying it forward}
 
   - {beat: too-early, src: s06e001/p5.png, shot: MCU, camera: push, bg: neutral, motion: none,
-     share: 1, sfx: impact, text: "TOO MUCH PRESSURE, TOO EARLY",
+     share: 1, sfx: impact, text: {en-US: "TOO MUCH PRESSURE, TOO EARLY", zh-CN: "缸压来得太早"},
      subject: back before TDC — blue down the rod into the offset pin, red tangential out of it}
 
   - {beat: forward-stop-reverse, src: s06e001/p6.png, shot: WS, camera: static, bg: neutral, motion: none,
-     share: 1, sfx: click, text: "FORWARD → STOP → REVERSE",
+     share: 1, sfx: click, text: {en-US: "FORWARD → STOP → REVERSE", zh-CN: "正转 → 停住 → 短暂倒转"},
      subject: three ghosted cranks — decelerating, stopped, reversed a few degrees in red}
 
   - {beat: force-travels-back, src: s06e001/p7.png, shot: WS, camera: pull, bg: neutral, motion: none,
-     share: 1, sfx: riser, text: "THE FORCE TRAVELS BACK",
+     share: 1, sfx: riser, text: {en-US: "THE FORCE TRAVELS BACK", zh-CN: "力量沿原路返回"},
      subject: red travelling crank → meshed gears → kickshaft → lever → boot}
 
   - {beat: brief-reverse, src: s06e001/p8.png, shot: MS, camera: push, bg: neutral, motion: none,
-     share: 1, sfx: impact, text: "BRIEF REVERSE ≠ RUNNING BACKWARD",
+     share: 1, sfx: impact, text: {en-US: "BRIEF REVERSE ≠ RUNNING BACKWARD", zh-CN: "短暂倒转 ≠ 倒着运行"},
      subject: lever flung up; inset shows the crank reversing a little and stopping}
