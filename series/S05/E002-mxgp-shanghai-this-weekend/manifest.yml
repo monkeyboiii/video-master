@@ -80,20 +80,22 @@ beats:
     overlay: null
     target_duration_sec:
       zh-CN: 1.75
-  - id: flying-broll
-    purpose: give the flying its own time — the claim in the next line has to be earned first
-    # The song sings 中国人能飞 THREE times, on a clap grid measured at 1.75s. chinese-can-fly is
-    # the first; this beat is the second and third, at the source's own volume, with no narration
-    # over it. The third script line is pushed back by exactly this much so the b-roll has frames.
-    #
-    # 4.26s = 3.50s of song + 0.76s RESERVE, and the reserve is the mirror of the hook's. The bed
-    # cannot duck while the next line is being spoken any more than it could swell while the last
-    # one was, so the drop happens in this air: full through the third repetition, 0.51s down,
-    # then 0.25s settled before the narration returns. Both gaps in this piece are music cues.
-    visual_intent: dirt bike airborne, end to end — the longest held pictures in the piece
+  - id: can-fly-again
+    purpose: the song's second repetition — it is singing, so it is captioned
+    visual_intent: airborne, long lens, held
     overlay: null
     target_duration_sec:
-      zh-CN: 4.26
+      zh-CN: 1.75
+  - id: can-fly-third
+    purpose: the third repetition, and the air the music ducks in
+    # 2.51s = 1.75s of song + 0.76s RESERVE, the mirror of the hook's. The bed cannot duck while
+    # the next line is being spoken any more than it could swell while the last one was, so the
+    # drop happens in this air: full through the third repetition, 0.51s down, then 0.25s settled
+    # before the narration returns. Both gaps in this piece are music cues, not slack.
+    visual_intent: a second angle on the air, still held
+    overlay: null
+    target_duration_sec:
+      zh-CN: 2.51
   - id: not-vfx
     purpose: name the thing, and borrow a frame the audience already has (F1)
     visual_intent: MXGP title card over the widest track shot available

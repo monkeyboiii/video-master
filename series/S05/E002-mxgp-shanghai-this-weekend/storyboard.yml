@@ -51,13 +51,13 @@ cuts:
   # in off the hook. The clap at 42.99s in the source IS the cut; 中 lands 0.14s behind it.
   - {beat: chinese-can-fly, shot: WS, camera: static, bg: sky, motion: none, share: 1, sfx: impact,
      subject: the jump held against sky, source line 中国人能飞 over it, music cuts in hard}
-  # flying-broll (3.50s) — 2 cuts, one per remaining repetition of the song's line. These are the
-  # LONGEST holds in the piece, 1.75s each, and that is the point: the next line calls this the F1
-  # of dirt biking, and the claim only lands if the viewer has been allowed to watch the flying
-  # first. No caption, no narration — the song carries it at its own volume.
-  - {beat: flying-broll, shot: EWS, camera: static, bg: sky, motion: none, share: 1, sfx: none,
+  # can-fly-again / can-fly-third — the song's second and third repetitions, one beat each so each
+  # one gets its own caption. These are the LONGEST holds in the piece and that is the point: the
+  # next line calls this the F1 of dirt biking, and the claim only lands if the viewer has been
+  # allowed to watch the flying first. No narration over them — the song carries it.
+  - {beat: can-fly-again, shot: EWS, camera: static, bg: sky, motion: none, share: 1, sfx: none,
      subject: airborne, long lens, held — second repetition}
-  - {beat: flying-broll, shot: WS, camera: tilt-up, bg: sky, motion: none, share: 1, sfx: none,
+  - {beat: can-fly-third, shot: WS, camera: tilt-up, bg: sky, motion: none, share: 1, sfx: none,
      subject: a second angle on the air, still held — third repetition}
 
   # not-vfx (3.80s) — 4 cuts. The montage that earns the F1 comparison. Fast is the content here.

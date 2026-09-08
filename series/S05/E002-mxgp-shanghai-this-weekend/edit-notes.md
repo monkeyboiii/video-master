@@ -49,7 +49,7 @@ isolation:
 
 **The envelope is symmetric, and both gaps are music cues.** The bed cannot duck while the next
 line is being spoken any more than it could swell while the last one was. So the drop gets the
-mirror of the swell: `flying-broll` is 4.26s = 3.50s of song + a **0.76s reserve**, holding full
+mirror of the swell: `can-fly-third` is 2.51s = 1.75s of song + a **0.76s reserve**, holding full
 through the third repetition, 0.51s down, then 0.25s settled before `not-vfx`. Tightening either
 gap puts the bed back on top of a voice — which is exactly the fault both were added to fix.
 
@@ -115,10 +115,18 @@ vocabulary rather than merely unused — a word still in the list is a word some
 `storyboard-check` rejects them, so the rule holds without anyone remembering it. Every motion left
 happens inside a shot.
 
-**`flying-broll` is a new picture beat, 3.50s.** It is the song's second and third repetitions with
-no narration over them, and it exists so the third script line can be pushed back: that line calls
-this the F1 of dirt biking, and the claim only lands if the viewer has been allowed to watch the
-flying first. Two cuts of 1.75s each — the longest holds in the piece.
+**All three repetitions are captioned, one beat each.** The song sings 中国人能飞 three times and
+the first version made the second and third a single picture beat, `flying-broll`, with no line —
+so the song sang twice with nothing on screen. It is singing, so it is captioned. `chinese-can-fly`
+/ `can-fly-again` / `can-fly-third` now carry one `**原声:**` line apiece.
+
+They land at **1.92s / 3.67s / 5.42s** — exactly the 1.75s clap grid measured off the source, so
+each vocal falls on its own beat's first frame. The three beats sum to what the one beat was
+(1.75 + 1.75 + 2.51 = 6.01s), so `not-vfx` still starts at 7.93s and the audio mix did not move.
+
+These are still the longest holds in the piece, and that is the point: the next line calls this the
+F1 of dirt biking, and the claim only lands if the viewer has been allowed to watch the flying
+first.
 
 **中国人 is one word.** The bold boundary fixed 中国|人能|飞, but left 中国|人, because jieba's
 default dictionary does not carry 中国人. `tools/tts/zh-words.txt` is a repo user-dict for exactly
