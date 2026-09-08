@@ -101,7 +101,7 @@ beats:
     visual_intent: MXGP title card over the widest track shot available
     overlay: null
     target_duration_sec:
-      zh-CN: 2.53
+      zh-CN: 2.91
   - id: this-weekend
     purpose: the turn from spectacle to appointment
     visual_intent: cut rhythm tightens here; short beat, short shot
@@ -131,7 +131,18 @@ beats:
     visual_intent: hard cut to something mundane, then back
     overlay: null
     target_duration_sec:
-      zh-CN: 2.72
+      zh-CN: 2.09
+  - id: you-missed-out
+    purpose: the punchline, on its own beat
+    # The voice speaks 捞了 in about 0.27s and rewording does not change it — measured against
+    # Kokoro's own pred_dur, in the sentence and as its own utterance alike. A caption highlight
+    # is read off the voice by design, so five frames of lit text is all the caption can give it.
+    # The emphasis therefore comes from the picture: this beat exists so the snap back to the
+    # track lands ON the punchline instead of somewhere inside the setup.
+    visual_intent: snap back to the track, full frame, held on the word
+    overlay: null
+    target_duration_sec:
+      zh-CN: 1.10
   - id: no-need-to-know
     purpose: remove the last excuse
     visual_intent: to camera again, plain

@@ -148,6 +148,27 @@ def clean(s):
     return s.strip()
 
 
+_SAY = None
+
+
+def say(text):
+    """Rewrite display forms into what the voice should actually pronounce. See zh-say.txt."""
+    global _SAY
+    if _SAY is None:
+        _SAY = []
+        f = Path(__file__).resolve().parent / 'zh-say.txt'
+        if f.exists():
+            for line in f.read_text(encoding='utf-8').splitlines():
+                if line.strip() and not line.lstrip().startswith('#') and '\t' in line:
+                    a, b = line.split('\t', 1)
+                    _SAY.append((a.strip(), b.strip()))
+        # longest display form first, so F10 is not eaten by an F1 rule
+        _SAY.sort(key=lambda p: -len(p[0]))
+    for a, b in _SAY:
+        text = text.replace(a, b)
+    return text
+
+
 def words_zh(text, spans=()):
     """Caption units for a line with no declared boundaries. See the module docstring.
 

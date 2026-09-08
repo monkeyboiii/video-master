@@ -78,6 +78,26 @@ earlier cuts were not: laying the bed from the top raises the average without to
 and two-pass `loudnorm` cannot lift it further at that ceiling. The shipping render is where a
 higher ceiling or real compression gets decided.
 
+## Two things the voice gets wrong, and what fixes each
+
+**`F1` was unpronounceable, not unnarrated.** It phonemises to `Fi→` — a bare Latin glyph the zh
+voice has no phoneme for, then "yi" — which is why it came out as 埃弗一. `tools/tts/zh-say.txt`
+now maps display forms to pronunciations: the voice says **埃弗一**, the caption still reads `F1`,
+because captions.md is explicit that marks and numbers are written as written. The pronunciation is
+also what the span mapping phonemises, since a caption word is sized by the length of the sound
+that was actually made, not the string that is printed. F1 is now **0.37s** of lit caption.
+
+**捞了 cannot be emphasised by the caption, because the voice does not linger on it.** Measured
+against Kokoro's own `pred_dur`: 捞了 is spoken in **~0.28s** — five frames of lit text — and that
+does not move. Rewording did not change it (那就捞了啊 → 那你就捞了 gained 0.01s) and neither did
+isolating it as its own utterance, which allocates the same phoneme durations. The ~1.05s the
+model appears to give the tail is mostly the trailing pad that `trim_silence` removes.
+
+A caption highlight is read off the voice by design — that is the rule the whole pipeline exists to
+enforce — so holding it longer would be the 2.1x-too-fast defect in reverse. **So the picture
+carries the emphasis instead:** `you-missed-out` is now its own beat, and the snap back to the
+track lands on the punchline rather than somewhere inside the setup. 15 beats.
+
 ## Beats
 
 **Timing source: synthesised, not a take.** And the gaps were never the beat lengths. Two passes

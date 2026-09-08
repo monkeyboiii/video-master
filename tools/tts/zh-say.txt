@@ -1,0 +1,16 @@
+# How to SAY something the caption should still SHOW as written. `display<TAB>pronunciation`.
+#
+# WHY THIS EXISTS. The script line is used twice — once as the text Kokoro speaks, once as the
+# caption words. Usually those want to be identical. Latin in a Chinese line is where they part:
+# `F1` phonemises to `Fi→`, a bare Latin glyph the zh voice has no phoneme for followed by "yi",
+# which the zh voice cannot say. The caption must still read `F1` — captions.md is explicit that
+# numbers and marks are written as digits, not spelled out — so the display and the pronunciation
+# have to be different strings.
+#
+# The pronunciation is also what the span mapping measures: zh_spans sizes each caption word by
+# the length of its own phonemisation, so it has to phonemise what was actually SUNG, not what is
+# printed. Both uses read this one file.
+#
+# Only add an entry the synthesiser demonstrably gets wrong. Comments go on their own line —
+# these are tab-separated pairs.
+F1	埃弗一

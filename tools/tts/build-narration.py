@@ -68,7 +68,10 @@ def zh_spans(g2p, phonemes, pred_dur, words, t0):
     per = [float(x) for x in pred_dur[1:1 + len(phonemes)]]
     lead = float(pred_dur[0]) * DUR_UNIT_SEC
 
-    want = [len(g2p(w)[0].replace(' ', '')) for w in words]
+    # Phonemise the PRONUNCIATION: a caption word's span is sized by how long its own phonemes
+    # are, so measuring `F1` while the voice sang 艾弗万 sizes it against the wrong sound.
+    import episode as _EP
+    want = [len(g2p(_EP.say(w))[0].replace(' ', '')) for w in words]
     real = len([c for c in phonemes if c != ' '])
     scale = real / sum(want) if sum(want) else 1.0
 
@@ -200,7 +203,10 @@ def main():
             continue
 
         chunks, toks, zspans = [], [], []
-        for r in pipe(text, voice=voice, speed=a.speed):
+        # Speak the pronunciation, caption the display form. `F1` has no zh phoneme and comes
+        # out as 埃弗一; the caption must still read F1. See tools/tts/zh-say.txt.
+        spoken_text = __import__('episode').say(text) if plan is not None else text
+        for r in pipe(spoken_text, voice=voice, speed=a.speed):
             base = sum(len(c) for c in chunks) / SR
             chunks.append(r.audio.numpy())
             if lang == 'z' and getattr(r, 'pred_dur', None) is not None:
