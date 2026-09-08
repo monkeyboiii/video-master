@@ -1,0 +1,14 @@
+# Words jieba gets wrong on this repo's scripts. `word freq` per line, jieba user-dict format.
+#
+# WHY THIS EXISTS. captions.md's rule is that a segmenter must never be a second source of truth
+# where the script declares its own boundaries. The script declares them with **bold**, and that
+# covers emphasis — but it says nothing about a word the writer never emphasised. 中国人能飞
+# segments as 中国|人能|飞 (人能 is not a word); splitting on the bold boundary fixes the highlight
+# and still leaves 中国|人, because jieba's default dictionary does not carry 中国人.
+#
+# A caption unit is a WORD — 核心 lights as one — so a wrong split is a wrong highlight and a
+# wrong reading. This file is where a correction goes once, instead of being worked around per
+# script. Keep it short: only add a word the segmenter demonstrably gets wrong.
+中国人 2000
+越野摩托 2000
+赛道挑战 1000

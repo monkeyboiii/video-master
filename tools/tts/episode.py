@@ -53,7 +53,7 @@ def beats(ep_dir, locale):
 
 
 def lines(ep_dir, locale):
-    """{beat_id: (text, spans, is_spoken, offset_sec)}. A marker takes the following paragraph."""
+    """{beat_id: (text, spans, is_spoken, offset, src_dur)}. A marker takes the paragraph after it."""
     f = ep_dir / f'script.{locale}.md'
     if not f.exists():
         raise SystemExit(f'{f.relative_to(REPO)}: no script for this locale')
@@ -82,20 +82,24 @@ def lines(ep_dir, locale):
                 parts.append(re.sub(r'^[-*]\s+', '', nxt))
                 j += 1
             text = join(p for p in parts if p)
-            # `**原声:** (+0.14) 中国人能飞。` — a sourced line does not necessarily start on the
+            # `**原声:** (+0.00,1.25) 中国人能飞。` — a sourced line does not necessarily start on the
             # beat. Here the bed is cut in on a clap at 42.99s in the source and the voice comes
             # 0.14s behind it (measured by centre-channel energy: the clap is a broadband HF
             # transient, the vocal is sustained mid). Without this the caption lands on the clap
             # and reads early against the voice. It sits beside the line rather than in the
-            # manifest because it is a fact about THIS line in THIS take.
-            off = 0.0
-            mo = re.match(r'^\(\+([0-9.]+)\)\s*', text)
+            # manifest because it is a fact about THIS line in THIS take. The second number is
+            # how long the line actually LASTS, which matters once a beat is longer than its line:
+            # this beat runs 1.75s so the music can carry the b-roll, but the words take 1.25s and
+            # spreading them over the whole beat would leave the last one hanging.
+            off, srcdur = 0.0, None
+            mo = re.match(r'^\(\+([0-9.]+)(?:,\s*([0-9.]+))?\)\s*', text)
             if mo:
                 off = float(mo.group(1))
+                srcdur = float(mo.group(2)) if mo.group(2) else None
                 text = text[mo.end():]
             if text:
                 cleaned, spans = emphasis(clean(text))
-                out[beat] = (cleaned, spans, mk in VO_MARKERS, off)
+                out[beat] = (cleaned, spans, mk in VO_MARKERS, off, srcdur)
             break
     return out
 
@@ -109,6 +113,7 @@ def join(parts):
 
 
 BOLD = re.compile(r'\*\*(.+?)\*\*')
+_DICT_LOADED = False
 
 
 def emphasis(s):
@@ -152,6 +157,13 @@ def words_zh(text, spans=()):
     with the offsets the span test needs.
     """
     import jieba
+    # Corrections for words jieba's default dictionary lacks — see zh-words.txt for the argument.
+    global _DICT_LOADED
+    if not _DICT_LOADED:
+        d = Path(__file__).resolve().parent / 'zh-words.txt'
+        if d.exists():
+            jieba.load_userdict(str(d))
+        _DICT_LOADED = True
     punct = '，。！？、；：（）“”‘’"\'()!?,.:;…—～·《》【】 \t'
     # CUT AT EVERY EMPHASIS BOUNDARY FIRST. The bold is a boundary the writer declared, and jieba
     # crosses it: 中国人**能飞** segments as 中国|人能|飞 — it invents 人能, which is not a word, and
@@ -182,9 +194,9 @@ def load(video_id, locale):
     for bid, start, target in beats(ep, locale):
         if bid not in said:
             continue                      # a picture beat: no marker, no caption, clock unmoved
-        text, spans, spoken, off = said[bid]
+        text, spans, spoken, off, srcdur = said[bid]
         plan.append({'beat': bid, 'atMs': start * 1000, 'capSec': target, 'text': text,
-                     'speak': spoken, 'spans': spans, 'offset': off})
+                     'speak': spoken, 'spans': spans, 'offset': off, 'srcdur': srcdur})
     if not plan:
         raise SystemExit(f'{video_id}/{locale}: no beat in the manifest has a line in the script')
     return ep, plan

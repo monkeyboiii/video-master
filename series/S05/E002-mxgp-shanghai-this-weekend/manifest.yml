@@ -74,7 +74,16 @@ beats:
     visual_intent: the jump, held, with the source line over it
     overlay: null
     target_duration_sec:
-      zh-CN: 1.50
+      zh-CN: 1.75
+  - id: flying-broll
+    purpose: give the flying its own time — the claim in the next line has to be earned first
+    # The song sings 中国人能飞 THREE times, on a clap grid measured at 1.75s. chinese-can-fly is
+    # the first; this beat is the second and third, at the source's own volume, with no narration
+    # over it. The third script line is pushed back by exactly this much so the b-roll has frames.
+    visual_intent: dirt bike airborne, end to end — the longest held pictures in the piece
+    overlay: null
+    target_duration_sec:
+      zh-CN: 3.50
   - id: not-vfx
     purpose: name the thing, and borrow a frame the audience already has (F1)
     visual_intent: MXGP title card over the widest track shot available

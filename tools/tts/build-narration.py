@@ -194,7 +194,8 @@ def main():
         if not job.get('speak', True):
             beats.append({'beat': beat, 'atMs': at_ms, 'durSec': 0.0, 'capSec': cap,
                           'text': text, 'tokens': [], 'zh_spans': [], 'sourced': True,
-                          'spans': job.get('spans', []), 'offset': job.get('offset', 0.0)})
+                          'spans': job.get('spans', []), 'offset': job.get('offset', 0.0),
+                          'srcdur': job.get('srcdur')})
             print(f'  {beat:8} {at_ms/1000:6.2f}s  cap {cap:4.2f}s  SOURCE          {text[:46]}')
             continue
 
@@ -286,7 +287,8 @@ def main():
         spans = b['zh_spans']
         if b.get('sourced'):
             off = b.get('offset', 0.0)
-            spans = flat_spans(len(words), off, max(0.05, b['capSec'] - off))
+            span = b.get('srcdur') or (b['capSec'] - off)
+            spans = flat_spans(len(words), off, max(0.05, min(span, b['capSec'] - off)))
             provisional.append(b['beat'])
         if len(spans) != len(words):
             print(f"  {b['beat']}: {len(spans)} spans for {len(words)} words — check WORDS_ZH",

@@ -24,21 +24,18 @@ as the bed for the rest of the piece.
 
 `media/previz/S05E002-previz.mp4` carries a real mix so the pacing can be judged by ear.
 
-**The bed is one continuous use and it cuts in hard — no fade.** The source is entered at
-**00:00:42.99**, which is a clap, so the music arrives on a transient rather than swelling from
-nothing, and that entry sits on the `chinese-can-fly` beat (1.27s). Full through the line, then
-ducked over 0.4s to **-32 dB**. Those attenuations are not taste — the source is -6.4 LUFS with a
-+3.8 dBFS true peak and is never used at unity.
+**The bed cuts in hard on 中, not on the clap.** The source is entered at **00:00:43.15**. The
+clap at 42.99s is the obvious musical cut and it was the first choice, but cutting there drags a
+moment of noise in ahead of the voice — the clap's own decay. 43.15s is where centre-band energy
+lifts again once that decays, which is the vocal.
 
-**中 is 0.14s behind the clap, and the caption follows the voice.** Measured by centre-channel
-energy: a clap is a broadband HF transient (clean peaks at 42.99s and 44.74s under a 4 kHz
-highpass), a lead vocal is sustained mid energy in the centre, and the centre band lifts again at
-~43.13s after the clap decays. So the cut lands on the clap, which is musically right, and the
-caption is offset to the voice. The offset is declared in the script as `**原声:** (+0.14)`,
-beside the line rather than in the manifest, because it is a fact about this line in this take.
+**It holds at source volume for three repetitions.** The song sings the line three times on a clap
+grid measured dead regular at **1.75s** (transients at 42.99, 44.74, 46.49, 48.25, 49.99, 51.75s
+under a 4 kHz highpass). So the bed runs full for **5.25s** and the drop lands at 6.52s, which is
+exactly where the narration comes back. Measured: about −13 dB through the hold, −22 to −24 dB
+after. Never at unity — the source is −6.4 LUFS with a +3.8 dBFS true peak.
 
-**No riser.** Nothing is synthesised into the preview mix; the storyboard's `sfx` entries stay as
-instructions for the edit.
+**No riser.** Nothing is synthesised into the preview mix.
 
 Mix measures **−15.1 LUFS / −1.5 dBTP**, 1.1 LU under the −14 the QC checklist asks for and
 peak-limited rather than wrong — sparse speech over a quiet bed has a high peak-to-loudness ratio,
@@ -81,6 +78,16 @@ now-here faces against only-on-tv's deliberate drag, the mall gag, and takeoff/a
 vocabulary rather than merely unused — a word still in the list is a word someone reaches for — and
 `storyboard-check` rejects them, so the rule holds without anyone remembering it. Every motion left
 happens inside a shot.
+
+**`flying-broll` is a new picture beat, 3.50s.** It is the song's second and third repetitions with
+no narration over them, and it exists so the third script line can be pushed back: that line calls
+this the F1 of dirt biking, and the claim only lands if the viewer has been allowed to watch the
+flying first. Two cuts of 1.75s each — the longest holds in the piece.
+
+**中国人 is one word.** The bold boundary fixed 中国|人能|飞, but left 中国|人, because jieba's
+default dictionary does not carry 中国人. `tools/tts/zh-words.txt` is a repo user-dict for exactly
+this: a caption unit is a WORD, so a wrong split is a wrong highlight and a wrong reading. It also
+corrects 越野摩托 and 赛道挑战, which were splitting in two. 90 rows → 87.
 
 **`the-jump` is gone as a beat.** It was the only thing between the hook and the source line, so
 its length WAS the gap — 1.10s, then 0.40s, and the two still did not read as one thought. The jump
