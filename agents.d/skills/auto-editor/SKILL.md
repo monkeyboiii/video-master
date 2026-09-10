@@ -136,6 +136,64 @@ auto-editor video.mp4 -anorm ebu             # EBU R128 loudness normalize (or p
 
 Larger-than-expected files are usually a too-high auto bitrate — set `-b:v` or `-crf`. `auto-editor cache` lists/`cache clear`s the analysis cache.
 
+## Cutting a spoken take — six things measured on S05E002 en, 2026-09-10
+
+The narration was rebuilt six times before it was right. Every wrong turn below was found by a
+measurement, and the measurement is the reusable part.
+
+**1. Hard splices click, and auto-editor does not crossfade.** It cuts at frame boundaries and butts
+the pieces together, so each join is a step in the waveform. Sample-to-sample discontinuity
+`|s[i]-s[i-1]|`, same take:
+
+    raw take                          max delta  3366 (-19.8 dBFS)   steps >8000:   0
+    --edit audio:-40dB --margin .1,.14  max delta 13676 ( -7.6 dBFS)   steps >8000: 582
+    rebuilt with 8ms fades            max delta  3367 (-19.8 dBFS)   steps >8000:   0
+
+582 clicks, then multiplied by whatever gain comes after. **Crest factor and flat factor cannot see
+this** — both were unchanged (18.3, 0.0) across the middle row, which is why "the voice measures
+clean" was wrong three times in a row. Take auto-editor's cut DECISION, then rebuild the segments
+yourself with `afade=t=in:d=0.008` and `afade=t=out` on every kept piece so each splice starts and
+ends at zero.
+
+**2. The threshold matters more than the margin.** `audio:-34dB` on a take at -29.7 LUFS integrated
+cuts inside quiet syllables. The cheap objective check is ASR: "Turns out, the best riders in the
+world" came back as "that's where you and your mother". `-40dB` kept it. Match the threshold to the
+take's own level; the 0.04 default is for material far hotter than a phone voice memo.
+
+**3. Prove speech survived with a threshold-consistent count, not by reading the transcript.**
+
+    raw   49.37s total   21.02s silence   28.35s SPEECH
+    cut   31.10s total    2.79s silence   28.31s SPEECH
+
+0.04s difference means the cut removed silence and nothing else. **A worse transcript is not
+damage** — whisper segments on pauses, so removing pauses degrades ASR even when every sample of
+speech is intact. That is what rapid-fire IS. Do not chase it.
+
+**4. `--margin PRE,POST` becomes an audible gap at every join.** The padding is kept audio, so
+PRE+POST of room tone sits between consecutive lines: `0.10,0.10` reads as a 0.20s pause on every
+line, which an operator hears as "gap too wide" on whichever line they notice first. `0.05,0.06`
+took the joins to 0.11s. Padding protects word onsets and tails, so do not take it to zero — verify
+with ASR after tightening.
+
+**5. It keeps sub-word fragments.** A 0.20s block of breath at 0.46-0.66s survived as its own
+segment, ahead of the first word at 0.70s — heard as a gap before the first line. Drop segments that
+end before the first transcribed word.
+
+**6. Downstream, never ask `loudnorm` for more gain than the peak ceiling allows.** It does not
+refuse; it silently switches to `"normalization_type": "dynamic"` and applies time-varying gain to
+the whole signal. Reaching for -20 LUFS from -32.9 needed +12.9 dB with only +6.1 dB available:
+
+    loudnorm dynamic       crest 18.28 -> 10.04    audibly distorted
+    static gain + alimiter crest 18.28 -> 14.32    same loudness, clean
+
+Read `normalization_type` out of the `print_format=json` pass every time. For a quiet take, prefer
+`volume=NdB,alimiter=...` — the limiter shaves isolated plosives, which is inaudible, where dynamic
+loudnorm pumps everything.
+
+**Not auto-editor's fault but worth knowing:** a clipped source stays clipped. The music bed here
+measured flat factor 9.12 with 23,760 pinned samples at s16 and a documented +3.8 dBFS true peak; no
+gain staging removes that, only a different source does.
+
 ## Going further
 
 - Creative effects (speed/zoom/overlays/animations) → **auto-editor-effects** skill
