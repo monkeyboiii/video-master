@@ -39,23 +39,68 @@ for (const c of caps) {
   for (const ch of chars) stream.push({ch, startMs: c.startMs, endMs: c.endMs});
 }
 
-let i = 0;
-let drifted = 0;
-const sentences = lines.map((line) => {
-  const words = line.split(/\s+/).filter(Boolean).map((w) => {
-    const want = [...w].filter((ch) => ch.trim() !== '');
-    const from = i;
-    for (const ch of want) {
-      // tolerate a mismatch rather than desync the whole line: skip at most a few stream
-      // characters looking for this one, then take the position anyway
-      let look = i, hops = 0;
-      while (look < stream.length && stream[look].ch !== ch && hops < 3) { look++; hops++; }
-      if (look < stream.length && stream[look].ch === ch) i = look + 1;
-      else { i += 1; drifted++; }
-    }
-    const span = stream.slice(from, i).filter(Boolean);
-    const startMs = span.length ? span[0].startMs : 0;
-    const endMs = span.length ? span[span.length - 1].endMs : startMs;
+// THE STREAM IS SHORTER THAN THE SCRIPT, AND THAT IS THE NORMAL CASE. whisper.cpp loses
+// multi-byte characters to byte-split tokens before any of this runs — 36 of 131 on S05E002, so
+// 118 stream characters for a 151-character script. A greedy walk that consumes one stream
+// position per script character (the previous form, 3 hops of tolerance) therefore cannot finish:
+// every lost character burns a position a later one needed, the error compounds, and the tail of
+// the script falls off the end with startMs = endMs = 0. Five of nineteen sentences came back at
+// zero that way, which is not "approximate timings" — it is no timings.
+//
+// So align instead of walk. The longest common subsequence between the script's characters and
+// the stream's is the set of positions both agree on, in order; those are anchors. A script
+// character with no anchor is not a failure and gets no guess of its own — it is interpolated
+// between the anchors either side of it, which is exactly what a missing character deserves when
+// the ones around it are known. Monotonic by construction, so a line can never run backwards.
+const scriptChars = [];
+lines.forEach((line, si) => {
+  line.split(/\s+/).filter(Boolean).forEach((w, wi) => {
+    for (const ch of [...w].filter((c) => c.trim() !== '')) scriptChars.push({ch, si, wi});
+  });
+});
+
+// LCS over (scriptChars, stream) — 151x118 here, so the plain table is the right shape.
+const n = scriptChars.length, m = stream.length;
+const dp = Array.from({length: n + 1}, () => new Uint16Array(m + 1));
+for (let a = n - 1; a >= 0; a--) {
+  for (let b = m - 1; b >= 0; b--) {
+    dp[a][b] = scriptChars[a].ch === stream[b].ch
+      ? dp[a + 1][b + 1] + 1
+      : Math.max(dp[a + 1][b], dp[a][b + 1]);
+  }
+}
+const at = new Array(n).fill(null);      // script index -> stream entry, when anchored
+let a = 0, b = 0;
+while (a < n && b < m) {
+  if (scriptChars[a].ch === stream[b].ch) { at[a] = stream[b]; a++; b++; }
+  else if (dp[a + 1][b] >= dp[a][b + 1]) a++;
+  else b++;
+}
+const anchored = at.filter(Boolean).length;
+
+// Fill the gaps between anchors. Before the first and after the last, hold the nearest anchor's
+// edge rather than inventing a span outside the take.
+const spanOf = new Array(n);
+for (let k = 0; k < n; k++) {
+  if (at[k]) { spanOf[k] = {startMs: at[k].startMs, endMs: at[k].endMs}; continue; }
+  let p = k - 1; while (p >= 0 && !at[p]) p--;
+  let q = k + 1; while (q < n && !at[q]) q++;
+  const from = p >= 0 ? at[p].endMs : (at[q] ? at[q].startMs : 0);
+  const to = q < n ? at[q].startMs : (at[p] ? at[p].endMs : from);
+  const gap = Math.max(0, to - from), slots = q - p;      // characters sharing this gap
+  const idx = k - p;
+  spanOf[k] = {
+    startMs: Math.round(from + (gap * (idx - 1)) / slots),
+    endMs: Math.round(from + (gap * idx) / slots),
+  };
+}
+
+const sentences = lines.map((line, si) => {
+  const words = line.split(/\s+/).filter(Boolean).map((w, wi) => {
+    const mine = [];
+    for (let k = 0; k < n; k++) if (scriptChars[k].si === si && scriptChars[k].wi === wi) mine.push(spanOf[k]);
+    const startMs = mine.length ? mine[0].startMs : 0;
+    const endMs = mine.length ? Math.max(startMs, mine[mine.length - 1].endMs) : startMs;
     return {text: w, startMs, endMs};
   });
   return {
@@ -64,12 +109,16 @@ const sentences = lines.map((line) => {
     toMs: words.length ? words[words.length - 1].endMs : 0,
   };
 });
+const drifted = n - anchored;
 
 const out = outPath ?? capPath.replace(/\.json$/, '') + '.words.json';
 fs.writeFileSync(out, JSON.stringify(sentences, null, 2));
 const nWords = sentences.reduce((n, s) => n + s.words.length, 0);
 console.log(`${out}: ${sentences.length} sentence(s), ${nWords} word(s) from ${stream.length} characters`);
+console.log(`group-words: ${anchored}/${n} script character(s) anchored to the transcription`);
 if (drifted) {
-  console.warn(`group-words: ${drifted} character(s) did not match the transcription — the script and`);
-  console.warn('             the take have diverged; timings near those words are approximate.');
+  console.warn(`group-words: ${drifted} character(s) had no anchor and were interpolated between`);
+  console.warn('             the ones either side. Expect ~20-30% for zh: whisper.cpp drops that many');
+  console.warn('             multi-byte characters to byte-split tokens. A much higher share means the');
+  console.warn('             script and the take really have diverged — check the text, not the timings.');
 }

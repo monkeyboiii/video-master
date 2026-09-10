@@ -247,11 +247,28 @@ it wrong.
 transcription alone cannot say where words end.
 
 `tools/group-words.mjs` resolves it without a segmenter: this repo is handed the script, and the
-script has the boundaries a segmenter would try to infer, written by whoever chose them. It walks
-the script's words against the transcription's characters and takes each word's span from the
-first and last character it consumed. Text comes from the script, timings from the transcription —
-each used for the half it is good at, which is the same division § The script is known, so ASR
-output is a draft already argues for.
+script has the boundaries a segmenter would try to infer, written by whoever chose them. It aligns
+the script's characters against the transcription's and takes each word's span from the first and
+last character it covers. Text comes from the script, timings from the transcription — each used
+for the half it is good at, which is the same division § The script is known, so ASR output is a
+draft already argues for.
+
+**It ALIGNS rather than walks, and the difference is the whole tool.** The transcription is always
+shorter than the script — whisper.cpp loses multi-byte characters to byte-split tokens before any
+of this runs, 36 of 131 on S05E002, leaving 118 stream characters for a 151-character script. The
+original form consumed one stream position per script character and tolerated three hops of
+mismatch; with 33 characters simply absent, every loss burned a position a later character needed,
+the error compounded, and the tail of the script fell off the end. Five of nineteen sentences came
+back with `startMs = endMs = 0` — not approximate timings, no timings, and the warning it printed
+said "the script and the take have diverged" when they had not.
+
+The fix is a longest common subsequence between the two character streams. The positions both
+agree on, in order, are anchors; a script character with no anchor is interpolated between the
+anchors either side of it rather than guessed at. Monotonic by construction, so a line can never
+run backwards. On the same input: 115 of 151 characters anchored, 36 interpolated — exactly the
+36 whisper dropped — and no sentence without a span. **Read the anchored ratio, not the absence of
+a warning:** ~20-30% interpolated is normal for zh; much higher means the script and the take
+really have diverged, and it is the TEXT to check, not the timings.
 
 The component does not segment at all. It highlights exactly the rows it is given, so the unit is
 whatever upstream decided.
