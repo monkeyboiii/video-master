@@ -55,20 +55,29 @@ const TEXT_OVERRIDES = {
 // a tight cluster at 30.233/30.267s (the cut IN) and a clean single cut at 30.8s (the cut back to
 // camera) bound the cutaway.
 //
-// First pass started What right at the cut-in (30233) — WRONG, and the operator caught it:
-// SpokenSubtitleTrack.tsx caps the PREVIOUS sentence at `until = min(ownEnd, next[0].startMs)`,
-// so starting What at 30233 also capped sentence 13's display to 30233 — but 半个小时 (13:11-12)
-// is still genuinely being SAID until ~30629 (the original -30dB silencedetect gap, git log). The
-// meme cuts in over the tail of that line, not after it: caption and cutaway visual overlap on
-// screen for real, and that's fine (an overlay always sits on top of whatever's underneath) — what
-// isn't fine is cutting the CAPTION off before the SPEECH it represents is done. So What's start is
-// the later of the two boundaries — when 小时 actually finishes, not when the meme visually cuts
-// in — and it still lands inside the meme's own window (30629 sits well within 30233-30800).
+// Went back and forth on What's start, twice:
+// - pass 1: 30233 (the meme's cut-in). Operator: too early, and it made the FOLLOWING line early
+//   too (see below).
+// - pass 2 (reverting pass 1's own fix): 30629 — SpokenSubtitleTrack.tsx caps the PREVIOUS
+//   sentence at `until = min(ownEnd, next[0].startMs)`, so starting What at 30233 also capped
+//   sentence 13 to 30233 even though 半个小时 (13:11-12) is genuinely still being SAID until
+//   ~30629 (the -30dB silencedetect gap, git log) — cutting a caption off before its speech
+//   finishes. 30629 fixed that.
+// - pass 3, here: operator watched again and asked for pass 1 back on purpose — What should
+//   cover the meme's FULL on-screen window (30233-30800), not just its tail, even at the cost of
+//   sentence 13 disappearing before 半个小时 finishes speaking. Confirmed explicitly rather than
+//   assumed: pass 2's reasoning was sound on its own terms, but the operator has the actual
+//   creative call on which matters more, caption-tracks-speech or caption-tracks-the-cutaway, and
+//   picked the latter for this beat. 那's start (below) moves out to 31150 in the same pass so
+//   What has more room at the far end too, not just the near one.
 //
 // 那 (15:0) — AUDIO evidence: `analyze-audio.sh` (-30dB then -25dB, see git log) puts real speech
-// resuming at 31.03-31.04s regardless of threshold; set 20ms past the stricter reading for margin
-// against "a few frames early". Its own start is the whole sentence's card-visibility start, so
-// this is the fix for that — endMs set equal since 我们 (15:1) already starts there too.
+// resuming at 31.03-31.04s regardless of threshold. Pushed a further ~100ms past that (31150) at
+// the operator's explicit ask, alongside What's start moving back to 30233 — the caption now
+// trails the audio onset slightly rather than leading it, which is the operator's call to make
+// once they're watching the actual cut, not something silencedetect can tell either way. Its own
+// start is the whole sentence's card-visibility start, so this is what actually moves 那我们's
+// appearance — endMs set equal since 我们 (15:1) already starts there too.
 //
 // 炸裂 (0:5), 卧槽 (1:5), 狠狠 (13:9), 骑 (15:6), 世界冠军 (15:5) — no measurable boundary either
 // way (continuous speech through all five, checked against the full-file silencedetect log): each
@@ -90,9 +99,9 @@ const TIMING_OVERRIDES = {
   // rule is specifically about a line held with NOTHING lit; a longer lit duration doesn't
   // trigger the artefact that rule exists to prevent. Operator confirmed: fix the gap, don't
   // reopen the tail question.
-  '14:0': {startMs: 30629, endMs: 31050}, // What: was 30233 (the meme's own cut-in — too early,
-                                           // cut sentence 13 off mid-speech); now 小时's real end
-  '15:0': {startMs: 31050, endMs: 31050}, // 那: was 31030-31030
+  '14:0': {startMs: 30233, endMs: 31150}, // What: was 30629-31050; back to the meme's cut-in on
+                                           // the operator's explicit call — see note above
+  '15:0': {startMs: 31150, endMs: 31150}, // 那: was 31050-31050, pushed ~100ms later for What
   '15:5': {startMs: 32230, endMs: 33080}, // 世界冠军: was 32230-33280; borrowed from 骑 (15:6)
   '15:6': {startMs: 33080, endMs: 33280}, // 骑: was 33280-33280
 };
