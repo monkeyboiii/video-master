@@ -47,37 +47,26 @@ const TEXT_OVERRIDES = {
 // bugs; they're honest reports of a boundary the alignment could not find. Fixed by two
 // different kinds of evidence, in order of how much trust each deserves:
 //
-// "What" (14:0) — VIDEO evidence, not audio: the operator said this should span when a meme/
-// cutaway cuts into the picture, not when the word is audible (the take's "What" is quiet — the
-// operator turned it down — so audio silencedetect kept giving inconsistent, threshold-dependent
-// answers across two earlier passes; see git log for that dead end). `find-cut.sh` (next to this
-// file) runs ffmpeg scene-change detection (`select='gt(scene,0.04)'`) over the whole export:
-// a tight cluster at 30.233/30.267s (the cut IN) and a clean single cut at 30.8s (the cut back to
-// camera) bound the cutaway.
+// "What" (14:0) and the 13/14/15 boundary generally — four passes on this one beat; git log
+// carries the earlier three (measured audio, meme cut-in vs cut-out, a "cut the previous line
+// short" pass). Each one traded sentence 13's completeness against What's coverage against 那's
+// lead time — because each pass tried to fit all three into the TIGHT window the actual measured
+// evidence bounds (silence gaps, scene cuts), and that window is short. The operator's actual
+// instruction, once said plainly: stop fitting three things into a tight measured window: give
+// EACH of sentence 13, What, and the gap before 那 a genuinely comfortable length, sequentially,
+// and let 那's arrival move out to wherever that lands. Loose and generous on purpose here, not
+// measured — the precision this segment doesn't have was the whole problem with passes 1-3.
 //
-// Went back and forth on What's start, twice:
-// - pass 1: 30233 (the meme's cut-in). Operator: too early, and it made the FOLLOWING line early
-//   too (see below).
-// - pass 2 (reverting pass 1's own fix): 30629 — SpokenSubtitleTrack.tsx caps the PREVIOUS
-//   sentence at `until = min(ownEnd, next[0].startMs)`, so starting What at 30233 also capped
-//   sentence 13 to 30233 even though 半个小时 (13:11-12) is genuinely still being SAID until
-//   ~30629 (the -30dB silencedetect gap, git log) — cutting a caption off before its speech
-//   finishes. 30629 fixed that.
-// - pass 3, here: operator watched again and asked for pass 1 back on purpose — What should
-//   cover the meme's FULL on-screen window (30233-30800), not just its tail, even at the cost of
-//   sentence 13 disappearing before 半个小时 finishes speaking. Confirmed explicitly rather than
-//   assumed: pass 2's reasoning was sound on its own terms, but the operator has the actual
-//   creative call on which matters more, caption-tracks-speech or caption-tracks-the-cutaway, and
-//   picked the latter for this beat. 那's start (below) moves out to 31150 in the same pass so
-//   What has more room at the far end too, not just the near one.
+// So: sentence 13 keeps its own ORIGINAL, uncapped end (30760 — 小时's own group-words value,
+// never touched) instead of being capped early by What's start. What starts there (30760) and
+// runs a full 640ms — past both the meme's measured cut-in (30233, already gone by this point)
+// and its cut-out (30800), comfortably covering the whole beat rather than chasing either edge.
+// 那 moves out to 31400 to match, later than every prior pass, on purpose.
 //
-// 那 (15:0) — AUDIO evidence: `analyze-audio.sh` (-30dB then -25dB, see git log) puts real speech
-// resuming at 31.03-31.04s regardless of threshold. Pushed a further ~100ms past that (31150) at
-// the operator's explicit ask, alongside What's start moving back to 30233 — the caption now
-// trails the audio onset slightly rather than leading it, which is the operator's call to make
-// once they're watching the actual cut, not something silencedetect can tell either way. Its own
-// start is the whole sentence's card-visibility start, so this is what actually moves 那我们's
-// appearance — endMs set equal since 我们 (15:1) already starts there too.
+// SpokenSubtitleTrack.tsx caps the PREVIOUS sentence at `until = min(ownEnd, next[0].startMs)`
+// and the CURRENT one the same way against the sentence after it — so sentence 13 no longer being
+// capped early, and What no longer being squeezed against 那's old (earlier) start, both fall out
+// of the same two numbers below; nothing else needed changing.
 //
 // 炸裂 (0:5), 卧槽 (1:5), 狠狠 (13:9), 骑 (15:6), 世界冠军 (15:5) — no measurable boundary either
 // way (continuous speech through all five, checked against the full-file silencedetect log): each
@@ -99,9 +88,9 @@ const TIMING_OVERRIDES = {
   // rule is specifically about a line held with NOTHING lit; a longer lit duration doesn't
   // trigger the artefact that rule exists to prevent. Operator confirmed: fix the gap, don't
   // reopen the tail question.
-  '14:0': {startMs: 30233, endMs: 31150}, // What: was 30629-31050; back to the meme's cut-in on
-                                           // the operator's explicit call — see note above
-  '15:0': {startMs: 31150, endMs: 31150}, // 那: was 31050-31050, pushed ~100ms later for What
+  '14:0': {startMs: 30760, endMs: 31400}, // What: was 30233-31150 — generous, not measured;
+                                           // see note above for why
+  '15:0': {startMs: 31400, endMs: 31400}, // 那: was 31150-31150, moved out to match
   '15:5': {startMs: 32230, endMs: 33080}, // 世界冠军: was 32230-33280; borrowed from 骑 (15:6)
   '15:6': {startMs: 33080, endMs: 33280}, // 骑: was 33280-33280
 };
