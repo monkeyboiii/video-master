@@ -379,6 +379,19 @@ just lets a composition put back the version that drags the words.
 at a glance in both scripts; a spelled-out number is read as words, costs the line several word
 slots, and in zh pushes a sentence over the width where it has to be cut.
 
+### An emoji needs Noto Emoji — the body fonts carry no emoji glyphs at all
+
+`bodyFont`/`displayFont` (`theme/fonts.ts`) end in `'Noto Emoji', sans-serif` in both locale
+stacks — last, so it only catches codepoints neither Noto Sans SC nor Geist map; CJK/Latin text
+is unaffected. Without it a word written as an emoji (S03E005 swapped 蛋蛋 for 🥚, same word,
+same alignment, just the on-screen label) renders as a tofu box, not a missing character.
+
+**Monochrome, not colour, on purpose.** Noto Emoji is a normal text-font glyph — no COLR/CBDT
+colour-font compositing for Remotion's renderer to get right or wrong — and its flat outline
+matches this system's 2-tone graphic style (the striped band, the two-colour text) better than a
+colour glyph would. Check a still before trusting a new one: a font that loads without error can
+still be missing the specific codepoint used.
+
 ### Two styles, and the default differs by locale
 
 `band` is everything else in this document: the striped rule carries the state, the text holds one

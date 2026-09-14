@@ -201,6 +201,16 @@ and `elevenlabs` (API); `@remotion/captions` normalizes all four. **The threshol
 or forced-alignment need whisper.cpp cannot meet, or a box without the CPU budget — then
 `@remotion/openai-whisper`.
 
+### Compositing an overlay onto a cut needs a real ffmpeg, not Remotion's
+
+`@remotion/compositor-*` bundles its own `ffmpeg` (used above for the 16 kHz WAV conversion), and
+that build is stripped to the filters Remotion's own pipeline needs — no `overlay`. Mixing a
+rendered caption/overlay `.mov` onto a finished cut (`ffmpeg -filter_complex "[0][1]overlay=…"`)
+fails with `No such filter: 'overlay'` against the bundled binary. A full `ffmpeg` (`brew install
+ffmpeg` on macOS) has to be on the box doing the compositing; it isn't installed by anything in
+this repo's own setup, so a fresh or re-imaged machine has whisper.cpp's dependency covered and
+not this one, and the failure reads as a render bug rather than a missing tool.
+
 ### Sound effects come from remotion.media
 
 `@remotion/sfx` and the `remotion.media` CDN are CC0, need no attribution, and are peak-normalized
