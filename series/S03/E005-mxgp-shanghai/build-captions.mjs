@@ -38,10 +38,23 @@ const EMPHASIS = new Set([
 // Two on-screen versions of the same take/timing: v1 writes the spoken word as text (蛋蛋),
 // v2 shows the emoji the operator asked for instead (🥚) — the operator confirmed the SPOKEN
 // word is 蛋蛋 (see script.zh-CN.md's note), this only changes what the caption displays.
-// Timing is untouched either way; only the label on word 6:0 changes.
+// Timing is untouched either way; only the label on word 7:0 changes.
+// (Was keyed 6:0 until the line-1 split shifted every later sentence by +1 — caught only
+// because the operator watched the render and saw the emoji sitting on 人, not 蛋蛋.)
 const TEXT_OVERRIDES = {
   v1: {},
-  v2: {'6:0': '🥚'},
+  v2: {'7:0': '🥚'},
+};
+
+// "What" (14:0) aligned to a real zero-width span — startMs === endMs === the next sentence's
+// own start, so its Sequence gets Remotion's 1-frame duration floor and is immediately
+// superseded: it reads as colliding with "那我们再来看看…", not as its own beat. Not a bad
+// alignment so much as an honest one — the word really is short and sits right at a boundary;
+// SpokenSubtitleTrack.tsx's own capping (`until = min(ownEnd, next start)`) means moving its
+// START earlier is safe and does not stack with the previous sentence: that sentence's `until`
+// is `next[0].startMs`, so it shrinks to match automatically.
+const TIMING_OVERRIDES = {
+  '14:0': {startMs: 30460, endMs: 30760}, // was 30760-30760
 };
 
 const durationSec = Math.max(...words.map((s) => s.toMs)) / 1000;
@@ -51,8 +64,9 @@ for (const [ver, overrides] of Object.entries(TEXT_OVERRIDES)) {
     s.words.map((w, wi) => {
       const key = `${si}:${wi}`;
       const text = overrides[key] ?? w.text;
+      const {startMs, endMs} = TIMING_OVERRIDES[key] ?? w;
       const star = EMPHASIS.has(key) ? '|*' : '';
-      return `${text}|${w.startMs}|${w.endMs}${star}`;
+      return `${text}|${startMs}|${endMs}${star}`;
     }).join('\n')
   );
   const script = sentenceRows.join('\n\n');
@@ -72,3 +86,11 @@ for (const [ver, overrides] of Object.entries(TEXT_OVERRIDES)) {
 const seen = new Set();
 words.forEach((s, si) => s.words.forEach((w, wi) => seen.add(`${si}:${wi}`)));
 for (const k of EMPHASIS) if (!seen.has(k)) console.warn(`build-captions: EMPHASIS key ${k} has no matching word`);
+for (const [ver, overrides] of Object.entries(TEXT_OVERRIDES)) {
+  for (const k of Object.keys(overrides)) {
+    if (!seen.has(k)) console.warn(`build-captions: TEXT_OVERRIDES[${ver}] key ${k} has no matching word`);
+  }
+}
+for (const k of Object.keys(TIMING_OVERRIDES)) {
+  if (!seen.has(k)) console.warn(`build-captions: TIMING_OVERRIDES key ${k} has no matching word`);
+}
