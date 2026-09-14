@@ -1,0 +1,30 @@
+# Episode manifest — source of truth for this episode.
+# Schema notes and naming: agents.d/modules/naming-conventions.md
+# Validate with: tools/vm check
+
+video_id: "S03E005"
+slug: "mxgp-shanghai"
+# The cut arrived already edited and exported (media/exports/S03E005-cn.MP4) — shooting and
+# editing both happened outside this repo, the way toolline.md § "The cut comes from outside"
+# describes. What landed here so far is the captions job: a whisper.cpp/DTW transcription of
+# the real take, grouped into words against the operator's own transcript. No beats table is
+# authored — status stays "topic" on purpose rather than claiming "scripting", which would
+# require one (tools/series/episode.mjs); backfilling beats, a cover and platform assignment
+# is a separate pass for whoever picks up full onboarding.
+status: topic
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+variants:
+  zh-CN:
+    script: script.zh-CN.md
+    cover: null
+    subtitles: null
+    captions: remotion-props/spoken-captions.zh-CN.json
+    remotion_props: null
+    voiceover_asset_id: null
+    platforms: [rednote, douyin, bilibili]
