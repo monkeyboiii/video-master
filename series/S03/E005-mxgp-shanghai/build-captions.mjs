@@ -48,14 +48,30 @@ const TEXT_OVERRIDES = {
 // anchor for 骑. There is no real signal to recover here — these are hand-set, wider than the
 // first pass (which read as "too short, not well aligned" once actually watched), not derived.
 //
-// "What" (14:0) and 那 (15:0) were both still reading early after the hand-guessed pass above
-// — measured instead of guessed a third time: `ffmpeg … -af silencedetect=noise=-30dB:d=0.05`
-// against media/exports/S03E005-cn.MP4 (analyze-audio.sh, next to this file) finds two real
-// gaps back to back: silence 30629-30748, speech, silence 30866-31030. That is the actual
-// shape — 小时 ends ~30629, "What" is spoken in the ~118ms between the two gaps, and 那我们
-// does not start until ~31030, 270ms later than the alignment had it. No silence gap exists
-// anywhere in 32000-34300 (continuous speech through 世界冠军骑的这台), so 15:5/15:6 below
-// stay a guess — there is no acoustic evidence to place that split any better than this.
+// "What" (14:0) and 那 (15:0): measured, then re-measured, because "What" is genuinely quiet —
+// the operator turned its volume down in this take (media/exports/S03E005-cn.MP4). Two probes:
+//
+// 1. `analyze-audio.sh` at -30dB/d=0.05 found silence 30629-30748, speech, silence 30866-31030
+//    — the first "measured" pass, giving What 30748-30866 (118ms). Operator: still too short.
+// 2. Re-checked at -25dB/d=0.03 (stricter — needs louder audio to NOT count as silence): the
+//    same two gaps WIDEN to 30489-30770 and 30772-31042, nearly swallowing the ~2ms between them
+//    entirely. That is What sitting right at the edge of the noise floor after the volume drop:
+//    different thresholds give different answers because the word itself is quiet, not because
+//    either threshold is wrong. Also tried re-transcribing just this window in isolation
+//    (probe-what.sh) to sidestep the whole-file --lang=zh lock — WORSE, not better: forced zh
+//    reproduces the same garbage as the full pass, forced en hallucinates the entire 5.49s clip
+//    as one token, "What" 0-5490ms. Isolated re-transcription is not more trustworthy here.
+//
+// Given the two probes AGREE on the wider silence boundaries (30.49-30.77ish before, ending
+// 31.03-31.04ish after) and disagree only on how much of the narrow quiet gap between them is
+// "speech", the fix widens What to fill its full evidence-bounded gap rather than only the
+// narrowest read — legible without claiming a precision the source audio does not have — and
+// nudges 那 a touch past the stricter reading's 31042 for the margin the operator's "a few
+// frames early" points at.
+//
+// No silence gap exists anywhere in 32000-34300 (continuous speech through 世界冠军骑的这台),
+// at either threshold, so 15:5/15:6 below stay a guess — there is no acoustic evidence to place
+// that split any better than this.
 //
 // "What" (14:0): SpokenSubtitleTrack.tsx caps the PREVIOUS sentence at
 // `until = min(ownEnd, next[0].startMs)`, so moving this word's start earlier automatically
@@ -66,8 +82,8 @@ const TEXT_OVERRIDES = {
 // 骑 (15:6): given its own slice by shortening 世界冠军 (15:5)'s tail — both are internal words
 // in the same sentence/card, so this only moves the band highlight, no card-boundary risk.
 const TIMING_OVERRIDES = {
-  '14:0': {startMs: 30748, endMs: 30866},  // measured; was guessed 30160-30760
-  '15:0': {startMs: 31030, endMs: 31030},  // measured; was 30760-31030
+  '14:0': {startMs: 30700, endMs: 30950},  // widened to the evidence bounds; was 30748-30866
+  '15:0': {startMs: 31050, endMs: 31050},  // was 31030-31030, +20ms past the stricter reading
   '15:5': {startMs: 32230, endMs: 33080},  // still a guess — no silence gap to measure against
   '15:6': {startMs: 33080, endMs: 33280},  // still a guess — no silence gap to measure against
 };
