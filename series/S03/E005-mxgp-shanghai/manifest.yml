@@ -24,10 +24,10 @@ variants:
     script: script.zh-CN.md
     cover: null
     subtitles: null
-    # Two versions kept, same take/timing: v1 shows the crotch line as text (蛋蛋), v2 shows
-    # 🥚 (Noto Emoji, added to the shared theme for this — see fonts.ts). v2 is the operator's
-    # pick and the one this points at; v1 stays alongside for comparison.
-    captions: remotion-props/spoken-captions.zh-CN.v2.json
+    # v3 is the operator's final pick: emoji (🥚, Apple Color Emoji — see fonts.ts) for the
+    # crotch line, plus hand-tuned timing for two words whisper never anchored (What; 骑).
+    # v1 (text) and v2 (first emoji pass, wrong word + short "What") are retired.
+    captions: remotion-props/spoken-captions.zh-CN.v3.json
     remotion_props: null
     voiceover_asset_id: null
     platforms: [rednote, douyin, bilibili]

@@ -35,26 +35,28 @@ const EMPHASIS = new Set([
   '19:14', // 可能
 ]);
 
-// Two on-screen versions of the same take/timing: v1 writes the spoken word as text (蛋蛋),
-// v2 shows the emoji the operator asked for instead (🥚) — the operator confirmed the SPOKEN
-// word is 蛋蛋 (see script.zh-CN.md's note), this only changes what the caption displays.
-// Timing is untouched either way; only the label on word 7:0 changes.
-// (Was keyed 6:0 until the line-1 split shifted every later sentence by +1 — caught only
-// because the operator watched the render and saw the emoji sitting on 人, not 蛋蛋.)
+// v3: the operator's final pick, emoji only (word 7:0, was text 蛋蛋 — see script.zh-CN.md's
+// note). v1 (text) and v2 (first emoji pass) are retired; this is the one saved to mac-rev.
 const TEXT_OVERRIDES = {
-  v1: {},
-  v2: {'7:0': '🥚'},
+  v3: {'7:0': '🥚'},
 };
 
-// "What" (14:0) aligned to a real zero-width span — startMs === endMs === the next sentence's
-// own start, so its Sequence gets Remotion's 1-frame duration floor and is immediately
-// superseded: it reads as colliding with "那我们再来看看…", not as its own beat. Not a bad
-// alignment so much as an honest one — the word really is short and sits right at a boundary;
-// SpokenSubtitleTrack.tsx's own capping (`until = min(ownEnd, next start)`) means moving its
-// START earlier is safe and does not stack with the previous sentence: that sentence's `until`
-// is `next[0].startMs`, so it shrinks to match automatically.
+// Both these words aligned to a real zero-width span — whisper's raw stream (whisper-raw.json)
+// has NO gap at all across 半个小时|那我们…世界冠军|骑|的: 时 ends 30760, 那 starts 30760, no
+// anchor for "What" anywhere in between; 世界 runs a suspicious, unbroken 32230-33280 (1050ms,
+// almost certainly 世界冠军骑 all swallowed into one token) then 的 starts clean at 33280, no
+// anchor for 骑. There is no real signal to recover here — these are hand-set, wider than the
+// first pass (which read as "too short, not well aligned" once actually watched), not derived.
+//
+// "What" (14:0): SpokenSubtitleTrack.tsx caps the PREVIOUS sentence at
+// `until = min(ownEnd, next[0].startMs)`, so moving this word's start earlier automatically
+// shrinks sentence 13's display to match — it does not stack or overlap.
+// 骑 (15:6): given its own slice by shortening 世界冠军 (15:5)'s tail — both are internal words
+// in the same sentence/card, so this only moves the band highlight, no card-boundary risk.
 const TIMING_OVERRIDES = {
-  '14:0': {startMs: 30460, endMs: 30760}, // was 30760-30760
+  '14:0': {startMs: 30160, endMs: 30760},  // was 30460-30760, before that 30760-30760
+  '15:5': {startMs: 32230, endMs: 33080},  // was 32230-33280
+  '15:6': {startMs: 33080, endMs: 33280},  // was 33280-33280
 };
 
 const durationSec = Math.max(...words.map((s) => s.toMs)) / 1000;
