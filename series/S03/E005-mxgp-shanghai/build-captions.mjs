@@ -88,9 +88,9 @@ const TIMING_OVERRIDES = {
   // rule is specifically about a line held with NOTHING lit; a longer lit duration doesn't
   // trigger the artefact that rule exists to prevent. Operator confirmed: fix the gap, don't
   // reopen the tail question.
-  '14:0': {startMs: 30760, endMs: 31400}, // What: was 30233-31150 — generous, not measured;
-                                           // see note above for why
-  '15:0': {startMs: 31400, endMs: 31400}, // 那: was 31150-31150, moved out to match
+  '14:0': {startMs: 30760, endMs: 31650}, // What: was 30760-31400, +250ms — still reading as
+                                           // starting early once watched; more room again
+  '15:0': {startMs: 31650, endMs: 31650}, // 那: was 31400-31400, moved out to match
   '15:5': {startMs: 32230, endMs: 33080}, // 世界冠军: was 32230-33280; borrowed from 骑 (15:6)
   '15:6': {startMs: 33080, endMs: 33280}, // 骑: was 33280-33280
 };
