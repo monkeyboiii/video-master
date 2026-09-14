@@ -53,10 +53,17 @@ const TEXT_OVERRIDES = {
 // answers across two earlier passes; see git log for that dead end). `find-cut.sh` (next to this
 // file) runs ffmpeg scene-change detection (`select='gt(scene,0.04)'`) over the whole export:
 // a tight cluster at 30.233/30.267s (the cut IN) and a clean single cut at 30.8s (the cut back to
-// camera) bound the cutaway exactly. That's what What now spans.
+// camera) bound the cutaway.
+//
+// First pass started What right at the cut-in (30233) — WRONG, and the operator caught it:
 // SpokenSubtitleTrack.tsx caps the PREVIOUS sentence at `until = min(ownEnd, next[0].startMs)`,
-// so moving this word's start earlier automatically shrinks sentence 13's display to match — it
-// does not stack or overlap.
+// so starting What at 30233 also capped sentence 13's display to 30233 — but 半个小时 (13:11-12)
+// is still genuinely being SAID until ~30629 (the original -30dB silencedetect gap, git log). The
+// meme cuts in over the tail of that line, not after it: caption and cutaway visual overlap on
+// screen for real, and that's fine (an overlay always sits on top of whatever's underneath) — what
+// isn't fine is cutting the CAPTION off before the SPEECH it represents is done. So What's start is
+// the later of the two boundaries — when 小时 actually finishes, not when the meme visually cuts
+// in — and it still lands inside the meme's own window (30629 sits well within 30233-30800).
 //
 // 那 (15:0) — AUDIO evidence: `analyze-audio.sh` (-30dB then -25dB, see git log) puts real speech
 // resuming at 31.03-31.04s regardless of threshold; set 20ms past the stricter reading for margin
@@ -83,7 +90,8 @@ const TIMING_OVERRIDES = {
   // rule is specifically about a line held with NOTHING lit; a longer lit duration doesn't
   // trigger the artefact that rule exists to prevent. Operator confirmed: fix the gap, don't
   // reopen the tail question.
-  '14:0': {startMs: 30233, endMs: 31050}, // What: cut-in to cut-out was 30233-30800
+  '14:0': {startMs: 30629, endMs: 31050}, // What: was 30233 (the meme's own cut-in — too early,
+                                           // cut sentence 13 off mid-speech); now 小时's real end
   '15:0': {startMs: 31050, endMs: 31050}, // 那: was 31030-31030
   '15:5': {startMs: 32230, endMs: 33080}, // 世界冠军: was 32230-33280; borrowed from 骑 (15:6)
   '15:6': {startMs: 33080, endMs: 33280}, // 骑: was 33280-33280
