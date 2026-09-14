@@ -22,18 +22,23 @@ load('Geist Mono', 'geist-mono-variable.woff2', '100 900');
 load('Noto Sans SC', 'noto-sans-sc-400.woff2', '400');
 load('Noto Sans SC', 'noto-sans-sc-600.woff2', '600');
 load('Noto Sans SC', 'noto-sans-sc-800.woff2', '800');
+// Emoji fallback: Noto Emoji, monochrome rather than colour — it fills a text-font glyph slot
+// (no COLR/CBDT compositing to go wrong in the renderer) and its flat outline actually matches
+// this system's 2-tone graphic style better than a colour glyph would. Last in every stack: it
+// only catches codepoints neither body font maps, CJK/Latin text is unaffected.
+load('Noto Emoji', 'noto-emoji.ttf', '400');
 
 /** Display stack: Bricolage for en-US, Noto Sans SC (weight 800) for zh-CN. */
 export const displayFont = (locale: Locale): string =>
   locale === 'zh-CN'
-    ? `'Noto Sans SC', 'Bricolage Grotesque', sans-serif`
-    : `'Bricolage Grotesque', 'Noto Sans SC', sans-serif`;
+    ? `'Noto Sans SC', 'Bricolage Grotesque', 'Noto Emoji', sans-serif`
+    : `'Bricolage Grotesque', 'Noto Sans SC', 'Noto Emoji', sans-serif`;
 
 /** Body stack: Geist for en-US, Noto Sans SC for zh-CN. */
 export const bodyFont = (locale: Locale): string =>
   locale === 'zh-CN'
-    ? `'Noto Sans SC', 'Geist', sans-serif`
-    : `'Geist', 'Noto Sans SC', sans-serif`;
+    ? `'Noto Sans SC', 'Geist', 'Noto Emoji', sans-serif`
+    : `'Geist', 'Noto Sans SC', 'Noto Emoji', sans-serif`;
 
 /** Label/eyebrow stack: Geist Mono with Noto fallback for CJK glyphs. */
 export const monoFont = (_locale: Locale): string =>

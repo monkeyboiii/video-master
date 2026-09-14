@@ -33,25 +33,37 @@ const EMPHASIS = new Set([
   '18:14', // 可能
 ]);
 
-const sentenceRows = words.map((s, si) =>
-  s.words.map((w, wi) => {
-    const star = EMPHASIS.has(`${si}:${wi}`) ? '|*' : '';
-    return `${w.text}|${w.startMs}|${w.endMs}${star}`;
-  }).join('\n')
-);
-const script = sentenceRows.join('\n\n');
+// Two on-screen versions of the same take/timing: v1 writes the spoken word as text (蛋蛋),
+// v2 shows the emoji the operator asked for instead (🥚) — the operator confirmed the SPOKEN
+// word is 蛋蛋 (see script.zh-CN.md's note), this only changes what the caption displays.
+// Timing is untouched either way; only the label on word 6:0 changes.
+const TEXT_OVERRIDES = {
+  v1: {},
+  v2: {'6:0': '🥚'},
+};
 
 const durationSec = Math.max(...words.map((s) => s.toMs)) / 1000;
 
-const out = {
-  locale: 'zh-CN',
-  durationSec: Math.round(durationSec * 100) / 100,
-  script,
-};
-const outPath = path.join(HERE, 'remotion-props', 'spoken-captions.zh-CN.json');
-fs.mkdirSync(path.dirname(outPath), {recursive: true});
-fs.writeFileSync(outPath, JSON.stringify(out, null, 2) + '\n');
-console.log(`${outPath}: ${words.length} sentence(s), durationSec=${out.durationSec}`);
+for (const [ver, overrides] of Object.entries(TEXT_OVERRIDES)) {
+  const sentenceRows = words.map((s, si) =>
+    s.words.map((w, wi) => {
+      const key = `${si}:${wi}`;
+      const text = overrides[key] ?? w.text;
+      const star = EMPHASIS.has(key) ? '|*' : '';
+      return `${text}|${w.startMs}|${w.endMs}${star}`;
+    }).join('\n')
+  );
+  const script = sentenceRows.join('\n\n');
+  const out = {
+    locale: 'zh-CN',
+    durationSec: Math.round(durationSec * 100) / 100,
+    script,
+  };
+  const outPath = path.join(HERE, 'remotion-props', `spoken-captions.zh-CN.${ver}.json`);
+  fs.mkdirSync(path.dirname(outPath), {recursive: true});
+  fs.writeFileSync(outPath, JSON.stringify(out, null, 2) + '\n');
+  console.log(`${outPath}: ${words.length} sentence(s), durationSec=${out.durationSec}`);
+}
 
 // Sanity: every EMPHASIS key must have actually hit a real word — a stale index after any
 // re-segmentation would otherwise mark nothing and light silently fewer words than intended.

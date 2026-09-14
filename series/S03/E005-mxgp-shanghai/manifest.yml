@@ -24,7 +24,10 @@ variants:
     script: script.zh-CN.md
     cover: null
     subtitles: null
-    captions: remotion-props/spoken-captions.zh-CN.json
+    # Two versions kept, same take/timing: v1 shows the crotch line as text (蛋蛋), v2 shows
+    # 🥚 (Noto Emoji, added to the shared theme for this — see fonts.ts). v2 is the operator's
+    # pick and the one this points at; v1 stays alongside for comparison.
+    captions: remotion-props/spoken-captions.zh-CN.v2.json
     remotion_props: null
     voiceover_asset_id: null
     platforms: [rednote, douyin, bilibili]
