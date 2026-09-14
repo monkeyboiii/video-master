@@ -48,15 +48,28 @@ const TEXT_OVERRIDES = {
 // anchor for 骑. There is no real signal to recover here — these are hand-set, wider than the
 // first pass (which read as "too short, not well aligned" once actually watched), not derived.
 //
+// "What" (14:0) and 那 (15:0) were both still reading early after the hand-guessed pass above
+// — measured instead of guessed a third time: `ffmpeg … -af silencedetect=noise=-30dB:d=0.05`
+// against media/exports/S03E005-cn.MP4 (analyze-audio.sh, next to this file) finds two real
+// gaps back to back: silence 30629-30748, speech, silence 30866-31030. That is the actual
+// shape — 小时 ends ~30629, "What" is spoken in the ~118ms between the two gaps, and 那我们
+// does not start until ~31030, 270ms later than the alignment had it. No silence gap exists
+// anywhere in 32000-34300 (continuous speech through 世界冠军骑的这台), so 15:5/15:6 below
+// stay a guess — there is no acoustic evidence to place that split any better than this.
+//
 // "What" (14:0): SpokenSubtitleTrack.tsx caps the PREVIOUS sentence at
 // `until = min(ownEnd, next[0].startMs)`, so moving this word's start earlier automatically
 // shrinks sentence 13's display to match — it does not stack or overlap.
+// 那 (15:0): its OWN start is the whole sentence's card-visibility start (`ws[0].startMs`), so
+// this is the actual fix for "那我们再来看看 is too early" — endMs set equal since 我们 (15:1)
+// already starts at 31030 too; giving 那 any real width would overlap it.
 // 骑 (15:6): given its own slice by shortening 世界冠军 (15:5)'s tail — both are internal words
 // in the same sentence/card, so this only moves the band highlight, no card-boundary risk.
 const TIMING_OVERRIDES = {
-  '14:0': {startMs: 30160, endMs: 30760},  // was 30460-30760, before that 30760-30760
-  '15:5': {startMs: 32230, endMs: 33080},  // was 32230-33280
-  '15:6': {startMs: 33080, endMs: 33280},  // was 33280-33280
+  '14:0': {startMs: 30748, endMs: 30866},  // measured; was guessed 30160-30760
+  '15:0': {startMs: 31030, endMs: 31030},  // measured; was 30760-31030
+  '15:5': {startMs: 32230, endMs: 33080},  // still a guess — no silence gap to measure against
+  '15:6': {startMs: 33080, endMs: 33280},  // still a guess — no silence gap to measure against
 };
 
 const durationSec = Math.max(...words.map((s) => s.toMs)) / 1000;
