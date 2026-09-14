@@ -1,10 +1,12 @@
 # 口播稿 (Reading Script) — S03E005 · zh-CN — 已录制 (media/exports/S03E005-cn.MP4)
 
 <!-- Content layer only. No beats/visual_intent table exists yet (manifest.yml stays at
-     "topic" — see its own note). This transcript is the operator's exact wording, given
-     verbatim except one correction: the line below the flight beat had an emoji (🥚) where
-     a word should be — the operator confirmed it as 蛋蛋 (crotch/groin, colloquial), not a
-     literal egg.
+     "topic" — see its own note). This transcript is the operator's wording, with three
+     corrections made after the fact: the line below the flight beat had an emoji (🥚) where
+     a word should be — confirmed as 蛋蛋 (crotch/groin, colloquial), not a literal egg, and
+     shown on screen as 🥚 in v2 anyway (see below); that same line was missing 一台 (the
+     measure word), restored to match what the take actually says; and the 乱窜/花样精实透
+     boundary moved to its own caption beat.
 
      **加粗 = 字幕重点** (`*` in the rendered captions) — chosen here as a first pass, same as
      any other episode's bold picks; review before it ships. `tools/transcribe.mjs` +
@@ -17,13 +19,15 @@
 
 现代智人居然发明了这么**炸裂**的运动。
 
-乍一看你可能会觉得："**卧槽**，一群男的在泥巴里乱窜，花样**精实**透。"
+乍一看你可能会觉得："**卧槽**，一群男的在泥巴里乱窜，
+
+花样**精实**透。"
 
 但如果我告诉你，这可能是全世界最考验人**耐力**的运动呢？
 
 你仔细看这里，人是**真**在飞。
 
-**蛋蛋**底下还夹着**100多**公斤重的越野摩托。
+**蛋蛋**底下还夹着一台**100多**公斤重的越野摩托。
 
 而车手腾空的这**两秒**，基本就是整场比赛**唯一**能喘口气的时候。
 

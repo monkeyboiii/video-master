@@ -14,23 +14,25 @@ const words = JSON.parse(fs.readFileSync(path.join(HERE, 'words.json'), 'utf8'))
 
 // (sentence index, word index) -> emphasised, chosen against script.txt's own word order.
 // captions.md: "spend it two or three times a sentence, not on every noun."
+// Reindexed when script.txt line 1 split into two (乱窜 | 花样精实透) and line 6 gained 一台.
 const EMPHASIS = new Set([
   '0:5',   // 炸裂
-  '1:5', '1:13',   // 卧槽 / 精实
-  '3:7',   // 耐力
-  '5:2',   // 真
-  '6:0', '6:4',   // 蛋蛋 / 100多
-  '7:5',   // 两秒
-  '8:4',   // 唯一
-  '9:2',   // 30多
-  '10:6',  // 180
-  '12:9',  // 狠狠
-  '13:0',  // What
-  '14:5',  // 世界冠军
-  '15:0', '15:1',  // 本田 / 450
-  '16:5',  // 艺术品
-  '17:6',  // 完全
-  '18:14', // 可能
+  '1:5',   // 卧槽
+  '2:1',   // 精实
+  '4:7',   // 耐力
+  '6:2',   // 真
+  '7:0', '7:5',   // 蛋蛋 / 100多
+  '8:5',   // 两秒
+  '9:4',   // 唯一
+  '10:2',  // 30多
+  '11:6',  // 180
+  '13:9',  // 狠狠
+  '14:0',  // What
+  '15:5',  // 世界冠军
+  '16:0', '16:1',  // 本田 / 450
+  '17:5',  // 艺术品
+  '18:6',  // 完全
+  '19:14', // 可能
 ]);
 
 // Two on-screen versions of the same take/timing: v1 writes the spoken word as text (蛋蛋),
