@@ -1,12 +1,13 @@
 # 口播稿 (Reading Script) — S03E005 · zh-CN — 已录制 (media/exports/S03E005-cn.MP4)
 
 <!-- Content layer only. No beats/visual_intent table exists yet (manifest.yml stays at
-     "topic" — see its own note). This transcript is the operator's wording, with three
+     "topic" — see its own note). This transcript is the operator's wording, with four
      corrections made after the fact: the line below the flight beat had an emoji (🥚) where
      a word should be — confirmed as 蛋蛋 (crotch/groin, colloquial), not a literal egg, and
      shown on screen as 🥚 in v2 anyway (see below); that same line was missing 一台 (the
-     measure word), restored to match what the take actually says; and the 乱窜/花样精实透
-     boundary moved to its own caption beat.
+     measure word), restored to match what the take actually says; the 乱窜/花样精实透
+     boundary moved to its own caption beat; and 人是真在飞 was missing 的 — whisper's raw
+     output shows "真的" as one real token, restored to 人是真的在飞.
 
      **加粗 = 字幕重点** (`*` in the rendered captions) — chosen here as a first pass, same as
      any other episode's bold picks; review before it ships. `tools/transcribe.mjs` +
@@ -25,7 +26,7 @@
 
 但如果我告诉你，这可能是全世界最考验人**耐力**的运动呢？
 
-你仔细看这里，人是**真**在飞。
+你仔细看这里，人是**真的**在飞。
 
 **蛋蛋**底下还夹着一台**100多**公斤重的越野摩托。
 
