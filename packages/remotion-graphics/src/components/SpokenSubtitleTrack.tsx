@@ -32,18 +32,33 @@ import {
  * replacement for shrinking the type to fit: the reader gets the same size on every line and
  * more lines, instead of one line nobody can read.
  *
- * A LINE CLEARS ON THE FRAME ITS LAST HIGHLIGHT DOES. Not a moment after.
+ * A LINE HOLDS BRIEFLY PAST ITS LAST HIGHLIGHT — UNLESS THE GAP TO THE NEXT LINE IS WIDE.
  *
- * This went through two wrong answers. First the line held until the NEXT line started, so a
- * finished caption sat for seconds over a picture that had moved on. Then it held a short tail
- * past its last word — and that tail is visible as a distinct beat where the line is still there
- * with nothing lit, which reads as the caption having been forgotten rather than ended.
+ * Two wrong answers came before this one. First the line held until the NEXT line started, so a
+ * finished caption sat for seconds over a picture that had moved on. Then the knob was removed
+ * entirely — clear on the exact frame the last highlight goes out, no tail at any length — because
+ * a tail past a line's own natural end is a distinct beat with the line present and nothing lit,
+ * which reads as forgotten rather than ended. That was right about a WIDE gap and wrong about a
+ * narrow one: an abrupt vanish right before a short, ordinary pause reads as its own kind of
+ * artefact, just as noticeable as an unwarranted tail.
  *
- * The highlight IS the caption's clock. The last word's `endMs` ends the word, the highlight and
- * the line on the same frame, and there is nothing left on screen that is not doing something.
- * A tail cannot be tuned to fix this, because any tail at all is the artefact — which is why the
- * knob is gone rather than defaulted to zero.
+ * So, in priority order:
+ *   1. The line tracks its own speech. `fromMs`/the last word's `endMs` are never invented.
+ *   2. Past the last highlight, it may hold up to `HOLD_MS` — but the hold is capped by the next
+ *      line's own start (below), so THIS NEVER DELAYS THE INCOMING LINE. A hold that pushed the
+ *      next line's appearance later would just move the artefact instead of removing it.
+ *   3. If the natural gap to the next line is `WIDE_GAP_MS` or more, the hold is zero and the line
+ *      clears on the frame its last highlight does, exactly as before — a long silence with the
+ *      previous line still sitting there IS the forgotten-caption artefact the old rule was
+ *      written against, and priority 2's hold is short enough to never reach that length itself.
+ *
+ * `HOLD_MS`/`WIDE_GAP_MS` are provisional defaults (150ms / 200ms), picked against this system's
+ * own observed gaps (ordinary pauses ran 70-132ms; the gap that first read as an abrupt vanish was
+ * 250ms) rather than shown to the operator against real per-episode numbers first — flagged as
+ * adjustable, not measured.
  */
+const HOLD_MS = 150;
+const WIDE_GAP_MS = 200;
 export const spokenSubtitleTrackSchema = z.object({
   locale: localeSchema,
   /** Sentences separated by a blank line; `text|startMs|endMs[|*]` per word within each. */
@@ -130,13 +145,16 @@ export const SpokenSubtitleTrack: React.FC<SpokenSubtitleTrackProps> = ({
       {parts.map((ws, i) => {
         const fromMs = ws[0].startMs;
         const from = Math.round((fromMs / 1000) * FPS);
-        // hold until the next line starts; the last one gets a short tail
-        // the frame the last highlight goes out on — no tail, see the header
         const ownEnd = Math.round((ws[ws.length - 1].endMs / 1000) * FPS);
         const next = parts[i + 1];
-        const until = next
-          ? Math.min(ownEnd, Math.round((next[0].startMs / 1000) * FPS))
-          : ownEnd;
+        // Priority 2/3 — see the header. No next line: hold is moot, clear at ownEnd as before.
+        const nextFrom = next ? Math.round((next[0].startMs / 1000) * FPS) : ownEnd;
+        const gapFrames = nextFrom - ownEnd;
+        const holdFrames =
+          gapFrames > 0 && gapFrames < Math.round((WIDE_GAP_MS / 1000) * FPS)
+            ? Math.min(Math.round((HOLD_MS / 1000) * FPS), gapFrames)
+            : 0;
+        const until = next ? Math.min(ownEnd + holdFrames, nextFrom) : ownEnd;
         return (
           <Sequence
             key={i}

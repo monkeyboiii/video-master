@@ -414,22 +414,38 @@ valid, so one script feeds both styles.
 **Not done:** no third style, and no per-word style. The two exist because they answer two
 different questions about the footage underneath, not as a palette.
 
-### A line clears on the frame its last highlight does
+### A line holds briefly past its last highlight — unless the gap to the next line is wide
 
-Two wrong answers first. The line originally held until the NEXT line started, on the argument
-that a caption vanishing the instant it is spoken is unreadable and the gap reads as a dropped
-frame. At this rhythm that is simply false — beats sit ~5s apart and a sentence takes ~2s, so a
-finished caption sat for seconds over a picture that had moved on.
+Two wrong answers first, both from before this rule existed. The line originally held until the
+NEXT line started, on the argument that a caption vanishing the instant it is spoken is unreadable
+and the gap reads as a dropped frame. At this rhythm that is simply false — beats sit ~5s apart and
+a sentence takes ~2s, so a finished caption sat for seconds over a picture that had moved on.
 
-The second answer was a short tail past the last word. That is worse than it sounds: the tail is
-a distinct, visible beat in which the line is still there with nothing lit, and it reads as the
-caption having been forgotten rather than ended. No tail length fixes it, because any tail at all
-IS the artefact — so the knob was removed rather than defaulted to zero.
+The second answer removed the tail entirely: clear on the exact frame the last highlight goes out,
+always, no tail at any length — because a tail past a line's own natural end is a distinct, visible
+beat with the line present and nothing lit, and that reads as the caption having been forgotten
+rather than ended. That was right about a WIDE gap and wrong about a narrow one: an abrupt vanish
+right before a short, ordinary pause is its own kind of artefact, just as noticeable as an
+unwarranted tail (S03E005, 2026-09-15 — see that episode's `build-captions.mjs` git history).
 
-The highlight is the caption's clock. The last word's `endMs` ends the word, the highlight and the
-line on the same frame. Verified: at frame 626 the final word is lit (4832 fluorescent pixels);
-frame 628 is 100.00% transparent. Nothing is ever on screen not doing something. The end is still
-capped at the next line's start, so two lines cannot overlap however tight the timings get.
+**The rule now, in priority order** (`SpokenSubtitleTrack.tsx`):
+1. The line tracks its own speech — `fromMs` and the last word's `endMs` are never invented.
+2. Past the last highlight, the line may hold up to `HOLD_MS` (currently 150ms) — but the hold is
+   capped by the NEXT line's own start, so it never delays the incoming line. A hold that pushed
+   the next line's appearance later would just move the artefact, not remove it.
+3. If the natural gap to the next line is `WIDE_GAP_MS` (currently 200ms) or more, the hold is
+   zero and the line clears on the frame its last highlight does — exactly the old rule. A long
+   silence with the previous line still sitting there is the forgotten-caption artefact the old
+   rule was written against, and priority 2's hold is short enough to never reach that length.
+
+The end is still capped at the next line's start regardless (point 2), so two lines cannot overlap
+however tight the timings get — that part of the original verification (frame 626 lit, frame 628
+transparent, nothing on screen not doing something) still holds for every WIDE-gap transition.
+
+`HOLD_MS`/`WIDE_GAP_MS` are provisional: picked against S03E005's own observed gaps (ordinary
+pauses ran 70-132ms; the gap that first read as an abrupt vanish was 250ms), not shown to the
+operator against real per-episode numbers first. Treat them as a starting point to correct, not a
+measured constant.
 
 ### Captions are a variant-level track, not a beat overlay
 
