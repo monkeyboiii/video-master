@@ -1,0 +1,44 @@
+[
+  {
+    "text": "的时候",
+    "startMs": 21020,
+    "endMs": 21480,
+    "timestampMs": 21320,
+    "confidence": 0.953063
+  },
+  {
+    "text": "因为",
+    "startMs": 21480,
+    "endMs": 21810,
+    "timestampMs": 21800,
+    "confidence": 0.999949
+  },
+  {
+    "text": "你在",
+    "startMs": 27690,
+    "endMs": 28190,
+    "timestampMs": 27740,
+    "confidence": 0.999804
+  },
+  {
+    "text": "机",
+    "startMs": 28190,
+    "endMs": 28320,
+    "timestampMs": 28260,
+    "confidence": 0.8969
+  },
+  {
+    "text": "真的是",
+    "startMs": 35940,
+    "endMs": 36500,
+    "timestampMs": 36360,
+    "confidence": 0.999355
+  },
+  {
+    "text": "现",
+    "startMs": 36500,
+    "endMs": 36740,
+    "timestampMs": 36780,
+    "confidence": 0.998452
+  }
+]
