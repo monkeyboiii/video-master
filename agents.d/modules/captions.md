@@ -430,21 +430,27 @@ unwarranted tail (S03E005, 2026-09-15 — see that episode's `build-captions.mjs
 
 **The rule now, in priority order** (`SpokenSubtitleTrack.tsx`):
 1. The line tracks its own speech — `fromMs` and the last word's `endMs` are never invented.
-2. Past the last highlight, the line may hold up to `HOLD_MS` (currently 150ms) — but the hold is
-   capped by the NEXT line's own start, so it never delays the incoming line. A hold that pushed
-   the next line's appearance later would just move the artefact, not remove it.
-3. If the natural gap to the next line is `WIDE_GAP_MS` (currently 200ms) or more, the hold is
-   zero and the line clears on the frame its last highlight does — exactly the old rule. A long
-   silence with the previous line still sitting there is the forgotten-caption artefact the old
-   rule was written against, and priority 2's hold is short enough to never reach that length.
+2. Past the last highlight, a gap under `HOLD_GAP_MS` (currently 200ms) holds IN FULL — the line
+   stays up until the NEXT line's own start, so it never delays the incoming line (a hold that
+   pushed the next line's appearance later would just move the artefact, not remove it) and never
+   leaves a blank frame either.
+3. A gap at or over `HOLD_GAP_MS` gets no hold — the line clears on the frame its last highlight
+   does, exactly the old rule. A long silence with the previous line still sitting there is the
+   forgotten-caption artefact the old rule was written against.
+
+**One threshold, deliberately, not a separate hold-length and gap-length.** A first pass used two
+(hold up to 150ms, no-hold at 200ms+) and was caught before shipping: a 180ms gap would have held
+150ms then shown NOTHING for the remaining 30ms — a flicker, worse than either a full hold or no
+hold at all. One threshold removes the band structurally: any gap narrow enough to hold at all is
+short enough to hold completely.
 
 The end is still capped at the next line's start regardless (point 2), so two lines cannot overlap
 however tight the timings get — that part of the original verification (frame 626 lit, frame 628
-transparent, nothing on screen not doing something) still holds for every WIDE-gap transition.
+transparent, nothing on screen not doing something) still holds for every over-threshold transition.
 
-`HOLD_MS`/`WIDE_GAP_MS` are provisional: picked against S03E005's own observed gaps (ordinary
-pauses ran 70-132ms; the gap that first read as an abrupt vanish was 250ms), not shown to the
-operator against real per-episode numbers first. Treat them as a starting point to correct, not a
+`HOLD_GAP_MS` is provisional: picked against S03E005's own observed gaps (ordinary pauses ran
+70-132ms; the gap that first read as an abrupt vanish was 250ms), not shown to the operator against
+real per-episode numbers first. Treat it as a starting point to correct, not a
 measured constant.
 
 ### Captions are a variant-level track, not a beat overlay
