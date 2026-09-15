@@ -44,21 +44,26 @@ import {
  *
  * So, in priority order:
  *   1. The line tracks its own speech. `fromMs`/the last word's `endMs` are never invented.
- *   2. Past the last highlight, it may hold up to `HOLD_MS` — but the hold is capped by the next
- *      line's own start (below), so THIS NEVER DELAYS THE INCOMING LINE. A hold that pushed the
- *      next line's appearance later would just move the artefact instead of removing it.
- *   3. If the natural gap to the next line is `WIDE_GAP_MS` or more, the hold is zero and the line
- *      clears on the frame its last highlight does, exactly as before — a long silence with the
- *      previous line still sitting there IS the forgotten-caption artefact the old rule was
- *      written against, and priority 2's hold is short enough to never reach that length itself.
+ *   2. Past the last highlight, a gap under `HOLD_GAP_MS` holds IN FULL — the line stays up until
+ *      the next line's own start, so THIS NEVER DELAYS THE INCOMING LINE (a hold that pushed the
+ *      next line's appearance later would just move the artefact, not remove it) and never leaves
+ *      a blank frame either.
+ *   3. A gap at or over `HOLD_GAP_MS` gets no hold at all — the line clears on the frame its last
+ *      highlight does, exactly as before. A long silence with the previous line still sitting
+ *      there IS the forgotten-caption artefact the old rule was written against.
  *
- * `HOLD_MS`/`WIDE_GAP_MS` are provisional defaults (150ms / 200ms), picked against this system's
- * own observed gaps (ordinary pauses ran 70-132ms; the gap that first read as an abrupt vanish was
- * 250ms) rather than shown to the operator against real per-episode numbers first — flagged as
- * adjustable, not measured.
+ * ONE threshold, deliberately, not a separate hold-length and gap-length. A first pass used two
+ * (hold up to 150ms, no-hold at 200ms+) and dbx-oracle caught the band between them before it
+ * shipped: a 180ms gap would have held 150ms then shown NOTHING for the remaining 30ms — a
+ * flicker, worse than either a full hold or no hold at all. Collapsing to one threshold removes
+ * the band structurally: a gap under it is always short enough to hold completely.
+ *
+ * `HOLD_GAP_MS` is a provisional default (200ms), picked against this system's own observed gaps
+ * (ordinary pauses ran 70-132ms; the gap that first read as an abrupt vanish was 250ms) rather
+ * than shown to the operator against real per-episode numbers first — flagged as adjustable, not
+ * measured.
  */
-const HOLD_MS = 150;
-const WIDE_GAP_MS = 200;
+const HOLD_GAP_MS = 200;
 export const spokenSubtitleTrackSchema = z.object({
   locale: localeSchema,
   /** Sentences separated by a blank line; `text|startMs|endMs[|*]` per word within each. */
@@ -145,16 +150,21 @@ export const SpokenSubtitleTrack: React.FC<SpokenSubtitleTrackProps> = ({
       {parts.map((ws, i) => {
         const fromMs = ws[0].startMs;
         const from = Math.round((fromMs / 1000) * FPS);
-        const ownEnd = Math.round((ws[ws.length - 1].endMs / 1000) * FPS);
+        const ownEndMs = ws[ws.length - 1].endMs;
+        const ownEnd = Math.round((ownEndMs / 1000) * FPS);
         const next = parts[i + 1];
         // Priority 2/3 — see the header. No next line: hold is moot, clear at ownEnd as before.
-        const nextFrom = next ? Math.round((next[0].startMs / 1000) * FPS) : ownEnd;
-        const gapFrames = nextFrom - ownEnd;
-        const holdFrames =
-          gapFrames > 0 && gapFrames < Math.round((WIDE_GAP_MS / 1000) * FPS)
-            ? Math.min(Math.round((HOLD_MS / 1000) * FPS), gapFrames)
-            : 0;
-        const until = next ? Math.min(ownEnd + holdFrames, nextFrom) : ownEnd;
+        // Classified in MILLISECONDS, from the raw word timestamps, not by comparing two
+        // independently-rounded frame numbers: rounding ownEndMs and nextStartMs to frames
+        // separately before subtracting can drift by up to a frame each, which can push a
+        // genuinely-under-threshold gap (e.g. a real 199ms gap) across the line. `until` itself
+        // still lands on a real frame (nextFrom, already rounded) — only the classification
+        // avoids the double rounding.
+        const nextStartMs = next ? next[0].startMs : ownEndMs;
+        const nextFrom = Math.round((nextStartMs / 1000) * FPS);
+        const gapMs = nextStartMs - ownEndMs;
+        const holdsInFull = gapMs > 0 && gapMs < HOLD_GAP_MS;
+        const until = next ? (holdsInFull ? nextFrom : ownEnd) : ownEnd;
         return (
           <Sequence
             key={i}
