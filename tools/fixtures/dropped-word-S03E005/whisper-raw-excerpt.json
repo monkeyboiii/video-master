@@ -1,0 +1,114 @@
+[
+  {
+    "text": "机",
+    "startMs": 28190,
+    "endMs": 28320,
+    "timestampMs": 28260,
+    "confidence": 0.8969
+  },
+  {
+    "text": "上",
+    "startMs": 28320,
+    "endMs": 28500,
+    "timestampMs": 28400,
+    "confidence": 0.999834
+  },
+  {
+    "text": "被",
+    "startMs": 28500,
+    "endMs": 28670,
+    "timestampMs": 28600,
+    "confidence": 0.928214
+  },
+  {
+    "text": "多",
+    "startMs": 28670,
+    "endMs": 28820,
+    "timestampMs": 28800,
+    "confidence": 0.996871
+  },
+  {
+    "text": "位",
+    "startMs": 28820,
+    "endMs": 29680,
+    "timestampMs": 28920,
+    "confidence": 0.968138
+  },
+  {
+    "text": "跟",
+    "startMs": 29680,
+    "endMs": 29860,
+    "timestampMs": 29900,
+    "confidence": 0.997965
+  },
+  {
+    "text": "着",
+    "startMs": 29860,
+    "endMs": 30040,
+    "timestampMs": 29960,
+    "confidence": 0.980099
+  },
+  {
+    "text": "半",
+    "startMs": 30040,
+    "endMs": 30220,
+    "timestampMs": 30120,
+    "confidence": 0.999464
+  },
+  {
+    "text": "个",
+    "startMs": 30220,
+    "endMs": 30400,
+    "timestampMs": 30300,
+    "confidence": 0.999687
+  },
+  {
+    "text": "小",
+    "startMs": 30400,
+    "endMs": 30580,
+    "timestampMs": 30380,
+    "confidence": 0.999355
+  },
+  {
+    "text": "时",
+    "startMs": 30580,
+    "endMs": 30760,
+    "timestampMs": 30680,
+    "confidence": 0.999704
+  },
+  {
+    "text": "那",
+    "startMs": 30760,
+    "endMs": 31030,
+    "timestampMs": 31540,
+    "confidence": 0.452398
+  },
+  {
+    "text": "我们",
+    "startMs": 31030,
+    "endMs": 31490,
+    "timestampMs": 32020,
+    "confidence": 0.999876
+  },
+  {
+    "text": "再",
+    "startMs": 31490,
+    "endMs": 31730,
+    "timestampMs": 32200,
+    "confidence": 0.999605
+  },
+  {
+    "text": "来",
+    "startMs": 31730,
+    "endMs": 31810,
+    "timestampMs": 32280,
+    "confidence": 0.999847
+  },
+  {
+    "text": "看看",
+    "startMs": 31810,
+    "endMs": 32230,
+    "timestampMs": 32460,
+    "confidence": 0.999659
+  }
+]
