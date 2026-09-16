@@ -215,9 +215,13 @@ This repo is handed the written script. Transcribing text you already have is st
 reconciling against it: keep whisper's **timings**, take the script's **characters**. Homophone
 substitutions are the common failure and are invisible until someone reads the burn-in.
 
-**Not done:** no text-conditioned forced aligner is wired in. whisper.cpp cannot align to supplied
-text, and the Chinese aligners that can (MFA, WhisperX's zh model) are a separate toolchain. The
-threshold: reconciliation by hand stops being cheap.
+**Now done, and required, not optional:** `tools/mfa-align.mjs` wires in Montreal Forced Aligner —
+a text-conditioned aligner whisper.cpp itself cannot be, since it can only guess where in the audio
+its own decoded tokens fall, never where a SUPPLIED script's words fall. The threshold this was
+gated on — "reconciliation by hand stops being cheap" — was crossed on S03E005 (2026-09-16): three
+separate bug classes from whisper's token-vs-word mismatch (§ The zh unit is a WORD below) each
+cost a session of hand-fixing before MFA replaced the timing source outright. See that section and
+`tools/mfa-align.mjs`'s own header for the mechanism and the one-time setup.
 
 ## The spoken-caption band, and why the two locales stream differently
 
@@ -244,38 +248,36 @@ it wrong.
 ### The zh unit is a WORD, never a character — and the script is what defines it
 
 `核心` is one word and lights as one. whisper.cpp emits zh timings per **character**, so the
-transcription alone cannot say where words end.
+transcription alone cannot say where words end — and, as of 2026-09-16, is not asked to: word
+timing is required to come from `tools/mfa-align.mjs` (Montreal Forced Aligner against the audio),
+not from reconciling the script against whisper's character stream. The component itself does not
+segment at all either way. It highlights exactly the rows it is given, so the unit is whatever
+upstream decided; upstream deciding correctly is the whole point of requiring MFA.
 
-`tools/group-words.mjs` resolves it without a segmenter: this repo is handed the script, and the
-script has the boundaries a segmenter would try to infer, written by whoever chose them. It aligns
-the script's characters against the transcription's and takes each word's span from the first and
-last character it covers. Text comes from the script, timings from the transcription — each used
-for the half it is good at, which is the same division § The script is known, so ASR output is a
-draft already argues for.
+**Why `tools/group-words.mjs`'s LCS approach — the prior required step — was retired rather than
+kept as a fallback.** It resolved word boundaries without a Chinese segmenter: align the script's
+characters against the transcription's own character stream (a longest common subsequence — the
+positions both agree on are anchors, a script character with no anchor is interpolated between the
+anchors either side of it, monotonic by construction), taking each word's span from the first and
+last character it covers. That was a real fix for a real problem — walking the two streams
+position-by-position instead of aligning them lost 5 of 19 sentences to `startMs = endMs = 0` on
+one take (33 of 151 script characters had no matching stream position, whisper having lost them to
+byte-split tokens) — but it has a structural ceiling the alignment itself cannot lift: it
+reconciles the script against whisper's OWN transcription, and whisper's timestamps are one pair
+per decoded TOKEN, not one per character or word. Whenever a token spans several script words, or
+a word's whole token is dropped, group-words.mjs faithfully reports what whisper gave it — a
+zero-width word, or two words sharing one identical span — because there is no third source in
+that pipeline to catch the token against. That is not a group-words.mjs bug; it is what "anchored"
+means when the thing being anchored to is itself sometimes wrong. Three such bug classes, found by
+scanning a whole episode for them, are why S03E005 moved to MFA outright: MFA aligns against the
+AUDIO, so a token's boundary in whisper's own decoding is not something its output can inherit.
 
-**It ALIGNS rather than walks, and the difference is the whole tool.** The transcription is always
-shorter than the script — whisper.cpp loses multi-byte characters to byte-split tokens before any
-of this runs, 36 of 131 on S05E002, leaving 118 stream characters for a 151-character script. The
-original form consumed one stream position per script character and tolerated three hops of
-mismatch; with 33 characters simply absent, every loss burned a position a later character needed,
-the error compounded, and the tail of the script fell off the end. Five of nineteen sentences came
-back with `startMs = endMs = 0` — not approximate timings, no timings, and the warning it printed
-said "the script and the take have diverged" when they had not.
+`tools/group-words.mjs` still exists and still runs — for the case its own limits don't bite, or
+for a take with no MFA setup available yet — but it is no longer where a new episode's word timing
+should come from. `tools/mfa-align.mjs`'s header has the mechanism and the one-time setup.
 
-The fix is a longest common subsequence between the two character streams. The positions both
-agree on, in order, are anchors; a script character with no anchor is interpolated between the
-anchors either side of it rather than guessed at. Monotonic by construction, so a line can never
-run backwards. On the same input: 115 of 151 characters anchored, 36 interpolated — exactly the
-36 whisper dropped — and no sentence without a span. **Read the anchored ratio, not the absence of
-a warning:** ~20-30% interpolated is normal for zh; much higher means the script and the take
-really have diverged, and it is the TEXT to check, not the timings.
-
-The component does not segment at all. It highlights exactly the rows it is given, so the unit is
-whatever upstream decided.
-
-**Not done:** no jieba or other Chinese segmenter. It would be a dependency and a second source of
-truth that disagrees with the script. **The threshold:** captions wanted for a take that has no
-script.
+**Still not done:** no jieba or other Chinese segmenter, for either tool. It would be a dependency
+and a second source of truth that disagrees with the script.
 
 ### Only the band lights — in both locales. Text lights only for an important word
 
@@ -414,7 +416,7 @@ valid, so one script feeds both styles.
 **Not done:** no third style, and no per-word style. The two exist because they answer two
 different questions about the footage underneath, not as a palette.
 
-### A line holds briefly past its last highlight — unless the gap to the next line is wide
+### A line holds briefly past its last highlight — in full on a narrow gap, a few frames on a wide one
 
 Two wrong answers first, both from before this rule existed. The line originally held until the
 NEXT line started, on the argument that a caption vanishing the instant it is spoken is unreadable
@@ -434,15 +436,21 @@ unwarranted tail (S03E005, 2026-09-15 — see that episode's `build-captions.mjs
    stays up until the NEXT line's own start, so it never delays the incoming line (a hold that
    pushed the next line's appearance later would just move the artefact, not remove it) and never
    leaves a blank frame either.
-3. A gap at or over `HOLD_GAP_MS` gets no hold — the line clears on the frame its last highlight
-   does, exactly the old rule. A long silence with the previous line still sitting there is the
-   forgotten-caption artefact the old rule was written against.
+3. A gap at or over `HOLD_GAP_MS` still holds a small FLOOR, `MIN_HOLD_FRAMES` (5 frames, ~167ms
+   at 30fps) — it does not clear on the exact frame the last highlight does. Found on S03E005
+   (花样精实透 → 但如果我告诉你, 2026-09-16): the last word's measured `endMs` is where the
+   aligner drew the boundary, not a guarantee nothing audible continues a beat past it — clearing
+   right there read as the line being cut off mid-breath. A long silence still clears well before
+   the next line, so the forgotten-caption artefact the zero-hold version was written against
+   does not come back.
 
-**One threshold, deliberately, not a separate hold-length and gap-length.** A first pass used two
-(hold up to 150ms, no-hold at 200ms+) and was caught before shipping: a 180ms gap would have held
-150ms then shown NOTHING for the remaining 30ms — a flicker, worse than either a full hold or no
-hold at all. One threshold removes the band structurally: any gap narrow enough to hold at all is
-short enough to hold completely.
+**One threshold governs FULL vs. FLOOR, not two independent gap-lengths to tune against each
+other.** A first pass used two independent thresholds (hold up to 150ms, no-hold at 200ms+) and
+was caught before shipping: a 180ms gap would have held 150ms then shown NOTHING for the remaining
+30ms — a flicker, worse than either a full hold or no hold at all. `MIN_HOLD_FRAMES` does not
+reintroduce that risk because it is clamped with `Math.min` against the next line's own start:
+whatever it is set to, the worst case is it collapses into a full hold, never into a partial hold
+followed by a blank gap.
 
 The end is still capped at the next line's start regardless (point 2), so two lines cannot overlap
 however tight the timings get — that part of the original verification (frame 626 lit, frame 628
@@ -451,7 +459,8 @@ transparent, nothing on screen not doing something) still holds for every over-t
 `HOLD_GAP_MS` is provisional: picked against S03E005's own observed gaps (ordinary pauses ran
 70-132ms; the gap that first read as an abrupt vanish was 250ms), not shown to the operator against
 real per-episode numbers first. Treat it as a starting point to correct, not a
-measured constant.
+measured constant. `MIN_HOLD_FRAMES` is the same kind of placeholder — "a few frames," not measured
+against every trailing-audio case in the estate.
 
 ### Captions are a variant-level track, not a beat overlay
 
@@ -507,11 +516,13 @@ punctuation-filtered so a lone `,` never becomes a caption unit that lights. zh 
 does get `pred_dur`, one duration per phoneme at exactly 25 ms a unit, which is better than any
 alignment because it is what the model actually did rather than what a recogniser thinks it heard.
 
-**The transcribe → group-words loop is still correct, and it is for a HUMAN take.** It was tried
-here first and it fails on synthetic zh: whisper drops ~35% of zh tokens as byte-split U+FFFD, 100
-of 107 characters failed to match, and the rows came out with words whose start exceeded their end
-and a sentence ending at 0.00s. Do not read that as the loop being wrong — read it as never asking
-a recogniser what the synthesiser already knows.
+**The transcribe → MFA-align loop (§ The zh unit is a WORD above) is still correct, and it is for a
+HUMAN take.** Forced-aligning a synthesiser's own output against itself was tried here first and it
+fails on synthetic zh the same way whisper's transcription-reconciliation predecessor did: no
+recogniser or aligner should be asked what the synthesiser already knows exactly. Do not read that
+as the loop being wrong for what it's for — a human take is real, imperfect audio with no ground
+truth already sitting in a token list, which is exactly the case forced alignment against real
+audio exists for.
 
 The rate a silent cut wants is still faster than speech; that half of this section stands. What
 changed is that a narrated cut no longer negotiates with it.

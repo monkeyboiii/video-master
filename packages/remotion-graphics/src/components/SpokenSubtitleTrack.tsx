@@ -48,22 +48,30 @@ import {
  *      the next line's own start, so THIS NEVER DELAYS THE INCOMING LINE (a hold that pushed the
  *      next line's appearance later would just move the artefact, not remove it) and never leaves
  *      a blank frame either.
- *   3. A gap at or over `HOLD_GAP_MS` gets no hold at all — the line clears on the frame its last
- *      highlight does, exactly as before. A long silence with the previous line still sitting
- *      there IS the forgotten-caption artefact the old rule was written against.
+ *   3. A gap at or over `HOLD_GAP_MS` still holds a SMALL floor, `MIN_HOLD_FRAMES` — it does not
+ *      clear on the exact frame the last highlight does. Found on S03E005 (花样精实透 →
+ *      但如果我告诉你): a word's measured `endMs` is a boundary the aligner drew, not a guarantee
+ *      that nothing audible continues a beat past it — a hard cut right there reads as the line
+ *      being cut off mid-breath, not as a clean ending. `MIN_HOLD_FRAMES` is deliberately much
+ *      smaller than `HOLD_GAP_MS`, so a genuinely long silence still clears well before the next
+ *      line and the forgotten-caption artefact the old (zero-hold) rule was written against does
+ *      not come back.
  *
- * ONE threshold, deliberately, not a separate hold-length and gap-length. A first pass used two
- * (hold up to 150ms, no-hold at 200ms+) and dbx-oracle caught the band between them before it
- * shipped: a 180ms gap would have held 150ms then shown NOTHING for the remaining 30ms — a
- * flicker, worse than either a full hold or no hold at all. Collapsing to one threshold removes
- * the band structurally: a gap under it is always short enough to hold completely.
+ * ONE threshold governs whether the hold is FULL (to the next line) or FLOOR (a few frames);
+ * `MIN_HOLD_FRAMES` is not a second gap-length to tune against `HOLD_GAP_MS` — it is clamped with
+ * `Math.min` against the next line's own start, so it can never produce the hold-then-blank
+ * flicker a two-independent-threshold design risked (dbx-oracle caught that shape once already,
+ * for a since-removed 150ms/200ms pair): whatever `MIN_HOLD_FRAMES` is set to, the worst case is
+ * it collapses into a full hold, never into a gap with nothing on screen.
  *
  * `HOLD_GAP_MS` is a provisional default (200ms), picked against this system's own observed gaps
  * (ordinary pauses ran 70-132ms; the gap that first read as an abrupt vanish was 250ms) rather
  * than shown to the operator against real per-episode numbers first — flagged as adjustable, not
- * measured.
+ * measured. `MIN_HOLD_FRAMES` (5, ~167ms at 30fps) is the same kind of placeholder, picked to be
+ * "a few frames" rather than measured against every trailing-audio case in the estate.
  */
 const HOLD_GAP_MS = 200;
+const MIN_HOLD_FRAMES = 5;
 export const spokenSubtitleTrackSchema = z.object({
   locale: localeSchema,
   /** Sentences separated by a blank line; `text|startMs|endMs[|*]` per word within each. */
@@ -153,7 +161,8 @@ export const SpokenSubtitleTrack: React.FC<SpokenSubtitleTrackProps> = ({
         const ownEndMs = ws[ws.length - 1].endMs;
         const ownEnd = Math.round((ownEndMs / 1000) * FPS);
         const next = parts[i + 1];
-        // Priority 2/3 — see the header. No next line: hold is moot, clear at ownEnd as before.
+        // Priority 2/3 — see the header. No next line: still holds MIN_HOLD_FRAMES, same as any
+        // wide-gap line — there's no next line to delay, only the same abrupt-vanish risk to avoid.
         // Classified in MILLISECONDS, from the raw word timestamps, not by comparing two
         // independently-rounded frame numbers: rounding ownEndMs and nextStartMs to frames
         // separately before subtracting can drift by up to a frame each, which can push a
@@ -164,7 +173,10 @@ export const SpokenSubtitleTrack: React.FC<SpokenSubtitleTrackProps> = ({
         const nextFrom = Math.round((nextStartMs / 1000) * FPS);
         const gapMs = nextStartMs - ownEndMs;
         const holdsInFull = gapMs > 0 && gapMs < HOLD_GAP_MS;
-        const until = next ? (holdsInFull ? nextFrom : ownEnd) : ownEnd;
+        const minHoldUntil = ownEnd + MIN_HOLD_FRAMES;
+        const until = next
+          ? (holdsInFull ? nextFrom : Math.min(nextFrom, minHoldUntil))
+          : minHoldUntil;
         return (
           <Sequence
             key={i}

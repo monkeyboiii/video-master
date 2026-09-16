@@ -97,13 +97,19 @@ If a line still overflows it is a single word wider than the frame — shorten t
 `fontSize` for that composition. Do not reintroduce `fitText`: a per-sentence size makes the frame
 twitch, and a sentence that shrank enough to fit is one nobody reads.
 
-A line clears **on the frame its last highlight goes out**, not a moment after. There is no tail
-knob: any tail is a visible beat with the line present and nothing lit, which reads as forgotten
-rather than ended. The end is capped at the next line's start, so two lines never overlap.
+A line holds briefly past its last highlight, then clears — **in full** (up to the next line's own
+start) when the gap to it is under `HOLD_GAP_MS` (200ms), or for a small **floor**
+(`MIN_HOLD_FRAMES`, ~167ms) otherwise, never a moment longer: a hard cut on the exact frame a
+word's measured end reads as cut off mid-breath, and a tail that sits past a genuinely long silence
+reads as forgotten rather than ended — the floor exists for the first, the cap for the second. The
+end is always capped at the next line's start, so two lines never overlap. See
+`agents.d/modules/captions.md` § "A line holds briefly..." for why there are two thresholds and
+not one, and why the floor can't reproduce the flicker a two-threshold design risked before.
 
 Caption rate is not speaking rate. 280 ms/word (en) and 155 ms/char (zh) are tuned for a SILENT
 cut. Measured against Kokoro at speed 1.0 they overrun — 4 of 8 cues in en, 8 of 8 in zh. For a
-narrated cut, take the timings from the audio (`tools/transcribe.mjs` then `tools/group-words.mjs`)
+narrated cut, take the timings from the audio (`tools/transcribe.mjs` for the script if none
+exists, then `tools/mfa-align.mjs` for word timing — see "A word is whatever a row is" below)
 rather than tuning these numbers.
 
 ## Geometry — all derived from `size`, never fixed px
@@ -126,15 +132,42 @@ objects instead of one rule lighting up.
 
 whisper.cpp emits Chinese timings **per character**, and highlighting per character is wrong —
 核心 is one word and lights as one. The components do not segment; they highlight exactly the units
-given. Group upstream, where the script's own boundaries are known:
+given, so word timing has to come from something that knows the script's own boundaries.
+
+**Word timing is required to come from MFA (Montreal Forced Aligner), not from whisper's own
+timestamps.** whisper.cpp's per-word timing is a byproduct of ASR decoding — one timestamp pair
+per decoded TOKEN, which can span several script words or collapse a word to zero width whenever
+the token boundary and the script's word boundary disagree. That produced three documented,
+expensive-to-fix-by-hand bug classes on S03E005 (a word with no anchor at all, a word absorbed
+into a wide neighbour, two words sharing one token's identical span) before this was the required
+step. MFA does real phone-level forced alignment against the audio instead of reconciling two
+independent transcriptions, so none of those classes apply to its output — validated on S03E005,
+2026-09-16: every previously zero-duration or shared-token word got a real, independently measured
+span, several cross-checked against ffmpeg `silencedetect` gaps on the same audio to within
+20-40ms, and the two words with no whisper anchor at all got real numbers for the first time.
+
+whisper.cpp still has exactly one job here: producing the TEXT when no script exists yet. It does
+not replace a human read-through, and it does not supply timing once `tools/mfa-align.mjs` is run.
 
 ```bash
-node tools/transcribe.mjs <audio> --locale zh-CN     # per-character rows
-node tools/group-words.mjs <rows> <script>           # → per-word rows
+node tools/transcribe.mjs <audio> --locale zh-CN     # only if no script exists yet — text, not timing
+node tools/mfa-align.mjs <audio> <script.txt> words.json   # required — per-word timing
 ```
 
+`tools/mfa-align.mjs`'s own header has the one-time model setup (a docker/containerd pair MFA can
+run in — see infra:agents.d/modules/layout.md's image-store escape hatch if the box is
+disk-constrained — plus the acoustic model and dictionary downloaded once) and what it does when a
+script word isn't a dictionary entry (world冠军-shaped compounds, digit runs, colloquialisms) —
+split for alignment, re-merged to the script's own word boundaries afterward, so nothing
+downstream ever sees the sub-word split. A word MFA's dictionary genuinely cannot resolve (an
+English interjection mixed into zh speech, e.g.) still needs the same by-hand check it always did;
+MFA fixes timing for correctly-transcribed content, not whisper's transcription mistakes.
+
 Write numbers as **digits** in both locales — `12.5%`, `4个核心`, `7天` — not spelled out. A digit
-is read at a glance; a spelled number is read as words and costs the line its width.
+is read at a glance; a spelled number is read as words and costs the line its width. (This is
+about what the CAPTION shows — `tools/mfa-align.mjs` separately spells a digit run out as Chinese
+numeral characters internally, only to look it up in MFA's dictionary; that's invisible to the
+rendered caption, which still gets the original script word back, digits and all.)
 
 ## Render
 

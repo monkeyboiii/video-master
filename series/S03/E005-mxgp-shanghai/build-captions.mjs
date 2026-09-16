@@ -41,90 +41,182 @@ const TEXT_OVERRIDES = {
   v3: {'7:0': '🥚'},
 };
 
-// Every zero-width word below aligned to a real zero-width span from group-words — either no
-// anchor exists for it at all (whisper's raw stream has no gap between the words around it), or
-// it's swallowed inside a neighbour's suspiciously wide token. None of these are group-words
-// bugs; they're honest reports of a boundary the alignment could not find. Fixed by two
-// different kinds of evidence, in order of how much trust each deserves:
+// Superseded 2026-09-16: every entry below (bar the two named exceptions) is now sourced from a
+// Montreal Forced Aligner run against this episode's own audio, not whisper.cpp's token stream.
+// whisper's per-word timestamps are a byproduct of ASR decoding — one timestamp pair per decoded
+// TOKEN, which can span several script words or collapse a word to zero width when the token
+// boundary and the script's word boundary disagree. That was the root cause of every class of bug
+// this table used to work around by hand: a word with no anchor at all, a word absorbed into a
+// wide neighbour, and two words sharing one token's identical span. MFA does real phone-level
+// forced alignment against the audio instead, so none of those failure modes apply to its output.
 //
-// "What" (14:0) and the 13/14/15 boundary generally — four passes on this one beat; git log
-// carries the earlier three (measured audio, meme cut-in vs cut-out, a "cut the previous line
-// short" pass). Each one traded sentence 13's completeness against What's coverage against 那's
-// lead time — because each pass tried to fit all three into the TIGHT window the actual measured
-// evidence bounds (silence gaps, scene cuts), and that window is short. The operator's actual
-// instruction, once said plainly: stop fitting three things into a tight measured window: give
-// EACH of sentence 13, What, and the gap before 那 a genuinely comfortable length, sequentially,
-// and let 那's arrival move out to wherever that lands. Loose and generous on purpose here, not
-// measured — the precision this segment doesn't have was the whole problem with passes 1-3.
+// Method: script.txt's words fed to `mfa align` against the `mandarin_china_mfa` dictionary and
+// `mandarin_mfa` acoustic model, `--no_tokenization` (the text is already word-segmented). Any
+// script word not itself a dictionary entry (compounds like 世界冠军, 这玩意儿, numerals like
+// 100多/180) was split into dictionary-covered sub-words before alignment and merged back to the
+// script's own word boundaries afterward — MFA's sub-word boundary inside such a compound is
+// finer than this table needs, only the outer start/end of the whole script word is kept. Spans
+// cross-checked against independent ffmpeg `silencedetect` gaps on the same audio at several
+// points (not against whisper) matched within 20-40ms.
 //
-// So: sentence 13 keeps its own ORIGINAL, uncapped end (30760 — 小时's own group-words value,
-// never touched) instead of being capped early by What's start. What starts there (30760) and
-// runs a full 640ms — past both the meme's measured cut-in (30233, already gone by this point)
-// and its cut-out (30800), comfortably covering the whole beat rather than chasing either edge.
-// 那 moves out to 31400 to match, later than every prior pass, on purpose.
-//
-// SpokenSubtitleTrack.tsx caps the PREVIOUS sentence at `until = min(ownEnd, next[0].startMs)`
-// and the CURRENT one the same way against the sentence after it — so sentence 13 no longer being
-// capped early, and What no longer being squeezed against 那's old (earlier) start, both fall out
-// of the same two numbers below; nothing else needed changing.
-//
-// 炸裂 (0:5), 卧槽 (1:5), 狠狠 (13:9), 骑 (15:6), 世界冠军 (15:5), 乱窜 (1:11), 壮汉 (13:8), 都
-// (18:5), 挂 (19:12) — no measurable boundary either way (continuous speech, checked against the
-// full-file silencedetect log): each given a modest real slice by shortening an adjacent
-// neighbour rather than guessing a number from nothing. For 乱窜 and 壮汉 the neighbour to borrow
-// from was obvious: 里 (1:10, single character) and 位 (within 多位, 13:7) both ran 580ms/860ms
-// on their own in whisper's raw output — 3-4x a typical single character — the same
-// absorbed-into-a-wide-token shape as 时/那 (git log) and 真/的 below, just without a second real
-// word on the other side to reveal it as a drop; here it only shows up as an anomalous WIDTH.
-// 都 and 挂 had no such tell (both flanking words had ordinary widths), so their slices are a
-// smaller, more genuinely-arbitrary default. These are the ones the automated check below exists
-// for — EVERY word needs enough width to have a frame for the ALWAYS-ON band to light on
-// (captions.md: "the band always lights under the word being spoken, in both locales" — not just
-// `*` words), or it's invisible and looks like a random rendering bug instead of what it actually
-// is: a word nobody gave real estate to.
-//
-// A SECOND, DIFFERENT bug class, found scanning the whole document for it after 真的/是 turned
-// up identical: whisper.cpp emits ONE timestamp pair per TOKEN, and a token can be several
-// characters (真的是 arrived as one 560ms token). group-words gives every CHARACTER within that
-// token the token's full span, unsplit — fine when the token maps to one script word, but when
-// the script splits it across two or more words (真的 + 是 here), those words end up with
-// IDENTICAL start/end, not sequential ones: two captions claiming the exact same time. Three
-// instances found this way (9:7/9:8, 13:2/13:3, 17:1/17:2) — all fixed the same way, splitting
-// the shared span proportionally by character count between the words that shared it.
+// Two exceptions, kept OUT of the MFA table on purpose:
+// - '14:0' (What) stays hand-tuned. MFA's pure-audio measurement for it is real but short
+//   (~180ms) — it has no notion of the meme cutaway on screen, which is what this word's timing
+//   was actually tuned against across several rounds this repo's git log carries. Audio-only
+//   alignment answers a different question than "does this line up with the picture."
+// - '15:0' (那) stays a deliberate zero-width card-boundary marker (its own start sets the
+//   sentence's card-visibility start, per SpokenSubtitleTrack.tsx) — not a moment meant to be
+//   seen on its own, so MFA's real measured span for it would be the wrong fix.
 const TIMING_OVERRIDES = {
-  '9:7': {startMs: 21020, endMs: 21173},   // 的: was 21020-21480, identical to 时候 — split 1:2
-  '9:8': {startMs: 21173, endMs: 21480},   // 时候: was 21020-21480, identical to 的
-  '13:2': {startMs: 27690, endMs: 27940},  // 你: was 27690-28190, identical to 在 — split evenly
-  '13:3': {startMs: 27940, endMs: 28190},  // 在: was 27690-28190, identical to 你
-  '0:5': {startMs: 1960, endMs: 2160},    // 炸裂: was 1960-1960; borrowed from 的 (0:6)
-  '0:6': {startMs: 2160, endMs: 2260},    // 的: was 1960-2260
-  '1:5': {startMs: 4400, endMs: 4600},    // 卧槽: was 4400-4400; borrowed from 一群 (1:6)
-  '1:6': {startMs: 4600, endMs: 4760},    // 一群: was 4400-4760
-  '1:10': {startMs: 5660, endMs: 5990},   // 里: was 5660-6240 (580ms, 1 char — anomalously wide)
-  '1:11': {startMs: 5990, endMs: 6240},   // 乱窜: was 6240-6240; borrowed from 里
-  '13:7': {startMs: 28670, endMs: 29350}, // 多位: was 28670-29680 (位 alone ran 860ms — anomalous)
-  '13:8': {startMs: 29350, endMs: 29680}, // 壮汉: was 29680-29680; borrowed from 多位
-  '13:9': {startMs: 29680, endMs: 29880}, // 狠狠: was 29680-29680; borrowed from 跟着 (13:10)
-  '13:10': {startMs: 29880, endMs: 30040}, // 跟着: was 29680-30040
-  // endMs extended to 那's own start (31050), not the meme's own cut-out (30800): closing the
-  // 250ms blank gap that would otherwise sit between them with nothing rendered. This keeps
-  // What's band LIT the whole time (a longer highlight, not a tail) — captions.md's "no tail"
-  // rule is specifically about a line held with NOTHING lit; a longer lit duration doesn't
-  // trigger the artefact that rule exists to prevent. Operator confirmed: fix the gap, don't
-  // reopen the tail question.
-  '14:0': {startMs: 30760, endMs: 31650}, // What: was 30760-31400, +250ms — still reading as
-                                           // starting early once watched; more room again
-  '15:0': {startMs: 31650, endMs: 31650}, // 那: was 31400-31400, moved out to match
-  '15:5': {startMs: 32230, endMs: 33080}, // 世界冠军: was 32230-33280; borrowed from 骑 (15:6)
-  '15:6': {startMs: 33080, endMs: 33280}, // 骑: was 33280-33280
-  '17:1': {startMs: 35940, endMs: 36313}, // 真的: was 35940-36500, identical to 是 — split 2:1
-  '17:2': {startMs: 36313, endMs: 36500}, // 是: was 35940-36500, identical to 真的
-  '18:5': {startMs: 39630, endMs: 39780}, // 都: was 39630-39630; borrowed from 完全 (18:6)
-  '18:6': {startMs: 39780, endMs: 39940}, // 完全: was 39630-39940 — 都 borrows from this side,
-                                           // not 那儿 (18:4), which is unchanged
-  '19:12': {startMs: 43210, endMs: 43360}, // 挂: was 43210-43210; borrowed from 一台 (19:13)
-  '19:13': {startMs: 43360, endMs: 43520}, // 一台: was 43210-43520 — 挂 borrows from this side,
-                                            // not 墙上 (19:11), which is unchanged
+  '0:0': {startMs: 0, endMs: 730},
+  '0:1': {startMs: 730, endMs: 930},
+  '0:2': {startMs: 930, endMs: 1240},
+  '0:3': {startMs: 1240, endMs: 1310},
+  '0:4': {startMs: 1380, endMs: 1690},
+  '0:5': {startMs: 1690, endMs: 2040},
+  '0:6': {startMs: 2040, endMs: 2110},
+  '0:7': {startMs: 2110, endMs: 2450},
+  '1:0': {startMs: 2870, endMs: 3330},
+  '1:1': {startMs: 3330, endMs: 3370},
+  '1:2': {startMs: 3370, endMs: 3570},
+  '1:3': {startMs: 3570, endMs: 3680},
+  '1:4': {startMs: 3680, endMs: 4070},
+  '1:5': {startMs: 4070, endMs: 4450},
+  '1:6': {startMs: 4820, endMs: 5060},
+  '1:7': {startMs: 5060, endMs: 5280},
+  '1:8': {startMs: 5280, endMs: 5390},
+  '1:9': {startMs: 5390, endMs: 5710},
+  '1:10': {startMs: 5710, endMs: 5820},
+  '1:11': {startMs: 5820, endMs: 6290},
+  '2:0': {startMs: 6600, endMs: 6960},
+  '2:1': {startMs: 6960, endMs: 7250},
+  '2:2': {startMs: 7250, endMs: 7310},
+  '3:0': {startMs: 7710, endMs: 7840},
+  '3:1': {startMs: 7840, endMs: 8070},
+  '3:2': {startMs: 8070, endMs: 8230},
+  '3:3': {startMs: 8230, endMs: 8490},
+  '3:4': {startMs: 8580, endMs: 8640},
+  '4:0': {startMs: 8990, endMs: 9110},
+  '4:1': {startMs: 9110, endMs: 9340},
+  '4:2': {startMs: 9340, endMs: 9420},
+  '4:3': {startMs: 9420, endMs: 9930},
+  '4:4': {startMs: 9930, endMs: 10160},
+  '4:5': {startMs: 10160, endMs: 10450},
+  '4:6': {startMs: 10450, endMs: 10590},
+  '4:7': {startMs: 10590, endMs: 10860},
+  '4:8': {startMs: 10860, endMs: 10940},
+  '4:9': {startMs: 10940, endMs: 11280},
+  '4:10': {startMs: 11280, endMs: 11400},
+  '5:0': {startMs: 11770, endMs: 11900},
+  '5:1': {startMs: 11900, endMs: 12120},
+  '5:2': {startMs: 12120, endMs: 12310},
+  '5:3': {startMs: 12310, endMs: 12590},
+  '6:0': {startMs: 13110, endMs: 13280},
+  '6:1': {startMs: 13280, endMs: 13380},
+  '6:2': {startMs: 13380, endMs: 13670},
+  '6:3': {startMs: 13670, endMs: 13850},
+  '6:4': {startMs: 13850, endMs: 14090},
+  '7:0': {startMs: 14440, endMs: 14730},
+  '7:1': {startMs: 14730, endMs: 14880},
+  '7:2': {startMs: 14910, endMs: 14990},
+  '7:3': {startMs: 14990, endMs: 15270},
+  '7:4': {startMs: 15270, endMs: 15590},
+  '7:5': {startMs: 15590, endMs: 16170},
+  '7:6': {startMs: 16170, endMs: 16450},
+  '7:7': {startMs: 16450, endMs: 16570},
+  '7:8': {startMs: 16570, endMs: 16630},
+  '7:9': {startMs: 16630, endMs: 17010},
+  '8:0': {startMs: 17490, endMs: 17590},
+  '8:1': {startMs: 17590, endMs: 18020},
+  '8:2': {startMs: 18120, endMs: 18440},
+  '8:3': {startMs: 18440, endMs: 18500},
+  '8:4': {startMs: 18500, endMs: 18580},
+  '8:5': {startMs: 18580, endMs: 18910},
+  '9:0': {startMs: 19130, endMs: 19400},
+  '9:1': {startMs: 19400, endMs: 19540},
+  '9:2': {startMs: 19540, endMs: 19930},
+  '9:3': {startMs: 19930, endMs: 20280},
+  '9:4': {startMs: 20280, endMs: 20540},
+  '9:5': {startMs: 20540, endMs: 20680},
+  '9:6': {startMs: 20680, endMs: 21190},
+  '9:7': {startMs: 21190, endMs: 21280},
+  '9:8': {startMs: 21280, endMs: 21500},
+  '10:0': {startMs: 21740, endMs: 21920},
+  '10:1': {startMs: 21920, endMs: 22350},
+  '10:2': {startMs: 22350, endMs: 22970},
+  '10:3': {startMs: 22970, endMs: 23390},
+  '11:0': {startMs: 23630, endMs: 23830},
+  '11:1': {startMs: 23830, endMs: 23890},
+  '11:2': {startMs: 23890, endMs: 24420},
+  '11:3': {startMs: 24420, endMs: 24550},
+  '11:4': {startMs: 24550, endMs: 24780},
+  '11:5': {startMs: 24780, endMs: 25050},
+  '11:6': {startMs: 25050, endMs: 25670},
+  '11:7': {startMs: 25670, endMs: 25910},
+  '12:0': {startMs: 26240, endMs: 26530},
+  '12:1': {startMs: 26530, endMs: 26840},
+  '13:0': {startMs: 27090, endMs: 27470},
+  '13:1': {startMs: 27470, endMs: 27670},
+  '13:2': {startMs: 27670, endMs: 27750},
+  '13:3': {startMs: 27750, endMs: 27860},
+  '13:4': {startMs: 27860, endMs: 28320},
+  '13:5': {startMs: 28320, endMs: 28560},
+  '13:6': {startMs: 28560, endMs: 28680},
+  '13:7': {startMs: 28750, endMs: 29010},
+  '13:8': {startMs: 29010, endMs: 29370},
+  '13:9': {startMs: 29370, endMs: 29820},
+  '13:10': {startMs: 29820, endMs: 30050},
+  '13:11': {startMs: 30050, endMs: 30320},
+  '13:12': {startMs: 30320, endMs: 30570},
+  // '14:0' (What): NOT from MFA — see the exception note above.
+  // '15:0' (那): NOT from MFA — intentionally zero-width, see INTENTIONALLY_ZERO_WIDTH below.
+  '15:1': {startMs: 31960, endMs: 32140},
+  '15:2': {startMs: 32140, endMs: 32250},
+  '15:3': {startMs: 32250, endMs: 32330},
+  '15:4': {startMs: 32330, endMs: 32660},
+  '15:5': {startMs: 32660, endMs: 33330},
+  '15:6': {startMs: 33330, endMs: 33510},
+  '15:7': {startMs: 33510, endMs: 33600},
+  '15:8': {startMs: 33600, endMs: 33980},
+  '16:0': {startMs: 34280, endMs: 34730},
+  '16:1': {startMs: 34730, endMs: 35250},
+  '17:0': {startMs: 35770, endMs: 36180},
+  '17:1': {startMs: 36180, endMs: 36470},
+  '17:2': {startMs: 36470, endMs: 36610},
+  '17:3': {startMs: 36610, endMs: 37420},
+  '17:4': {startMs: 37420, endMs: 37480},
+  '17:5': {startMs: 37480, endMs: 37920},
+  '18:0': {startMs: 38340, endMs: 38550},
+  '18:1': {startMs: 38550, endMs: 38700},
+  '18:2': {startMs: 38700, endMs: 39010},
+  '18:3': {startMs: 39260, endMs: 39400},
+  '18:4': {startMs: 39400, endMs: 39650},
+  '18:5': {startMs: 39650, endMs: 39710},
+  '18:6': {startMs: 39710, endMs: 40070},
+  '18:7': {startMs: 40070, endMs: 40210},
+  '18:8': {startMs: 40250, endMs: 40400},
+  '18:9': {startMs: 40400, endMs: 40480},
+  '18:10': {startMs: 40620, endMs: 40960},
+  '19:0': {startMs: 41240, endMs: 41360},
+  '19:1': {startMs: 41360, endMs: 41540},
+  '19:2': {startMs: 41540, endMs: 41730},
+  '19:3': {startMs: 41730, endMs: 41830},
+  '19:4': {startMs: 41830, endMs: 42180},
+  '19:5': {startMs: 42180, endMs: 42430},
+  '19:6': {startMs: 42430, endMs: 42490},
+  '19:7': {startMs: 42490, endMs: 42580},
+  '19:8': {startMs: 42580, endMs: 42630},
+  '19:9': {startMs: 42630, endMs: 42710},
+  '19:10': {startMs: 42710, endMs: 42990},
+  '19:11': {startMs: 42990, endMs: 43350},
+  '19:12': {startMs: 43350, endMs: 43510},
+  '19:13': {startMs: 43510, endMs: 43750},
+  '19:14': {startMs: 43800, endMs: 44020},
+  '19:15': {startMs: 44020, endMs: 44220},
+  // Hand-tuned, kept as-is (see the exception note above):
+  '14:0': {startMs: 30760, endMs: 31650}, // What: audio-only MFA measures ~180ms; this is tuned
+                                           // against the meme cutaway on screen, not the audio
+  '15:0': {startMs: 31650, endMs: 31650}, // 那: deliberate card-boundary marker, not a measurement
 };
 
 const durationSec = Math.max(...words.map((s) => s.toMs)) / 1000;
