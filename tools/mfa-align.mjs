@@ -24,9 +24,11 @@
 // you already have against the audio; it does not transcribe. Once a script exists (by hand or
 // via tools/transcribe.mjs + a read-through), this tool replaces group-words.mjs for timing.
 //
-// PREREQUISITES, one-time setup — see infra:agents.d/modules/layout.md's image-store escape hatch
-// for why a SECOND docker/containerd pair, not the box's real one, on a disk-constrained shared
-// box (skip the scratch pair and use the box's real docker if it has room):
+// PREREQUISITES, one-time setup — on a disk-constrained shared box, the DirtBikeX infra repo's own
+// storage-layout doc explains why this should run against a SECOND docker/containerd pair rather
+// than the box's real one (search that repo's docs for "image store" if you need the reasoning;
+// a repo cloned alone cannot resolve a cross-repo path, so it isn't named as one here). Skip the
+// scratch pair and use the box's real docker directly if it already has room:
 //   docker [--host <MFA_DOCKER_HOST>] pull mmcauliffe/montreal-forced-aligner
 //   docker [--host <MFA_DOCKER_HOST>] run --rm -v <MFA_HOME>:/mfa \
 //     mmcauliffe/montreal-forced-aligner bash -c \
