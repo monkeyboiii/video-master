@@ -6,6 +6,7 @@ import { REPO_ROOT, RE, RELATIONS, loadTree, listSeasons } from '../lib.mjs';
 import { checkTree } from './check.mjs';
 import * as props from './props.mjs';
 import { selftest } from './selftest.mjs';
+import { verifyRender } from './verify-render.mjs';
 
 const [verb, ...rest] = process.argv.slice(2);
 const flag = (name) => rest.includes(`--${name}`);
@@ -29,6 +30,9 @@ const USAGE = `vm — the series tree
   vm props promote NAME [--apply]
   vm props demote  NAME [--apply]
   vm selftest                    run vm against fixture trees
+  vm verify-render COMP PROPS.json [--tolerance-ms N] [--keep]
+                                  render for real; check the FILE against what the pipeline
+                                  computed (duration, resolution) — slow, not part of \`check\`
 
 Relations: ${RELATIONS.join(' | ')}`;
 
@@ -253,5 +257,15 @@ switch (verb) {
   case 'season': cmdSeason(); break;
   case 'new': cmdNew(); break;
   case 'selftest': process.exit(selftest() ? 0 : 1); break;
+  case 'verify-render': {
+    const [comp, propsPath] = pos;
+    if (!comp || !propsPath) {
+      console.error('usage: vm verify-render COMP PROPS.json [--tolerance-ms N] [--keep]');
+      process.exit(2);
+    }
+    const toleranceMs = val('tolerance-ms') ? Number(val('tolerance-ms')) : undefined;
+    process.exit(verifyRender(comp, propsPath, { toleranceMs, keep: flag('keep') }) ? 0 : 1);
+    break;
+  }
   default: console.log(USAGE); process.exit(verb ? 2 : 0);
 }
