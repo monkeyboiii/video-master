@@ -64,13 +64,24 @@ import {
  * for a since-removed 150ms/200ms pair): whatever `MIN_HOLD_FRAMES` is set to, the worst case is
  * it collapses into a full hold, never into a gap with nothing on screen.
  *
- * `HOLD_GAP_MS` is a provisional default (200ms), picked against this system's own observed gaps
- * (ordinary pauses ran 70-132ms; the gap that first read as an abrupt vanish was 250ms) rather
- * than shown to the operator against real per-episode numbers first — flagged as adjustable, not
- * measured. `MIN_HOLD_FRAMES` (5, ~167ms at 30fps) is the same kind of placeholder, picked to be
- * "a few frames" rather than measured against every trailing-audio case in the estate.
+ * `HOLD_GAP_MS` was raised from 200ms to 600ms on S03E005, 2026-09-23, after a measurement — not
+ * a feel — showed 200ms was picked against the WRONG data. whisper.cpp's interpolated timing
+ * (superseded by MFA, see "A word is whatever a row is" in captions.md) chained sentences with a
+ * 0ms gap at 16 of 19 transitions — an artefact of the old interpolation, not a real silence — so
+ * every transition held in full under the 200ms rule almost by accident. MFA measures the REAL
+ * acoustic pause between sentences, and on this episode every one of the 19 within-narration gaps
+ * came back 190-520ms — genuinely non-zero, and past 200ms for all but one of them. Compared
+ * side by side against the whisper-token render (identical code, older data), the 200ms threshold
+ * now read as worse than the old always-hold behaviour it replaced: it dismissed the line into a
+ * visible blank for nearly every ordinary sentence-to-sentence breath, not just the rare long
+ * silence the rule exists for. 600ms sits with headroom above the measured 520ms max, so every
+ * observed within-narration pause on this episode holds in full — while staying an order of
+ * magnitude below the multi-second cross-BEAT gap the original no-hold rule was protecting
+ * against, so that artefact does not come back either. Still a per-episode measurement standing
+ * in for a global default, same as 200ms was — re-measure against a differently-paced episode
+ * before trusting this number there.
  */
-const HOLD_GAP_MS = 200;
+const HOLD_GAP_MS = 600;
 const MIN_HOLD_FRAMES = 5;
 export const spokenSubtitleTrackSchema = z.object({
   locale: localeSchema,

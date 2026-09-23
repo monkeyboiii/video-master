@@ -98,7 +98,8 @@ If a line still overflows it is a single word wider than the frame — shorten t
 twitch, and a sentence that shrank enough to fit is one nobody reads.
 
 A line holds briefly past its last highlight, then clears — **in full** (up to the next line's own
-start) when the gap to it is under `HOLD_GAP_MS` (200ms), or for a small **floor**
+start) when the gap to it is under `HOLD_GAP_MS` (600ms, measured per-episode — re-measure before
+trusting it on a differently-paced one), or for a small **floor**
 (`MIN_HOLD_FRAMES`, ~167ms) otherwise, never a moment longer: a hard cut on the exact frame a
 word's measured end reads as cut off mid-breath, and a tail that sits past a genuinely long silence
 reads as forgotten rather than ended — the floor exists for the first, the cap for the second. The

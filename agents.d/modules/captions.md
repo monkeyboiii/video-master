@@ -432,10 +432,10 @@ unwarranted tail (S03E005, 2026-09-15 — see that episode's `build-captions.mjs
 
 **The rule now, in priority order** (`SpokenSubtitleTrack.tsx`):
 1. The line tracks its own speech — `fromMs` and the last word's `endMs` are never invented.
-2. Past the last highlight, a gap under `HOLD_GAP_MS` (currently 200ms) holds IN FULL — the line
-   stays up until the NEXT line's own start, so it never delays the incoming line (a hold that
-   pushed the next line's appearance later would just move the artefact, not remove it) and never
-   leaves a blank frame either.
+2. Past the last highlight, a gap under `HOLD_GAP_MS` (600ms as of S03E005, 2026-09-23 — see
+   below) holds IN FULL — the line stays up until the NEXT line's own start, so it never delays
+   the incoming line (a hold that pushed the next line's appearance later would just move the
+   artefact, not remove it) and never leaves a blank frame either.
 3. A gap at or over `HOLD_GAP_MS` still holds a small FLOOR, `MIN_HOLD_FRAMES` (5 frames, ~167ms
    at 30fps) — it does not clear on the exact frame the last highlight does. Found on S03E005
    (花样精实透 → 但如果我告诉你, 2026-09-16): the last word's measured `endMs` is where the
@@ -456,11 +456,21 @@ The end is still capped at the next line's start regardless (point 2), so two li
 however tight the timings get — that part of the original verification (frame 626 lit, frame 628
 transparent, nothing on screen not doing something) still holds for every over-threshold transition.
 
-`HOLD_GAP_MS` is provisional: picked against S03E005's own observed gaps (ordinary pauses ran
-70-132ms; the gap that first read as an abrupt vanish was 250ms), not shown to the operator against
-real per-episode numbers first. Treat it as a starting point to correct, not a
-measured constant. `MIN_HOLD_FRAMES` is the same kind of placeholder — "a few frames," not measured
-against every trailing-audio case in the estate.
+`HOLD_GAP_MS` was 200ms, picked against pre-MFA observed gaps (ordinary pauses ran 70-132ms; the
+gap that first read as an abrupt vanish was 250ms) — and that calibration turned out to be against
+the wrong DATA, not just an untested number. whisper.cpp's interpolated timing (superseded by MFA,
+§ "A word is whatever a row is") chained 16 of S03E005's 19 sentence transitions at a literal 0ms
+gap — an artefact of the old interpolation filling a gap it had no real anchor for, not a measured
+silence. MFA measures the real acoustic pause instead, and every one of those 19 within-narration
+gaps came back non-zero: 190-520ms. Under 200ms, that meant nearly every ordinary sentence
+boundary in the episode now dismissed into a visible blank rather than holding — worse than the
+always-hold behaviour it replaced, confirmed by rendering the whisper-token timing and the MFA
+timing through the SAME code side by side. Raised to 600ms, with headroom above the measured
+520ms max, so every observed within-narration pause on this episode holds in full, while staying
+well short of the multi-second cross-BEAT gap the original no-hold rule (two sections up) was
+protecting against. Still per-episode, not a global constant proven across the estate — measure
+before trusting either number on a differently-paced episode. `MIN_HOLD_FRAMES` is the same kind
+of placeholder — "a few frames," not measured against every trailing-audio case in the estate.
 
 ### Captions are a variant-level track, not a beat overlay
 
