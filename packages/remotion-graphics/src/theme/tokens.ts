@@ -93,7 +93,10 @@ export const scrim = (alpha = 0.85): string => `rgba(22, 20, 15, ${alpha})`;
  *   #231F28  band       the unlit rule
  *   #3F4560  hatch      the slanted dashes across it
  *   #162840  stroke     the text outline that keeps captions legible over any footage
- *   #CEE7F3  text       ALL caption text, spoken or not, in both locales
+ *   #FFFFFF  text       ALL caption text, spoken or not, in both locales — pure white.
+ *                       Was the supplied #CEE7F3, which the operator read as beige on S05E003; the
+ *                       file carried it faithfully, so it was the colour, not the render. Off-white
+ *                       #F5F5F5 was tried next, then this
  *
  * `litSoft` and `textSpent` are held from the supplied palette but nothing consumes them: text
  * tracks one colour now, in both locales, and only an important word departs from it. They are a
@@ -110,6 +113,6 @@ export const spoken = {
   band: '#231F28',
   hatch: '#3F4560',
   stroke: '#162840',
-  text: '#CEE7F3',
+  text: '#FFFFFF',
   textSpent: '#92B7E1',
 } as const;

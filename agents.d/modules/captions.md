@@ -316,7 +316,7 @@ Palette supplied by the operator; roles assigned in `theme/tokens.ts` § `spoken
 | `#231F28` band | the unlit rule |
 | `#3F4560` hatch | its stripes |
 | `#162840` stroke | the text outline |
-| `#CEE7F3` text | all caption text, in both locales |
+| `#FFFFFF` text | all caption text, in both locales — pure white, the operator's call on S05E003 (the supplied `#CEE7F3` read as beige though the render carried it faithfully; off-white `#F5F5F5` was tried first) |
 | `#CFEF17` lit | *also* the text of a word marked `*`, while spoken |
 | `#D3EE94` litSoft, `#92B7E1` textSpent | unused — see above |
 
