@@ -13,14 +13,19 @@ auto-editor take48.wav --edit audio:-35dB --margin 0.08s,0.09s --export v3 -o cu
 "$PY" "$HERE/lines_cut.py"
 ffmpeg -y -v error -i bgm-hth.mp3 -t 100 -af aresample=48000:resampler=soxr -c:a pcm_f32le bgm100.wav
 "$PY" "$HERE/bgm-grid.py" bgm100.wav
-# anchors: the hook after the first chord rings out (beat 3 of bar 0); 第一步 after the riff's last hit
-# (7.5-7.9s), so the full-volume riff does not mask the header; 骑电驴 on the beat after the drum
-# entry; the CTA on the chorus downbeat
+# anchors, on the bed's clock: 第一步 after the riff's long last hit (7.5-7.9s), so the full-volume riff
+# does not mask the header; 骑电驴 on the beat after the drum entry; the CTA on the chorus downbeat.
+# Line 0's place is unused: the hook is three phrases (hook_phrases.py, placed by voice_track.py).
 "$PY" "$HERE/place.py" '{"0":1.489,"1":7.92,"2":9.315,"16":50.534}'
+HF_HOME="${DBX_TTS_DIR:-$HOME/.cache/dbx-tts}/hf" "$PY" "$HERE/hook_phrases.py"
+for i in 0 1 2; do ffmpeg -y -v error -i hook$i-24k.wav -af aresample=48000:resampler=soxr -c:a pcm_f32le hook$i.wav; done
 "$PY" "$HERE/voice_track.py"
-VI=$(ffmpeg -i voice.wav -af loudnorm=print_format=json -f null - 2>&1 | grep '"input_i"' | grep -oE -- '-?[0-9.]+')
-BI=$(ffmpeg -i bgm100.wav -af atrim=0:56,loudnorm=print_format=json -f null - 2>&1 | grep '"input_i"' | grep -oE -- '-?[0-9.]+')
-"$PY" "$HERE/levels.py" "$(python3 -c "print(round($VI-($BI),2))")"
+# the intro riff at the voice's loudness: v1's measurement (voice -24.83, music 0-56s -12.51 LUFS), the level
+# the operator approved; re-deriving it from each version's voice would move it with every edit to the hook
+"$PY" "$HERE/levels.py" -12.32
+# the pop: Freesound 202230 "Pop sound" by deraj, CC0 (https://freesound.org/s/202230/), its HQ preview
+curl -sS -o sfx-pop.mp3 https://cdn.freesound.org/previews/202/202230_3725006-hq.mp3
+echo "f710da77f4fcafb1dafb16b677b108469ee4127f03198738c3c0d3f39608aec7  sfx-pop.mp3" | sha256sum -c --quiet
 "$PY" "$HERE/mix-bed.py"
 I=$(ffmpeg -i pre.wav -af loudnorm=print_format=json -f null - 2>&1 | grep '"input_i"' | grep -oE -- '-?[0-9.]+')
 G=$(python3 -c "print(round(-14-($I),2))")    # static gain + limiter, never dynamic loudnorm
