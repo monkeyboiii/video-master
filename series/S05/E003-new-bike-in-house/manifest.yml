@@ -1,0 +1,41 @@
+# Episode manifest — source of truth for this episode.
+# Naming: agents.d/modules/naming-conventions.md · validate: tools/vm check
+
+video_id: "S05E003"
+slug: "new-bike-in-house"
+# In practice this is past editing: the operator shot and cut it, and this repo made the audio
+# (their take + two TTS lines over TNT) and composited the zh-CN karaoke captions onto their HLG cut.
+# But every gate above packaging needs records this repo does not hold — beats, raw and selected
+# asset ids for footage that lives on the operator's Mac — so it stays here rather than claim them.
+status: packaging # topic|packaging|scripting|shooting|editing|qc|published|retro
+
+# Optional. `follows` = where this published; `parent` = the episode it ANSWERS, if any;
+# `relation` = remedy | inspired-by | followup, and needs a parent. Write it with `tools/vm link`.
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+variants:
+  zh-CN:
+    script: script.zh-CN.md
+    cover: null
+    subtitles: null
+    captions: remotion-props/spoken-captions.zh-CN.json
+    remotion_props: null
+    # A human take exists (the operator's S05E003-cn.m4a), but it has no asset id in this repo's
+    # media yet, so this stays null rather than inventing one.
+    voiceover_asset_id: null
+    platforms: [rednote, douyin, bilibili]
+beats: []
+assets:
+  raw: []
+  selected: []
+  voiceover: []
+  audio: []
+outputs:
+  overlays: {}
+  exports: {}
+  published: {}

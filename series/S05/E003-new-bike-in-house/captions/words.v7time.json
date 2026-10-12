@@ -1,0 +1,568 @@
+[
+  {
+    "words": [
+      {
+        "text": "这就是",
+        "startMs": 510,
+        "endMs": 870
+      },
+      {
+        "text": "四九年",
+        "startMs": 870,
+        "endMs": 1390
+      },
+      {
+        "text": "入",
+        "startMs": 1390,
+        "endMs": 1530
+      },
+      {
+        "text": "国军",
+        "startMs": 1530,
+        "endMs": 1810
+      },
+      {
+        "text": "吗",
+        "startMs": 1810,
+        "endMs": 1930
+      }
+    ],
+    "fromMs": 510,
+    "toMs": 1930
+  },
+  {
+    "words": [
+      {
+        "text": "二六年",
+        "startMs": 2130,
+        "endMs": 2630
+      },
+      {
+        "text": "还在",
+        "startMs": 2630,
+        "endMs": 2870
+      },
+      {
+        "text": "坚守",
+        "startMs": 2870,
+        "endMs": 3340
+      },
+      {
+        "text": "内燃机",
+        "startMs": 3340,
+        "endMs": 3850
+      },
+      {
+        "text": "的",
+        "startMs": 3850,
+        "endMs": 3930
+      },
+      {
+        "text": "博主",
+        "startMs": 3930,
+        "endMs": 4360
+      }
+    ],
+    "fromMs": 2130,
+    "toMs": 4360
+  },
+  {
+    "words": [
+      {
+        "text": "还有谁",
+        "startMs": 4390,
+        "endMs": 5020
+      }
+    ],
+    "fromMs": 4390,
+    "toMs": 5020
+  },
+  {
+    "words": [
+      {
+        "text": "我",
+        "startMs": 5940,
+        "endMs": 6100
+      },
+      {
+        "text": "入手",
+        "startMs": 6100,
+        "endMs": 6330
+      },
+      {
+        "text": "了",
+        "startMs": 6330,
+        "endMs": 6410
+      },
+      {
+        "text": "一台",
+        "startMs": 6410,
+        "endMs": 6730
+      },
+      {
+        "text": "场地",
+        "startMs": 6730,
+        "endMs": 7140
+      },
+      {
+        "text": "越野摩托",
+        "startMs": 7140,
+        "endMs": 7680
+      }
+    ],
+    "fromMs": 5940,
+    "toMs": 7680
+  },
+  {
+    "words": [
+      {
+        "text": "居然",
+        "startMs": 8430,
+        "endMs": 8650
+      },
+      {
+        "text": "还是",
+        "startMs": 8650,
+        "endMs": 8860
+      },
+      {
+        "text": "脚踩",
+        "startMs": 8860,
+        "endMs": 9310
+      },
+      {
+        "text": "点火",
+        "startMs": 9310,
+        "endMs": 9670
+      },
+      {
+        "text": "的",
+        "startMs": 9670,
+        "endMs": 9810
+      }
+    ],
+    "fromMs": 8430,
+    "toMs": 9810
+  },
+  {
+    "words": [
+      {
+        "text": "感觉",
+        "startMs": 9880,
+        "endMs": 10160
+      },
+      {
+        "text": "回到",
+        "startMs": 10160,
+        "endMs": 10430
+      },
+      {
+        "text": "了",
+        "startMs": 10430,
+        "endMs": 10500
+      },
+      {
+        "text": "石器时代",
+        "startMs": 10500,
+        "endMs": 11420
+      }
+    ],
+    "fromMs": 9880,
+    "toMs": 11420
+  },
+  {
+    "words": [
+      {
+        "text": "不过",
+        "startMs": 11520,
+        "endMs": 11850
+      },
+      {
+        "text": "还得是",
+        "startMs": 11850,
+        "endMs": 12390
+      },
+      {
+        "text": "这个",
+        "startMs": 12390,
+        "endMs": 12570
+      },
+      {
+        "text": "声音",
+        "startMs": 12570,
+        "endMs": 12930
+      },
+      {
+        "text": "啊",
+        "startMs": 12930,
+        "endMs": 13090
+      }
+    ],
+    "fromMs": 11520,
+    "toMs": 13090
+  },
+  {
+    "words": [
+      {
+        "text": "话",
+        "startMs": 13130,
+        "endMs": 13280
+      },
+      {
+        "text": "接",
+        "startMs": 13280,
+        "endMs": 13420
+      },
+      {
+        "text": "上一集",
+        "startMs": 13420,
+        "endMs": 14060
+      }
+    ],
+    "fromMs": 13130,
+    "toMs": 14060
+  },
+  {
+    "words": [
+      {
+        "text": "自从",
+        "startMs": 14120,
+        "endMs": 14500
+      },
+      {
+        "text": "从",
+        "startMs": 14500,
+        "endMs": 14630
+      },
+      {
+        "text": "上海",
+        "startMs": 14630,
+        "endMs": 14870
+      },
+      {
+        "text": "赛",
+        "startMs": 14870,
+        "endMs": 15050
+      },
+      {
+        "text": "回来",
+        "startMs": 15050,
+        "endMs": 15310
+      },
+      {
+        "text": "之后",
+        "startMs": 15310,
+        "endMs": 15620
+      }
+    ],
+    "fromMs": 14120,
+    "toMs": 15620
+  },
+  {
+    "words": [
+      {
+        "text": "她",
+        "startMs": 15620,
+        "endMs": 15790
+      },
+      {
+        "text": "同意",
+        "startMs": 15790,
+        "endMs": 15990
+      },
+      {
+        "text": "我",
+        "startMs": 15990,
+        "endMs": 16110
+      },
+      {
+        "text": "在",
+        "startMs": 16110,
+        "endMs": 16220
+      },
+      {
+        "text": "家里",
+        "startMs": 16220,
+        "endMs": 16450
+      },
+      {
+        "text": "放",
+        "startMs": 16450,
+        "endMs": 16750
+      },
+      {
+        "text": "一台",
+        "startMs": 16750,
+        "endMs": 16990
+      },
+      {
+        "text": "了",
+        "startMs": 16990,
+        "endMs": 17120
+      }
+    ],
+    "fromMs": 15620,
+    "toMs": 17120
+  },
+  {
+    "words": [
+      {
+        "text": "刚好",
+        "startMs": 17210,
+        "endMs": 17720
+      },
+      {
+        "text": "这块",
+        "startMs": 17760,
+        "endMs": 17980
+      },
+      {
+        "text": "空着",
+        "startMs": 17980,
+        "endMs": 18380
+      }
+    ],
+    "fromMs": 17210,
+    "toMs": 18380
+  },
+  {
+    "words": [
+      {
+        "text": "那",
+        "startMs": 18480,
+        "endMs": 18600
+      },
+      {
+        "text": "我",
+        "startMs": 18600,
+        "endMs": 18680
+      },
+      {
+        "text": "得",
+        "startMs": 18680,
+        "endMs": 18790
+      },
+      {
+        "text": "想办法",
+        "startMs": 18790,
+        "endMs": 19240
+      },
+      {
+        "text": "把",
+        "startMs": 19240,
+        "endMs": 19360
+      },
+      {
+        "text": "她",
+        "startMs": 19360,
+        "endMs": 19480
+      },
+      {
+        "text": "弄上来",
+        "startMs": 19480,
+        "endMs": 20050
+      }
+    ],
+    "fromMs": 18480,
+    "toMs": 20050
+  },
+  {
+    "words": [
+      {
+        "text": "这",
+        "startMs": 20140,
+        "endMs": 20290
+      },
+      {
+        "text": "一台",
+        "startMs": 20290,
+        "endMs": 20530
+      },
+      {
+        "text": "车",
+        "startMs": 20530,
+        "endMs": 20770
+      },
+      {
+        "text": "得",
+        "startMs": 20770,
+        "endMs": 20880
+      },
+      {
+        "text": "有",
+        "startMs": 20880,
+        "endMs": 21010
+      },
+      {
+        "text": "两百斤",
+        "startMs": 21010,
+        "endMs": 21780
+      }
+    ],
+    "fromMs": 20140,
+    "toMs": 21780
+  },
+  {
+    "words": [
+      {
+        "text": "长",
+        "startMs": 21890,
+        "endMs": 22170
+      },
+      {
+        "text": "两米一",
+        "startMs": 22170,
+        "endMs": 22650
+      }
+    ],
+    "fromMs": 21890,
+    "toMs": 22650
+  },
+  {
+    "words": [
+      {
+        "text": "在",
+        "startMs": 22740,
+        "endMs": 22870
+      },
+      {
+        "text": "他",
+        "startMs": 22870,
+        "endMs": 22990
+      },
+      {
+        "text": "边上",
+        "startMs": 22990,
+        "endMs": 23370
+      },
+      {
+        "text": "我",
+        "startMs": 23370,
+        "endMs": 23440
+      },
+      {
+        "text": "就是",
+        "startMs": 23440,
+        "endMs": 23700
+      },
+      {
+        "text": "个",
+        "startMs": 23700,
+        "endMs": 23760
+      },
+      {
+        "text": "新兵蛋子",
+        "startMs": 23760,
+        "endMs": 24620
+      }
+    ],
+    "fromMs": 22740,
+    "toMs": 24620
+  },
+  {
+    "words": [
+      {
+        "text": "首先",
+        "startMs": 24650,
+        "endMs": 25010
+      },
+      {
+        "text": "先",
+        "startMs": 25010,
+        "endMs": 25130
+      },
+      {
+        "text": "放到",
+        "startMs": 25130,
+        "endMs": 25310
+      },
+      {
+        "text": "空档",
+        "startMs": 25310,
+        "endMs": 25780
+      }
+    ],
+    "fromMs": 24650,
+    "toMs": 25780
+  },
+  {
+    "words": [
+      {
+        "text": "推进",
+        "startMs": 25890,
+        "endMs": 26230
+      },
+      {
+        "text": "走廊",
+        "startMs": 26230,
+        "endMs": 26640
+      }
+    ],
+    "fromMs": 25890,
+    "toMs": 26640
+  },
+  {
+    "words": [
+      {
+        "text": "摆正",
+        "startMs": 26750,
+        "endMs": 27110
+      },
+      {
+        "text": "机位",
+        "startMs": 27110,
+        "endMs": 27600
+      }
+    ],
+    "fromMs": 26750,
+    "toMs": 27600
+  },
+  {
+    "words": [
+      {
+        "text": "然后",
+        "startMs": 27690,
+        "endMs": 27930
+      },
+      {
+        "text": "上架",
+        "startMs": 27930,
+        "endMs": 28400
+      }
+    ],
+    "fromMs": 27690,
+    "toMs": 28400
+  },
+  {
+    "words": [
+      {
+        "text": "voila",
+        "startMs": 28530,
+        "endMs": 29240
+      }
+    ],
+    "fromMs": 28530,
+    "toMs": 29240
+  },
+  {
+    "words": [
+      {
+        "text": "你",
+        "startMs": 30410,
+        "endMs": 30540
+      },
+      {
+        "text": "想",
+        "startMs": 30540,
+        "endMs": 30740
+      },
+      {
+        "text": "干嘛",
+        "startMs": 30740,
+        "endMs": 31227
+      }
+    ],
+    "fromMs": 30410,
+    "toMs": 31227
+  }
+]

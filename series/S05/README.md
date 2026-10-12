@@ -23,6 +23,7 @@ claim; `remedy` survives where it was always the more precise statement, as E001
 |---|---|---|---|
 | E001 | `barber-shop-dirt-bike` | The Tonglu barber from S03E003 as a portrait: close to a million yuan spent building the track, and at 53 he rides it better than the narrator. zh-CN. | `topic` |
 | E002 | `mxgp-shanghai-this-weekend` | Pre-MXGP propaganda: the world championship lands in Shanghai and the narrator, mid-challenge, tells you to go. zh-CN. | `topic` |
+| E003 | `new-bike-in-house` | Back from the Shanghai round with a race bike for the flat: kick-start, "Stone Age", and getting 200 jin of it into the hallway. zh-CN, the operator's take over TNT. | `packaging` |
 
 ## Lineage
 

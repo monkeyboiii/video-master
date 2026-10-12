@@ -1,0 +1,1 @@
+highpass=f=80:poles=2,lowshelf=f=150:g=-3,equalizer=f=1600:width_type=o:width=1.2:g=-2,highshelf=f=3500:g=5
