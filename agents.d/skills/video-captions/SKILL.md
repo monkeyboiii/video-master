@@ -93,6 +93,13 @@ A sentence wider than `captionRoom(width)` (= `width - SAFE_ZONE.left - SAFE_ZON
 1080) is **split by the track**, at the word boundary that leaves the two halves closest to equal
 width, recursing until each part fits. Never wraps, never shrinks.
 
+**That split is blind to meaning** — the rows carry no punctuation, so it cuts mid-clause as often
+as not (…踩住脚踏让 | 脚踝…). For zh, make the cuts yourself where the punctuation still is: split a
+too-wide sentence into blocks at the script's commas, whole clauses packed onto a line while they
+fit, so no block is wide enough for the track to cut. Measure against the composition's real size
+(`burst-captions-zh` sets `fontSize: 72`: 12 glyphs in 790px), not the default. See `captions.md`
+§ "One line at one size".
+
 If a line still overflows it is a single word wider than the frame — shorten the word or lower
 `fontSize` for that composition. Do not reintroduce `fitText`: a per-sentence size makes the frame
 twitch, and a sentence that shrank enough to fit is one nobody reads.

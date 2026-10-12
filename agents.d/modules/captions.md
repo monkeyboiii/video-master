@@ -338,6 +338,17 @@ Balanced rather than greedy: a greedy fill leaves a full line followed by a two-
 which reads as an accident. Only a single word wider than the frame is left overflowing; there is
 nothing left to cut, and a silently dropped caption is worse than one that overhangs.
 
+**But the width split does not know meaning.** It cuts where the widths balance, and in zh that
+lands mid-clause as often as not: S07E001 v8 showed 但越野的时候得用前脚掌踩住脚踏让 with 脚踝 on the
+next line, and the operator read every such cut as broken. The rows carry no punctuation, so the
+track cannot see a comma; the cut has to be made where the punctuation still is — the episode's
+props builder, which splits a too-wide sentence into blocks at the script's own commas so no block
+needs the track's split (`series/S07/E001-riding-stance/captions/build_props.py`). There, whole
+clauses are packed onto a line while they fit. Greedy is right at that grain where it is wrong at
+the word's: the remainder is a whole clause, not two stray words, and filling the earlier line keeps
+a run of instructions together (手肘抬高向外打开保持微弯). A clause wider than a line by itself is
+cut by hand. No space marks the dropped comma — under `band` a space draws the rule under nothing.
+
 **Not done:** no wrapping to two lines. Half a sentence above the other half makes the eye travel
 back, and in short form it eats the frame.
 

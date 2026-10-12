@@ -1,7 +1,8 @@
 # Edit notes — S07E001
 
 What this repo did, measured. `audio/render.sh` is the whole audio run; the JSONs in `audio/` are
-that run's recorded decisions. Inputs and outputs are gitignored (media/S07E001/). This is v8.
+that run's recorded decisions. Inputs and outputs are gitignored (media/S07E001/). This is v10: v8's audio,
+re-cut captions.
 
 ## Voice
 
@@ -79,13 +80,24 @@ the attack and stays ahead for ~180 ms.
 zh word timing is **MFA** on the delivered voice stem (`captions/script.mfa.txt`, spoken forms —
 三个 shows as 3个), the hook as three sentences so each phrase is its own caption line. The English lines
 are OOV placeholders there; their words come from Kokoro's own token timestamps, mapped through the cut.
-MFA's sentence edges sit 7-69 ms ahead of the energy-measured onsets (45-65 ms on the hook's phrases); 髋 is OOV and its word got a
-plausible 260 ms. English words carry a no-break space, because the zh layout has no word gap and an ordinary
-trailing space collapses. Text is pure white #FFFFFF.
+MFA's sentence edges sit 7-69 ms ahead of the energy-measured onsets (45-65 ms on the hook's phrases); 髋 is
+OOV and its word got a plausible 260 ms. Text is pure white #FFFFFF.
 
-- **The callout 99%的人都不知道** is on screen, not spoken: the operator's "let viewers read the 99% not knowing
-  this", worded here. One lit row from the pop (7.04s) to 第一步 (9.38s), so the band and text light together
-  for its 2.3s. It is the line to change or drop if the edit carries its own text card.
+- **Cut at the script's commas** (`captions/build_props.py`), never by the track. Its width split cuts where the
+  halves balance, and v8 showed …踩住脚踏让 | 脚踝… and more like it. Each too-wide sentence is now blocks of whole
+  clauses, packed onto a line while they fit 12 glyphs (790px at `burst-captions-zh`'s 72 × 0.88). One clause
+  is wider than a line by itself and is cut by hand after 手指 (用一两根手指 | 随时准备操作前刹和离合).
+- **English one word at a time.** zh lays words out with no gap. v3 kept the English spaces with a no-break space
+  after each word; v8's rewrite of the builder turned it into a plain space, which collapses, and the asides
+  rendered as Good,lookingfantastic!. Per-word blocks need no space at all. The cost: in "Nice, we are on the
+  right track!" are and the hold for ~80 ms each (2-3 frames), as fast as Kokoro says them.
+- **♪ in the riff's run before 第一步** — the operator's: music playing, nothing said. From 200 ms after
+  变成越野摩托车手 ends (6.33s) to 第一步 (9.38s). The band lights under it as under any word.
+- **The callout 99%的人都不知道** is not a caption: plain text mid-frame, "instagram style, not karaoke"
+  (`captions/callout.py`) — white, Noto Sans SC 600 at 84px, a soft shadow, on frames 211-280 (7.03s, the
+  frame holding the pop, to the last frame before 第一步's caption). The wording is the operator's "the 99%
+  not knowing this", put into words here. It is composited onto the caption track so the edit gets one overlay;
+  the two do not overlap, so colour comes from the overlay and alpha from screen (a + b - ab).
 
 ## When the take arrives
 
@@ -101,4 +113,6 @@ v8: mix -14.51 LUFS / -1.41 dBTP, 58.30s; 0.012% of samples at the limiter. Spli
 Consonant-band clarity: 直接从小电驴骑士 31.8 dB median, 变成越野摩托车手 27.1, 第一步 28.5, none masked;
 after the drums 12.5 median, 15.3% of frames under 0. whisper reads v8's first 11s as 跟我学会这三个技巧
 直接从小电力骑士变成越野摩托车手第一步注意我们的脚 (电力/电驴 is a homophone it flips between runs).
-Captions: all 20 rows appear on their computed frame in the ProRes master (alpha-mask change per frame).
+Captions (v10): 42 blocks, each on its computed frame, and no block's horizontal extent moves while it is up —
+the track made no cut of its own. The callout is on frames 211-280 only; elsewhere the composite's alpha
+matches the track's to 1/255.
