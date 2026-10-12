@@ -13,12 +13,14 @@ auto-editor take48.wav --edit audio:-35dB --margin 0.08s,0.09s --export v3 -o cu
 "$PY" "$HERE/lines_cut.py"
 ffmpeg -y -v error -i bgm-hth.mp3 -t 100 -af aresample=48000:resampler=soxr -c:a pcm_f32le bgm100.wav
 "$PY" "$HERE/bgm-grid.py" bgm100.wav
-# anchors: 第一步 on bar 3, 骑电驴 on the drum entry, the CTA on the chorus downbeat
-"$PY" "$HERE/place.py" '{"1":6.713,"2":8.800,"16":50.534}'
+# anchors: the hook after the first chord rings out (beat 3 of bar 0), 第一步 on bar 3, 骑电驴 on
+# the drum entry, the CTA on the chorus downbeat
+"$PY" "$HERE/place.py" '{"0":1.489,"1":6.713,"2":8.800,"16":50.534}'
 "$PY" "$HERE/voice_track.py"
-"$PY" "$HERE/mix_s07.py"
+"$PY" "$HERE/flat-level.py"
+"$PY" "$HERE/mix_flat.py"
 I=$(ffmpeg -i pre.wav -af loudnorm=print_format=json -f null - 2>&1 | grep '"input_i"' | grep -oE -- '-?[0-9.]+')
 G=$(python3 -c "print(round(-14-($I),2))")    # static gain + limiter, never dynamic loudnorm
-for x in "pre.wav S07E001-mix.wav" "voice-v1.wav S07E001-voice-tts.wav"; do set -- $x
+for x in "pre.wav S07E001-mix.wav" "voice.wav S07E001-voice-tts.wav"; do set -- $x
   ffmpeg -y -v error -i "$1" -af "volume=${G}dB,alimiter=limit=0.8414:attack=5:release=50:level=0" -c:a pcm_s16le "$2"
 done
