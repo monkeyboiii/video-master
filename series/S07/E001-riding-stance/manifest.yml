@@ -1,0 +1,40 @@
+# Episode manifest — source of truth for this episode.
+# Naming: agents.d/modules/naming-conventions.md · validate: tools/vm check
+
+video_id: "S07E001"
+slug: "riding-stance"
+# The script is final and a full caption-only cut exists, timed off a TTS stand-in narration over
+# Highway To Hell. Nothing is shot and the operator's own take is still to come. scripting would
+# need beats, which the take will re-time anyway, so it stays at packaging until the take exists.
+status: packaging # topic|packaging|scripting|shooting|editing|qc|published|retro
+
+# Optional. `follows` = where this published; `parent` = the episode it ANSWERS, if any;
+# `relation` = remedy | inspired-by | followup, and needs a parent. Write it with `tools/vm link`.
+
+formats:
+  primary: short_vertical
+  aspect: 9x16
+  resolution: 1080x1920
+  fps: 30
+
+variants:
+  zh-CN:
+    script: script.zh-CN.md
+    cover: null
+    subtitles: null
+    captions: remotion-props/spoken-captions.zh-CN.json
+    remotion_props: null
+    # No human take yet: the rows above are timed off the Kokoro stand-in (zm_yunxi + am_michael).
+    # The operator's take replaces it and re-times every row (edit-notes.md § When the take arrives).
+    voiceover_asset_id: null
+    platforms: [rednote, douyin, bilibili]
+beats: []
+assets:
+  raw: []
+  selected: []
+  voiceover: []
+  audio: []
+outputs:
+  overlays: {}
+  exports: {}
+  published: {}
