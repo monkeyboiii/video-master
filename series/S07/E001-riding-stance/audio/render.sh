@@ -13,12 +13,15 @@ auto-editor take48.wav --edit audio:-35dB --margin 0.08s,0.09s --export v3 -o cu
 "$PY" "$HERE/lines_cut.py"
 ffmpeg -y -v error -i bgm-hth.mp3 -t 100 -af aresample=48000:resampler=soxr -c:a pcm_f32le bgm100.wav
 "$PY" "$HERE/bgm-grid.py" bgm100.wav
-# anchors: the hook after the first chord rings out (beat 3 of bar 0), 第一步 on bar 3, 骑电驴 on
-# the drum entry, the CTA on the chorus downbeat
-"$PY" "$HERE/place.py" '{"0":1.489,"1":6.713,"2":8.800,"16":50.534}'
+# anchors: the hook after the first chord rings out (beat 3 of bar 0); 第一步 after the riff's last hit
+# (7.5-7.9s), so the full-volume riff does not mask the header; 骑电驴 on the beat after the drum
+# entry; the CTA on the chorus downbeat
+"$PY" "$HERE/place.py" '{"0":1.489,"1":7.92,"2":9.315,"16":50.534}'
 "$PY" "$HERE/voice_track.py"
-"$PY" "$HERE/flat-level.py"
-"$PY" "$HERE/mix_flat.py"
+VI=$(ffmpeg -i voice.wav -af loudnorm=print_format=json -f null - 2>&1 | grep '"input_i"' | grep -oE -- '-?[0-9.]+')
+BI=$(ffmpeg -i bgm100.wav -af atrim=0:56,loudnorm=print_format=json -f null - 2>&1 | grep '"input_i"' | grep -oE -- '-?[0-9.]+')
+"$PY" "$HERE/levels.py" "$(python3 -c "print(round($VI-($BI),2))")"
+"$PY" "$HERE/mix-bed.py"
 I=$(ffmpeg -i pre.wav -af loudnorm=print_format=json -f null - 2>&1 | grep '"input_i"' | grep -oE -- '-?[0-9.]+')
 G=$(python3 -c "print(round(-14-($I),2))")    # static gain + limiter, never dynamic loudnorm
 for x in "pre.wav S07E001-mix.wav" "voice.wav S07E001-voice-tts.wav"; do set -- $x

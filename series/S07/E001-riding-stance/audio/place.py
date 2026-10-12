@@ -15,8 +15,9 @@ for l in L:
     elif i in HEAD:
         on=bars[bars>=prev_end+0.35][0]
         if on-prev_end>1.3: on=halves[halves>=prev_end+0.35][0]
+        if on-prev_end>0.9: on=beats[beats>=prev_end+0.35][0]   # v3: still on a beat, just not a strong one
     elif i in EN: on=beats[beats>=prev_end+0.25][0]
-    elif i==15 and '16' in ANCHOR: on=beats[beats+(b-a)<=ANCHOR['16']-0.30][-1]
+    elif i==15 and '16' in ANCHOR: on=beats[beats+(b-a)<=ANCHOR['16']-0.25][-1]
     elif i==15: on=beats[beats>=prev_end+0.5][0]
     else: on=prev_end+GAP
     plan.append({"i":i,"on":round(float(on),3),"off":round(float(on+b-a),3),"place":round(float(on-a),4),"file":l['file'],"text":l['text'],
