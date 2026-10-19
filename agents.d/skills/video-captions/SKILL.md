@@ -22,6 +22,7 @@ One word per row. Sentences separated by a **blank line**.
 ```
 text|startMs|endMs        ← ordinary word
 text|startMs|endMs|*      ← important: this one lights its TEXT too
+>other language           ← optional: the sentence's secondary line, drawn under it
 ```
 
 That is exactly the `Caption[]` shape `tools/transcribe.mjs` writes, so a real transcription pastes

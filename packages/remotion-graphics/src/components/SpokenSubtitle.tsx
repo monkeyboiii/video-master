@@ -96,6 +96,8 @@ export const spokenSubtitleSchema = z.object({
   fontSize: z.number().optional(),
   /** Defaults per locale: en `plain`, zh `band` (and zh clamps to `band`). */
   captionStyle: captionStyleSchema.optional(),
+  /** The other language, under the line at a smaller size, whole from frame 0; nothing in it lights. */
+  secondary: z.string().optional(),
 });
 
 export type SpokenSubtitleProps = z.infer<typeof spokenSubtitleSchema>;
@@ -159,6 +161,7 @@ export const SpokenSubtitle: React.FC<SpokenSubtitleProps> = ({
   words,
   fontSize,
   captionStyle,
+  secondary,
 }) => {
   const frame = useCurrentFrame();
   const {width, height} = useVideoConfig();
@@ -248,6 +251,24 @@ export const SpokenSubtitle: React.FC<SpokenSubtitleProps> = ({
           );
         })}
       </div>
+      {secondary ? (
+        // the line rises by this one's height, so both stay above the safe zone's bottom
+        <div
+          style={{
+            whiteSpace: 'nowrap',
+            fontFamily: bodyFont(karaoke ? 'en-US' : 'zh-CN'),
+            fontWeight: 700,
+            fontSize: size * 0.62,
+            lineHeight: 1.18,
+            marginTop: size * 0.1,
+            color: spoken.text,
+            WebkitTextStroke: `${Math.max(2, size * 0.62 * 0.045)}px ${spoken.stroke}`,
+            paintOrder: 'stroke fill',
+          }}
+        >
+          {secondary}
+        </div>
+      ) : null}
     </AbsoluteFill>
   );
 };

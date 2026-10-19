@@ -427,6 +427,19 @@ valid, so one script feeds both styles.
 **Not done:** no third style, and no per-word style. The two exist because they answer two
 different questions about the footage underneath, not as a palette.
 
+### A line said in the other language: its translation lights, the original sits under it
+
+A zh take with English asides in it (S07E001's "Good! Looking fantastic!", 2026-10-12) is captioned
+the operator's way: the zh translation is the line, lit word by word while the English words each
+zh word renders are said, and the English sentence sits under it as a **secondary line**: a `>` row
+in the sentence's block. It is drawn smaller (0.62 of the line's size), in the other locale's face,
+whole from the first frame, and nothing in it lights. Two lit lines would split the eye. The
+English is there to be recognised, not read along.
+
+The line rises by the secondary's height rather than letting the secondary hang below it: the space
+under the line is `SAFE_ZONE.bottom`, which the platform's own text covers. One translation block
+per English sentence, not per aside: packed into one zh line, 很好 + 看起来 reads as 很好看.
+
 ### A line holds briefly past its last highlight — in full on a narrow gap, a few frames on a wide one
 
 Two wrong answers first, both from before this rule existed. The line originally held until the

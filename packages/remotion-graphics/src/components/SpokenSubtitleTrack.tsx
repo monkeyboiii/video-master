@@ -85,7 +85,10 @@ const HOLD_GAP_MS = 600;
 const MIN_HOLD_FRAMES = 5;
 export const spokenSubtitleTrackSchema = z.object({
   locale: localeSchema,
-  /** Sentences separated by a blank line; `text|startMs|endMs[|*]` per word within each. */
+  /**
+   * Sentences separated by a blank line; `text|startMs|endMs[|*]` per word within each. A row
+   * starting `>` is that sentence's secondary line: the other language, drawn under it.
+   */
   script: zTextarea(),
   durationSec: z.number(),
   fontSize: z.number().optional(),
@@ -95,12 +98,17 @@ export const spokenSubtitleTrackSchema = z.object({
 
 export type SpokenSubtitleTrackProps = z.infer<typeof spokenSubtitleTrackSchema>;
 
-const parseBlocks = (script: string): Word[][] =>
+type Block = {ws: Word[]; secondary?: string};
+
+const parseBlocks = (script: string): Block[] =>
   script
     .split(/\n\s*\n/)
-    .map((b) => parseWords(b))
-    .filter((ws) => ws.length > 0)
-    .sort((x, y) => x[0].startMs - y[0].startMs);
+    .map((b) => ({
+      ws: parseWords(b.split('\n').filter((l) => !l.trim().startsWith('>')).join('\n')),
+      secondary: b.split('\n').find((l) => l.trim().startsWith('>'))?.trim().slice(1).trim(),
+    }))
+    .filter((b) => b.ws.length > 0)
+    .sort((x, y) => x.ws[0].startMs - y.ws[0].startMs);
 
 /**
  * Split one sentence into parts that each fit `room`, cutting where the two sides come out most
@@ -161,12 +169,15 @@ export const SpokenSubtitleTrack: React.FC<SpokenSubtitleTrackProps> = ({
           }).width,
         0,
       ) + gap * Math.max(0, ws.length - 1);
-    return parseBlocks(script).flatMap((b) => splitToFit(b, lineWidth, room));
+    // a cut sentence carries its secondary line under every part
+    return parseBlocks(script).flatMap((b) =>
+      splitToFit(b.ws, lineWidth, room).map((ws) => ({ws, secondary: b.secondary})),
+    );
   }, [script, family, size, gap, room]);
 
   return (
     <AbsoluteFill>
-      {parts.map((ws, i) => {
+      {parts.map(({ws, secondary}, i) => {
         const fromMs = ws[0].startMs;
         const from = Math.round((fromMs / 1000) * FPS);
         const ownEndMs = ws[ws.length - 1].endMs;
@@ -180,7 +191,7 @@ export const SpokenSubtitleTrack: React.FC<SpokenSubtitleTrackProps> = ({
         // genuinely-under-threshold gap (e.g. a real 199ms gap) across the line. `until` itself
         // still lands on a real frame (nextFrom, already rounded) — only the classification
         // avoids the double rounding.
-        const nextStartMs = next ? next[0].startMs : ownEndMs;
+        const nextStartMs = next ? next.ws[0].startMs : ownEndMs;
         const nextFrom = Math.round((nextStartMs / 1000) * FPS);
         const gapMs = nextStartMs - ownEndMs;
         const holdsInFull = gapMs > 0 && gapMs < HOLD_GAP_MS;
@@ -201,6 +212,7 @@ export const SpokenSubtitleTrack: React.FC<SpokenSubtitleTrackProps> = ({
               durationSec={Math.max(1, until - from) / FPS}
               fontSize={fontSize}
               captionStyle={captionStyle}
+              secondary={secondary}
             />
           </Sequence>
         );
