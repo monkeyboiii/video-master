@@ -9,11 +9,11 @@
       {
         "text": "学会",
         "startMs": 310,
-        "endMs": 720
+        "endMs": 750
       },
       {
         "text": "这",
-        "startMs": 720,
+        "startMs": 780,
         "endMs": 930
       },
       {
@@ -76,746 +76,757 @@
     "words": [
       {
         "text": "第一步",
-        "startMs": 9380,
-        "endMs": 9850
+        "startMs": 9400,
+        "endMs": 10100
       },
       {
         "text": "注意",
-        "startMs": 9850,
-        "endMs": 10110
+        "startMs": 10150,
+        "endMs": 10400
       },
       {
         "text": "我们",
-        "startMs": 10110,
-        "endMs": 10320
+        "startMs": 10400,
+        "endMs": 10670
       },
       {
         "text": "的",
-        "startMs": 10320,
-        "endMs": 10380
+        "startMs": 10670,
+        "endMs": 10760
       },
       {
         "text": "脚",
-        "startMs": 10380,
-        "endMs": 10570
+        "startMs": 10760,
+        "endMs": 11300
       }
     ],
-    "fromMs": 9380,
-    "toMs": 10570
+    "fromMs": 9400,
+    "toMs": 11300
   },
   {
     "words": [
       {
         "text": "骑",
-        "startMs": 10800,
-        "endMs": 10980
+        "startMs": 11430,
+        "endMs": 11570
       },
       {
         "text": "电驴",
-        "startMs": 10980,
-        "endMs": 11220
+        "startMs": 11570,
+        "endMs": 11920
       },
       {
         "text": "的",
-        "startMs": 11220,
-        "endMs": 11320
-      },
-      {
-        "text": "时候",
-        "startMs": 11320,
-        "endMs": 11830
-      },
-      {
-        "text": "你",
-        "startMs": 11860,
+        "startMs": 11920,
         "endMs": 12010
       },
       {
-        "text": "可以",
+        "text": "时候",
         "startMs": 12010,
-        "endMs": 12210
+        "endMs": 12500
+      },
+      {
+        "text": "你",
+        "startMs": 12530,
+        "endMs": 12680
+      },
+      {
+        "text": "可以",
+        "startMs": 12680,
+        "endMs": 12900
       },
       {
         "text": "怎么",
-        "startMs": 12210,
-        "endMs": 12470
+        "startMs": 12900,
+        "endMs": 13160
       },
       {
         "text": "舒服",
-        "startMs": 12470,
-        "endMs": 12830
+        "startMs": 13160,
+        "endMs": 13450
       },
       {
         "text": "怎么",
-        "startMs": 12830,
-        "endMs": 13010
+        "startMs": 13450,
+        "endMs": 13640
       },
       {
         "text": "放",
-        "startMs": 13010,
-        "endMs": 13180
+        "startMs": 13640,
+        "endMs": 14040
       }
     ],
-    "fromMs": 10800,
-    "toMs": 13180
+    "fromMs": 11430,
+    "toMs": 14040
   },
   {
     "words": [
       {
         "text": "但",
-        "startMs": 13400,
-        "endMs": 13570
+        "startMs": 14120,
+        "endMs": 14290
       },
       {
         "text": "越野",
-        "startMs": 13570,
-        "endMs": 13790
+        "startMs": 14290,
+        "endMs": 14550
       },
       {
         "text": "的",
-        "startMs": 13790,
-        "endMs": 13880
+        "startMs": 14550,
+        "endMs": 14640
       },
       {
         "text": "时候",
-        "startMs": 13880,
-        "endMs": 14390
+        "startMs": 14640,
+        "endMs": 15100
       },
       {
         "text": "得",
-        "startMs": 14480,
-        "endMs": 14570
+        "startMs": 15150,
+        "endMs": 15260
       },
       {
-        "text": "用",
-        "startMs": 14570,
-        "endMs": 14710
-      },
-      {
-        "text": "前脚掌",
-        "startMs": 14710,
-        "endMs": 15210
-      },
-      {
-        "text": "踩住",
-        "startMs": 15210,
+        "text": "使用",
+        "startMs": 15260,
         "endMs": 15520
       },
       {
-        "text": "脚踏",
+        "text": "前脚掌",
         "startMs": 15520,
-        "endMs": 15970
+        "endMs": 16120
+      },
+      {
+        "text": "踩住",
+        "startMs": 16120,
+        "endMs": 16410
+      },
+      {
+        "text": "脚踏",
+        "startMs": 16410,
+        "endMs": 16980
       },
       {
         "text": "让",
-        "startMs": 16030,
-        "endMs": 16210
+        "startMs": 17010,
+        "endMs": 17190
       },
       {
         "text": "脚踝",
-        "startMs": 16210,
-        "endMs": 16490
+        "startMs": 17190,
+        "endMs": 17520
       },
       {
         "text": "能够",
-        "startMs": 16490,
-        "endMs": 16750
+        "startMs": 17520,
+        "endMs": 17720
       },
       {
         "text": "上下",
-        "startMs": 16750,
-        "endMs": 17040
+        "startMs": 17720,
+        "endMs": 18100
       },
       {
         "text": "活动",
-        "startMs": 17040,
-        "endMs": 17480
-      },
-      {
-        "text": "配合",
-        "startMs": 17560,
-        "endMs": 17870
-      },
-      {
-        "text": "膝盖",
-        "startMs": 17870,
-        "endMs": 18240
-      },
-      {
-        "text": "吸收",
-        "startMs": 18240,
+        "startMs": 18100,
         "endMs": 18570
       },
       {
+        "text": "配合",
+        "startMs": 18610,
+        "endMs": 18850
+      },
+      {
+        "text": "膝盖",
+        "startMs": 18850,
+        "endMs": 19250
+      },
+      {
+        "text": "吸收",
+        "startMs": 19250,
+        "endMs": 19510
+      },
+      {
         "text": "颠簸",
-        "startMs": 18570,
-        "endMs": 18840
+        "startMs": 19510,
+        "endMs": 20110
       }
     ],
-    "fromMs": 13400,
-    "toMs": 18840
+    "fromMs": 14120,
+    "toMs": 20110
   },
   {
     "words": [
       {
         "text": "脚尖",
-        "startMs": 18980,
-        "endMs": 19290
+        "startMs": 20260,
+        "endMs": 20660
       },
       {
         "text": "微微",
-        "startMs": 19290,
-        "endMs": 19520
+        "startMs": 20660,
+        "endMs": 20890
       },
       {
         "text": "内扣",
-        "startMs": 19520,
-        "endMs": 19970
+        "startMs": 20890,
+        "endMs": 21470
       },
       {
         "text": "膝盖",
-        "startMs": 20010,
-        "endMs": 20350
+        "startMs": 21500,
+        "endMs": 21920
       },
       {
-        "text": "轻夹",
-        "startMs": 20350,
-        "endMs": 20630
+        "text": "夹紧",
+        "startMs": 21920,
+        "endMs": 22210
       },
       {
         "text": "车身",
-        "startMs": 20630,
-        "endMs": 21110
+        "startMs": 22210,
+        "endMs": 22790
       },
       {
         "text": "靠",
-        "startMs": 21210,
-        "endMs": 21380
+        "startMs": 22890,
+        "endMs": 23070
       },
       {
         "text": "腿",
-        "startMs": 21380,
-        "endMs": 21540
+        "startMs": 23070,
+        "endMs": 23450
       },
       {
         "text": "稳住",
-        "startMs": 21540,
-        "endMs": 21820
+        "startMs": 23450,
+        "endMs": 23780
       },
       {
-        "text": "车",
-        "startMs": 21820,
-        "endMs": 22120
+        "text": "车身",
+        "startMs": 23780,
+        "endMs": 24400
       },
       {
         "text": "而",
-        "startMs": 22240,
-        "endMs": 22350
+        "startMs": 24430,
+        "endMs": 24600
       },
       {
         "text": "不是",
-        "startMs": 22350,
-        "endMs": 22600
+        "startMs": 24600,
+        "endMs": 24760
       },
       {
         "text": "靠",
-        "startMs": 22600,
-        "endMs": 22780
+        "startMs": 24760,
+        "endMs": 24930
       },
       {
         "text": "手",
-        "startMs": 22780,
-        "endMs": 22930
+        "startMs": 24930,
+        "endMs": 25220
       },
       {
         "text": "死拽",
-        "startMs": 22930,
-        "endMs": 23220
+        "startMs": 25220,
+        "endMs": 25610
       },
       {
         "text": "车把",
-        "startMs": 23220,
-        "endMs": 23500
+        "startMs": 25610,
+        "endMs": 26020
       }
     ],
-    "fromMs": 18980,
-    "toMs": 23500
+    "fromMs": 20260,
+    "toMs": 26020
   },
   {
     "words": [
       {
         "text": "goodlookingfantastic",
-        "startMs": 23830,
-        "endMs": 24940
+        "startMs": 26460,
+        "endMs": 28120
       }
     ],
-    "fromMs": 23830,
-    "toMs": 24940
+    "fromMs": 26460,
+    "toMs": 28120
   },
   {
     "words": [
       {
         "text": "第二步",
-        "startMs": 25390,
-        "endMs": 25810
+        "startMs": 28540,
+        "endMs": 29080
       },
       {
         "text": "手部",
-        "startMs": 25810,
-        "endMs": 26120
+        "startMs": 29160,
+        "endMs": 29630
       },
       {
         "text": "姿势",
-        "startMs": 26120,
-        "endMs": 26440
+        "startMs": 29630,
+        "endMs": 30220
       }
     ],
-    "fromMs": 25390,
-    "toMs": 26440
+    "fromMs": 28540,
+    "toMs": 30220
   },
   {
     "words": [
       {
         "text": "用",
-        "startMs": 26690,
-        "endMs": 26850
+        "startMs": 30390,
+        "endMs": 30620
       },
       {
         "text": "一两根",
-        "startMs": 26850,
-        "endMs": 27180
+        "startMs": 30620,
+        "endMs": 30940
       },
       {
         "text": "手指",
-        "startMs": 27180,
-        "endMs": 27670
+        "startMs": 30940,
+        "endMs": 31370
       },
       {
         "text": "随时",
-        "startMs": 27720,
-        "endMs": 28080
+        "startMs": 31370,
+        "endMs": 31780
       },
       {
         "text": "准备",
-        "startMs": 28080,
-        "endMs": 28370
+        "startMs": 31780,
+        "endMs": 32150
       },
       {
         "text": "操作",
-        "startMs": 28370,
-        "endMs": 28670
+        "startMs": 32150,
+        "endMs": 32440
       },
       {
         "text": "前刹",
-        "startMs": 28670,
-        "endMs": 29090
+        "startMs": 32440,
+        "endMs": 32840
       },
       {
         "text": "和",
-        "startMs": 29120,
-        "endMs": 29270
+        "startMs": 32840,
+        "endMs": 32900
       },
       {
         "text": "离合",
-        "startMs": 29270,
-        "endMs": 29700
+        "startMs": 32900,
+        "endMs": 33430
       },
       {
         "text": "其余",
-        "startMs": 29780,
-        "endMs": 30040
+        "startMs": 33480,
+        "endMs": 33750
       },
       {
         "text": "手指",
-        "startMs": 30040,
-        "endMs": 30420
+        "startMs": 33750,
+        "endMs": 34120
       },
       {
-        "text": "握稳",
-        "startMs": 30420,
-        "endMs": 30670
+        "text": "握紧",
+        "startMs": 34120,
+        "endMs": 34510
       },
       {
         "text": "车把",
-        "startMs": 30670,
-        "endMs": 30950
+        "startMs": 34510,
+        "endMs": 34940
       }
     ],
-    "fromMs": 26690,
-    "toMs": 30950
+    "fromMs": 30390,
+    "toMs": 34940
   },
   {
     "words": [
       {
         "text": "手肘",
-        "startMs": 31180,
-        "endMs": 31490
+        "startMs": 35010,
+        "endMs": 35380
       },
       {
         "text": "抬高",
-        "startMs": 31490,
-        "endMs": 31920
+        "startMs": 35380,
+        "endMs": 35990
       },
       {
         "text": "向外",
-        "startMs": 31920,
-        "endMs": 32260
+        "startMs": 36020,
+        "endMs": 36430
       },
       {
         "text": "打开",
-        "startMs": 32260,
-        "endMs": 32710
+        "startMs": 36430,
+        "endMs": 37030
       },
       {
         "text": "保持",
-        "startMs": 32780,
-        "endMs": 33060
+        "startMs": 37090,
+        "endMs": 37410
       },
       {
         "text": "微弯",
-        "startMs": 33060,
-        "endMs": 33420
+        "startMs": 37410,
+        "endMs": 37990
       },
       {
         "text": "这样",
-        "startMs": 33530,
-        "endMs": 33840
+        "startMs": 38060,
+        "endMs": 38490
       },
       {
         "text": "遇到",
-        "startMs": 33840,
-        "endMs": 34080
+        "startMs": 38490,
+        "endMs": 38680
       },
       {
         "text": "颠簸",
-        "startMs": 34080,
-        "endMs": 34360
+        "startMs": 38680,
+        "endMs": 39010
       },
       {
-        "text": "时",
-        "startMs": 34360,
-        "endMs": 34670
+        "text": "的",
+        "startMs": 39010,
+        "endMs": 39070
+      },
+      {
+        "text": "时候",
+        "startMs": 39070,
+        "endMs": 39570
       },
       {
         "text": "手臂",
-        "startMs": 34720,
-        "endMs": 35150
+        "startMs": 39600,
+        "endMs": 40040
       },
       {
         "text": "就",
-        "startMs": 35150,
-        "endMs": 35280
+        "startMs": 40040,
+        "endMs": 40150
       },
       {
         "text": "有",
-        "startMs": 35280,
-        "endMs": 35410
+        "startMs": 40150,
+        "endMs": 40280
       },
       {
         "text": "空间",
-        "startMs": 35410,
-        "endMs": 35760
+        "startMs": 40280,
+        "endMs": 40750
       },
       {
         "text": "跟着",
-        "startMs": 35760,
-        "endMs": 36050
+        "startMs": 40750,
+        "endMs": 40950
       },
       {
         "text": "车头",
-        "startMs": 36050,
-        "endMs": 36340
+        "startMs": 40950,
+        "endMs": 41400
       },
       {
         "text": "活动",
-        "startMs": 36340,
-        "endMs": 36650
+        "startMs": 41400,
+        "endMs": 41890
       }
     ],
-    "fromMs": 31180,
-    "toMs": 36650
+    "fromMs": 35010,
+    "toMs": 41890
   },
   {
     "words": [
       {
         "text": "niceontherighttrack",
-        "startMs": 36890,
-        "endMs": 38250
+        "startMs": 42110,
+        "endMs": 42430
       }
     ],
-    "fromMs": 36890,
-    "toMs": 38250
+    "fromMs": 42110,
+    "toMs": 42430
   },
   {
     "words": [
       {
         "text": "第三步",
-        "startMs": 38960,
-        "endMs": 39470
+        "startMs": 44700,
+        "endMs": 45510
       },
       {
         "text": "上半身",
-        "startMs": 39470,
-        "endMs": 40050
+        "startMs": 45540,
+        "endMs": 46420
       }
     ],
-    "fromMs": 38960,
-    "toMs": 40050
+    "fromMs": 44700,
+    "toMs": 46420
   },
   {
     "words": [
       {
         "text": "屁股",
-        "startMs": 40270,
-        "endMs": 40610
+        "startMs": 46620,
+        "endMs": 46980
       },
       {
-        "text": "稍微",
-        "startMs": 40610,
-        "endMs": 40910
+        "text": "稍稍",
+        "startMs": 46980,
+        "endMs": 47260
       },
       {
         "text": "往后",
-        "startMs": 40910,
-        "endMs": 41420
+        "startMs": 47260,
+        "endMs": 47790
       },
       {
         "text": "从",
-        "startMs": 41510,
-        "endMs": 41710
+        "startMs": 47910,
+        "endMs": 48110
       },
       {
         "text": "髋部",
-        "startMs": 41710,
-        "endMs": 41970
+        "startMs": 48110,
+        "endMs": 48520
       },
       {
         "text": "前倾",
-        "startMs": 41970,
-        "endMs": 42440
+        "startMs": 48520,
+        "endMs": 49130
       },
       {
         "text": "背部",
-        "startMs": 42580,
-        "endMs": 42840
+        "startMs": 49260,
+        "endMs": 49590
       },
       {
         "text": "保持",
-        "startMs": 42840,
-        "endMs": 43170
+        "startMs": 49590,
+        "endMs": 50020
       },
       {
         "text": "自然",
-        "startMs": 43170,
-        "endMs": 43450
+        "startMs": 50020,
+        "endMs": 50540
       }
     ],
-    "fromMs": 40270,
-    "toMs": 43450
+    "fromMs": 46620,
+    "toMs": 50540
   },
   {
     "words": [
       {
         "text": "下巴",
-        "startMs": 43610,
-        "endMs": 43970
+        "startMs": 50620,
+        "endMs": 50950
       },
       {
         "text": "大致",
-        "startMs": 43970,
-        "endMs": 44340
+        "startMs": 50950,
+        "endMs": 51250
       },
       {
         "text": "对齐",
-        "startMs": 44340,
-        "endMs": 44640
+        "startMs": 51250,
+        "endMs": 51650
       },
       {
         "text": "车把",
-        "startMs": 44640,
-        "endMs": 45100
+        "startMs": 51650,
+        "endMs": 51970
       },
       {
         "text": "眼睛",
-        "startMs": 45140,
-        "endMs": 45440
+        "startMs": 52140,
+        "endMs": 52550
       },
       {
         "text": "看向",
-        "startMs": 45440,
-        "endMs": 45760
+        "startMs": 52550,
+        "endMs": 52890
       },
       {
         "text": "前方",
-        "startMs": 45760,
-        "endMs": 46090
+        "startMs": 52890,
+        "endMs": 53330
       }
     ],
-    "fromMs": 43610,
-    "toMs": 46090
+    "fromMs": 50620,
+    "toMs": 53330
   },
   {
     "words": [
       {
         "text": "这样",
-        "startMs": 46320,
-        "endMs": 46620
+        "startMs": 53540,
+        "endMs": 53950
       },
       {
         "text": "给油",
-        "startMs": 46620,
-        "endMs": 46850
+        "startMs": 53950,
+        "endMs": 54280
       },
       {
         "text": "的",
-        "startMs": 46850,
-        "endMs": 46940
+        "startMs": 54280,
+        "endMs": 54370
       },
       {
         "text": "时候",
-        "startMs": 46940,
-        "endMs": 47440
+        "startMs": 54370,
+        "endMs": 54790
       },
       {
         "text": "身体",
-        "startMs": 47470,
-        "endMs": 47900
+        "startMs": 54990,
+        "endMs": 55400
       },
       {
         "text": "才",
-        "startMs": 47900,
-        "endMs": 48060
+        "startMs": 55400,
+        "endMs": 55550
       },
       {
         "text": "不会",
-        "startMs": 48060,
-        "endMs": 48310
+        "startMs": 55550,
+        "endMs": 55780
       },
       {
         "text": "被",
-        "startMs": 48310,
-        "endMs": 48430
+        "startMs": 55780,
+        "endMs": 55960
       },
       {
         "text": "轻易",
-        "startMs": 48430,
-        "endMs": 48750
+        "startMs": 55960,
+        "endMs": 56260
       },
       {
         "text": "往后",
-        "startMs": 48750,
-        "endMs": 49040
+        "startMs": 56260,
+        "endMs": 56590
       },
       {
         "text": "甩",
-        "startMs": 49040,
-        "endMs": 49220
+        "startMs": 56590,
+        "endMs": 56890
       }
     ],
-    "fromMs": 46320,
-    "toMs": 49220
+    "fromMs": 53540,
+    "toMs": 56890
   },
   {
     "words": [
       {
         "text": "beautiful",
-        "startMs": 49460,
-        "endMs": 50040
+        "startMs": 57230,
+        "endMs": 57860
       }
     ],
-    "fromMs": 49460,
-    "toMs": 50040
+    "fromMs": 57230,
+    "toMs": 57860
   },
   {
     "words": [
       {
         "text": "等下",
-        "startMs": 50440,
-        "endMs": 50860
+        "startMs": 58800,
+        "endMs": 59120
+      },
+      {
+        "text": "教练",
+        "startMs": 59120,
+        "endMs": 59470
       },
       {
         "text": "这",
-        "startMs": 50860,
-        "endMs": 51060
-      },
-      {
-        "text": "姿势",
-        "startMs": 51060,
-        "endMs": 51350
-      },
-      {
-        "text": "真的",
-        "startMs": 51350,
-        "endMs": 51570
+        "startMs": 59470,
+        "endMs": 59560
       },
       {
         "text": "对",
-        "startMs": 51570,
-        "endMs": 51700
+        "startMs": 59560,
+        "endMs": 59810
       },
       {
         "text": "吗",
-        "startMs": 51700,
-        "endMs": 51850
+        "startMs": 59810,
+        "endMs": 60090
       }
     ],
-    "fromMs": 50440,
-    "toMs": 51850
+    "fromMs": 58800,
+    "toMs": 60090
   },
   {
     "words": [
       {
+        "text": "没问题",
+        "startMs": 60360,
+        "endMs": 61120
+      },
+      {
         "text": "姿势",
-        "startMs": 51980,
-        "endMs": 52270
+        "startMs": 61190,
+        "endMs": 61460
       },
       {
         "text": "都",
-        "startMs": 52270,
-        "endMs": 52390
+        "startMs": 61460,
+        "endMs": 61610
       },
       {
         "text": "学会",
-        "startMs": 52390,
-        "endMs": 52650
+        "startMs": 61610,
+        "endMs": 61980
       },
       {
         "text": "了",
-        "startMs": 52650,
-        "endMs": 52890
-      },
+        "startMs": 61980,
+        "endMs": 62240
+      }
+    ],
+    "fromMs": 60360,
+    "toMs": 62240
+  },
+  {
+    "words": [
       {
         "text": "关注",
-        "startMs": 52940,
-        "endMs": 53230
+        "startMs": 62320,
+        "endMs": 62710
       },
       {
         "text": "我",
-        "startMs": 53230,
-        "endMs": 53410
+        "startMs": 62710,
+        "endMs": 62870
       },
       {
         "text": "下一集",
-        "startMs": 53410,
-        "endMs": 53920
+        "startMs": 62870,
+        "endMs": 63370
       },
       {
         "text": "咱们",
-        "startMs": 53920,
-        "endMs": 54180
+        "startMs": 63370,
+        "endMs": 63570
       },
       {
         "text": "学",
-        "startMs": 54180,
-        "endMs": 54330
+        "startMs": 63570,
+        "endMs": 63740
       },
       {
         "text": "翘头",
-        "startMs": 54330,
-        "endMs": 54690
+        "startMs": 63740,
+        "endMs": 64280
       }
     ],
-    "fromMs": 51980,
-    "toMs": 54690
+    "fromMs": 62320,
+    "toMs": 64280
   }
 ]

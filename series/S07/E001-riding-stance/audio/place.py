@@ -2,9 +2,9 @@ import json, sys, numpy as np, soundfile as sf
 SR=48000; G=json.load(open("bgm-grid.json")); L=json.load(open("lines-cut.json"))
 beat=G["beat"]; ph=G["phase"]; bar=4*beat
 beats=ph+beat*np.arange(0,200); bars=ph+bar*np.arange(0,50); halves=ph+2*beat*np.arange(0,100)
-def sb(f):  # speech bounds inside a line file (-35dB, 10ms)
+def sb(f):  # speech bounds inside a line file (-40dB, the take's cut threshold; 10ms)
     y,_=sf.read(f,dtype="float32"); w=480; r=20*np.log10(np.sqrt((y[:len(y)//w*w].reshape(-1,w)**2).mean(1))+1e-12)
-    on=np.where(r>-35)[0]; return on[0]*0.01,(on[-1]+1)*0.01
+    on=np.where(r>-40)[0]; return on[0]*0.01,(on[-1]+1)*0.01
 ANCHOR=json.loads(sys.argv[1]) if len(sys.argv)>1 else {}
 GAP=0.30; HEAD={1,6,10}; EN={5,9,14}
 plan=[]; prev_end=None

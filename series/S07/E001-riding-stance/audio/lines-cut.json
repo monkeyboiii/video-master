@@ -1,105 +1,93 @@
 [
  {
-  "i": 0,
-  "loc": "zh",
-  "text": "跟我学会这三个技巧，直接从小电驴骑士变成越野摩托车手！",
-  "start": 0.5,
-  "dur": 4.23,
-  "words": null,
-  "file": "line00.wav",
-  "len": 4.3,
-  "pieces": 2,
-  "words_local": null
- },
- {
   "i": 1,
   "loc": "zh",
   "text": "第一步，注意我们的脚！",
-  "start": 5.73,
-  "dur": 1.17,
+  "start": 0.89,
+  "dur": 2.02,
   "words": null,
   "file": "line01.wav",
-  "len": 1.3,
-  "pieces": 1,
+  "len": 1.9333,
+  "pieces": 2,
   "words_local": null
  },
  {
   "i": 2,
   "loc": "zh",
   "text": "骑电驴的时候，你可以怎么舒服怎么放。",
-  "start": 7.6,
-  "dur": 2.43,
+  "start": 3.87,
+  "dur": 2.55,
   "words": null,
   "file": "line02.wav",
-  "len": 2.5,
-  "pieces": 2,
+  "len": 2.6667,
+  "pieces": 1,
   "words_local": null
  },
  {
   "i": 3,
   "loc": "zh",
-  "text": "但越野的时候，得用前脚掌踩住脚踏，让脚踝能够上下活动，配合膝盖吸收颠簸。",
-  "start": 10.73,
-  "dur": 5.61,
+  "text": "但越野的时候，得使用前脚掌踩住脚踏，让脚踝能够上下活动，配合膝盖吸收颠簸。",
+  "start": 7.01,
+  "dur": 7.31,
   "words": null,
   "file": "line03.wav",
-  "len": 5.5333,
-  "pieces": 3,
+  "len": 6.0667,
+  "pieces": 4,
   "words_local": null
  },
  {
   "i": 4,
   "loc": "zh",
-  "text": "脚尖微微内扣，膝盖轻夹车身，靠腿稳住车，而不是靠手死拽车把！",
-  "start": 17.04,
-  "dur": 4.51,
+  "text": "脚尖微微内扣，膝盖夹紧车身，靠腿稳住车身，而不是靠手死拽车把！",
+  "start": 15.37,
+  "dur": 9.0,
   "words": null,
   "file": "line04.wav",
-  "len": 4.6333,
-  "pieces": 1,
+  "len": 5.8333,
+  "pieces": 4,
   "words_local": null
  },
  {
   "i": 5,
   "loc": "en",
-  "text": "Good, looking fantastic!",
-  "start": 22.25,
-  "dur": 1.26,
+  "text": "Good! Looking fantastic!",
+  "start": 25.7,
+  "dur": 1.74,
   "words": [
    [
-    "Good",
-    -0.010000000000000009,
-    0.19000000000000006
+    "Good!",
+    0.05,
+    0.33
    ],
    [
-    "looking ",
-    0.24,
-    0.5650000000000001
+    "Looking",
+    0.53,
+    0.9
    ],
    [
-    "fantastic",
-    0.5650000000000001,
-    1.5899999999999999
+    "fantastic!",
+    0.91,
+    1.65
    ]
   ],
   "file": "line05.wav",
-  "len": 1.3667,
+  "len": 1.8633,
   "pieces": 1,
   "words_local": [
    [
-    "Good",
-    0.04,
-    0.24
+    "Good!",
+    0.0833,
+    0.3633
    ],
    [
-    "looking ",
-    0.29,
-    0.615
+    "Looking",
+    0.5633,
+    0.9333
    ],
    [
-    "fantastic",
-    0.615,
-    1.3667
+    "fantastic!",
+    0.9433,
+    1.6833
    ]
   ]
  },
@@ -107,119 +95,119 @@
   "i": 6,
   "loc": "zh",
   "text": "第二步，手部姿势！",
-  "start": 24.51,
-  "dur": 1.03,
+  "start": 29.33,
+  "dur": 1.72,
   "words": null,
   "file": "line06.wav",
-  "len": 1.1667,
+  "len": 1.8,
   "pieces": 1,
   "words_local": null
  },
  {
   "i": 7,
   "loc": "zh",
-  "text": "用一两根手指随时准备操作前刹和离合，其余手指握稳车把。",
-  "start": 26.24,
-  "dur": 4.26,
+  "text": "用一两根手指随时准备操作前刹和离合，其余手指握紧车把。",
+  "start": 32.82,
+  "dur": 5.77,
   "words": null,
   "file": "line07.wav",
-  "len": 4.3,
-  "pieces": 1,
+  "len": 4.6333,
+  "pieces": 2,
   "words_local": null
  },
  {
   "i": 8,
   "loc": "zh",
-  "text": "手肘抬高、向外打开，保持微弯，这样遇到颠簸时，手臂就有空间跟着车头活动！",
-  "start": 31.2,
-  "dur": 5.52,
+  "text": "手肘抬高、向外打开，保持微弯，这样遇到颠簸的时候，手臂就有空间跟着车头活动！",
+  "start": 39.86,
+  "dur": 10.63,
   "words": null,
   "file": "line08.wav",
-  "len": 5.6,
-  "pieces": 2,
+  "len": 6.93,
+  "pieces": 5,
   "words_local": null
  },
  {
   "i": 9,
   "loc": "en",
-  "text": "Nice, we are on the right track!",
-  "start": 37.42,
-  "dur": 1.37,
+  "text": "Nice! We are on the right track!",
+  "start": 51.87,
+  "dur": 2.64,
   "words": [
    [
-    "Nice",
-    0.0050000000000000044,
-    0.32999999999999996
+    "Nice!",
+    0.05,
+    0.51
    ],
    [
-    "we ",
-    0.36750000000000005,
-    0.505
+    "We",
+    1.54,
+    1.63
    ],
    [
-    "are ",
-    0.505,
-    0.5925
+    "are",
+    1.63,
+    1.72
    ],
    [
-    "on ",
-    0.5925,
-    0.7174999999999999
+    "on",
+    1.73,
+    1.94
    ],
    [
-    "the ",
-    0.7174999999999999,
-    0.805
+    "the",
+    1.94,
+    2.01
    ],
    [
-    "right ",
-    0.805,
-    1.08
+    "right",
+    2.01,
+    2.21
    ],
    [
-    "track",
-    1.08,
-    1.73
+    "track!",
+    2.22,
+    2.55
    ]
   ],
   "file": "line09.wav",
-  "len": 1.5,
-  "pieces": 1,
+  "len": 1.9333,
+  "pieces": 2,
   "words_local": [
    [
-    "Nice",
-    0.0583,
-    0.3833
+    "Nice!",
+    0.0867,
+    0.5467
    ],
    [
-    "we ",
-    0.4208,
-    0.5583
+    "We",
+    0.81,
+    0.9
    ],
    [
-    "are ",
-    0.5583,
-    0.6458
+    "are",
+    0.9,
+    0.99
    ],
    [
-    "on ",
-    0.6458,
-    0.7708
+    "on",
+    1.0,
+    1.21
    ],
    [
-    "the ",
-    0.7708,
-    0.8583
+    "the",
+    1.21,
+    1.28
    ],
    [
-    "right ",
-    0.8583,
-    1.1333
+    "right",
+    1.28,
+    1.48
    ],
    [
-    "track",
-    1.1333,
-    1.5
+    "track!",
+    1.49,
+    1.82
    ]
   ]
  },
@@ -227,35 +215,35 @@
   "i": 10,
   "loc": "zh",
   "text": "第三步，上半身！",
-  "start": 39.79,
-  "dur": 1.07,
+  "start": 56.09,
+  "dur": 1.74,
   "words": null,
   "file": "line10.wav",
-  "len": 1.2333,
+  "len": 1.8667,
   "pieces": 1,
   "words_local": null
  },
  {
   "i": 11,
   "loc": "zh",
-  "text": "屁股稍微往后，从髋部前倾，背部保持自然！",
-  "start": 41.56,
-  "dur": 3.17,
+  "text": "屁股稍稍往后，从髋部前倾，背部保持自然！",
+  "start": 60.53,
+  "dur": 4.29,
   "words": null,
   "file": "line11.wav",
-  "len": 3.3,
-  "pieces": 1,
+  "len": 4.0,
+  "pieces": 3,
   "words_local": null
  },
  {
   "i": 12,
   "loc": "zh",
   "text": "下巴大致对齐车把，眼睛看向前方。",
-  "start": 45.43,
-  "dur": 2.53,
+  "start": 66.04,
+  "dur": 2.79,
   "words": null,
   "file": "line12.wav",
-  "len": 2.6,
+  "len": 2.8167,
   "pieces": 2,
   "words_local": null
  },
@@ -263,11 +251,11 @@
   "i": 13,
   "loc": "zh",
   "text": "这样给油的时候，身体才不会被轻易往后甩！",
-  "start": 48.66,
-  "dur": 2.96,
+  "start": 70.06,
+  "dur": 3.35,
   "words": null,
   "file": "line13.wav",
-  "len": 3.0333,
+  "len": 3.4333,
   "pieces": 2,
   "words_local": null
  },
@@ -275,47 +263,59 @@
   "i": 14,
   "loc": "en",
   "text": "Beautiful!",
-  "start": 52.32,
-  "dur": 0.63,
+  "start": 74.68,
+  "dur": 0.72,
   "words": [
    [
-    "Beautiful",
-    0.019999999999999962,
-    0.7949999999999999
+    "Beautiful!",
+    0.05,
+    0.62
    ]
   ],
   "file": "line14.wav",
-  "len": 0.7333,
+  "len": 0.8333,
   "pieces": 1,
   "words_local": [
    [
-    "Beautiful",
-    0.0733,
-    0.7333
+    "Beautiful!",
+    0.0967,
+    0.6667
    ]
   ]
  },
  {
   "i": 15,
   "loc": "zh",
-  "text": "等下，这姿势真的对吗？",
-  "start": 53.65,
-  "dur": 1.4,
+  "text": "等下教练这对吗？",
+  "start": 76.99,
+  "dur": 1.37,
   "words": null,
   "file": "line15.wav",
-  "len": 1.5,
+  "len": 1.4667,
   "pieces": 1,
   "words_local": null
  },
  {
   "i": 16,
   "loc": "zh",
-  "text": "姿势都学会了，关注我，下一集咱们学翘头！",
-  "start": 55.75,
-  "dur": 2.69,
+  "text": "没问题！姿势都学会了。",
+  "start": 80.1,
+  "dur": 2.08,
   "words": null,
   "file": "line16.wav",
-  "len": 2.8,
+  "len": 1.9667,
+  "pieces": 2,
+  "words_local": null
+ },
+ {
+  "i": 17,
+  "loc": "zh",
+  "text": "关注我，下一集咱们学翘头！",
+  "start": 82.36,
+  "dur": 1.9,
+  "words": null,
+  "file": "line17.wav",
+  "len": 1.9667,
   "pieces": 1,
   "words_local": null
  }

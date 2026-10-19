@@ -1,22 +1,27 @@
 #!/usr/bin/env bash
-# S07E001 audio, end to end, from a work dir (gitignored) holding the bed:
+# S07E001 audio, end to end, from a work dir (gitignored) holding the bed and the operator's take:
 #   bgm-hth.mp3   "AC DC - Highway To Hell (Instrumental).mp3"
+#   take.m4a      the operator's read of lines 1-17 ("New Recording.m4a", 2026-10-12); the hook stays TTS
 # The committed JSONs beside this script are the recorded run; this regenerates them.
 set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PY="${DBX_TTS_DIR:-$HOME/.cache/dbx-tts}/venv/bin/python"
-cp "$HERE/lines.tsv" .
-HF_HOME="${DBX_TTS_DIR:-$HOME/.cache/dbx-tts}/hf" "$PY" "$HERE/tts_take.py"              # TTS stand-in take
-ffmpeg -y -v error -i take-tts-24k.wav -af aresample=48000:resampler=soxr -c:a pcm_f32le take48.wav
-auto-editor take48.wav --edit audio:-35dB --margin 0.08s,0.09s --export v3 -o cut-35.v3 --no-open
-"$PY" "$HERE/segs-from-v3.py" cut-35.v3 segs-35.json
-"$PY" "$HERE/lines_cut.py"
+cp "$HERE/lines.tsv" "$HERE/take-lines.json" .
+echo "f7391e787bd116321183150d871a355a22bba4747af876e9d7f7161ce44c9dd3  take.m4a" | sha256sum -c --quiet
+ffmpeg -y -v error -i take.m4a -af aresample=48000:resampler=soxr -c:a pcm_f32le take48.wav
+# -40 dB: the take is -29.0 LUFS, about S05E003's phone take (-29.8, cut at -40); the stand-in, 5 dB hotter, took -35
+auto-editor take48.wav --edit audio:-40dB --margin 0.08s,0.10s --export v3 -o cut-40.v3 --no-open
+"$PY" "$HERE/segs-from-v3.py" cut-40.v3 segs-40.json
+"$PY" "$HERE/take_meta.py"
+"$PY" "$HERE/lines_cut.py" segs-40.json -40
 ffmpeg -y -v error -i bgm-hth.mp3 -t 100 -af aresample=48000:resampler=soxr -c:a pcm_f32le bgm100.wav
 "$PY" "$HERE/bgm-grid.py" bgm100.wav
-# anchors, on the bed's clock: 第一步 after the riff's long last hit (7.5-7.9s), so the full-volume riff
-# does not mask the header; 骑电驴 on the beat after the drum entry; the CTA on the chorus downbeat.
-# Line 0's place is unused: the hook is three phrases (hook_phrases.py, placed by voice_track.py).
-"$PY" "$HERE/place.py" '{"0":1.489,"1":7.92,"2":9.315,"16":50.534}'
+ffmpeg -y -v error -i bgm-hth.mp3 -t 130 -af aresample=48000:resampler=soxr -c:a pcm_f32le bgm130.wav
+"$PY" "$HERE/bed_edit.py"                       # verse 1 into verse 2: chorus 2 lifts on bar 28
+# anchors, on the (edited) bed's clock: 第一步 after the riff's long last hit (7.5-7.9s), so the full-volume riff
+# does not mask the header; 没问题 on chorus 2's lift (bar 28). The stand-in also pinned 骑电驴 to the beat after
+# the drum entry; the take's 第一步，注意我们的脚 runs past it, so 骑电驴 follows at place.py's gap.
+"$PY" "$HERE/place.py" '{"1":7.92,"16":58.88}'
 HF_HOME="${DBX_TTS_DIR:-$HOME/.cache/dbx-tts}/hf" "$PY" "$HERE/hook_phrases.py"
 for i in 0 1 2; do ffmpeg -y -v error -i hook$i-24k.wav -af aresample=48000:resampler=soxr -c:a pcm_f32le hook$i.wav; done
 "$PY" "$HERE/voice_track.py"

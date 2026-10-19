@@ -1,20 +1,27 @@
 # Edit notes — S07E001
 
 What this repo did, measured. `audio/render.sh` is the whole audio run; the JSONs in `audio/` are
-that run's recorded decisions. Inputs and outputs are gitignored (media/S07E001/). This is v10: v8's audio,
-re-cut captions.
+that run's recorded decisions. Inputs and outputs are gitignored (media/S07E001/). This is v13: v11's audio —
+the operator's take of lines 1-17 in place of the stand-in, v8's TTS hook kept, the bed edited — and its
+captions re-aligned, without the callout, two lines lifted.
 
 ## Voice
 
-- **Stand-in take.** Every line synthesised (`audio/tts_take.py`, lines in `audio/lines.tsv`):
-  Kokoro `zm_yunxi` at 1.15 for zh, `am_michael` at 1.1 for the three English lines — a voice
-  picked here, not by the operator. Four readings misaki gets wrong were fixed at the phoneme level:
-  死拽 zhuài (not zhuāi), 得用 děi (not dé), 一两根 and 下一集 yì (sandhi). 刹 shā, 翘 qiào,
-  颠簸 bǒ, 髋 kuān, 夹 jiā were checked and are right. 3个 is said as 三个.
-- **Cut.** auto-editor `--edit audio:-35dB --margin 0.08s,0.09s` — the take is -24.9 LUFS, ~5 dB hotter
-  than S05E003's -29.8 LUFS phone take cut at -40 dB, so the threshold moves with it. It removed the
-  between-line silence and trimmed seven comma pauses by 60-100 ms each. Speech above -35 dB:
-  30.63s before, 30.60s after. Pieces rebuilt with 8ms fades (`audio/lines_cut.py`).
+- **The take.** The operator's phone read of lines 1-17 (`audio/render.sh` pins it by sha256): 84.76s, AAC
+  48 kHz mono, -29.0 LUFS, the English asides in their own voice. It departs from the stand-in's script and
+  the captions follow what was said (`audio/lines.tsv`): 得使用, 稳住车身, 握紧, 颠簸的时候, 稍稍, and a new
+  ending — 等下教练这对吗？ / 没问题！姿势都学会了。 / 关注我，下一集咱们学翘头！ 膝盖夹紧车身 is
+  UNVERIFIED: whisper hears 夹顶, with low confidence; the operator has not said.
+- **Line bounds** (`audio/take-lines.json` → `audio/take_meta.py`) are the take's -40 dB energy regions, not
+  MFA's: on the raw take MFA lost its place after the Nice! placeholder and put lines 9-11 in the wrong
+  regions. The English words carry their own measured times there.
+- **Cut.** auto-editor `--edit audio:-40dB --margin 0.08s,0.10s`, the threshold S05E003's phone take at a
+  like level (-29.8 LUFS) was cut at: 35 pieces. Speech above -40 dB: 37.77s before, 37.78s after. Pieces
+  rebuilt with 8ms fades (`audio/lines_cut.py`); the stem's largest sample step is the raw take's times the
+  gain, so no splice clicks.
+- **Gain +4.09 dB** (`audio/voice_track.py`): the take's lines (-28.94 LUFS) up to the stand-in's they
+  replace (-24.85), the level the hook's gain and the intro riff's were set against. The read is ~1.7x the
+  stand-in's length: 58.30s became 68.22s.
 - **The hook is three phrases** (`audio/hook_phrases.py`), synthesised separately so each can sit in its own
   gap of the intro riff: 跟我学会这三个技巧 at the take's 1.15; 直接从小电驴骑士 at 1.22 and 变成越野摩托车手
   at 1.30 — the slowest that fit between two chords (at 1.15 they need 1.21s and 1.26s; the gaps hold
@@ -22,8 +29,8 @@ re-cut captions.
   slower Kokoro read sounds like a person talking slower, a stretched fast one sounds processed. Above 1.40
   跟 slurs into 我. Gain -1.67 dB, matched to the one-sentence hook (line00, -25.75 LUFS) when it was split.
 - **Kokoro is not bit-reproducible.** Re-running `hook_phrases.py` gives a different waveform and can move a
-  phrase's length by a frame; the placement re-derives from whatever lengths it gets. Given the delivered
-  phrases, `voice_track.py` → `mix-bed.py` → the lift reproduces both delivered files sample for sample.
+  phrase's length by a frame; the placement re-derives from whatever lengths it gets. v11 was rendered with
+  v8's delivered phrases in place of a re-synthesis, so the hook is the one the operator approved.
 
 ## Placement on the bed
 
@@ -42,10 +49,11 @@ marked; the bed starts **1.51s** into the output (`audio/offset.json`).
   (v5: 69% masked, whisper heard 你成越眼眸过这首), the first word inside the chord's tail (v7b);
 - 第一步 at 7.92s, just after the riff's long last hit (7.5-7.9s). At full riff volume its v1/v2 slot (6.71s)
   measured a -5.4 dB median with 66% of frames masked; 7.92s measures 28.5 dB, no frame masked;
-- 骑电驴的时候 on the beat after the drum entry (9.315s); `audio/place.py` puts the rest on the grid —
-  a header takes a bar, or a half-bar, or failing both any beat, whichever first leaves ≤1.3 / ≤0.9s of air;
-  the English lines on beats; "Beautiful!", a 0.51s pause, 等下，这姿势真的对吗？ on a beat, and the
-  call-to-action 0.28s later on the chorus downbeat (50.53s). 0.30s speech-to-speech inside a section.
+- 骑电驴的时候 0.30s after it: the take's 第一步，注意我们的脚 runs past the beat after the drum entry (9.315s),
+  the stand-in's anchor. `audio/place.py` puts the rest on the grid — a header takes a bar, or a half-bar, or
+  failing both any beat, whichever first leaves ≤1.3 / ≤0.9s of air; the English lines on beats;
+  "Beautiful!", a 1.0s pause, 等下教练这对吗？ on a beat, and 没问题 anchored on the chorus downbeat (edited bar
+  28, 58.88s), the call-to-action 0.30s after it. 0.30s speech-to-speech inside a section.
 
 ## Bed
 
@@ -58,16 +66,20 @@ pauses, and the operator found that weird.
   the level the operator approved with every edit to the hook.
 - Drop: 8.40-8.75s, inside the riff's near-silent tail (-41 to -59 dB), so the drums arrive at the new
   level with nothing audible ramping.
-- After the drums: **-24.48 dB**, `audio/levels.py`'s measured answer — the single gain keeping S05E003's
+- **Edited** (`audio/bed_edit.py`): at 33.84s verse 1's bar 16 runs into verse 2's bar 38, the same riff, so
+  the chorus lifts under 没问题 as in v8 instead of halfway through 下巴… (unedited, it lifts at 50.53s). Verse
+  2's downbeat is 293 ms off the grid fitted on the first 100s; found by onset correlation (0.82). Beats across
+  the splice measure 0.515-0.534s against 0.522: no hiccup.
+- After the drums: **-24.18 dB**, `audio/levels.py`'s measured answer — the single gain keeping S05E003's
   approved consonant clarity (1-4 kHz voice-over-music: 12.4 dB median, -6.9 dB 10th percentile, ≤20.1%
   of frames under 0) over the speech after the drums.
 - **Back to full when the voice is done** (the operator's ask): from 0.04s after the call-to-action's last
-  syllable (52.96s) up to -12.32 dB, arriving on the beat at 53.66s; full to 55.75s, out over the last two
-  beats to 56.79s (58.30s output).
+  syllable (62.71s) up to -12.32 dB, arriving on the beat at 63.58s; full to 65.66s, out over the last two
+  beats to 66.71s (68.22s output).
 
 ## Sound effect
 
-A pop where the on-screen callout appears, in the riff's 3.4s run between 变成越野摩托车手 and 第一步 —
+A pop where the on-screen callout appeared (v8-v10), in the riff's 3.4s run between 变成越野摩托车手 and 第一步 —
 the operator's "cork pop / message arrive". Freesound 202230 "Pop sound" by deraj, **CC0**
 (https://freesound.org/s/202230/), its HQ preview, pinned by sha256 in `render.sh`. Picked from seven CC0
 candidates as the cleanest short one: 84% of its energy in 1-3 kHz, ~200 ms to -40 dB, an -82 dB floor.
@@ -79,33 +91,32 @@ the attack and stays ahead for ~180 ms.
 
 zh word timing is **MFA** on the delivered voice stem (`captions/script.mfa.txt`, spoken forms —
 三个 shows as 3个), the hook as three sentences so each phrase is its own caption line. The English lines
-are OOV placeholders there; their words come from Kokoro's own token timestamps, mapped through the cut.
-MFA's sentence edges sit 7-69 ms ahead of the energy-measured onsets (45-65 ms on the hook's phrases); 髋 is
-OOV and its word got a plausible 260 ms. Text is pure white #FFFFFF.
+are OOV placeholders there; their words are the take's measured times (`audio/take-lines.json`), mapped
+through the cut. On the v11 stem MFA lost its place after the Nice! placeholder again and put 第三步 to 前方
+1.2-2.4s early; those three sentences were aligned again alone, on the stem's 44.44-53.44s, and spliced in.
+Every other sentence starts 20-110 ms ahead of `audio/plan.json`'s energy onset. Text is pure white #FFFFFF.
 
 - **Cut at the script's commas** (`captions/build_props.py`), never by the track. Its width split cuts where the
   halves balance, and v8 showed …踩住脚踏让 | 脚踝… and more like it. Each too-wide sentence is now blocks of whole
   clauses, packed onto a line while they fit 12 glyphs (790px at `burst-captions-zh`'s 72 × 0.88). One clause
   is wider than a line by itself and is cut by hand after 手指 (用一两根手指 | 随时准备操作前刹和离合).
-- **English one word at a time.** zh lays words out with no gap. v3 kept the English spaces with a no-break space
-  after each word; v8's rewrite of the builder turned it into a plain space, which collapses, and the asides
-  rendered as Good,lookingfantastic!. Per-word blocks need no space at all. The cost: in "Nice, we are on the
-  right track!" are and the hold for ~80 ms each (2-3 frames), as fast as Kokoro says them.
+- **English asides in zh, the English under them** — the operator's ask for v11. Each English sentence is a
+  translation block, its zh words lit while the English words they render are said (很好 | 看起来 棒极了,
+  不错 | 上道了, 漂亮), the English sentence beneath as the secondary line (`>` rows; captions.md says why).
+  上道了 is the operator's; the others are this repo's. v10 showed the English itself, one word per block.
 - **♪ in the riff's run before 第一步** — the operator's: music playing, nothing said. From 200 ms after
-  变成越野摩托车手 ends (6.33s) to 第一步 (9.38s). The band lights under it as under any word.
-- **The callout 99%的人都不知道** is not a caption: plain text mid-frame, "instagram style, not karaoke"
-  (`captions/callout.py`) — white, Noto Sans SC 600 at 84px, a soft shadow, on frames 211-280 (7.03s, the
-  frame holding the pop, to the last frame before 第一步's caption). The wording is the operator's "the 99%
-  not knowing this", put into words here. It is composited onto the caption track so the edit gets one overlay;
-  the two do not overlap, so colour comes from the overlay and alpha from screen (a + b - ab).
-
-## When the take arrives
-
-The same steps with the take in place of `tts_take.py` and `hook_phrases.py`: cut it with auto-editor at a
-threshold matched to ITS level, split it into the lines (the hook into its three phrases), rerun `place.py`
-with the same anchors, then MFA on the new stem and `captions/build_props.py`. The English lines then need
-MFA-independent timing again (or a hand check), since Kokoro will no longer know them. A human read of a
-from/to phrase may not fit its gap; that is a re-take or a cut, not a stretch.
+  变成越野摩托车手 ends (6.33s) to 第一步 (9.40s). The band lights under it as under any word.
+- **No callout.** v8-v10 put 99%的人都不知道 mid-frame with the pop; the operator dropped it for v11. The pop
+  stays in the mix.
+- **Two lines lifted to the frame's vertical centre** (`captions/lift.py`, 494px), the operator's ad-hoc call:
+  得使用前脚掌踩住脚踏 and 让脚踝能够上下活动 sat on the ankle they describe. v12 lifted them 900px, above the
+  ankle's whole travel (y 650-1175 in the first boot shot, the foot coming onto the peg; 1050-1300 in the side
+  shot); the operator asked for the centre instead, which clears the side shot's ankle and still crosses the
+  first shot's. Everything else stays on the track's line — this is not the uniform lift captions.md asks for.
+- **Onto the operator's cut** (v11, `S07E001.MP4`: HEVC Main 10, HLG/BT.2020, Dolby Vision 8.4, 2046 frames).
+  Its audio is the v11 mix at 0 ms lag (correlation 0.999, -0.02 dB), so the track goes on at frame 0.
+  Composited with S05E003's `captions/composite-hlg.sh` (BT.2408 LUT, x265 Main 10, HLG tags; finding O117);
+  the DV RPU is not carried.
 
 ## QC
 
@@ -113,6 +124,9 @@ v8: mix -14.51 LUFS / -1.41 dBTP, 58.30s; 0.012% of samples at the limiter. Spli
 Consonant-band clarity: 直接从小电驴骑士 31.8 dB median, 变成越野摩托车手 27.1, 第一步 28.5, none masked;
 after the drums 12.5 median, 15.3% of frames under 0. whisper reads v8's first 11s as 跟我学会这三个技巧
 直接从小电力骑士变成越野摩托车手第一步注意我们的脚 (电力/电驴 is a homophone it flips between runs).
-Captions (v10): 42 blocks, each on its computed frame, and no block's horizontal extent moves while it is up —
-the track made no cut of its own. The callout is on frames 211-280 only; elsewhere the composite's alpha
-matches the track's to 1/255.
+v11: mix -14.37 LUFS / -1.40 dBTP, 68.22s; 0.004% of samples at the limiter. After the drums 11.3 dB median,
+20.6% of frames under 0. Three lines are soft in the voice's own 1-4 kHz, not under louder music (the music's
+band measures the same under every line): 屁股稍稍往后… 3.2 dB median, "Beautiful!" -1.4, the call-to-action
+3.1. whisper still reads every line off the mix.
+Captions (v13): 36 blocks; the lift moves frames 455-557 by exactly 494px and no other frame's rows. Captioned cut against the operator's: audio packets md5-identical; outside the
+caption band SSIM 0.996 / PSNR 49.5 dB (above it), SSIM 0.996 (below it).

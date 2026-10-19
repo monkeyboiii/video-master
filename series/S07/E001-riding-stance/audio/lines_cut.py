@@ -1,7 +1,8 @@
 # auto-editor's -35dB decision -> per-line audio, every kept piece faded 8ms (skill lesson 1),
 # pieces of one line butted (its comma pauses tightened); line timings mapped for en words.
-import json, numpy as np, soundfile as sf
-x,SR=sf.read("take48.wav",dtype="float32"); segs=json.load(open("segs-35.json")); meta=json.load(open("take-meta.json"))
+#   lines_cut.py SEGS.json THRESHOLD_DB     (auto-editor's decision and the threshold it was made at)
+import json, sys, numpy as np, soundfile as sf
+x,SR=sf.read("take48.wav",dtype="float32"); segs=json.load(open(sys.argv[1])); THR=float(sys.argv[2]); meta=json.load(open("take-meta.json"))
 def fade(y,ms=8):
     n=min(int(SR*ms/1000),len(y)//2); r=np.linspace(0,1,n,dtype=np.float32); y=y.copy(); y[:n]*=r; y[-n:]*=r[::-1]; return y
 out=[]
@@ -24,7 +25,7 @@ for l in meta:
 json.dump(out,open("lines-cut.json","w"),ensure_ascii=False,indent=1)
 raw=sum(l['dur'] for l in meta); cut=sum(o['len'] for o in out)
 # speech preserved: threshold-consistent count (skill lesson 3)
-def speech(y,thr=-35):
+def speech(y,thr=THR):
     w=int(0.01*SR); r=20*np.log10(np.sqrt((y[:len(y)//w*w].reshape(-1,w)**2).mean(1))+1e-12); return (r>thr).sum()*0.01
-print(f"lines raw {raw:.2f}s -> cut {cut:.2f}s; speech above -35dB: take {speech(x):.2f}s, lines {sum(speech(sf.read(o['file'],dtype='float32')[0]) for o in out):.2f}s")
+print(f"lines raw {raw:.2f}s -> cut {cut:.2f}s; speech above {THR:.0f}dB: take {speech(x):.2f}s, lines {sum(speech(sf.read(o['file'],dtype='float32')[0]) for o in out):.2f}s")
 for o in out: print(f"  {o['i']:2d} {o['len']:5.2f}s ({o['pieces']} piece{'s' if o['pieces']>1 else ''})  {o['text'][:24]}")
